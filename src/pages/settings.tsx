@@ -1,8 +1,8 @@
 import React from "react";
 
-const Settings = (props: {ref: React.RefObject<HTMLDivElement> }) => {
+const Settings = () => {
     return (
-        <div ref={ props.ref }>
+        <div>
             <h1>Settings</h1>
         </div>
     );

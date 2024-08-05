@@ -4,10 +4,14 @@ const Navbar = (
     props: { context: React.RefObject<HTMLElement>[] }
 ) => {
     let current: number = 0;
+    console.log(props.context);
 
     const swapPage = (index: number) => {
         if(index < 0 || index >= props.context.length || index === current)
             return;
+
+        props.context[current].current!.style.display = 'none';
+        props.context[index].current!.style.display = 'block';
 
         current = index;
         console.log(`Swapped to page ${index}`);

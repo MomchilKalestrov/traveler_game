@@ -1,8 +1,8 @@
 import React from "react";
 
-const Home = (props: {ref: React.RefObject<HTMLDivElement> }) => {
+const Home = () => {
     return (
-        <div ref={ props.ref }>
+        <div>
             <h1>Home</h1>
         </div>
     );

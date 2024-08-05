@@ -1,8 +1,8 @@
 import React from "react";
 
-const Map = (props: {ref: React.RefObject<HTMLDivElement> }) => {
+const Map = () => {
     return (
-        <div ref={ props.ref }>
+        <div>
             <h1>Map</h1>
         </div>
     );
