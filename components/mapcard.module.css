@@ -1,0 +1,156 @@
+.Mapcard {
+    width: 100%;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    color: #113d14;
+    margin-bottom: 0.5rem;
+}
+
+.MapcardLocation {
+    --padding: 0.5rem;
+
+    width: calc(100% - var(--padding) * 2);
+    height: calc(8rem - var(--padding) * 2);
+    padding: var(--padding);
+    background-image: url('/placeholder.png');
+}
+
+.MapcardLocation img {
+    --size: 3rem;
+
+    width: var(--size);
+    height: var(--size);
+    border-radius: 100%;
+    background-color: white;
+    border: none;
+    padding: 0.25rem;
+}
+
+.MapcardMore {
+    --padding: 1rem;
+
+    background-color: #e8f5e9;
+    width: calc(100% - var(--padding) * 2);
+    padding: var(--padding);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.MapcardTitle {
+    margin: 0px;
+    font-weight: bold;
+    color: #113d14;
+}
+
+.MapcardMore button {
+    --padding: 0.25rem;
+
+    height: calc(2.5rem - var(--padding) * 2);
+    padding: var(--padding) 1rem;
+    border-radius: 1.25rem;
+    border: 1px solid #113d14;
+    color: #113d14;
+    background-color: #ffffff00;
+    font-size: 1rem;
+    line-height: 1rem;
+}
+
+.MapcardInfo > div {
+    --margin: 0.5rem;
+    --padding: 1rem;
+    --height: min(calc(100% - (var(--margin) + var(--padding)) * 2), 30rem);
+
+    position: fixed;
+    top: calc(50% - var(--height) / 2);
+    left: var(--margin);
+    width: calc(100% - (var(--margin) + var(--padding)) * 2);
+    height: var(--height);
+    background-color: #e8f5e9;
+    z-index: 3;
+    animation: slideIn ease-in-out 0.5s;
+    padding: var(--padding);
+    border-radius: 0.75rem;
+}
+
+.MapcardInfo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    animation: blurIn ease-in-out 0.5s;
+    backdrop-filter:
+        blur(5px)
+        brightness(0.75)
+    ;
+}
+
+.MapcardInfo img {
+    padding: 0.25rem;
+    border-radius: 100%;
+    border: 1px solid #113d14;
+}
+
+.MapcardInfoHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.MapcardInfoHeader p {
+    --padding: 0.5rem;
+
+    height: calc(2rem - var(--padding) * 2);
+    padding: var(--padding) 1rem;
+    border-radius: 1.25rem;
+    color: #113d14;
+    background-color: white;
+    font-size: 1rem;
+    line-height: 1rem;
+    margin: 0px;
+
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(
+            calc(50vh + var(--height) / 2)
+        );
+    }
+    to   { transform: translateY(0vh); }
+}
+
+@keyframes slideOut {
+    from { transform: translateY(0vh); }
+    to   {
+        transform: translateY(
+            calc(50vh + var(--height) / 2)
+        );
+    }
+}
+
+@keyframes blurIn {
+    from {
+        backdrop-filter: none;
+    }
+    to {
+        backdrop-filter:
+            blur(5px)
+            brightness(0.75)
+        ;
+    }
+}
+
+@keyframes blurOut {
+    from {
+        backdrop-filter:
+            blur(5px)
+            brightness(0.75)
+        ;
+    }
+    to {
+        backdrop-filter: none;
+    }
+}
