@@ -8,6 +8,8 @@ const POST = async (request: Request) => {
     
     if(!args.get('password') || !args.get('username'))
         return NextResponse.json({ error: 'Missing parameters.' });
+    if((args.get('password') as string).length < 8)
+        return NextResponse.json({ error: 'Password must be atleast 8 symbols long.' });
 
     const client = new MongoClient(process.env.MONGODB_URI as string);
 
@@ -22,19 +24,20 @@ const POST = async (request: Request) => {
         // Insert the data
         await collection.insertOne({
             username: args.get('username'),
-            password: args.get('password')
+            password: md5(args.get('password') || '')
         });
         // Set the cookies
         const user = cookies();
         user.set('username', args.get('username') || '');
         user.set('password', md5(args.get('password') || ''));
+        client.close();
     }
     catch(error) {
         console.log('An exception has occured:\n', error);
         return NextResponse.json({ error: 'An error occurred.' });
     };
 
-    return NextResponse.redirect('/main/Home');
+    return NextResponse.json({ success: true });
 };
 
 export { POST };

@@ -2,12 +2,15 @@
 
 import { Dispatch, FormEvent, SetStateAction } from 'react';
 import style from './profile.module.css';
+import { useRouter } from 'next/navigation';
 
 const SignUp = (
     props: {
         setter: Dispatch<SetStateAction<boolean>>;
     }
 ) => {
+    const router = useRouter();
+
     const createProfile = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data: FormData = new FormData(event.currentTarget);
@@ -15,19 +18,17 @@ const SignUp = (
         if(data.get('password') !== data.get('verify-password'))
             return alert('Passwords do not match.');
 
-        if((data.get('password')?.toString.length || 0) < 8)
+        if(((data.get('password') as string).length || 0) < 8)
             return alert('Password must be atleast 8 symbols long.');
 
-        const response = fetch(`/api/auth/create?username=${data.get('username')}&password=${data.get('password')}`, {
+        fetch(`/api/auth/create?username=${data.get('username')}&password=${data.get('password')}`, {
             method: 'POST'
-        });
-
-        response.then(async (res) => {
-            const json = await res.json();
-            if(json.error)
-                alert(json.error);
-            else
-                alert('Profile created.');
+        }).then(async (res) => {
+            res.json().then((data) => {
+                if(data.error)
+                    return alert(data.error);
+                router.push('/main/Home');
+            });
         });
     }
 
