@@ -1,0 +1,101 @@
+.ProfileForm {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+    height: 100%;
+    width: 100%;
+    gap: 1rem;
+}
+
+.ProfileForm h1 {
+    margin: 0px;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #1b5e20;
+    font-size: 2.5rem;
+    line-height: 2.5rem;
+}
+
+div.FormInput {
+    width: 100%;
+    border-radius: 0.25rem 0.25rem 0 0;
+    padding: 1.5rem 1rem 1.5rem 1rem;
+    background-color: #e8f5e9;
+    border-bottom: 1px solid #666666;
+    position: relative;
+}
+
+div.FormInput label {
+    position: absolute;
+    font-size: 1rem;
+    line-height: 1rem;
+    margin: 0;
+    color: #666666;
+    pointer-events: none;
+    z-index: 2;
+    top: calc(2px + 1rem);
+    transition: all 0.25s;
+}
+
+div.FormInput input {
+    position: absolute;
+    font-size: 1rem;
+    line-height: 1rem;
+    border: none;
+    outline: none;
+    z-index: 1;
+    padding: 1rem;
+    margin: 0px;
+    transition: all 0.25s;
+    background-color: #00000000;
+    top: 0px;
+    left: 0px;
+    width: calc(100% - 2rem);
+    height: calc(100% - 2rem);
+}
+
+div.FormInput:focus-within {
+    border-bottom: 2px solid #1b5e20;
+}
+
+div.FormInput input:not(:placeholder-shown),
+div.FormInput input:focus {
+    padding-top: 1.5rem;
+    padding-bottom: 0.5rem;
+    height: calc(100% - 2rem);
+}
+
+div.FormInput:focus-within label,
+div.FormInput input:not(:placeholder-shown) + label,
+div.FormInput input:focus + label {
+    font-size: 0.75rem;
+    transform: translateY(-0.75rem);
+}
+
+button.FormInput, a.FormInput {
+    --padding: 0.25rem;
+
+    height: calc(2.5rem - var(--padding) * 2);
+    padding: var(--padding) 1rem;
+    border-radius: 1.25rem;
+    background-color: #113d14;
+    border: none;
+    color: #e8f5e9;
+    font-size: 1rem;
+    line-height: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: max-content;
+}
+
+button.FormInput *, a.FormInput * {
+    margin: 0px;
+    display: inline;
+}
+
+button.StyleOutline, a.StyleOutline {
+    color: #113d14;
+    background-color: #e8f5e9;
+}

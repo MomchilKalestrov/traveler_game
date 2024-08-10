@@ -52,11 +52,6 @@ const Mapcard = (
         }
     };
 
-    const ViewDetails = () => {
-        setViewing(true);
-        console.log('Viewing details');
-    }
-
     useEffect(() => {
         SetBG();
     }, [props.name]);
@@ -69,7 +64,7 @@ const Mapcard = (
                 </div>
                 <div className={ style.MapcardMore }>
                     <p className={ style.MapcardTitle }>{ props.name }</p>
-                    <button onClick={ ViewDetails }>View</button>
+                    <button onClick={ () => setViewing(true) }>View</button>
                 </div>
             </div>
             { viewing ? <MapcardInfo setter={ setViewing } name={ props.name } /> : <></> }

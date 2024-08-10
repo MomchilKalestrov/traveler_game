@@ -1,0 +1,62 @@
+'use client';
+
+import { Dispatch, FormEvent, SetStateAction } from 'react';
+import style from './profile.module.css';
+
+const SignUp = (
+    props: {
+        setter: Dispatch<SetStateAction<boolean>>;
+    }
+) => {
+    const createProfile = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const data: FormData = new FormData(event.currentTarget);
+        
+        if(data.get('password') !== data.get('verify-password'))
+            return alert('Passwords do not match.');
+
+        if((data.get('password')?.toString.length || 0) < 8)
+            return alert('Password must be atleast 8 symbols long.');
+
+        const response = fetch(`/api/auth/create?username=${data.get('username')}&password=${data.get('password')}`, {
+            method: 'POST'
+        });
+
+        response.then(async (res) => {
+            const json = await res.json();
+            if(json.error)
+                alert(json.error);
+            else
+                alert('Profile created.');
+        });
+    }
+
+    return (
+        <form className={ style.ProfileForm } onSubmit={ createProfile }>
+            <img /><h1>Sign up</h1>
+            <div className={ style.FormInput }>
+                <input name='username' placeholder=' ' required />
+                <label>Username</label>
+            </div>
+            <div className={ style.FormInput }>
+                <input name='password' placeholder=' ' type='password' required />
+                <label>Password</label>
+            </div>
+            <div className={ style.FormInput }>
+                <input name='verify-password' placeholder=' ' type='password' required />
+                <label>Verify password</label>
+            </div>
+            <button className={ style.FormInput }>
+                <img src='/login.svg' />
+                <p>Create profile</p>
+            </button>
+            <button
+                type='button'
+                onClick={ () => props.setter(true) }
+                className={ style.FormInput + ' ' + style.StyleOutline }
+            >Log in</button>
+        </form>
+    )
+}
+
+export default SignUp;

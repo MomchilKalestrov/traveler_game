@@ -9,7 +9,9 @@ export default function Home() {
   const [data, setData] = useState<Array<string>>([]);
 
   useEffect(() => {
-    fetch('/api/locations').then((response) => {
+    fetch(
+      '/api/locations'
+    ).then((response) => {
       setLoading(true);
       response.json().then((data) => {
         setData(data);

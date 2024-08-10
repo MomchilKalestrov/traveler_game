@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb'
+import { MongoClient } from 'mongodb';
 import { NextResponse } from 'next/server';
 
 const GET = async (request: Request) => {
@@ -9,14 +9,11 @@ const GET = async (request: Request) => {
         await client.connect();
         const db = client.db("TestDB");
         const collection = db.collection("TestCollection");
-        names = await collection.aggregate([{
-            $project: {
-                ['name']: 1,
-                _id: 0
-            }
-        }]).toArray();
-    } catch {
-
+        names = await collection.find({
+            name: { $exists: true }
+        }).toArray();
+    } catch(error) {
+        console.log(error);
     };
 
     return NextResponse.json(names);
