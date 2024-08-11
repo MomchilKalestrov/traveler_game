@@ -47,7 +47,7 @@ const MapcardInfo = (
                     <img src='/back.svg' alt='back' onClick={ Close } />
                     <p>{ props.name }</p>
                 </div>
-                <button onClick={ track }>Track</button>
+                <button className={ style.MapcardButton } onClick={ track }>Track</button>
             </div>
         </div>
     );
@@ -84,7 +84,7 @@ const Mapcard = (
                 </div>
                 <div className={ style.MapcardMore }>
                     <p className={ style.MapcardTitle }>{ props.name }</p>
-                    <button onClick={ () => setViewing(true) }>View</button>
+                    <button className={ style.MapcardButton } onClick={ () => setViewing(true) }>View</button>
                 </div>
             </div>
             { viewing ? <MapcardInfo setter={ setViewing } name={ props.name } /> : <></> }

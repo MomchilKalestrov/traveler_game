@@ -27,6 +27,19 @@
     background-color: #e8f5e9;
 }
 
+.MinicardButton {
+    --padding: 0.25rem;
+
+    height: calc(2.5rem - var(--padding) * 2);
+    padding: var(--padding) 1rem;
+    border-radius: 1.25rem;
+    border: 1px solid #113d14;
+    color: #113d14;
+    background-color: #ffffff00;
+    font-size: 1rem;
+    line-height: 1rem;
+}
+
 .MinicardInfo {
     position: fixed;
     top: 0;

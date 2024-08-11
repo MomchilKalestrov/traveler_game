@@ -47,7 +47,7 @@ const MinicardInfo = (
                     <img src='/back.svg' alt='back' onClick={ Close } />
                     <p>{ props.name }</p>
                 </div>
-                <button onClick={ untrack }>untrack</button>
+                <button className={ style.MinicardButton } onClick={ untrack }>untrack</button>
             </div>
         </div>
     );

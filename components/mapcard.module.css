@@ -43,7 +43,7 @@
     color: #113d14;
 }
 
-.MapcardMore button {
+.MapcardButton {
     --padding: 0.25rem;
 
     height: calc(2.5rem - var(--padding) * 2);

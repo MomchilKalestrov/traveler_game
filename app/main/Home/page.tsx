@@ -1,5 +1,6 @@
 'use client'
 import style from './home.module.css';
+import './index.css';
 import Mapcard from '@/components/mapcard';
 import Minicard from '@/components/minicard';
 import { useEffect, useState }from 'react';
@@ -47,7 +48,17 @@ export default function Home() {
   }, [router]);
 
   if (finished)
-    return (<p>Fetching data, please wait...</p>);
+    return (
+      <>
+        <div className={ `${ style.LoadingSegment } ${ style.LoadingTitle }` } />
+        <div className={ `${ style.LoadingSegment } ${ style.LoadingMini  }` } />
+        <div className={ `${ style.LoadingSegment } ${ style.LoadingMini  }` } />
+        <div className={ `${ style.LoadingSegment } ${ style.LoadingMini  }` } />
+        <div className={ `${ style.LoadingSegment } ${ style.LoadingTitle }` } />
+        <div className={ `${ style.LoadingSegment } ${ style.LoadingBig   }` } />
+        <div className={ `${ style.LoadingSegment } ${ style.LoadingBig   }` } />
+      </>
+    );
 
   return (
     <>
