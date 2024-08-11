@@ -87,13 +87,35 @@
     overflow: hidden;
 }
 
+.MapcardInfoData {
+    --padding: 1rem;
+
+    padding: var(--padding);
+    width: calc(100% - var(--padding) * 2);
+    height: calc(100% - 10rem - var(--padding) * 2);
+    overflow-y: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: space-between;
+}
+
+.MapcardInfoData * {
+    margin: 0px;
+}
+
+.MapcardInfoData p {
+    margin: 1rem 0px;
+    width: 100%;
+}
+
 .MapcardInfoHeader {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     padding: var(--padding);
     width: calc(100% - var(--padding) * 2);
-    height: 8rem;
+    height: calc(10rem - var(--padding) * 2);
     background-image: url('/placeholder.png');
     
 }

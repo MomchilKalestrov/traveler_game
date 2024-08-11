@@ -33,8 +33,8 @@
     height: calc(2.5rem - var(--padding) * 2);
     padding: var(--padding) 1rem;
     border-radius: 1.25rem;
-    border: 1px solid #113d14;
-    color: #113d14;
+    border: 1px solid #3d1111;
+    color: #3d1111;
     background-color: #ffffff00;
     font-size: 1rem;
     line-height: 1rem;
@@ -69,6 +69,28 @@
     animation: slideIn ease-in-out 0.5s;
     border-radius: 0.75rem;
     overflow: hidden;
+}
+
+.MapcardInfoData {
+    --padding: 1rem;
+
+    padding: var(--padding);
+    width: calc(100% - var(--padding) * 2);
+    height: calc(100% - 10rem - var(--padding) * 2);
+    overflow-y: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: space-between;
+}
+
+.MapcardInfoData * {
+    margin: 0px;
+}
+
+.MapcardInfoData p {
+    margin: 1rem 0px;
+    width: 100%;
 }
 
 .MinicardInfoHeader {

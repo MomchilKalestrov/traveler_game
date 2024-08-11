@@ -45,9 +45,12 @@ const MinicardInfo = (
             <div ref={ reference }>
                 <div className={ style.MinicardInfoHeader }>
                     <img src='/back.svg' alt='back' onClick={ Close } />
-                    <p>{ props.name }</p>
                 </div>
-                <button className={ style.MinicardButton } onClick={ untrack }>untrack</button>
+                <div className={ style.MapcardInfoData }>
+                    <h3>{ props.name }</h3>
+                    <p></p>
+                    <button className={ style.MinicardButton } onClick={ untrack }>Stop tracking</button>
+                </div>
             </div>
         </div>
     );

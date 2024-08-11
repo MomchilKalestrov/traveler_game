@@ -45,9 +45,12 @@ const MapcardInfo = (
             <div ref={ reference }>
                 <div className={ style.MapcardInfoHeader }>
                     <img src='/back.svg' alt='back' onClick={ Close } />
-                    <p>{ props.name }</p>
                 </div>
-                <button className={ style.MapcardButton } onClick={ track }>Track</button>
+                <div className={ style.MapcardInfoData }>
+                    <h3>{ props.name }</h3>
+                    <p></p>
+                    <button className={ style.MinicardButton } onClick={ track }>Track</button>
+                </div>
             </div>
         </div>
     );
