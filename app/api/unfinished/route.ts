@@ -9,18 +9,6 @@ const GET = async (request: Request) => {
         await client.connect();
         const db = client.db("TestDB");
         const collection = db.collection("TestCollection");
-        names = await collection.aggregate([
-            {
-                $match: {
-                    name: new URL(request.url).searchParams.get('name')
-                }
-            },
-            {
-                $project: {
-                    _id: 0
-                }
-            } 
-        ]).toArray();
     } catch(error) {
         console.log(error);
     };

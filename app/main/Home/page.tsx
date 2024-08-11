@@ -1,23 +1,25 @@
 'use client'
 import styles from 'home.module.css';
 import Mapcard from '@/components/mapcard';
+import Minicard from '@/components/minicard';
 import { useEffect, useState }from 'react';
 import React from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const router = useRouter();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [data, setData] = useState<Array<string>>([]);
+  const [unfinished, setUnfinished] = useState<Array<string>>([]);
+  const [newLocs,    setNewLocs   ] = useState<Array<string>>([]);
 
   useEffect(() => {
-    fetch('/api/locations').then((response) => {
-      setLoading(true);
-      response.json().then((data) => {
-        setData(data);
-        setLoading(false);
-      });
-    });
+    fetch('/api/unfinished')
+      .then((response) => response.json()    )
+      .then((data)     => setUnfinished(data));
+
+    fetch('/api/locations' )
+      .then((response) => response.json()  )
+      .then((data)     => setNewLocs(data) );
+
     fetch('/api/auth/get').then((response) => {
       response.json().then((data: any) => {
         if(!data.username || !data.password)
@@ -28,8 +30,10 @@ export default function Home() {
 
   return (
     <>
-      { data.map((data: any, index: number) => <Mapcard key={index} name={ data.name } />) }
-      {loading && <p style={ { margin: '0px', textAlign: 'center' } }>Loading.</p>}
+      <h2>Selected locations:</h2>
+      { unfinished.map((data: any, index: number) => <Minicard key={index} name={ data.name } />) }
+      <h2>New locations:</h2>
+      { newLocs.map((data: any, index: number) => <Mapcard key={index} name={ data.name } />) }
     </>
   );
 }
