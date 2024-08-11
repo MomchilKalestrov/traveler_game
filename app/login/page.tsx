@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import LogIn from './login';
 import SignUp from './signup';
+import './bg.css'
 
 export default function Profile() {
   // true  = login

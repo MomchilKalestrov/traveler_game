@@ -11,7 +11,6 @@ const GET = async (request: Request) => {
         await client.connect();
         const db = client.db("TestDB");
         const collection = db.collection("TestCollection");
-
         names = await collection.aggregate([{
             $match: { username: args.get('username')?.value }
         }]).toArray();

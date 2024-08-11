@@ -18,9 +18,7 @@ const GET = async (request: Request) => {
                     _id: 0
                 }
             },
-            { 
-                $match: { name: { $exists: true } }
-            }
+            { $match: { name: { $exists: true } } }
         ]).toArray();
         await client.close();
         return NextResponse.json(names);

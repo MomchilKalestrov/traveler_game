@@ -1,6 +1,8 @@
 'use client'
 import React, { useEffect, useState } from 'react';
-import style from './mapcard.module.css'
+import style from './mapcard.module.css';
+import { useRouter } from 'next/navigation';
+import loading from './loading';
 
 const MapcardInfo = (
     props: {
@@ -8,6 +10,7 @@ const MapcardInfo = (
         name: string
     }
 ) => {
+    const router = useRouter();
     const reference: React.RefObject<HTMLDivElement> = React.useRef<HTMLDivElement>(null);
 
     const Close = () => {
@@ -21,6 +24,22 @@ const MapcardInfo = (
         setTimeout(() => props.setter(false), 500);
     }
 
+    const track = () => {
+        loading();
+        fetch(`/api/track`, {
+            method: 'POST',
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({ name: props.name })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if(data.error) return console.log(data.error);
+                window.location.reload();
+            });
+    }
+
     return (
         <div className={ style.MapcardInfo }>
             <div ref={ reference }>
@@ -28,6 +47,7 @@ const MapcardInfo = (
                     <img src='/back.svg' alt='back' onClick={ Close } />
                     <p>{ props.name }</p>
                 </div>
+                <button onClick={ track }>Track</button>
             </div>
         </div>
     );

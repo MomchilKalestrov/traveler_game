@@ -1,5 +1,5 @@
 'use client'
-import styles from 'home.module.css';
+import style from './home.module.css';
 import Mapcard from '@/components/mapcard';
 import Minicard from '@/components/minicard';
 import { useEffect, useState }from 'react';
@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const router                  = useRouter();
+  const [finished, setFinished] = useState<boolean>(true);
   const [started,  setStarted ] = useState<Array<string>>([]);
   const [newLocs,  setNewLocs ] = useState<Array<string>>([]);
 
@@ -30,11 +31,14 @@ export default function Home() {
 
         const locationsResponse = await fetch('/api/locations');
         const locationsData = await locationsResponse.json();
+        let locArr: Array<string> = [];
 
-        setNewLocs(locationsData.filter((data: any) =>
-          !startedData.includes(data.name) &&
-          !finishedData.includes(data.name)
-        ));
+        for(let i: number = 0; i < locationsData.length; i++) 
+          if(!startedData.includes(locationsData[i].name) && !finishedData.includes(locationsData[i].name))
+            locArr.push(locationsData[i].name);
+        setNewLocs(locArr);
+          
+        setFinished(false);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -42,23 +46,25 @@ export default function Home() {
     getData();
   }, [router]);
 
+  if (finished)
+    return (<p>Fetching data, please wait...</p>);
+
   return (
     <>
-      <h2>Selected locations:</h2>
+      <h2>Started adventures:</h2>
+      <div className={ style.HorizontalCarousel }>
+        { 
+          started.length === 0 || (started.length === 1 && started[0] === '')
+          ? <p>No adventures started.</p>
+          : started.map((data: string, index: number) => <Minicard key={ index } name={ data } />)
+        }
+      </div>
+
+      <h2>New adventures:</h2>
       { 
-        started.map((data: string, index: number) =>
-          data.length > 0
-          ? <Minicard key={index} name={ data } />
-          : ''
-        )
-      }
-      <h2>New locations:</h2>
-      { 
-        newLocs.map((data: any, index: number) =>
-          data.length > 0
-          ? <Mapcard key={index} name={ data } />
-          : ''
-        )
+        newLocs.length === 0 || (newLocs.length === 1 && newLocs[0] === '')
+        ? <p>No new adventures to start. Check again later.</p>
+        : newLocs.map((data: string, index: number) => <Mapcard key={ index } name={ data } />)
       }
     </>
   );

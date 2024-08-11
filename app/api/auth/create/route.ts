@@ -24,7 +24,9 @@ const POST = async (request: Request) => {
         // Insert the data
         await collection.insertOne({
             username: args.get('username'),
-            password: md5(args.get('password') || '')
+            password: md5(args.get('password') || ''),
+            started: [],
+            finished: []
         });
         // Set the cookies
         const user = cookies();
