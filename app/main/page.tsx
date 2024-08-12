@@ -24,7 +24,7 @@ const Page = () => {
         verifyLogin();
     });
 
-    let refs: Array<React.Ref<HTMLElement>> = [];
+    let refs: Array<React.RefObject<HTMLElement>> = [];
     for(let i: number = 0; i < 3; ++i)
         refs.push(createRef<HTMLElement>());
 

@@ -3,7 +3,7 @@
 const Page = (props: { refs: React.Ref<HTMLElement> }) => {
   
   return (
-    <main ref={ props.refs }>Profile</main>
+    <main ref={ props.refs } style={ { display: 'none' } }>Profile</main>
   );
 }
 
