@@ -33,6 +33,8 @@ const Page = (props: { refs: React.Ref<HTMLElement> }) => {
 
   if(!finish) return (<main>Loading...</main>);
 
+  return (<>Not yet</>);
+
   return (
     <main
       ref={ props.refs }

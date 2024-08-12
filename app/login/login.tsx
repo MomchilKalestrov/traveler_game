@@ -21,7 +21,7 @@ const LogIn = (
             res.json().then((data) => {
                 if(data.error)
                     return alert(data.error);
-                router.push('/main/Home');
+                router.push('/main');
             });
         });
     }
