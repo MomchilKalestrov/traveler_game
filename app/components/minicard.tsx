@@ -70,7 +70,7 @@ const Minicard = (
         if(reference.current) {
             const width = reference.current.offsetWidth;
             const height = reference.current.offsetHeight
-            //reference.current.style.backgroundImage = `url('https://maps.googleapis.com/maps/api/staticmap?center=${ props.name },Bulgaria&zoom=13&size=${width + 65}x${Math.round((width + 65) / (width / height))}&maptype=satellite&style=feature:all|element:labels|visibility:off&key=AIzaSyBPYpCcdRsOe4Mci-EkrfBKwNAwwLQzTQ0')`;
+            //reference.current.style.backgroundImage = ``;
             reference.current.style.backgroundSize = `${width + 65}px ${(width + 65) / (width / height)}px`;
         }
     };

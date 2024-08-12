@@ -9,16 +9,11 @@ const GET = async (request: Request) => {
 
     try {
         await client.connect();
-        const db = client.db("TestDB");
-        const collection = db.collection("TestCollection");
+        const db = client.db('TestDB');
+        const collection = db.collection('TestCollection');
         names = await collection.aggregate([
-            {
-                $project: {
-                    name: 1,
-                    _id: 0
-                }
-            },
-            { $match: { name: { $exists: true } } }
+            { $project: { _id: 0 } },
+            { $match:   { name: { $exists: true } } }
         ]).toArray();
         await client.close();
         return NextResponse.json(names);

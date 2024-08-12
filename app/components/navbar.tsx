@@ -26,8 +26,10 @@ const Navbar = (props: { refs: Array<React.Ref<HTMLElement>> }) => {
     const [active, setActive] = React.useState<Array<boolean>>([ true, false, false ]);
 
     const pageSwap = (id: number) => {
-        for(let i: number = 0; i < 3; ++i)
+        for(let i: number = 0; i < 3; ++i) {
+            if(!props.refs[i].current) continue;
             props.refs[i].current.style.display = i === id ? 'block' : 'none';
+        }
 
         let newPages: Array<boolean> = [ false, false, false ];
         newPages[id] = true;

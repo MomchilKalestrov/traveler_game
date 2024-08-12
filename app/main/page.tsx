@@ -1,5 +1,5 @@
 'use client'
-import Navbar from '@/components/navbar';
+import Navbar from '@/app/components/navbar';
 import Home from '@/app/pages/home';
 import Map from '@/app/pages/map';
 import Profile from '@/app/pages/profile';

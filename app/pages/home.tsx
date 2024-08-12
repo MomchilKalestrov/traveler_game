@@ -1,12 +1,12 @@
 'use client'
 import style from './home.module.css';
-import Mapcard from '@/components/mapcard';
-import Minicard from '@/components/minicard';
+import Mapcard from '@/app/components/mapcard';
+import Minicard from '@/app/components/minicard';
 import { useEffect, useState }from 'react';
 import React from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function Home(props: { refs: React.Ref<HTMLElement> }) {
+const Page = (props: { refs: React.Ref<HTMLElement> }) => {
   const router                  = useRouter();
   const [finished, setFinished] = useState<boolean>(true);
   const [started,  setStarted ] = useState<Array<string>>([]);
@@ -72,3 +72,5 @@ export default function Home(props: { refs: React.Ref<HTMLElement> }) {
     </main>
   );
 }
+
+export default Page;
