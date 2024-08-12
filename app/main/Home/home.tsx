@@ -1,13 +1,12 @@
 'use client'
 import style from './home.module.css';
-import './index.css';
 import Mapcard from '@/components/mapcard';
 import Minicard from '@/components/minicard';
 import { useEffect, useState }from 'react';
 import React from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function Home() {
+export default function Home(props: { refs: React.Ref<HTMLElement> }) {
   const router                  = useRouter();
   const [finished, setFinished] = useState<boolean>(true);
   const [started,  setStarted ] = useState<Array<string>>([]);
@@ -49,7 +48,7 @@ export default function Home() {
 
   if (finished)
     return (
-      <>
+      <main ref={ props.refs }>
         <div className={ `${ style.LoadingSegment } ${ style.LoadingTitle }` } />
         <div className={ `${ style.LoadingSegment } ${ style.LoadingMini  }` } />
         <div className={ `${ style.LoadingSegment } ${ style.LoadingMini  }` } />
@@ -57,11 +56,11 @@ export default function Home() {
         <div className={ `${ style.LoadingSegment } ${ style.LoadingTitle }` } />
         <div className={ `${ style.LoadingSegment } ${ style.LoadingBig   }` } />
         <div className={ `${ style.LoadingSegment } ${ style.LoadingBig   }` } />
-      </>
+      </main>
     );
 
   return (
-    <>
+    <main ref={ props.refs }>
       <h2>Started adventures:</h2>
       <div className={ style.HorizontalCarousel }>
         { 
@@ -77,6 +76,6 @@ export default function Home() {
         ? <p>No new adventures to start. Check again later.</p>
         : newLocs.map((data: string, index: number) => <Mapcard key={ index } name={ data } />)
       }
-    </>
+    </main>
   );
 }

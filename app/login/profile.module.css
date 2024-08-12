@@ -18,7 +18,9 @@
 }
 
 div.FormInput {
-    width: 100%;
+    --width: min(100%, 20rem);
+    width: var(--width);
+    margin: 0px calc((100% - var(--width)) / 2);
     border-radius: 0.25rem 0.25rem 0 0;
     padding: 1.5rem 1rem 1.5rem 1rem;
     background-color: #e8f5e9;

@@ -72,13 +72,13 @@
 
 .MapcardInfo > div {
     --margin: 0.5rem;
-    --padding: 1rem;
-    --height: min(calc(100% - (var(--margin) + var(--padding)) * 2), 30rem);
+    --height: min(calc(100vh - var(--margin) * 2), 30rem);
+    --width:  min(calc(100vw - var(--margin) * 2), 30rem);
     
     position: fixed;
     top: calc(50% - var(--height) / 2);
-    left: var(--margin);
-    width: calc(100% - var(--margin) * 2);
+    left: calc(50% - var(--width) / 2);
+    width: var(--width);
     height: var(--height);
     background-color: #e8f5e9;
     z-index: 3;
@@ -110,14 +110,15 @@
 }
 
 .MapcardInfoHeader {
+    --padding: 0.5rem;
+
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     padding: var(--padding);
     width: calc(100% - var(--padding) * 2);
     height: calc(10rem - var(--padding) * 2);
-    background-image: url('/placeholder.png');
-    
+    background-image: url('/placeholder.png');   
 }
 
 .MapcardInfo img {
