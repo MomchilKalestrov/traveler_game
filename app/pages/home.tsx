@@ -15,13 +15,6 @@ export default function Home(props: { refs: React.Ref<HTMLElement> }) {
   useEffect(() => {
     const getData = async () => {
       try {
-        const authResponse = await fetch('/api/auth/get');
-        const authData = await authResponse.json();
-        if (!authData.username || !authData.password) {
-          router.replace('/login');
-          return;
-        }
-
         const startedResponse = await fetch('/api/started');
         const startedData = await startedResponse.json();
         setStarted(startedData);
