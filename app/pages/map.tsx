@@ -33,7 +33,11 @@ const Page = (props: { refs: React.Ref<HTMLElement> }) => {
 
   if(!finish) return (<main ref={ props.refs } style={ { display: 'none' } }>Loading...</main>);
 
-  console.log(navigator.geolocation);
+  if(navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition((position) => {
+      console.log('User location:', position.coords);
+    });
+  }
 
  // AIzaSyBPYpCcdRsOe4Mci-EkrfBKwNAwwLQzTQ0
   return (
