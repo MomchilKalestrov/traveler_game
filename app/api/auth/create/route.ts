@@ -32,10 +32,11 @@ const POST = async (request: Request) => {
         const user = cookies();
         user.set('username', args.get('username') || '');
         user.set('password', md5(args.get('password') || ''));
-        client.close();
+        await client.close();
     }
     catch(error) {
         console.log('An exception has occured:\n', error);
+        await client.close();
         return NextResponse.json({ error: 'An error occurred.' });
     };
 

@@ -30,6 +30,7 @@ const POST = async (request: NextRequest) => {
     }
     catch(error) {
         console.log('An exception has occured:\n', error);
+        await client.close();
         return NextResponse.json({ error: 'An error occurred.' });
     };
     

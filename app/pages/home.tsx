@@ -14,12 +14,12 @@ export default function Home(props: { refs: React.Ref<HTMLElement> }) {
 
   useEffect(() => {
     const getData = async () => {
-      try {
+      try { 
         const startedResponse = await fetch('/api/started');
         const startedData = await startedResponse.json();
         setStarted(startedData);
 
-        const finishedResponse = await fetch('/api/finished');
+        const finishedResponse = await fetch(`/api/finished?username=${ encodeURIComponent('<|current|>') }`);
         const finishedData = await finishedResponse.json();
 
         const locationsResponse = await fetch('/api/locations');

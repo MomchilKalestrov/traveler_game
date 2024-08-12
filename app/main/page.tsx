@@ -15,8 +15,8 @@ const Page = () => {
                 const authResponse = await fetch('/api/auth/get');
                 const authData = await authResponse.json();
                 if (!authData.username || !authData.password) {
-                router.replace('/login');
-                return;
+                    router.replace('/login');
+                    return;
                 }
             }
             catch (error) { console.log(error); }
