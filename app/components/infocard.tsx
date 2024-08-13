@@ -1,7 +1,7 @@
 import style from './infocard.module.css';
 import { useRouter } from "next/navigation";
 import React from "react";
-import loading from './loading';
+import { loading, stopLoading } from './loading';
 
 export enum cardType {
     Untrack,
@@ -43,7 +43,10 @@ const untrack = (name: string) => {
     })
         .then(response => response.json())
         .then(data => {
-            if(data.error) return console.log(data.error);
+            if(data.error) {
+                alert('An error has occured:\n' + data.error);
+                return stopLoading();
+            }
             window.location.reload();
         });
 }
@@ -59,7 +62,10 @@ const track = (name: string) => {
     })
         .then(response => response.json())
         .then(data => {
-            if(data.error) return console.log(data.error);
+            if(data.error) {
+                alert('An error has occured:\n' + data.error);
+                return stopLoading();
+            }
             window.location.reload();
         });
 }
@@ -81,7 +87,14 @@ const finish = (name: string) => {
         })
             .then(response => response.json())
             .then(data => {
-                if(data.error) return console.log(data.error);
+                if(data.error === 'User is not within 100 meters of the location.') {
+                    alert('You are not within 100 meters of the location.');
+                    return stopLoading();
+                }
+                else if(data.error) {
+                    alert('An error has occured:\n' + data.error);
+                    return stopLoading();
+                }
                 window.location.reload();
             });
     });

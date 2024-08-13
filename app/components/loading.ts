@@ -6,7 +6,10 @@ const loading = () => {
     loading.appendChild(document.createElement('p'));
     loading.getElementsByTagName('p')[0].innerText = 'Loading.';
     loading.appendChild(document.createElement('div'));
+    loading.id = 'loading';
     document.body.appendChild(loading);
 }
 
-export default loading;
+const stopLoading = () => document.getElementById('loading')?.remove();
+
+export { loading, stopLoading };

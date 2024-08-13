@@ -18,7 +18,6 @@ function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
 
 const POST = async (request: Request) => {
     const args = await request.json();
-    console.log(args);
     if (!args.name || !args.location.lat || !args.location.lng)
         return NextResponse.json({ error: 'Missing parameters.' });
     const client = new MongoClient(process.env.MONGODB_URI as string);
@@ -26,7 +25,6 @@ const POST = async (request: Request) => {
     let location: any = {};
     let user: any = {};
 
-    console.log('args:', args);
     if(await userCheck(cookie.get('username')?.value || '', cookie.get('password')?.value || ''))
         return NextResponse.json({ error: 'Invalid credentials.' });
 
@@ -56,9 +54,7 @@ const POST = async (request: Request) => {
             parseFloat(location.location.lat.toString()),
             parseFloat(location.location.lng.toString())
         );
-
-        console.log('lat:', parseFloat(location.location.lat.toString()));
-        console.log("distance from location: ", distance);
+        
         if(distance > 100) return NextResponse.json({ error: 'User is not within 100 meters of the location.' });
         // Remove the location from the tracked
         await collection.updateOne(

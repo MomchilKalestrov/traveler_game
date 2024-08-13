@@ -19,7 +19,7 @@ const Page = () => {
                     return;
                 }
             }
-            catch (error) { console.log(error); }
+            catch (error) { alert('An error has occured:\n' + error); }
         }
         verifyLogin();
     });
