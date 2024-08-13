@@ -9,28 +9,28 @@ export enum cardType {
     Finish
 };
 
-const getUserLocation = (): { lat: number, lng: number } | undefined => {
-    let userLocation: { lat: number, lng: number } = { lat: 0, lng: 0 };
-    try {
+const getUserLocation = (): Promise<{ lat: number, lng: number } | undefined> => {
+    return new Promise((resolve, reject) => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
-                (position) => userLocation = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
+                (position) => {
+                    const userLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    console.log(userLocation);
+                    resolve(userLocation);
                 },
-                (error) => console.error('Error getting user location:', error)
+                (error) => {
+                    console.error('Error getting user location:', error);
+                    reject(undefined);
+                }
             );
         } else {
             alert('Geolocation is not supported by this browser.');
-            return undefined;
+            reject(undefined);
         }
-    } catch {
-        alert('Geolocation is not supported by this browser.');
-        return undefined;
-    };
-
-    console.log(userLocation);
-    return userLocation;
+    });
 };
 
 const untrack = (name: string) => {
