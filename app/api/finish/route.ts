@@ -5,7 +5,7 @@ import userCheck from '../usercheck';
 
 function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
     const toRadians = (degree: number) => degree * (Math.PI / 180);
-    const R = 6371; // Radius of the Earth in kilometers
+    const R = 6371;
     const dLat = toRadians(lat2 - lat1);
     const dLon = toRadians(lon2 - lon1);
     const a =
@@ -13,7 +13,7 @@ function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
         Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
         Math.sin(dLon / 2) * Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c * 1000; // Distance in meters
+    return R * c * 1000;
 }
 
 const POST = async (request: Request) => {
@@ -26,6 +26,7 @@ const POST = async (request: Request) => {
     let location: any = {};
     let user: any = {};
 
+    console.log('args:', args);
     if(await userCheck(cookie.get('username')?.value || '', cookie.get('password')?.value || ''))
         return NextResponse.json({ error: 'Invalid credentials.' });
 
@@ -55,6 +56,7 @@ const POST = async (request: Request) => {
             location.location.lat['$Decimal128'],
             location.location.lng['$Decimal128']
         );
+        console.log("distance from location: ", distance);
         if(distance > 100) return NextResponse.json({ error: 'User is not within 100 meters of the location.' });
         // Remove the location from the tracked
         await collection.updateOne(
