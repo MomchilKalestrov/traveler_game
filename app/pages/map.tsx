@@ -33,16 +33,20 @@ const Page = (props: { refs: React.Ref<HTMLElement> }) => {
     };
 
     const getUserLocation = () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => setUserLocation({
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-          }),
-          (error) => console.error('Error getting user location:', error),
-          { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
-        );
-      } else console.error('Geolocation is not supported by this browser.');
+      try {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => setUserLocation({
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            }),
+            (error) => console.error('Error getting user location:', error),
+            { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
+          );
+        } else alert('Geolocation is not supported by this browser.');
+      } catch {
+        alert('Geolocation is not supported by this browser.')
+      };
     };
 
     getLocs();
@@ -55,12 +59,6 @@ const Page = (props: { refs: React.Ref<HTMLElement> }) => {
   };
 
   if(!finish) return (<main ref={ props.refs } style={ { display: 'none' } }>Loading...</main>);
-
-  if(navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition((position) => {
-      console.log('User location:', position.coords);
-    });
-  };
 
  // AIzaSyBPYpCcdRsOe4Mci-EkrfBKwNAwwLQzTQ0
   return (
@@ -89,7 +87,12 @@ const Page = (props: { refs: React.Ref<HTMLElement> }) => {
           {
             userLocation &&
             <AdvancedMarker position={ userLocation }>
-              <img src='/userpin.svg' alt='user' width={ 32 } height={ 32 } />
+              <img
+                src='/userpin.svg'
+                alt='user'
+                width={ 32 }
+                height={ 32 }
+              />
             </AdvancedMarker>
             }
           {

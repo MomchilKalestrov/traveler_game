@@ -9,6 +9,28 @@ export enum cardType {
     Finish
 };
 
+const getUserLocation = (): { lat: number, lng: number } | undefined => {
+    let userLocation: { lat: number, lng: number } = { lat: 0, lng: 0 };
+    try {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => userLocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                },
+                (error) => console.error('Error getting user location:', error)
+            );
+        } else {
+            alert('Geolocation is not supported by this browser.');
+            return undefined;
+        }
+    } catch {
+        alert('Geolocation is not supported by this browser.');
+        return undefined;
+    };
+  return userLocation;
+};
+
 const untrack = (name: string) => {
     loading();
     fetch(`/api/untrack`, {
@@ -42,6 +64,25 @@ const track = (name: string) => {
 }
 
 const finish = (name: string) => {
+    const userLocation = getUserLocation();
+    if(!userLocation) return;
+
+    loading();
+    fetch(`/api/finish`, {
+        method: 'POST',
+        headers: {
+            "content-type": "application/json"
+        },
+        body: JSON.stringify({
+            name: name,
+            location: userLocation
+        })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if(data.error) return console.log(data.error);
+            window.location.reload();
+        });
 }
 
 const InfoCard = (
