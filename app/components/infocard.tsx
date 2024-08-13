@@ -28,7 +28,9 @@ const getUserLocation = (): { lat: number, lng: number } | undefined => {
         alert('Geolocation is not supported by this browser.');
         return undefined;
     };
-  return userLocation;
+
+    console.log(userLocation);
+    return userLocation;
 };
 
 const untrack = (name: string) => {
