@@ -56,6 +56,8 @@ const POST = async (request: Request) => {
             location.location.lat['$numberDecimal'],
             location.location.lng['$numberDecimal']
         );
+
+        console.log('location:', location);
         console.log("distance from location: ", distance);
         if(distance > 100) return NextResponse.json({ error: 'User is not within 100 meters of the location.' });
         // Remove the location from the tracked
