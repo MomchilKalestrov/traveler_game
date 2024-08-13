@@ -53,11 +53,11 @@ const POST = async (request: Request) => {
         const distance = haversineDistance(
             args.location.lat,
             args.location.lng,
-            location.location.lat['$numberDecimal'],
-            location.location.lng['$numberDecimal']
+            parseFloat(location.location.lat.toString()),
+            parseFloat(location.location.lng.toString())
         );
 
-        console.log('location:', location);
+        console.log('lat:', parseFloat(location.location.lat.toString()));
         console.log("distance from location: ", distance);
         if(distance > 100) return NextResponse.json({ error: 'User is not within 100 meters of the location.' });
         // Remove the location from the tracked
