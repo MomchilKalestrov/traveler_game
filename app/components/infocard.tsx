@@ -3,11 +3,52 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import loading from './loading';
 
+export enum cardType {
+    Untrack,
+    Track,
+    Finish
+};
+
+const untrack = (name: string) => {
+    loading();
+    fetch(`/api/untrack`, {
+        method: 'POST',
+        headers: {
+            "content-type": "application/json"
+        },
+        body: JSON.stringify({ name: name })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if(data.error) return console.log(data.error);
+            window.location.reload();
+        });
+}
+
+const track = (name: string) => {
+    loading();
+    fetch(`/api/track`, {
+        method: 'POST',
+        headers: {
+            "content-type": "application/json"
+        },
+        body: JSON.stringify({ name: name })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if(data.error) return console.log(data.error);
+            window.location.reload();
+        });
+}
+
+const finish = (name: string) => {
+}
+
 const InfoCard = (
     props: {
         setter: React.Dispatch<React.SetStateAction<boolean>>
         name: string,
-        track: boolean
+        type: cardType
     }
 ) => {
     const router = useRouter();
@@ -24,36 +65,25 @@ const InfoCard = (
         setTimeout(() => props.setter(false), 500);
     }
 
-    const untrack = () => {
-        loading();
-        fetch(`/api/untrack`, {
-            method: 'POST',
-            headers: {
-                "content-type": "application/json"
-            },
-            body: JSON.stringify({ name: props.name })
-        })
-            .then(response => response.json())
-            .then(data => {
-                if(data.error) return console.log(data.error);
-                window.location.reload();
-            });
-    }
-    
-    const track = () => {
-        loading();
-        fetch(`/api/track`, {
-            method: 'POST',
-            headers: {
-                "content-type": "application/json"
-            },
-            body: JSON.stringify({ name: props.name })
-        })
-            .then(response => response.json())
-            .then(data => {
-                if(data.error) return console.log(data.error);
-                window.location.reload();
-            });
+    var btnType: JSX.Element = <></>;
+
+    switch(props.type) {
+        default:
+        case cardType.Track:
+            btnType = <button
+                        className={ `${ style.InfocardButton } ${ style.InfocardGreen }` }
+                        onClick={ () => track(props.name) }>Start tracking</button>;
+            break;
+        case cardType.Untrack:
+            btnType = <button
+                        className={ `${ style.InfocardButton } ${ style.InfocardRed }` }
+                        onClick={ () => untrack(props.name) }>Stop tracking</button>;
+            break;
+        case cardType.Finish:
+            btnType = <button
+                        className={ `${ style.InfocardButton } ${ style.InfocardGreen }` }
+                        onClick={ () => finish(props.name) }>Finish</button>;
+            break;
     }
 
     return (
@@ -65,11 +95,7 @@ const InfoCard = (
                 <div className={ style.InfocardData }>
                     <h3>{ props.name }</h3>
                     <p></p>
-                    {
-                        props.track
-                        ? <button className={ `${ style.InfocardButton } ${ style.InfocardGreen }` } onClick={ track   }>Start tracking</button>
-                        : <button className={ `${ style.InfocardButton } ${ style.InfocardRed   }` } onClick={ untrack }>Stop tracking</button>
-                    }
+                    { btnType }
                 </div>
             </div>
         </div>

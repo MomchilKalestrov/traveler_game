@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react';
 import style from './minicard.module.css';
-import InfoCard from './infocard';
+import InfoCard, { cardType } from './infocard';
 
 const Minicard = (
     props: {
@@ -31,7 +31,7 @@ const Minicard = (
                 <p>{ props.name }</p>
                 <img src={ `/badges/${ props.name }.svg` } alt={ props.name } />
             </div>
-            { viewing ? <InfoCard track={ false } setter={ setViewing } name={ props.name } /> : <></> }
+            { viewing ? <InfoCard type={ cardType.Untrack } setter={ setViewing } name={ props.name } /> : <></> }
         </>
     )
 }

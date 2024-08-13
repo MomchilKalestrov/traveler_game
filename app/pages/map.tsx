@@ -2,6 +2,7 @@
 import { AdvancedMarker, APIProvider, Map } from '@vis.gl/react-google-maps';
 import React from 'react';
 import { useEffect } from 'react';
+import InfoCard, { cardType } from '../components/infocard';
 
 type Poi = {
   name: string,
@@ -10,6 +11,8 @@ type Poi = {
 
 
 const Page = (props: { refs: React.Ref<HTMLElement> }) => {
+  const [name, setName] = React.useState<string>();
+  const [visible, setVisible] = React.useState<boolean>(false);
   const [finish, setFinish] = React.useState<boolean>(false);
   const [locations, setLocations] = React.useState<Array<Poi>>([]);
   const [userLocation, setUserLocation] = React.useState<google.maps.LatLngLiteral | null>(null);
@@ -46,13 +49,18 @@ const Page = (props: { refs: React.Ref<HTMLElement> }) => {
     getUserLocation();
   }, []);
 
+  const view = (name: string) => {
+    setName(name);
+    setVisible(true);
+  };
+
   if(!finish) return (<main ref={ props.refs } style={ { display: 'none' } }>Loading...</main>);
 
   if(navigator.geolocation) {
     navigator.geolocation.getCurrentPosition((position) => {
       console.log('User location:', position.coords);
     });
-  }
+  };
 
  // AIzaSyBPYpCcdRsOe4Mci-EkrfBKwNAwwLQzTQ0
   return (
@@ -64,6 +72,14 @@ const Page = (props: { refs: React.Ref<HTMLElement> }) => {
         display: 'none'
       } }
     >
+      {
+        visible &&
+        <InfoCard
+          setter={ setVisible }
+          name={ name || '' }
+          type={ cardType.Finish }
+        />
+      }
       <APIProvider apiKey={ '' } onLoad={ () => console.log('Maps API has loaded.') }>
         <Map
           defaultZoom={ 11 }
@@ -81,8 +97,14 @@ const Page = (props: { refs: React.Ref<HTMLElement> }) => {
               <AdvancedMarker
                 key={ loc.name }
                 position={ loc.location }
+                onClick={ () => view(loc.name) }
               >
-                <img src='/poipin.svg' alt='location' width={ 48 } height={ 48 } />
+                <img
+                  src='/poipin.svg'
+                  alt='location'
+                  width={ 48 }
+                  height={ 48 }
+                />
               </AdvancedMarker>
             )
           }

@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react';
 import style from './mapcard.module.css';
-import InfoCard from './infocard';
+import InfoCard, { cardType } from './infocard';
 
 const Mapcard = (
     props: {
@@ -36,7 +36,7 @@ const Mapcard = (
                     <button className={ style.Button } onClick={ () => setViewing(true) }>View</button>
                 </div>
             </div>
-            { viewing ? <InfoCard track={ true } setter={ setViewing } name={ props.name } /> : <></> }
+            { viewing ? <InfoCard type={ cardType.Track } setter={ setViewing } name={ props.name } /> : <></> }
         </>
     )
 }
