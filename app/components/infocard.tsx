@@ -18,7 +18,6 @@ const getUserLocation = (): Promise<{ lat: number, lng: number } | undefined> =>
                         lat: position.coords.latitude,
                         lng: position.coords.longitude
                     };
-                    console.log(userLocation);
                     resolve(userLocation);
                 },
                 (error) => {
@@ -66,25 +65,26 @@ const track = (name: string) => {
 }
 
 const finish = (name: string) => {
-    const userLocation = getUserLocation();
-    if(!userLocation) return;
+    getUserLocation().then(location => {
+        if(!location) return;
 
-    loading();
-    fetch(`/api/finish`, {
-        method: 'POST',
-        headers: {
-            "content-type": "application/json"
-        },
-        body: JSON.stringify({
-            name: name,
-            location: userLocation
+        loading();
+        fetch(`/api/finish`, {
+            method: 'POST',
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({
+                name: name,
+                location: location
+            })
         })
-    })
-        .then(response => response.json())
-        .then(data => {
-            if(data.error) return console.log(data.error);
-            window.location.reload();
-        });
+            .then(response => response.json())
+            .then(data => {
+                if(data.error) return console.log(data.error);
+                window.location.reload();
+            });
+    });
 }
 
 const InfoCard = (
