@@ -53,8 +53,8 @@ const POST = async (request: Request) => {
         const distance = haversineDistance(
             args.location.lat,
             args.location.lng,
-            location.location.lat['$Decimal128'],
-            location.location.lng['$Decimal128']
+            location.location.lat['$numberDecimal'],
+            location.location.lng['$numberDecimal']
         );
         console.log("distance from location: ", distance);
         if(distance > 100) return NextResponse.json({ error: 'User is not within 100 meters of the location.' });
