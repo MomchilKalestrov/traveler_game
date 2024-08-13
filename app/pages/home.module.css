@@ -7,6 +7,10 @@
     gap: 0.5rem;
 }
 
+.HorizontalCarousel p {
+    margin: 0px;
+}
+
 .LoadingSegment {
     border-radius: 0.75rem;
     background-color: #888;
