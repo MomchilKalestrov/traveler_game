@@ -8,6 +8,8 @@ const POST = async (request: Request) => {
     
     if(!args.get('password') || !args.get('username'))
         return NextResponse.json({ error: 'Missing parameters.' });
+    if((args.get('username') as string).length < 3)
+        return NextResponse.json({ error: 'Username must be atleast 3 symbols long.' });
     if((args.get('password') as string).length < 8)
         return NextResponse.json({ error: 'Password must be atleast 8 symbols long.' });
 

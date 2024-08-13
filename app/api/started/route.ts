@@ -13,8 +13,7 @@ const GET = async (request: Request) => {
 
     try {
         await client.connect();
-        const db = client.db('TestDB');
-        const collection = db.collection('TestCollection');
+        const collection = client.db('TestDB').collection('TestCollection');
         names = await collection.aggregate([{
             $match: { username: cookie.get('username')?.value }
         }]).toArray();

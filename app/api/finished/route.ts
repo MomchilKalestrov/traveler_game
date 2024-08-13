@@ -15,8 +15,7 @@ const GET = async (request: Request) => {
     try {
         // Connect to the database
         await client.connect();
-        const db = client.db('TestDB');
-        const collection = db.collection('TestCollection');
+        const collection = client.db('TestDB').collection('TestCollection');
         // Find the user
         name = (await collection.aggregate([{
             $match: { username: username }

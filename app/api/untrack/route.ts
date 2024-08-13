@@ -17,8 +17,7 @@ const POST = async (request: Request) => {
     try {
         // Connect to the database
         await client.connect();
-        const db = client.db('TestDB');
-        const collection = db.collection('TestCollection');
+        const collection = client.db('TestDB').collection('TestCollection');
         // Get the user
         names = await collection.aggregate([{
             $match: { username: cookie.get('username')?.value }
