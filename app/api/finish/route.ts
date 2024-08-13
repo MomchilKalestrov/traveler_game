@@ -19,6 +19,7 @@ function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
 
 const POST = async (request: Request) => {
     const args = await request.json();
+    console.log(args);
     if (!args.name || !args.location.lat || !args.location.lng)
         return NextResponse.json({ error: 'Missing parameters.' });
     const client = new MongoClient(process.env.MONGODB_URI as string);
