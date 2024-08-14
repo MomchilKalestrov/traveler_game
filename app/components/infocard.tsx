@@ -32,7 +32,11 @@ const getUserLocation = (): Promise<{ lat: number, lng: number } | undefined> =>
     });
 };
 
-const untrack = (name: string) => {
+const untrack = (
+    name: string,
+    reset: () => void,
+    close: () => void
+) => {
     loading();
     fetch(`/api/untrack`, {
         method: 'POST',
@@ -47,11 +51,16 @@ const untrack = (name: string) => {
                 alert('An error has occured:\n' + data.error);
                 return stopLoading();
             }
-            window.location.reload();
+            close();
+            reset();
         });
 }
 
-const track = (name: string) => {
+const track = (
+    name: string,
+    reset: () => void,
+    close: () => void
+) => {
     loading();
     fetch(`/api/track`, {
         method: 'POST',
@@ -66,11 +75,17 @@ const track = (name: string) => {
                 alert('An error has occured:\n' + data.error);
                 return stopLoading();
             }
-            window.location.reload();
+            close();
+            reset();
         });
 }
 
-const finish = (name: string) => {
+const finish = (
+    name: string,
+    reset: () => void,
+    close: () => void
+
+) => {
     getUserLocation().then(location => {
         if(!location) return;
 
@@ -95,7 +110,8 @@ const finish = (name: string) => {
                     alert('An error has occured:\n' + data.error);
                     return stopLoading();
                 }
-                window.location.reload();
+                close();
+                reset();
             });
     });
 }
@@ -104,7 +120,8 @@ const InfoCard = (
     props: {
         setter: React.Dispatch<React.SetStateAction<boolean>>
         name: string,
-        type: cardType
+        type: cardType,
+        reset: () => void
     }
 ) => {
     const router = useRouter();
@@ -126,19 +143,25 @@ const InfoCard = (
     switch(props.type) {
         default:
         case cardType.Track:
-            btnType = <button
-                        className={ `${ style.InfocardButton } ${ style.InfocardGreen }` }
-                        onClick={ () => track(props.name) }>Start tracking</button>;
+            btnType =
+                <button
+                    className={ `${ style.InfocardButton } ${ style.InfocardGreen }` }
+                    onClick={ () => track(props.name, props.reset, close) }
+                >Start tracking</button>;
             break;
         case cardType.Untrack:
-            btnType = <button
-                        className={ `${ style.InfocardButton } ${ style.InfocardRed }` }
-                        onClick={ () => untrack(props.name) }>Stop tracking</button>;
+            btnType =
+                <button
+                    className={ `${ style.InfocardButton } ${ style.InfocardRed }` }
+                    onClick={ () => untrack(props.name, props.reset, close) }
+                >Stop tracking</button>;
             break;
         case cardType.Finish:
-            btnType = <button
-                        className={ `${ style.InfocardButton } ${ style.InfocardGreen }` }
-                        onClick={ () => finish(props.name) }>Finish</button>;
+            btnType =
+                <button
+                    className={ `${ style.InfocardButton } ${ style.InfocardGreen }` }
+                    onClick={ () => finish(props.name, props.reset, close) }
+                >Finish</button>;
             break;
     }
 

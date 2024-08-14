@@ -5,7 +5,8 @@ import InfoCard, { cardType } from './infocard';
 
 const Minicard = (
     props: {
-        name: string
+        name: string,
+        reset: () => void
     }
 ) => {
     const [viewing, setViewing] = useState<boolean>(false);
@@ -31,7 +32,15 @@ const Minicard = (
                 <p>{ props.name }</p>
                 <img src={ `/badges/${ props.name }.svg` } alt={ props.name } />
             </div>
-            { viewing ? <InfoCard type={ cardType.Untrack } setter={ setViewing } name={ props.name } /> : <></> }
+            {
+                viewing &&
+                <InfoCard
+                    type={ cardType.Untrack }
+                    setter={ setViewing }
+                    name={ props.name }
+                    reset={ props.reset }
+                />
+            }
         </>
     )
 }

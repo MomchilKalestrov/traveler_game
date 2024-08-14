@@ -19,6 +19,9 @@ const Page = () => {
     const [startedLocations,  setStarted ] = useState<Array<location> | undefined>(undefined);
     const [finishedLocations, setFinished] = useState<Array<location> | undefined>(undefined);
     const [newLocations,      setNew     ] = useState<Array<location> | undefined>(undefined);
+    const [reset,             setReset   ] = useState<number>(0);
+
+    const resetRender = () => setReset(reset + 1);
     
     useEffect(() => {
         const verifyLogin = async () => {
@@ -32,7 +35,7 @@ const Page = () => {
         }
 
         const getData = async () => {
-            try { 
+            try {
                 const started = await (
                     await fetch('/api/started')
                 ).json();
@@ -83,13 +86,14 @@ const Page = () => {
                             }
                         });
                 setNew(locArr);
+                document.getElementById('loading')?.remove();
             } catch (error) {
                 alert('Error fetching data: \n' + error);
             }
         };
         getData();
         verifyLogin();
-    }, []);
+    }, [reset]);
 
     let refs: Array<React.RefObject<HTMLElement>> = [
         createRef<HTMLElement>(),
@@ -103,15 +107,17 @@ const Page = () => {
                 refs={ refs[0] }
                 startedLocations={ startedLocations }
                 newLocations={ newLocations }
+                reset={ resetRender }
             />
             <Map 
                 refs={ refs[1] }
                 startedLocations={ startedLocations }
+                reset={ resetRender }
             />
             <Profile 
                 refs={ refs[2] }
             />
-            <Navbar  refs={ refs } />
+            <Navbar refs={ refs } />
         </>
     )
 };

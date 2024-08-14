@@ -5,7 +5,8 @@ import InfoCard, { cardType } from './infocard';
 
 const Mapcard = (
     props: {
-        name: string
+        name: string,
+        reset: () => void
     }
 ) => {
     const [viewing, setViewing] = useState<boolean>(false);
@@ -23,7 +24,7 @@ const Mapcard = (
 
     useEffect(() => {
         SetBG();
-    }, [props.name]);
+    }, []);
 
     return (
         <>
@@ -38,7 +39,15 @@ const Mapcard = (
                     <button className={ style.Button } onClick={ () => setViewing(true) }>View</button>
                 </div>
             </div>
-            { viewing ? <InfoCard type={ cardType.Track } setter={ setViewing } name={ props.name } /> : <></> }
+            {
+                viewing &&
+                <InfoCard
+                    type={ cardType.Track }
+                    setter={ setViewing }
+                    name={ props.name }
+                    reset={ props.reset }
+                />
+            }
         </>
     )
 }

@@ -15,7 +15,8 @@ type location = {
 const Page = (
   props: {
     refs: React.Ref<HTMLElement>,
-    startedLocations?: Array<location>
+    startedLocations?: Array<location>,
+    reset: () => void
   }
 ) => {
   const [name,         setName        ] = React.useState<string>();
@@ -63,6 +64,7 @@ const Page = (
           setter={ setVisible }
           name={ name || '' }
           type={ cardType.Finish }
+          reset={ props.reset }
         />
       }
       <APIProvider apiKey={ '' } onLoad={ () => console.log('Maps API has loaded.') }>

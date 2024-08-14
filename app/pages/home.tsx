@@ -15,7 +15,8 @@ type location = {
 const Page = (props: {
   refs: React.Ref<HTMLElement>,
   startedLocations?: Array<location>,
-  newLocations?: Array<location>
+  newLocations?: Array<location>,
+  reset: () => void
 }) => {
   if (!props.startedLocations || !props.newLocations)
     return (<main ref={ props.refs }>Loading...</main>);
@@ -30,7 +31,7 @@ const Page = (props: {
           : props.startedLocations.map((
               location: location,
               index: number
-            ) => <Minicard key={ index } name={ location.name } />)
+            ) => <Minicard key={ index } name={ location.name } reset={ props.reset } />)
         }
       </div>
 
@@ -41,7 +42,7 @@ const Page = (props: {
         : props.newLocations.map((
             location: location,
             index: number
-          ) => <Mapcard key={ index } name={ location.name } />)
+          ) => <Mapcard key={ index } name={ location.name } reset={ props.reset } />)
       }
     </main>
   );
