@@ -7,5 +7,5 @@
 <path d="M10 18.5V14M10 14L8.27639 13.1382C8.107 13.0535 8 12.8804 8 12.691V10.5M10 14L11.7236 13.1382C11.893 13.0535 12 12.8804 12 12.691V10.5M10 14V10" stroke="#4580FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M0.75 10V0.75H19.25V10C19.25 12.8296 18.3101 15.1293 16.7197 16.7197C15.1293 18.3101 12.8296 19.25 10 19.25C7.17044 19.25 4.87075 18.3101 3.28033 16.7197C1.68991 15.1293 0.75 12.8296 0.75 10Z" stroke="#E53935" stroke-width="1.5"/>
 <path d="M19.25 10V0.75H0.75V10" stroke="#FBC02D" stroke-width="1.5"/>
-<circle cx="10" cy="5" r="1" fill="#FBC02D" stroke="#FBC02D" stroke-width="1.5"/>
+<circle cx="10" cy="5.5" r="1.5" fill="#FBC02D" stroke="#FBC02D" stroke-width="1.5"/>
 </svg>

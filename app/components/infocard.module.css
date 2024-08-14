@@ -6,10 +6,7 @@
     height: 100%;
     z-index: 2;
     animation: blurIn ease-in-out 0.5s;
-    backdrop-filter:
-    blur(5px)
-    brightness(0.75)
-    ;
+    backdrop-filter: blur(5px);
 }
 
 .Infocard > div {
@@ -100,43 +97,21 @@
 .InfocardRed   { --color: #3d1111; }
 
 @keyframes slideIn {
-    from {
-        transform: translateY(
-            calc(50vh + var(--height) / 2)
-        );
-    }
+    from { transform: translateY(calc(50vh + var(--height) / 2)); }
     to   { transform: translateY(0vh); }
 }
 
 @keyframes slideOut {
     from { transform: translateY(0vh); }
-    to   {
-        transform: translateY(
-            calc(50vh + var(--height) / 2)
-        );
-    }
+    to   { transform: translateY(calc(50vh + var(--height) / 2)); }
 }
 
 @keyframes blurIn {
-    from {
-        backdrop-filter: none;
-    }
-    to {
-        backdrop-filter:
-            blur(5px)
-            brightness(0.75)
-        ;
-    }
+    from { backdrop-filter: none; }
+    to   { backdrop-filter: blur(5px); }
 }
 
 @keyframes blurOut {
-    from {
-        backdrop-filter:
-            blur(5px)
-            brightness(0.75)
-        ;
-    }
-    to {
-        backdrop-filter: none;
-    }
+    from { backdrop-filter: blur(5px); }
+    to   { backdrop-filter: none; }
 }
