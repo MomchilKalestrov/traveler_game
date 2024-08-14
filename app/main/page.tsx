@@ -36,7 +36,7 @@ const Page = () => {
                 const started = await (
                     await fetch('/api/started')
                 ).json();
-                if(started.error) return alert('Error fetching data.');
+                if(started.error) alert('Error fetching data.');
                 setStarted(started.map((data: any) => {
                     return {
                         name: data.name,
@@ -50,7 +50,7 @@ const Page = () => {
                 const finished = await (
                     await fetch(`/api/finished?username=${ encodeURIComponent('<|current|>') }`)
                 ).json();
-                if(finished.error) return alert('Error fetching data.');
+                if(finished.error) alert('Error fetching data.');
                 setFinished(finished.map((data: any) => {
                     return {
                         name: data.name,
@@ -64,7 +64,7 @@ const Page = () => {
                 const all = await (
                     await fetch('/api/locations')
                 ).json();
-                if(all.error) return alert('Error fetching data.');
+                if(all.error) alert('Error fetching data.');
               
                 let locArr: Array<location> = [];
                 for(let i: number = 0; i < all.length; i++) 
@@ -86,7 +86,7 @@ const Page = () => {
         };
         getData();
         verifyLogin();
-    });
+    }, []);
 
     let refs: Array<React.RefObject<HTMLElement>> = [
         createRef<HTMLElement>(),
