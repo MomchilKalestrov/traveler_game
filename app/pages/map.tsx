@@ -23,24 +23,20 @@ const Page = (
   const [userLocation, setUserLocation] = React.useState<google.maps.LatLngLiteral | null>(null);
 
   useEffect(() => {
-    const getUserLocation = () => {
-      try {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            (position) => setUserLocation({
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-            }),
-            (error) => console.error('Error getting user location:', error),
-            { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
-          );
-        } else alert('Geolocation is not supported by this browser.');
-      } catch {
-        alert('Geolocation is not supported by this browser.')
-      };
+    try {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => setUserLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          }),
+          (error) => console.error('Error getting user location: \n', error),
+          { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
+        );
+      } else alert('Geolocation is not supported by this browser.');
+    } catch {
+      alert('Geolocation is not supported by this browser.')
     };
-    
-    getUserLocation();
   }, []);
 
   const view = (name: string) => {

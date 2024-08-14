@@ -18,9 +18,10 @@ const GET = async (request: Request) => {
         names = (await collection.aggregate([{
             $match: { username: cookie.get('username')?.value }
         }]).toArray())[0].started;
-        locations = await collection.aggregate([{
-            $match: { name: { $in: names } }
-        }]).toArray();
+        locations = await collection.aggregate([
+            { $project: { _id: 0, name: 1, location: 1 } },
+            { $match:   { name: { $in: names } } }
+        ]).toArray();
         
         await client.close();
         return NextResponse.json(locations);

@@ -1,17 +1,5 @@
 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M20 0H0V10C0 16 4 20 10 20C16 20 20 16 20 10V0Z" fill="#4580FF"/>
 <path d="M0.75 10V0.75H19.25V10C19.25 12.8296 18.3101 15.1293 16.7197 16.7197C15.1293 18.3101 12.8296 19.25 10 19.25C7.17044 19.25 4.87075 18.3101 3.28033 16.7197C1.68991 15.1293 0.75 12.8296 0.75 10Z" fill="#4580FF" stroke="black" stroke-width="1.5"/>
-<circle cx="12.2128" cy="15.7114" r="1" transform="rotate(-90 12.2128 15.7114)" fill="black" stroke="#4580FF" stroke-width="0.25"/>
-<circle cx="9.2769" cy="12.9491" r="1" transform="rotate(-90 9.2769 12.9491)" fill="black" stroke="#4580FF" stroke-width="0.25"/>
-<circle cx="7.84245" cy="13.3876" r="1" transform="rotate(-90 7.84245 13.3876)" fill="black" stroke="#4580FF" stroke-width="0.25"/>
-<circle cx="11.3692" cy="14.6622" r="1" transform="rotate(-90 11.3692 14.6622)" fill="black" stroke="#4580FF" stroke-width="0.25"/>
-<circle cx="10.8712" cy="15.5987" r="1" transform="rotate(-90 10.8712 15.5987)" fill="black" stroke="#4580FF" stroke-width="0.25"/>
-<circle cx="7.65666" cy="14.4901" r="1" transform="rotate(-90 7.65666 14.4901)" fill="black" stroke="#4580FF" stroke-width="0.25"/>
-<circle cx="8.42719" cy="15.3002" r="1" transform="rotate(-90 8.42719 15.3002)" fill="black" stroke="#4580FF" stroke-width="0.25"/>
-<circle cx="9.86165" cy="14.8617" r="1" transform="rotate(-90 9.86165 14.8617)" fill="black" stroke="#4580FF" stroke-width="0.25"/>
-<circle cx="10.2865" cy="13.6861" r="1" transform="rotate(-90 10.2865 13.6861)" fill="black" stroke="#4580FF" stroke-width="0.25"/>
-<circle cx="8.85204" cy="14.1246" r="1" transform="rotate(-90 8.85204 14.1246)" fill="black" stroke="#4580FF" stroke-width="0.25"/>
-<path d="M6.5 14.5C6.77614 14.2238 6.99999 13 6.99999 13C6.99999 13 5.77614 13.2238 5.5 13.5C5.22385 13.7761 4.99999 15 4.99999 15C4.99999 15 6.22385 14.7761 6.5 14.5Z" fill="black"/>
-<path d="M6.5 12C6.77614 12.2761 7 13 7 13C7 13 6.27614 12.7761 6 12.5C5.72385 12.2238 5.49999 11.5 5.49999 11.5C5.49999 11.5 6.22386 11.7238 6.5 12Z" fill="black"/>
-<path d="M4.75 8V5.75H8.25V8V8.75H9H11H11.75V8V5.75H15.25V8V8.12171L15.2885 8.23717L15.9594 10.25H4.04057L4.71151 8.23717L4.75 8.12171V8Z" stroke="black" stroke-width="1.5"/>
+<path d="M4.75 10V7.75H8.25V10V10.75H9H11H11.75V10V7.75H15.25V10V10.1217L15.2885 10.2372L15.9594 12.25H4.04057L4.71151 10.2372L4.75 10.1217V10Z" stroke="black" stroke-width="1.5"/>
 </svg>

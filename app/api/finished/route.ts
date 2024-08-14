@@ -24,9 +24,10 @@ const GET = async (request: Request) => {
         if(!userInfo)
             return NextResponse.json({ error: 'User not found.' });
         // Get the locations
-        locations = await collection.aggregate([{
-            $match: { name: { $in: userInfo.started } }
-        }]).toArray();
+        locations = await collection.aggregate([
+            { $project: { _id: 0, name: 1, location: 1 } },
+            { $match:   { name: { $in: userInfo.finished } } }
+        ]).toArray();
         // Return the locations
         await client.close();
         return NextResponse.json(locations);

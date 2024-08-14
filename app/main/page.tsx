@@ -36,7 +36,8 @@ const Page = () => {
                 const started = await (
                     await fetch('/api/started')
                 ).json();
-                if(started.error) alert('Error fetching data.');
+                if(started.error) return alert('Error fetching data.');
+                console.log('Fetched started locations.');
                 setStarted(started.map((data: any) => {
                     return {
                         name: data.name,
@@ -50,7 +51,8 @@ const Page = () => {
                 const finished = await (
                     await fetch(`/api/finished?username=${ encodeURIComponent('<|current|>') }`)
                 ).json();
-                if(finished.error) alert('Error fetching data.');
+                if(finished.error) return alert('Error fetching data.');
+                console.log('Fetched finished locations.');
                 setFinished(finished.map((data: any) => {
                     return {
                         name: data.name,
@@ -64,13 +66,14 @@ const Page = () => {
                 const all = await (
                     await fetch('/api/locations')
                 ).json();
-                if(all.error) alert('Error fetching data.');
-              
+                if(all.error) return alert('Error fetching data.');
+                console.log('Fetched all locations.');
+                
                 let locArr: Array<location> = [];
-                for(let i: number = 0; i < all.length; i++) 
+                for(let i: number = 0; i < all.length; i++)
                     if (
-                        !started.includes(all[i]) &&
-                        !finished.includes(all[i])
+                        !started.some((loc: location) => loc.name === all[i].name) &&
+                        !finished.some((loc: location) => loc.name === all[i].name)
                     )
                         locArr.push({
                             name: all[i].name,
