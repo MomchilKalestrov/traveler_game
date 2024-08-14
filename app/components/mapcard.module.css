@@ -15,15 +15,18 @@
     background-image: url('/placeholder.png');
 }
 
-.MapcardLocation img {
-    --size: 3rem;
-
-    width: var(--size);
-    height: var(--size);
-    border-radius: 100%;
+.MapcardLocation > div {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.75rem;
     background-color: white;
     border: none;
-    padding: 0.25rem;
+    padding: 0.5rem;
+}
+
+.MapcardLocation > div > img {
+    aspect-ratio: 1;
+    width: 100%;
 }
 
 .MapcardMore {

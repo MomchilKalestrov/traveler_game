@@ -4,34 +4,25 @@ import React from 'react';
 import { useEffect } from 'react';
 import InfoCard, { cardType } from '../components/infocard';
 
-type Poi = {
+type location = {
   name: string,
-  location: google.maps.LatLngLiteral
+  location: {
+    lat: number,
+    lng: number
+  }
 };
 
-
-const Page = (props: { refs: React.Ref<HTMLElement> }) => {
-  const [name, setName] = React.useState<string>();
-  const [visible, setVisible] = React.useState<boolean>(false);
-  const [finish, setFinish] = React.useState<boolean>(false);
-  const [locations, setLocations] = React.useState<Array<Poi>>([]);
+const Page = (
+  props: {
+    refs: React.Ref<HTMLElement>,
+    startedLocations?: Array<location>
+  }
+) => {
+  const [name,         setName        ] = React.useState<string>();
+  const [visible,      setVisible     ] = React.useState<boolean>(false);
   const [userLocation, setUserLocation] = React.useState<google.maps.LatLngLiteral | null>(null);
 
   useEffect(() => {
-    const getLocs = async () => {
-      const userPOIs = await (await fetch('/api/started')).json();
-      const response = await fetch('/api/locations');
-      let allPOIs = (await response.json()).map((place: any) => ({
-        name: place.name,
-        location: {
-          lat: Number(place.location.lat['$numberDecimal']),
-          lng: Number(place.location.lng['$numberDecimal'])
-        }
-      }));
-      setLocations(allPOIs.filter((poi: Poi) => userPOIs.includes(poi.name)));
-      setFinish(true);
-    };
-
     const getUserLocation = () => {
       try {
         if (navigator.geolocation) {
@@ -48,8 +39,7 @@ const Page = (props: { refs: React.Ref<HTMLElement> }) => {
         alert('Geolocation is not supported by this browser.')
       };
     };
-
-    getLocs();
+    
     getUserLocation();
   }, []);
 
@@ -58,7 +48,8 @@ const Page = (props: { refs: React.Ref<HTMLElement> }) => {
     setVisible(true);
   };
 
-  if(!finish) return (<main ref={ props.refs } style={ { display: 'none' } }>Loading...</main>);
+  if (!props.startedLocations)
+    return (<main ref={ props.refs } style={ { display: 'none' } }>Loading...</main>);
 
  // AIzaSyBPYpCcdRsOe4Mci-EkrfBKwNAwwLQzTQ0
   return (
@@ -96,7 +87,7 @@ const Page = (props: { refs: React.Ref<HTMLElement> }) => {
             </AdvancedMarker>
             }
           {
-            locations.map((loc: Poi) =>
+            props.startedLocations.map((loc: location) =>
               <AdvancedMarker
                 key={ loc.name }
                 position={ loc.location }

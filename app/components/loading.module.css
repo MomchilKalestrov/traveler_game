@@ -8,8 +8,8 @@
     justify-content: center;
     align-content: center;
     flex-wrap: wrap;
-    background-color: white;
     z-index: 1000;
+    backdrop-filter: blur(1rem);
 }
 
 .Loading p {

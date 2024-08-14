@@ -29,7 +29,9 @@ const Mapcard = (
         <>
             <div className={ style.Mapcard }>
                 <div ref={ reference } className={ style.MapcardLocation} onLoad={ SetBG }>
+                <div>
                     <img src={ `/badges/${ props.name }.svg`} />
+                </div>
                 </div>
                 <div className={ style.MapcardMore }>
                     <p className={ style.MapcardTitle }>{ props.name }</p>

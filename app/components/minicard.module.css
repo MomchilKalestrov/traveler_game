@@ -21,8 +21,7 @@
 }
 
 .Minicard img {
-    border-radius: 0.75rem;
     aspect-ratio: 1;
-    height: 3rem;
-    background-color: #e8f5e9;
+    height: 2rem;
+    padding: 0.5rem;
 }

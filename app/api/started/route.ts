@@ -7,6 +7,7 @@ const GET = async (request: Request) => {
     const client = new MongoClient(process.env.MONGODB_URI as string);
     const cookie = cookies();
     let names: any = {};
+    let locations: any = {};
 
     if(await userCheck(cookie.get('username')?.value || '', cookie.get('password')?.value || ''))
         return NextResponse.json({ error: 'Invalid credentials.' });
@@ -14,11 +15,15 @@ const GET = async (request: Request) => {
     try {
         await client.connect();
         const collection = client.db('TestDB').collection('TestCollection');
-        names = await collection.aggregate([{
+        names = (await collection.aggregate([{
             $match: { username: cookie.get('username')?.value }
+        }]).toArray())[0].started;
+        locations = await collection.aggregate([{
+            $match: { name: { $in: names } }
         }]).toArray();
+        
         await client.close();
-        return NextResponse.json(names[0].started);
+        return NextResponse.json(locations);
     } catch(error) {
         console.log(error);
         console.log('An exception has occured:\n', error);

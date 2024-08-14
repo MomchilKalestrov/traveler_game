@@ -8,7 +8,8 @@ const GET = async (request: Request) => {
     const args = new URL(request.url).searchParams;
     if(!args.get('username'))
         return NextResponse.json({ error: 'Missing parameters.' });
-    let name: any = {};
+    let userInfo: any = {};
+    let locations: any = {};
 
     const username = args.get('username')?.toLowerCase() === '<|current|>' ? cookie.get('username')?.value : args.get('username');
 
@@ -17,14 +18,18 @@ const GET = async (request: Request) => {
         await client.connect();
         const collection = client.db('TestDB').collection('TestCollection');
         // Find the user
-        name = (await collection.aggregate([{
+        userInfo = (await collection.aggregate([{
             $match: { username: username }
         }]).toArray())[0];
-        if(!name)
+        if(!userInfo)
             return NextResponse.json({ error: 'User not found.' });
-        
-        client.close();
-        return NextResponse.json(name.finished);
+        // Get the locations
+        locations = await collection.aggregate([{
+            $match: { name: { $in: userInfo.started } }
+        }]).toArray();
+        // Return the locations
+        await client.close();
+        return NextResponse.json(locations);
     } catch(error) {
         console.log('An exception has occured:\n', error);
         return NextResponse.json({ error: 'An error has occured.' });
