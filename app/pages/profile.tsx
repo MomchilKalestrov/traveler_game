@@ -15,18 +15,21 @@ const Page = (
     <main ref={ props.refs } style={ { display: 'none' } }>
       <div className={ style.ProfileContainer }>
         <div className={ style.ProfileCard }>
+            <img className={ style.ProfilePhoto } src={ `/user/${ props.userData.username }.png` } />
             <p>{ props.userData.username }</p>
         </div>
         {
           props.userData.finished.length > 0
-          ? <div className={ `${ style.ProfileCard } ${ style.ProfileBadges }` }>
+          ? <div className={ `${ style.ProfileCard }` }>
               <h2>Badges</h2>
               <div className={ style.ProfileDivider } />
-              {
-                props.userData.finished.map((data: string, key: number) =>
-                  <img src={ `/badges/${ data }.svg` } alt={ data } key={ key } />
-                )
-              }
+              <div className={ style.ProfileBadges }>
+                {
+                  props.userData.finished.map((data: string, key: number) =>
+                    <img src={ `/badges/${ data }.svg` } alt={ data } key={ key } />
+                  )
+                }
+              </div>
             </div>
           : <></>
         }
