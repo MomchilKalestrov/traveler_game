@@ -28,7 +28,7 @@ const Page = () => {
     useEffect(() => {
         const getUserData = async () => {
             try {
-                setUserData(await (await fetch(`/api/auth/get?username=${ encodeURIComponent('<|current|>') }`)).json());
+                setUserData(await (await fetch(`/api/auth/get?username=${ encodeURIComponent('CURRENT_USER') }`)).json());
             } catch (error) {
                 alert('Error fetching data: \n' + error);
             };
@@ -53,7 +53,7 @@ const Page = () => {
                 if(started.error) return alert('Error fetching data.');
                 console.log('Fetched started locations.');
                 const finished = await (
-                    await fetch(`/api/finished?username=${ encodeURIComponent('<|current|>') }`)
+                    await fetch(`/api/finished?username=${ encodeURIComponent('CURRENT_USER') }`)
                 ).json();
 
                 if(finished.error) return alert('Error fetching data.');

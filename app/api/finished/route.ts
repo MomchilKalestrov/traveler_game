@@ -11,7 +11,7 @@ const GET = async (request: Request) => {
     let userInfo: any = {};
     let locations: any = {};
 
-    const username = args.get('username')?.toLowerCase() === '<|current|>' ? cookie.get('username')?.value : args.get('username');
+    const username = args.get('username')?.toLowerCase() === 'CURRENT_USER' ? cookie.get('username')?.value : args.get('username');
 
     try {
         // Connect to the database
