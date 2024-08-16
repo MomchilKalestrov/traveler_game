@@ -49,7 +49,7 @@ const SignUp = (
             </div>
             <button className={ style.FormInput }>
                 <img src='/login.svg' />
-                <p>Create profile</p>
+                <p style={ { color: '#e8f5e9 !important' } }>Create profile</p>
             </button>
             <button
                 type='button'

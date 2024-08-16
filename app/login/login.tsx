@@ -39,7 +39,7 @@ const LogIn = (
             </div>
             <button className={ style.FormInput }>
                 <img src='/login.svg' />
-                <p>Log in</p>
+                <p style={ { color: '#e8f5e9 !important' } }>Log in</p>
             </button>
             <button
                 type='button'
