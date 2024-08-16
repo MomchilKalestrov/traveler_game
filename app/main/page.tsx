@@ -25,20 +25,14 @@ const Page = () => {
 
     const resetRender = () => setReset(reset + 1);
     
-    useEffect(() => {
-        const getUserData = async () => {
-            try {
-                setUserData(await (await fetch(`/api/auth/get?username=${ encodeURIComponent('CURRENT_USER') }`)).json());
-            } catch (error) {
-                alert('Error fetching data: \n' + error);
-            };
-        }
-
+    useEffect(() => {        
         const verifyLogin = async () => {
             try {
-                const data = await (await fetch('/api/auth/cookies')).json();
-                if (!data.username || !data.password)
+                const data = await (await fetch(`/api/auth/get?username=${ encodeURIComponent('CURRENT_USER') }`)).json();
+                const cookies = await (await fetch('/api/auth/cookies')).json();
+                if (!cookies.username || !cookies.password || data.error)
                     return router.replace('/login');
+                setUserData(data);
             }
             catch (error) {
                 alert('Error fetching data: \n' + error);
@@ -105,7 +99,6 @@ const Page = () => {
         
         verifyLogin();
         getData();
-        getUserData();
     }, [reset]);
 
     let refs: Array<React.RefObject<HTMLElement>> = [
