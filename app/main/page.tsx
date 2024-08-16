@@ -44,20 +44,17 @@ const Page = () => {
                 const started = await (
                     await fetch('/api/started')
                 ).json();
-                if(started.error) return alert('Error fetching data.');
-                console.log('Fetched started locations.');
+                if(started.error) return alert('Error user started data.');
+
                 const finished = await (
                     await fetch(`/api/finished?username=${ encodeURIComponent('CURRENT_USER') }`)
                 ).json();
-
-                if(finished.error) return alert('Error fetching data.');
-                console.log('Fetched finished locations.');
+                if(finished.error) return alert('Error user finished data.');
                 
                 const all = await (
                     await fetch('/api/locations')
                 ).json();
-                if(all.error) return alert('Error fetching data.');
-                console.log('Fetched all locations.');
+                if(all.error) return alert('Error locations data.');
                 
                 let locArr: Array<location> = [];
                 for(let i: number = 0; i < all.length; i++)

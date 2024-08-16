@@ -83,7 +83,7 @@ button.FormInput, a.FormInput {
     border-radius: 1.25rem;
     background-color: #113d14;
     border: none;
-    color: #e8f5e9;
+    color: #e8f5e9 !important;
     font-size: 1rem;
     line-height: 1rem;
     display: flex;
