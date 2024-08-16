@@ -18,9 +18,14 @@ const Page = (
 
     return (
         <div ref={ reference } className={ style.Settings }>
-            <button onClick={ close } className={ style.SettingsBack }><img src='/back.svg' /></button>
-            <h1>Settings</h1>
-            <p>Change your settings here.</p>
+            <div className={ style.SettingsHeader }>
+                <button onClick={ close } className={ style.SettingsBack }><img src='/back.svg' /></button>
+                <h2>Settings</h2>
+                <div style={ { 
+                    width: '2.5rem',
+                    height: '2.5rem'
+                } } />
+            </div>
         </div>
     );
 }

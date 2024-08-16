@@ -1,23 +1,38 @@
 .Settings {
     --padding: 0.5rem;
+    --horizontal: max(calc(50vw - 15rem), var(--padding));
 
     position: fixed;
     top: 0;
     left: 0;
-    padding: var(--padding);
-    width: calc(100vw - var(--padding) * 2);
+    width: calc(100vw - var(--horizontal) * 2);
     height: calc(100vh - var(--padding) * 2);
     z-index: 2;
     background-color: white;
     animation: slideIn ease-in-out 0.5s;
+    padding: var(--padding) var(--horizontal);
+}
+
+.SettingsHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.SettingsHeader * {
+    margin: 0px;
+}
+
+.SettingsHeader h2 {
+    justify-self: center;
 }
 
 .SettingsBack {
     border: none;
     border-radius: 50%;
     background-color: #e8f5e9;
-    width: 2rem;
-    height: 2rem;
+    width: 2.5rem;
+    height: 2.5rem;
     padding: 0.25rem;
 }
 
