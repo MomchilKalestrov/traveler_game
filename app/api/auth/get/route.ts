@@ -10,7 +10,7 @@ const GET = async (request: Request) => {
         return NextResponse.json({ error: 'Missing parameters.' });
     let userInfo: any = {};
 
-    const username = args.get('username')?.toLowerCase() === 'CURRENT_USER' ? cookie.get('username')?.value : args.get('username');
+    const username = args.get('username')?.toUpperCase() === 'CURRENT_USER' ? cookie.get('username')?.value : args.get('username');
     // This is when the body value was `CURRENT_USER` but the cookie was undefined
     if(!username)
         return NextResponse.json({ error: 'Missing parameters.' });
