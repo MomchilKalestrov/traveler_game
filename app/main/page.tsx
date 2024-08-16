@@ -114,6 +114,11 @@ const Page = () => {
         createRef<HTMLElement>()
     ];
 
+    console.log('user data', userData);
+    console.log('started', startedLocations);
+    console.log('finished', finishedLocations);
+    console.log('new', newLocations);
+
     return (
         <>
             <Header />
