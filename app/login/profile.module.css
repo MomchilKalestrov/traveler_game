@@ -102,3 +102,7 @@ button.StyleOutline, a.StyleOutline {
     color: #113d14;
     background-color: #e8f5e9;
 }
+
+.I_FUCKIN_HATE_CSS {
+    color: #e8f5e9 !important;
+}
