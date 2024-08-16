@@ -25,37 +25,6 @@ const Page = (
   const directionsSet = useRef(false);
 
   useEffect(() => {
-    const getRoutes = () => {
-      if (userLocation && !directionsSet.current) {
-        const directionsService = new google.maps.DirectionsService();
-        const directionsRenderer = new google.maps.DirectionsRenderer();
-
-        const map = new google.maps.Map(document.getElementById('map') as HTMLElement);
-
-        directionsRenderer.setMap(map);
-
-        const request = {
-          origin: userLocation,
-          destination: { lat: 42.150000, lng: 24.750000 }, // Replace with actual destination coordinates
-          travelMode: google.maps.TravelMode.DRIVING,
-        };
-
-        directionsService.route(request, (result, status) => {
-          if (status === google.maps.DirectionsStatus.OK) {
-            directionsRenderer.setDirections(result);
-            directionsSet.current = true; // Set the flag to true after setting directions
-          } else {
-            console.error('Error fetching directions', result);
-          }
-        });
-      }
-    };
-
-    getRoutes();
-  }, [userLocation]);
-
-
-  useEffect(() => {
     try {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
