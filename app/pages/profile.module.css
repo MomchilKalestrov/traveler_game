@@ -20,6 +20,13 @@
     background-size: 25px 25px;
 }
 
+.ProfileInfo {
+    gap: var(--padding);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
 .ProfileCard * {
     margin: 0px;
 }

@@ -14,9 +14,9 @@ const Page = (
   return (
     <main ref={ props.refs } style={ { display: 'none' } }>
       <div className={ style.ProfileContainer }>
-        <div className={ style.ProfileCard }>
+        <div className={ `${ style.ProfileCard } ${ style.ProfileInfo }` }>
             <img className={ style.ProfilePhoto } src={ `/user/${ props.userData.username }.png` } />
-            <p>{ props.userData.username }</p>
+            <h2>{ props.userData.username }</h2>
         </div>
         {
           props.userData.finished.length > 0

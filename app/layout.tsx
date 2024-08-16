@@ -1,10 +1,10 @@
-import { Noto_Sans } from 'next/font/google'
+import { Roboto } from 'next/font/google'
 import './index.css'
 
-const font = Noto_Sans({
-  subsets: ['latin'],
-  display: 'swap'
-});
+const roboto = Roboto({
+  weight: ["100", "300", "400", "500", "700", "900"],
+  subsets: ['cyrillic', 'latin']
+})
 
 export default function RootLayout({
   children,
@@ -14,7 +14,7 @@ export default function RootLayout({
   return(
     <>
     <html lang="en">
-      <body className={ font.className }>{children}</body>
+      <body className={ roboto.className }>{children}</body>
     </html>
     </>
   );

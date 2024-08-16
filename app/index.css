@@ -10,6 +10,10 @@ body {
     height: 100vh;
 }
 
+p {
+    font-weight: 400.1;
+}
+
 main {
     --padding: 0.5rem;
     --horizontal: max(calc(50vw - 15rem), var(--padding));
