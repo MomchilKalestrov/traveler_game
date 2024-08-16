@@ -5,6 +5,7 @@ import Map from '@/app/pages/map';
 import Profile from '@/app/pages/profile';
 import { createRef, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Header from '../components/header';
 
 type location = {
     name: string,
@@ -115,6 +116,7 @@ const Page = () => {
 
     return (
         <>
+            <Header />
             <Home 
                 refs={ refs[0] }
                 startedLocations={ startedLocations }

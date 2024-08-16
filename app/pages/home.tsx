@@ -24,16 +24,18 @@ const Page = (props: {
   return (
     <main ref={ props.refs }>
       <h2>Started adventures:</h2>
-      <div className={ style.HorizontalCarousel }>
-        { 
-          props.startedLocations.length === 0
-          ? <p>No adventures started.</p>
-          : props.startedLocations.map((
+      { 
+        props.startedLocations.length === 0
+        ? <p>No adventures started.</p>
+        : <div className={ style.HorizontalCarousel }>
+          {
+            props.startedLocations.map((
               location: location,
               index: number
             ) => <Minicard key={ index } name={ location.name } reset={ props.reset } />)
-        }
-      </div>
+          }
+          </div>
+      }
 
       <h2>New adventures:</h2>
       { 

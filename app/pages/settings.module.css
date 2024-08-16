@@ -1,0 +1,45 @@
+.Settings {
+    --padding: 0.5rem;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: var(--padding);
+    width: calc(100vw - var(--padding) * 2);
+    height: calc(100vh - var(--padding) * 2);
+    z-index: 2;
+    background-color: white;
+    animation: slideIn ease-in-out 0.5s;
+}
+
+.SettingsBack {
+    border: none;
+    border-radius: 50%;
+    background-color: #e8f5e9;
+    width: 2rem;
+    height: 2rem;
+    padding: 0.25rem;
+}
+
+.SettingsBack img {
+    width: 100%;
+    height: 100%;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0%);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0%);
+    }
+    to {
+        transform: translateX(100%);
+    }
+}

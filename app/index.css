@@ -13,10 +13,15 @@ body {
 main {
     --padding: 0.5rem;
     --horizontal: max(calc(50vw - 15rem), var(--padding));
-    height: calc(100% - 5rem - var(--padding) * 2);
-    padding: var(--padding) var(--horizontal);
+
+    height: calc(100% - 10rem - var(--padding) * 2);
+    padding: 3.5rem var(--horizontal) var(--padding) var(--horizontal);
     overflow-x: hidden;
     overflow-y: scroll;
     background-image: url('/spotbg.svg');
     background-size: 200px;
+}
+
+h2:first-child {
+    margin-top: 0px;
 }
