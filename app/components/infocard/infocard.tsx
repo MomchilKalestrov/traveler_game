@@ -1,7 +1,7 @@
 import style from './infocard.module.css';
 import { useRouter } from "next/navigation";
 import React from "react";
-import { loading, stopLoading } from './loading';
+import { loading, stopLoading } from '@components/loading/loading';
 
 export enum cardType {
     Untrack,

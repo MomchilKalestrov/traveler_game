@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react';
 import style from './mapcard.module.css';
-import InfoCard, { cardType } from './infocard';
+import InfoCard, { cardType } from '@components/infocard/infocard';
 
 const Mapcard = (
     props: {

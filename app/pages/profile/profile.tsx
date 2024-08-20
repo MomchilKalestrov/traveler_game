@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import style from './profile.module.css';
-import { loading, stopLoading } from '../components/loading';
+import { loading, stopLoading } from '@components/loading/loading';
 
 const Page = (
   props: {

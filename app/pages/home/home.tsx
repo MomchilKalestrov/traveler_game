@@ -1,7 +1,7 @@
 'use client'
 import style from './home.module.css';
-import Mapcard from '@/app/components/mapcard';
-import Minicard from '@/app/components/minicard';
+import Mapcard from '@components/mapcard/mapcard';
+import Minicard from '@components/minicard/minicard';
 import React from 'react';
 
 type location = {

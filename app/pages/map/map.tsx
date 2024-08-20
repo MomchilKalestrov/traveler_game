@@ -2,7 +2,7 @@
 import { AdvancedMarker, APIProvider, Map } from '@vis.gl/react-google-maps';
 import React, { useRef } from 'react';
 import { useEffect } from 'react';
-import InfoCard, { cardType } from '../components/infocard';
+import InfoCard, { cardType } from '@components/infocard/infocard';
 
 type location = {
   name: string,
