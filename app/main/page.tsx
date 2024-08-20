@@ -3,7 +3,7 @@ import Navbar from '@/app/components/navbar';
 import Home from '@/app/pages/home';
 import Map from '@/app/pages/map';
 import Profile from '@/app/pages/profile';
-import { createRef, useEffect, useState } from 'react';
+import { createRef, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Header from '../components/header';
 
@@ -16,22 +16,29 @@ type location = {
 };
 
 const Page = () => {
-    const router = useRouter();
-    const [userData,          setUserData] = useState<any | undefined>(undefined);
-    const [startedLocations,  setStarted ] = useState<Array<location> | undefined>(undefined);
-    const [finishedLocations, setFinished] = useState<Array<location> | undefined>(undefined);
-    const [newLocations,      setNew     ] = useState<Array<location> | undefined>(undefined);
-    const [reset,             setReset   ] = useState<number>(0);
+    const router                            = useRouter();
+    const abortControllerRef                = useRef<AbortController | null>(null);
+    const [userData,          setUserData]  = useState<any | undefined>(undefined);
+    const [startedLocations,  setStarted ]  = useState<Array<location> | undefined>(undefined);
+    const [finishedLocations, setFinished]  = useState<Array<location> | undefined>(undefined);
+    const [newLocations,      setNew     ]  = useState<Array<location> | undefined>(undefined);
+    const [reset,             setReset   ]  = useState<number>(0);
 
     const resetRender = () => setReset(reset + 1);
     
-    useEffect(() => {        
+    useEffect(() => {
+        const abortController = new AbortController();
+        abortControllerRef.current = abortController;
+            
         const verifyLogin = async () => {
             try {
                 const data = await (await fetch(`/api/auth/get?username=${ encodeURIComponent('CURRENT_USER') }`)).json();
                 const cookies = await (await fetch('/api/auth/cookies')).json();
-                if (!cookies.username || !cookies.password || data.error)
+                if (!cookies.username || !cookies.password || data.error) {
+                    if (abortControllerRef.current)
+                        abortControllerRef.current.abort();
                     return router.replace('/login');
+                }
                 setUserData(data);
             }
             catch (error) {
@@ -42,19 +49,25 @@ const Page = () => {
         const getData = async () => {
             try {
                 const started = await (
-                    await fetch('/api/started')
+                    await fetch('/api/started', {
+                        signal: abortControllerRef.current?.signal
+                    })
                 ).json();
-                if(started.error) return alert('Error user started data.');
+                if(started.error || !started) throw Error('Error user started data.');
 
                 const finished = await (
-                    await fetch(`/api/finished?username=${ encodeURIComponent('CURRENT_USER') }`)
+                    await fetch(`/api/finished?username=${ encodeURIComponent('CURRENT_USER') }`, {
+                        signal: abortControllerRef.current?.signal
+                    })
                 ).json();
-                if(finished.error) return alert('Error user finished data.');
+                if(finished.error || !finished) throw Error('Error user finished data.');
                 
                 const all = await (
-                    await fetch('/api/locations')
+                    await fetch('/api/locations', {
+                        signal: abortControllerRef.current?.signal
+                    })
                 ).json();
-                if(all.error) return alert('Error locations data.');
+                if(all.error || !all) throw Error('Error locations data.');
                 
                 let locArr: Array<location> = [];
                 for(let i: number = 0; i < all.length; i++)
@@ -90,7 +103,7 @@ const Page = () => {
                 setNew(locArr);
                 document.getElementById('loading')?.remove();
             } catch (error) {
-                alert('Error fetching data: \n' + error);
+                console.log('Error fetching data: \n' + error);
             };
         };
         
@@ -103,11 +116,6 @@ const Page = () => {
         createRef<HTMLElement>(),
         createRef<HTMLElement>()
     ];
-
-    console.log('user data', userData);
-    console.log('started', startedLocations);
-    console.log('finished', finishedLocations);
-    console.log('new', newLocations);
 
     return (
         <>

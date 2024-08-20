@@ -58,8 +58,23 @@
 }
 
 .ProfilePhoto {
-    border-radius: 100%;
+    position: relative;
+    border-radius: 50%;
     width: 4rem;
     height: 4rem;
+    overflow: hidden;
+}
+
+.ProfilePhoto img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
     background-color: white;
+}
+
+.ProfilePhoto input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
 }
