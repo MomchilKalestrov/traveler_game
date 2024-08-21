@@ -48,7 +48,7 @@ const SignUp = (
                 <label>Verify password</label>
             </div>
             <button className={ style.FormInput }>
-                <img src='/login.svg' />
+                <img src='/icons/login.svg' />
                 <p className={ style.I_FUCKIN_HATE_CSS }>Create profile</p>
             </button>
             <button

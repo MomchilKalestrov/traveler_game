@@ -54,7 +54,7 @@ const Page = (
     return (
       <main ref={ props.refs } style={ { display: 'none' } }>
         <Image
-          src='/loading.svg'
+          src='/icons/loading.svg'
           alt='Loading'
           width={ 64 }
           height={ 64 }
@@ -98,7 +98,7 @@ const Page = (
             userLocation &&
             <AdvancedMarker position={ userLocation }>
               <Image
-                src='/userpin.svg'
+                src='/icons/userpin.svg'
                 alt='user'
                 width={ 32 }
                 height={ 32 }
@@ -113,7 +113,7 @@ const Page = (
                 onClick={ () => view(loc.name) }
               >
                 <Image
-                  src='/poipin.svg'
+                  src='/icons/poipin.svg'
                   alt='location'
                   width={ 48 }
                   height={ 48 }

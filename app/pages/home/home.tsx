@@ -23,7 +23,7 @@ const Page = (props: {
     return (
       <main ref={ props.refs }>
         <Image
-          src='/loading.svg'
+          src='/icons/loading.svg'
           alt='Loading'
           width={ 64 }
           height={ 64 }

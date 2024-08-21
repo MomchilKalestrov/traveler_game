@@ -38,7 +38,7 @@ const LogIn = (
                 <label>Password</label>
             </div>
             <button className={ style.FormInput }>
-                <img src='/login.svg' />
+                <img src='/icons/login.svg' />
                 <p className={ style.I_FUCKIN_HATE_CSS }>Log in</p>
             </button>
             <button

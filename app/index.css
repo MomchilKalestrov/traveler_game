@@ -19,6 +19,6 @@ main {
     padding: 3.5rem var(--horizontal) var(--padding) var(--horizontal);
     overflow-x: hidden;
     overflow-y: scroll;
-    background: url('/spotbg.svg') center;
+    background: url('/backgrounds/spotbg.svg') center;
     background-size: 12.5rem;
 }

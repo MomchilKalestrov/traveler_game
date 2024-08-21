@@ -1,4 +1,4 @@
 form {
-    background: url('/bg.svg') repeat-x center bottom, url('/rbg.svg') repeat-x center top;
+    background: url('/backgrounds/bg.svg') repeat-x center bottom, url('/backgrounds/rbg.svg') repeat-x center top;
 }
 

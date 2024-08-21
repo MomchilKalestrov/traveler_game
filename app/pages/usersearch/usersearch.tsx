@@ -42,13 +42,13 @@ const Page = (
         );
         case status.nouser: return (
             <div className={ `${ style.UserSearch } ${ style.UserSearchCentered }` }>
-                <img src='/nouser.svg' />
+                <img src='/icons/nouser.svg' />
                 <p>No user with the name { `"${ props.user.username }"` } found.</p>
             </div>
         );
         case status.error: return (
             <div className={ `${ style.UserSearch } ${ style.UserSearchCentered }` }>
-                <img src='/error.svg' />
+                <img src='/icons/error.svg' />
                 <p>An error occurred while looking up the user.</p>
             </div>
         );

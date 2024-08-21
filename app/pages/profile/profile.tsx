@@ -40,7 +40,7 @@ const Page = (
     return (
       <main ref={ props.refs } style={ { display: 'none' } }>
         <Image
-          src='/loading.svg'
+          src='/icons/loading.svg'
           alt='Loading'
           width={ 64 }
           height={ 64 }

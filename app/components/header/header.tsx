@@ -100,7 +100,7 @@ const Header = () => {
             { userLookup && <UserSearch loading={ userLoading } user={ userData } /> }
             <header className={ style.Header }>
                 <button onClick={ () => setSettings(true) } aria-label='Settings'>
-                    <img src='/settings.svg' />
+                    <img src='/icons/settings.svg' />
                 </button>
                 <input
                     ref={ inputReference }
@@ -119,7 +119,7 @@ const Header = () => {
                     <img
                         ref={ imgReference }
                         style={ { display: 'none' } }
-                        src='/close.svg'
+                        src='/icons/close.svg'
                     />
                 </button>
             </header>
