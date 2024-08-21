@@ -5,7 +5,7 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    background-color: #E8F5E9;
+    background-color: var(--color-secondary);
     position: fixed;
     bottom: 0px;
     left: 0px;
@@ -20,18 +20,26 @@
     gap: 0.25rem;
     text-decoration: none;
     font-size: 0.75rem;
-    color: #113d14;
+    color: var(--color-primary);
     text-align: center;
     font-weight: bold;
+    border: none;
+    padding: 0px;
+    background-color: transparent;
 }
 
-.NavbarEntry img {
+.NavbarEntry div {
     height: 1.25rem;
     width: 4rem;
     padding: calc((2rem - 1.25rem) / 2);
     border-radius: 1rem;
-    filter: grayscale(85%) brightness(1.5);
     pointer-events: none;
+}
+
+.NavbarEntry div img {
+    aspect-ratio: 1;
+    height: 100%;
+    filter: var(--icon-filter-primary);
 }
 
 .NavbarEntry p {
@@ -41,9 +49,8 @@
     pointer-events: none;
 }
 
-.NavbarEntrySelected img {
-    background-color: #C8E6C9;
-    filter: none;
+.NavbarEntrySelected div {
+    background-color: var(--color-tertiary);
 }
 
 .NavbarEntrySelected p {

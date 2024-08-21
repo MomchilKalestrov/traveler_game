@@ -2,7 +2,7 @@
     width: 100%;
     border-radius: 0.75rem;
     overflow: hidden;
-    color: #113d14;
+    color: var(--color-primary);
     margin-bottom: 0.5rem;
 }
 
@@ -19,7 +19,7 @@
     width: 2.5rem;
     height: 2.5rem;
     border-radius: 0.75rem;
-    background-color: white;
+    background-color: var(--color-secondary);
     border: none;
     padding: 0.5rem;
 }
@@ -32,7 +32,7 @@
 .MapcardMore {
     --padding: 1rem;
 
-    background-color: #e8f5e9;
+    background-color: var(--color-secondary);
     width: calc(100% - var(--padding) * 2);
     padding: var(--padding);
     display: flex;
@@ -43,18 +43,17 @@
 .MapcardTitle {
     margin: 0px;
     font-weight: bold;
-    color: #113d14;
+    color: var(--color-primary);
 }
 
 .Button {
-    --color: #113d14;
     --padding: 0.25rem;
 
     height: calc(2.5rem - var(--padding) * 2);
     padding: var(--padding) 1rem;
     border-radius: 1.25rem;
-    border: 1px solid var(--color);
-    color: var(--color);
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
     background-color: #ffffff00;
     font-size: 1rem;
     line-height: 1rem;

@@ -1,6 +1,6 @@
 * {
     user-select: none;
-    color: #113d14;
+    color: var(--color-primary);
 }
 
 body {
@@ -8,6 +8,7 @@ body {
     padding: 0px;
     width: 100vw;
     height: 100vh;
+    background-color: var(--color-bg);
 }
 
 main {
@@ -18,6 +19,6 @@ main {
     padding: 3.5rem var(--horizontal) var(--padding) var(--horizontal);
     overflow-x: hidden;
     overflow-y: scroll;
-    background-image: url('/spotbg.svg');
-    background-size: 200px;
+    background: url('/spotbg.svg') center;
+    background-size: 12.5rem;
 }

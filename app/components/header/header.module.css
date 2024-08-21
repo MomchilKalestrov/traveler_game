@@ -4,7 +4,7 @@
 
     padding: var(--padding) var(--horizontal);
     width: calc(100% - 2 * var(--horizontal));
-    background: linear-gradient(#ffffff, #00000000);
+    background: linear-gradient(var(--color-bg), #00000000);
     display: flex;
     align-items: stretch;
     position: fixed;
@@ -23,7 +23,7 @@
     font-size: 1rem;
     height: 1rem;
     width: calc(100% - 2.5rem);
-    background-color: #e8f5e9;
+    background-color: var(--color-secondary);
     outline: none;
     --border-radius: 0 1.25rem 1.25rem 0;
 }
@@ -33,7 +33,7 @@
     aspect-ratio: 1;
     width: 2.5rem;
     height: 2.5rem;
-    background-color: #e8f5e9;
+    background-color: var(--color-secondary);
     padding: 0.25rem;
 }
 
@@ -48,4 +48,5 @@
 .Header button img {
     aspect-ratio: 1;
     height: 100%;
+    filter: var(--icon-filter-primary);
 }

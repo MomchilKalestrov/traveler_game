@@ -6,36 +6,6 @@
     gap: 0.5rem;
 }
 
-.LoadingSegment {
-    border-radius: 0.75rem;
-    background-color: #888;
-    background: linear-gradient(90deg, #f0f7f0 0%, #e2e6e2 50%, #f0f7f0 100%);
-    height: 3rem;
-    width: 100%;
-    animation: progress 5s linear infinite;
-    margin-bottom: 0.5rem;
-}
-
-.LoadingTitle {
-    margin: 1.5rem 0px;
-    height: 2rem;
-    width: 75%;
-    display: inline-block;
-}
-
-.LoadingMini {
-    height: 3rem;
-    width: calc(33% - 0.5rem);
-    margin-right: 0.5rem;
-    display: inline-block;
-}
-
-.LoadingBig {
-    height: 12rem;
-    width: 100%;
-    display: inline-block;
-}
-
 @keyframes progress {
     0%   { background-position-x:   0vw; }
     100% { background-position-x: calc(100vw - 1rem); }

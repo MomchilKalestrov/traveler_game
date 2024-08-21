@@ -1,5 +1,6 @@
 import { Roboto } from 'next/font/google'
 import './index.css'
+import './colorSchema.css'
 import { Metadata } from 'next';
 
 const roboto = Roboto({

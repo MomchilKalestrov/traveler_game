@@ -12,7 +12,7 @@
 .ProfileForm h1 {
     margin: 0px;
     padding-bottom: 1rem;
-    border-bottom: 1px solid #1b5e20;
+    border-bottom: 1px solid var(--color-primary);
     font-size: 2.5rem;
     line-height: 2.5rem;
 }
@@ -23,8 +23,8 @@ div.FormInput {
     margin: 0px calc((100% - var(--width)) / 2);
     border-radius: 0.25rem 0.25rem 0 0;
     padding: 1.5rem 1rem 1.5rem 1rem;
-    background-color: #e8f5e9;
-    border-bottom: 1px solid #666666;
+    background-color: var(--color-secondary);
+    border-bottom: 1px solid var(--color-disabled);
     position: relative;
 }
 
@@ -33,7 +33,7 @@ div.FormInput label {
     font-size: 1rem;
     line-height: 1rem;
     margin: 0;
-    color: #666666;
+    color: var(--color-disabled);
     pointer-events: none;
     z-index: 2;
     top: calc(2px + 1rem);
@@ -58,7 +58,7 @@ div.FormInput input {
 }
 
 div.FormInput:focus-within {
-    border-bottom: 2px solid #1b5e20;
+    border-bottom: 2px solid var(--color-primary);
 }
 
 div.FormInput input:not(:placeholder-shown),
@@ -81,9 +81,9 @@ button.FormInput, a.FormInput {
     height: calc(2.5rem - var(--padding) * 2);
     padding: var(--padding) 1rem;
     border-radius: 1.25rem;
-    background-color: #113d14;
+    background-color: var(--color-primary);
     border: none;
-    color: #e8f5e9;
+    color: var(--color-secondary);
     font-size: 1rem;
     line-height: 1rem;
     display: flex;
@@ -98,11 +98,15 @@ button.FormInput *, a.FormInput * {
     display: inline;
 }
 
+button.FormInput img {
+    filter: var(--icon-filter-bg);
+}
+
 button.StyleOutline, a.StyleOutline {
-    color: #113d14;
-    background-color: #e8f5e9;
+    color: var(--color-primary);
+    background-color: var(--color-bg);
 }
 
 .I_FUCKIN_HATE_CSS {
-    color: #e8f5e9 !important;
+    color: var(--color-bg) !important;
 }

@@ -11,13 +11,14 @@ const NavbarEntry = (
     }
 ) => {
     return (
-        <div
+        <button
+            aria-label={ `Navigate to ${ props.name }` }
             className={ styles.NavbarEntry + ' ' + (props.active ? styles.NavbarEntrySelected : '') }
             onClick={ () => props.onClick(props.id) }
         >
-            <img src={ `/${props.name}.svg` } alt={ props.name } />
+            <div><img src={ `/${props.name}.svg` } alt={ props.name } /></div>
             <p>{ props.name }</p>
-        </div>
+        </button>
     );
 }
 const Navbar = (props: { refs: Array<React.RefObject<HTMLElement>> }) => {
