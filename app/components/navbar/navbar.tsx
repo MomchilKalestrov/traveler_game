@@ -46,6 +46,7 @@ const Navbar = (props: { refs: Array<React.RefObject<HTMLElement>> }) => {
             {
                 posibilities.map((name: string, key: number) => (
                     <NavbarEntry
+                        aria-label={ `Navigate to ${ name }` }
                         id={ key }
                         key={ key }
                         name={ name }

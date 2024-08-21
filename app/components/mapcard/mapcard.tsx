@@ -36,7 +36,11 @@ const Mapcard = (
                 </div>
                 <div className={ style.MapcardMore }>
                     <p className={ style.MapcardTitle }>{ props.name }</p>
-                    <button className={ style.Button } onClick={ () => setViewing(true) }>View</button>
+                    <button
+                        aria-label={ `View new ${ props.name }` }
+                        className={ style.Button }
+                        onClick={ () => setViewing(true) }
+                    >View</button>
                 </div>
             </div>
             {

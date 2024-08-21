@@ -9,6 +9,8 @@
     background-size: 25px 25px;
     overflow: hidden;
     gap: 1rem;
+    border: none;
+    padding: 0px;
 }
 
 .Minicard p {

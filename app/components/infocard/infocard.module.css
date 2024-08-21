@@ -60,12 +60,18 @@
     background-image: url('/placeholder.png');   
 }
 
-.Infocard img {
+.InfocardHeader button {
     padding: 0.25rem;
-    width: 2rem;
-    height: 2rem;
-    border-radius: 100%;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
     background-color: white;
+    border: none;
+}
+
+.InfocardHeader button img {
+    width: 100%;
+    height: 100%;
 }
 
 .InfocardHeader p {

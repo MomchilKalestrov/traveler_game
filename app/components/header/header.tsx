@@ -99,7 +99,9 @@ const Header = () => {
             { settings && <Settings setter={ setSettings } /> }
             { userLookup && <UserSearch loading={ userLoading } user={ userData } /> }
             <header className={ style.Header }>
-                <button onClick={ () => setSettings(true) }><img src='/settings.svg' /></button>
+                <button onClick={ () => setSettings(true) } aria-label='Settings'>
+                    <img src='/settings.svg' />
+                </button>
                 <input
                     ref={ inputReference }
                     type='text'
@@ -109,7 +111,11 @@ const Header = () => {
                         debouncedOnEdit();
                     } }
                 />
-                <button className={ style.HeaderCloseSearch } onClick={ closeSearch}>
+                <button
+                    className={ style.HeaderCloseSearch }
+                    onClick={ closeSearch}
+                    aria-label='Close search'
+                >
                     <img
                         ref={ imgReference }
                         style={ { display: 'none' } }

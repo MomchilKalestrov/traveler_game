@@ -145,6 +145,7 @@ const InfoCard = (
         case cardType.Track:
             btnType =
                 <button
+                    aria-label='Start tracking'
                     className={ `${ style.InfocardButton } ${ style.InfocardGreen }` }
                     onClick={ () => track(props.name, props.reset, close) }
                 >Start tracking</button>;
@@ -152,6 +153,7 @@ const InfoCard = (
         case cardType.Untrack:
             btnType =
                 <button
+                    aria-label='Stop tracking'
                     className={ `${ style.InfocardButton } ${ style.InfocardRed }` }
                     onClick={ () => untrack(props.name, props.reset, close) }
                 >Stop tracking</button>;
@@ -159,6 +161,7 @@ const InfoCard = (
         case cardType.Finish:
             btnType =
                 <button
+                    aria-label='Finish'
                     className={ `${ style.InfocardButton } ${ style.InfocardGreen }` }
                     onClick={ () => finish(props.name, props.reset, close) }
                 >Finish</button>;
@@ -169,7 +172,9 @@ const InfoCard = (
         <div className={ style.Infocard }>
             <div ref={ reference }>
                 <div className={ style.InfocardHeader }>
-                    <img src='/back.svg' alt='back' onClick={ close } />
+                    <button aria-label='Close card'>
+                        <img src='/back.svg' alt='back' onClick={ close } />
+                    </button>
                 </div>
                 <div className={ style.InfocardData }>
                     <h3>{ props.name }</h3>

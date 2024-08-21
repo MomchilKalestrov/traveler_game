@@ -28,10 +28,10 @@ const Minicard = (
 
     return (
         <>
-            <div className={ style.Minicard } onClick={ () => setViewing(true) }>
+            <button aria-label={ `View started ${ props.name }` } className={ style.Minicard } onClick={ () => setViewing(true) }>
                 <p>{ props.name }</p>
                 <img src={ `/badges/${ props.name }.svg` } alt={ props.name } />
-            </div>
+            </button>
             {
                 viewing &&
                 <InfoCard

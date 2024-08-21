@@ -19,7 +19,11 @@ const Page = (
     return (
         <div ref={ reference } className={ style.Settings }>
             <div className={ style.SettingsHeader }>
-                <button onClick={ close } className={ style.SettingsBack }><img src='/back.svg' /></button>
+                <button
+                    aria-label='Close settings'
+                    onClick={ close }
+                    className={ style.SettingsBack }
+                ><img src='/back.svg' /></button>
                 <h2>Settings</h2>
                 <div style={ { 
                     width: '2.5rem',
