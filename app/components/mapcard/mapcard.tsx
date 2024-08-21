@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import style from './mapcard.module.css';
 import InfoCard, { cardType } from '@components/infocard/infocard';
+import Image from 'next/image';
 
 const Mapcard = (
     props: {
@@ -31,7 +32,7 @@ const Mapcard = (
             <div className={ style.Mapcard }>
                 <div ref={ reference } className={ style.MapcardLocation} onLoad={ SetBG }>
                 <div>
-                    <img src={ `/badges/${ props.name }.svg`} />
+                    <Image alt={ props.name } src={ `/badges/${ props.name }.svg`} width={ 40 } height={ 40 } />
                 </div>
                 </div>
                 <div className={ style.MapcardMore }>

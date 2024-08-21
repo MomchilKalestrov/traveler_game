@@ -58,7 +58,7 @@ const Page = (
       <div className={ style.ProfileContainer }>
         <div className={ `${ style.ProfileCard } ${ style.ProfileInfo }` }>
             <div className={ style.ProfilePhoto }>
-              <img ref={ reference } src={ `/user/${ props.userData.username }.png` } />
+              <Image ref={ reference } src={ `/user/${ props.userData.username }.png` } alt='profile' width={ 64 } height={ 64 } />
               <input type="file" accept="image/png" onChange={ changeProfilePhoto } />
             </div>
             <h2>{ props.userData.username }</h2>
@@ -71,7 +71,7 @@ const Page = (
               <div className={ style.ProfileBadges }>
                 {
                   props.userData.finished.map((data: string, key: number) =>
-                    <img src={ `/badges/${ data }.svg` } alt={ data } key={ key } />
+                    <Image src={ `/badges/${ data }.svg` } alt={ data } key={ key } width={ 48 } height={ 48 } />
                   )
                 }
               </div>

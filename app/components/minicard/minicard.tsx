@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import style from './minicard.module.css';
 import InfoCard, { cardType } from '@components/infocard/infocard';
+import Image from 'next/image';
 
 const Minicard = (
     props: {
@@ -30,7 +31,7 @@ const Minicard = (
         <>
             <button aria-label={ `View started ${ props.name }` } className={ style.Minicard } onClick={ () => setViewing(true) }>
                 <p>{ props.name }</p>
-                <img src={ `/badges/${ props.name }.svg` } alt={ props.name } />
+                <Image alt={ props.name } src={ `/badges/${ props.name }.svg` } width={ 32 } height={ 32 } />
             </button>
             {
                 viewing &&

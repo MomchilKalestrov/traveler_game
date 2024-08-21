@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react';
 import Settings from '@pages/settings/settings';
 import React from 'react';
 import UserSearch, { status } from '@pages/usersearch/usersearch';
+import Image from 'next/image';
 
 type user = {
     username: string,
@@ -100,7 +101,7 @@ const Header = () => {
             { userLookup && <UserSearch loading={ userLoading } user={ userData } /> }
             <header className={ style.Header }>
                 <button onClick={ () => setSettings(true) } aria-label='Settings'>
-                    <img src='/icons/settings.svg' />
+                    <Image alt='settings' src='/icons/settings.svg' width={ 32 } height={ 32 } />
                 </button>
                 <input
                     ref={ inputReference }

@@ -1,11 +1,12 @@
 :root {
-    --color-primary: #113D14;
-    --color-secondary: #E8F5E9;
-    --color-tertiary: #C8E6C9;
-    --color-bg: #ffffff;
-    --color-danger: #3D1111;
+    --color-primary: #454937;
+    --color-secondary: #CDD0C4;
+    --color-tertiary: #A9AD9C;
+    --color-bg: #E9EBE1;
+    --color-danger: var(--color-primary);
     --color-disabled: #666666;
-    --icon-filter: none;
+    --icon-filter-primary: brightness(0%) invert(20%) sepia(7%) saturate(1890%) hue-rotate(33deg) brightness(102%) contrast(75%);
+    --icon-filter-bg: brightness(0%) invert(94%) sepia(16%) saturate(84%) hue-rotate(31deg) brightness(101%) contrast(86%);
 }
 
 @media (prefers-color-scheme: dark) {

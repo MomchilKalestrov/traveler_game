@@ -1,6 +1,7 @@
 'use client'
 import React, { useEffect } from 'react';
 import styles from './navbar.module.css';
+import Image from 'next/image';
 
 const NavbarEntry = (
     props: {
@@ -16,7 +17,7 @@ const NavbarEntry = (
             className={ styles.NavbarEntry + ' ' + (props.active ? styles.NavbarEntrySelected : '') }
             onClick={ () => props.onClick(props.id) }
         >
-            <div><img src={ `/icons/${props.name}.svg` } alt={ props.name } /></div>
+            <div><Image src={ `/icons/${props.name}.svg` } alt={ props.name } width={ 20 } height={ 20 } /></div>
             <p>{ props.name }</p>
         </button>
     );

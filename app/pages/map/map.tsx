@@ -38,7 +38,6 @@ const Page = (
           { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
         );
 
-
       } else alert('Geolocation is not supported by this browser.');
     } catch {
       alert('Geolocation is not supported by this browser.')

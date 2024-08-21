@@ -1,5 +1,6 @@
 import React from 'react';
 import style from './settings.module.css';
+import Image from 'next/image';
 
 const Page = (
     props: {
@@ -23,7 +24,7 @@ const Page = (
                     aria-label='Close settings'
                     onClick={ close }
                     className={ style.SettingsBack }
-                ><img src='/icons/back.svg' /></button>
+                ><Image src='/icons/back.svg' alt='go back' width={ 32 } height={ 32 } /></button>
                 <h2>Settings</h2>
                 <div style={ { 
                     width: '2.5rem',

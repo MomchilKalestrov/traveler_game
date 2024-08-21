@@ -2,6 +2,7 @@ import style from './infocard.module.css';
 import { useRouter } from "next/navigation";
 import React from "react";
 import { loading, stopLoading } from '@components/loading/loading';
+import Image from 'next/image';
 
 export enum cardType {
     Untrack,
@@ -172,8 +173,8 @@ const InfoCard = (
         <div className={ style.Infocard }>
             <div ref={ reference }>
                 <div className={ style.InfocardHeader }>
-                    <button aria-label='Close card'>
-                        <img src='/icons/back.svg' alt='back' onClick={ close } />
+                    <button aria-label='Close card' onClick={ close }>
+                        <Image src='/icons/back.svg' alt='back' width={ 32 } height={ 32 } />
                     </button>
                 </div>
                 <div className={ style.InfocardData }>

@@ -1,14 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px" fill="url(#gradient)">
-    <path d="m276-478 44-88q8-16 22-25t31-9h77v-250q0-13 8.5-21.5T480-880h200q8 0 12.5 7t.5 15l-21 41q-2 3-2 7t2 7l21 41q4 8-.5 15t-12.5 7H510v140h73q17 0 31.5 9t22.5 24l44 90-124 83-77-40-78 39-126-83ZM177-80q-33 0-51-28.5t-3-58.5l127-257 148 98 82-40 82 41 147-97 128 255q15 30-2.5 58.5T783-80H177Z"/>
-    <defs>
-        <linearGradient id="gradient" x1="100%" y1="100%">
-            <stop offset="0%" stop-color="green" stop-opacity=".5">
-                <animate attributeName="stop-color" values="green;lightgreen;green" dur="3s" repeatCount="indefinite" />
-            </stop>
-            <stop offset="100%" stop-color="green" stop-opacity=".5">
-                <animate attributeName="stop-color" values="green;lightgreen;green" dur="3s" repeatCount="indefinite" />
-                <animate attributeName="offset" values="1;0;1" dur="3s" repeatCount="indefinite" />    
-            </stop>
-        </linearGradient>
-    </defs>
+<svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M27.15 15H24.5V10H32C32.6231 10 33.1411 9.69643 33.4662 9.19076C33.8237 8.63456 33.8212 8.00643 33.5444 7.45279L33.5445 7.45277L33.54 7.44412L32.5443 5.5L33.54 3.55588L33.5401 3.5559L33.5444 3.54721C33.8212 2.99357 33.8237 2.36544 33.4662 1.80924C33.1411 1.30357 32.6231 1 32 1H22C21.3253 1 20.705 1.23081 20.2179 1.71789C19.7308 2.20498 19.5 2.8253 19.5 3.5V15H16.65C15.8959 15 15.1908 15.2028 14.5592 15.6088C13.9301 16.0133 13.4464 16.5712 13.1056 17.2528L13.1033 17.2573L3.25556 37.2028C3.25513 37.2037 3.25469 37.2045 3.25426 37.2054C2.59815 38.5196 2.66925 39.8657 3.4545 41.109C4.23294 42.3415 5.39802 43 6.84999 43H37.15C38.6239 43 39.8083 42.3505 40.5772 41.0983C41.342 39.8528 41.3984 38.5108 40.7444 37.2028L30.7444 17.2028L30.7385 17.191L30.7323 17.1794C30.3825 16.5234 29.8847 15.9929 29.2524 15.6004C28.6113 15.2025 27.9038 15 27.15 15Z" fill="white" stroke="white" stroke-width="2"/>
+    <path d="M11.8 22.1L14 17.7C14.2667 17.1667 14.6333 16.75 15.1 16.45C15.5667 16.15 16.0833 16 16.65 16H20.5V3.5C20.5 3.06667 20.6417 2.70833 20.925 2.425C21.2083 2.14167 21.5667 2 22 2H32C32.2667 2 32.475 2.11667 32.625 2.35C32.775 2.58333 32.7833 2.83333 32.65 3.1L31.6 5.15C31.5333 5.25 31.5 5.36667 31.5 5.5C31.5 5.63333 31.5333 5.75 31.6 5.85L32.65 7.9C32.7833 8.16667 32.775 8.41667 32.625 8.65C32.475 8.88333 32.2667 9 32 9H23.5V16H27.15C27.7167 16 28.2417 16.15 28.725 16.45C29.2083 16.75 29.5833 17.15 29.85 17.65L32.05 22.15L25.85 26.3L22 24.3L18.1 26.25L11.8 22.1ZM6.84999 42C5.74999 42 4.89999 41.525 4.29999 40.575C3.69999 39.625 3.64999 38.65 4.14999 37.65L10.5 24.8L17.9 29.7L22 27.7L26.1 29.75L33.45 24.9L39.85 37.65C40.35 38.65 40.3083 39.625 39.725 40.575C39.1417 41.525 38.2833 42 37.15 42H6.84999Z" fill="url(#gradient)"/>
+    <linearGradient id="gradient" x1="100%" y1="100%">
+        <stop offset="0%" stop-color="#454937" stop-opacity="1">
+            <animate attributeName="stop-color" values="#454937;#656B52;#454937" dur="3s" repeatCount="indefinite" />
+        </stop>
+        <stop offset="100%" stop-color="#454937" stop-opacity="1">
+            <animate attributeName="stop-color" values="#454937;#656B52;#454937" dur="3s" repeatCount="indefinite" />
+            <animate attributeName="offset" values="1;0;1" dur="3s" repeatCount="indefinite" />    
+        </stop>
+    </linearGradient>
 </svg>

@@ -3,6 +3,7 @@
 import { Dispatch, FormEvent, SetStateAction } from 'react';
 import style from './profile.module.css';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 const LogIn = (
     props: {
@@ -28,7 +29,7 @@ const LogIn = (
 
     return (
         <form className={ style.ProfileForm } onSubmit={ logIn }>
-            <img /><h1>Log in</h1>
+            <h1>Log in</h1>
             <div className={ style.FormInput }>
                 <input name='username' placeholder=' ' />
                 <label>Username</label>
@@ -38,7 +39,7 @@ const LogIn = (
                 <label>Password</label>
             </div>
             <button className={ style.FormInput }>
-                <img src='/icons/login.svg' />
+                <Image src='/icons/login.svg' alt='login' width={ 24 } height={ 24 } />
                 <p className={ style.I_FUCKIN_HATE_CSS }>Log in</p>
             </button>
             <button
