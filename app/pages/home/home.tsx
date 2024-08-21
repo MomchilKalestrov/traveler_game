@@ -3,6 +3,7 @@ import style from './home.module.css';
 import Mapcard from '@components/mapcard/mapcard';
 import Minicard from '@components/minicard/minicard';
 import React from 'react';
+import Image from 'next/image';
 
 type location = {
   name: string,
@@ -19,7 +20,22 @@ const Page = (props: {
   reset: () => void
 }) => {
   if (!props.startedLocations || !props.newLocations)
-    return (<main ref={ props.refs }>Loading...</main>);
+    return (
+      <main ref={ props.refs }>
+        <Image
+          src='/loading.svg'
+          alt='Loading'
+          width={ 64 }
+          height={ 64 }
+          style={ {
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)'
+          } }
+        />
+      </main>
+    );
 
   return (
     <main ref={ props.refs }>

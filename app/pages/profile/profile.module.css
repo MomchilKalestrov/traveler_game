@@ -34,7 +34,7 @@
 .ProfileBadges {
     display: flex;
     flex-wrap: wrap;
-    column-gap: var(--padding);
+    gap: var(--padding);
 }
 
 .ProfileCard h2 {
@@ -46,7 +46,7 @@
     aspect-ratio: 1;
     height: 3rem;
     padding: 0.75rem;
-    background-color: #C8E6C9;
+    background-color: #c8e6c9;
     border-radius: 0.75rem;
 }
 

@@ -1,8 +1,9 @@
 'use client'
 import { AdvancedMarker, APIProvider, Map } from '@vis.gl/react-google-maps';
-import React, { useRef } from 'react';
+import React from 'react';
 import { useEffect } from 'react';
 import InfoCard, { cardType } from '@components/infocard/infocard';
+import Image from 'next/image';
 
 type location = {
   name: string,
@@ -22,7 +23,6 @@ const Page = (
   const [name,         setName        ] = React.useState<string>();
   const [visible,      setVisible     ] = React.useState<boolean>(false);
   const [userLocation, setUserLocation] = React.useState<google.maps.LatLngLiteral | null>(null);
-  const directionsSet = useRef(false);
 
   useEffect(() => {
     try {
@@ -51,9 +51,24 @@ const Page = (
   };
 
   if (!props.startedLocations)
-    return (<main ref={ props.refs } style={ { display: 'none' } }>Loading...</main>);
+    return (
+      <main ref={ props.refs } style={ { display: 'none' } }>
+        <Image
+          src='/loading.svg'
+          alt='Loading'
+          width={ 64 }
+          height={ 64 }
+          style={ {
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)'
+          } }
+        />
+      </main>
+    );
 
- // AIzaSyBPYpCcdRsOe4Mci-EkrfBKwNAwwLQzTQ0
+  // AIzaSyBPYpCcdRsOe4Mci-EkrfBKwNAwwLQzTQ0
   return (
     <main
       ref={ props.refs }
@@ -74,15 +89,15 @@ const Page = (
       }
       <APIProvider apiKey={ '' } onLoad={ () => console.log('Maps API has loaded.') }>
         <Map
-          id='map'
           defaultZoom={ 11 }
           mapId={ 'e62456ff6a25971e' }
           defaultCenter={ { lat: 42.143002, lng: 24.749651 } }
+          fullscreenControl={ false }
         >
           {
             userLocation &&
             <AdvancedMarker position={ userLocation }>
-              <img
+              <Image
                 src='/userpin.svg'
                 alt='user'
                 width={ 32 }
@@ -97,7 +112,7 @@ const Page = (
                 position={ loc.location }
                 onClick={ () => view(loc.name) }
               >
-                <img
+                <Image
                   src='/poipin.svg'
                   alt='location'
                   width={ 48 }

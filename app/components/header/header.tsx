@@ -2,7 +2,7 @@ import style from './header.module.css';
 import { useCallback, useState } from 'react';
 import Settings from '@pages/settings/settings';
 import React from 'react';
-import UserSearch from '@pages/usersearch/usersearch';
+import UserSearch, { status } from '@pages/usersearch/usersearch';
 
 type user = {
     username: string,
@@ -13,7 +13,7 @@ type user = {
 const Header = () => {
     const [settings,    setSettings] = useState<boolean>(false);
     const [userLookup,  setLookup  ] = useState<boolean>(false);
-    const [userLoading, setLoading ] = useState<'loading' | 'nouser' | 'founduser' | 'error'>('nouser');
+    const [userLoading, setLoading ] = useState<status>(status.loading);
     const [userData,    setUserData] = useState<user>({ username: '', finished: [], started: [] });
     const imgReference               = React.useRef<HTMLImageElement>(null);
     const inputReference             = React.useRef<HTMLInputElement>(null);
@@ -52,7 +52,7 @@ const Header = () => {
         ) return;
 
         setLookup(true);
-        setLoading('loading');
+        setLoading(status.loading);
 
         fetch(`/api/auth/get?username=${ username }`)
             .then(response => response.json())
@@ -63,18 +63,18 @@ const Header = () => {
                         finished: [],
                         started: []
                     })
-                    return setLoading('nouser');
+                    return setLoading(status.nouser);
                 }
                 else if (data.error) {
                     console.log(data.error);
-                    return setLoading('error');
+                    return setLoading(status.error);
                 }
                 setUserData({
                     username: data.username,
                     finished: data.finished,
                     started: data.started
                 });
-                setLoading('founduser');
+                setLoading(status.founduser);
             });
     }
 

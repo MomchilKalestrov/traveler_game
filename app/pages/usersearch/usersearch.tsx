@@ -19,31 +19,40 @@ type user = {
     started: string[]
 }
 
+export enum status {
+    loading,
+    nouser,
+    founduser,
+    error
+}
+
 const Page = (
     props: {
-        loading: 'loading' | 'nouser' | 'founduser' | 'error',
+        loading: status,
         user: user
     }
 ) => {
 
     switch (props.loading) {
-        case 'loading': return (
+        case status.loading: return (
             <div className={ `${ style.UserSearch } ${ style.UserSearchCentered }` }>
                 <p>Looking up user</p>
                 <div className={ loadingStyle.LoadingWheel }></div>
             </div>
         );
-        case 'nouser': return (
+        case status.nouser: return (
             <div className={ `${ style.UserSearch } ${ style.UserSearchCentered }` }>
-                <p>No user with the name { props.user.username } found.</p>
+                <img src='/nouser.svg' />
+                <p>No user with the name { `"${ props.user.username }"` } found.</p>
             </div>
         );
-        case 'error': return (
+        case status.error: return (
             <div className={ `${ style.UserSearch } ${ style.UserSearchCentered }` }>
+                <img src='/error.svg' />
                 <p>An error occurred while looking up the user.</p>
             </div>
         );
-        case 'founduser': return (
+        case status.founduser: return (
             <div className={ style.UserSearch }>
                 <div className={ userStyle.ProfileContainer }>
                     <div className={ `${ userStyle.ProfileCard } ${ userStyle.ProfileInfo }` }>
@@ -70,13 +79,6 @@ const Page = (
             </div>
         );
     }
-
-
-    return (
-        <div className={ style.UserSearch }>
-            { props.loading }
-        </div>
-    );
 }
 
 export default Page;

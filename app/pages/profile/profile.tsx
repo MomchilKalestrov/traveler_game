@@ -2,6 +2,7 @@
 import React from 'react';
 import style from './profile.module.css';
 import { loading, stopLoading } from '@components/loading/loading';
+import Image from 'next/image';
 
 const Page = (
   props: {
@@ -36,7 +37,21 @@ const Page = (
   }
 
   if (!props.userData)
-    return (<main ref={ props.refs } style={ { display: 'none' } }>Loading...</main>);
+    return (
+      <main ref={ props.refs } style={ { display: 'none' } }>
+        <Image
+          src='/loading.svg'
+          alt='Loading'
+          width={ 64 }
+          height={ 64 }
+          style={ {
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)'
+          } }
+        />
+      </main>);
 
   return (
     <main ref={ props.refs } style={ { display: 'none' } }>

@@ -26,3 +26,8 @@
     margin: 0px;
     text-align: center;
 }
+
+.UserSearchCentered img {
+    aspect-ratio: 1;
+    width: 3rem;
+}
