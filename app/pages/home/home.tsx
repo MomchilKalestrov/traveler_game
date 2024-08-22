@@ -68,7 +68,7 @@ const Page = (props: {
     if(!props.newLocations || !event.currentTarget) return;
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        console.log('aaa'+position);
+        console.log('aaa',position);
         if(!props.newLocations || !event.currentTarget) return;
         alert(haversineDistance(
           props.newLocations[0].location.lat,
