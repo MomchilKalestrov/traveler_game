@@ -6,6 +6,7 @@ import Profile from '@pages/profile/profile';
 import { createRef, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Header from '@components/header/header';
+import { getCookie, setCookie } from './cookies';
 
 type location = {
     name: string,
@@ -29,6 +30,17 @@ const Page = () => {
     useEffect(() => {
         const abortController = new AbortController();
         abortControllerRef.current = abortController;
+
+        console.log(document.cookie);
+
+        const username = getCookie('username')?.value;
+        const password = getCookie('password')?.value;
+
+        if (!username || !password) {
+            if (abortControllerRef.current)
+                abortControllerRef.current.abort();
+            return router.replace('/login');
+        }
             
         const verifyLogin = async () => {
             try {

@@ -24,8 +24,12 @@ const POST = async (request: NextRequest) => {
             return NextResponse.json({ error: 'Incorrect credentials.' });
         // Set the cookies
         const user = cookies();
-        user.set('username', args.get('username') || '');
-        user.set('password', md5(args.get('password') || ''));
+        user.set('username', args.get('username') || '', {
+            maxAge: Date.now() + 365 * 24 * 60 * 60 * 1000
+        });
+        user.set('password', md5(args.get('password') || ''), {
+            maxAge: Date.now() + 365 * 24 * 60 * 60 * 1000
+        });
         client.close();
     }
     catch(error) {
