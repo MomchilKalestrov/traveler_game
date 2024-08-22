@@ -66,19 +66,22 @@ const Page = (props: {
 
   const findCloseLocations = (event: React.FormEvent<HTMLInputElement>) => {
     if(!props.newLocations || !event.currentTarget) return;
-    alert(Number(event.currentTarget.value));
+    alert(Number(props.newLocations.length));
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        setFilteredLocations((props.newLocations || []).filter((location: location) => {
-          const dist = haversineDistance(
-            location.location.lat,
-            location.location.lng,
-            position.coords.latitude,
-            position.coords.longitude
-          ) <= Number(event.currentTarget.value)
-          alert(dist);
-          return dist;
-        }));
+        alert('Got user location');
+        setFilteredLocations((props.newLocations || []).filter((location: location) => 
+          // haversineDistance(
+          //   location.location.lat,
+          //   location.location.lng,
+          //   position.coords.latitude,
+          //   position.coords.longitude
+          // ) <= Number(event.currentTarget.value)
+          {
+            alert('Filtering');
+            return true;
+          }
+        ));
       },
       (error) => console.error('Error getting user location: \n', error),
       { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
