@@ -30,17 +30,6 @@ const Page = () => {
     useEffect(() => {
         const abortController = new AbortController();
         abortControllerRef.current = abortController;
-
-        console.log(document.cookie);
-
-        const username = getCookie('username')?.value;
-        const password = getCookie('password')?.value;
-
-        if (!username || !password) {
-            if (abortControllerRef.current)
-                abortControllerRef.current.abort();
-            return router.replace('/login');
-        }
             
         const verifyLogin = async () => {
             try {
