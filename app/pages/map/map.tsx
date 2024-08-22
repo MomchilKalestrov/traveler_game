@@ -28,8 +28,9 @@ const Page = (
     try {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
-            (position) => {
-              setUserLocation({
+          (position) => {
+            console.log('ddd'+position);
+            setUserLocation({
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
               });
