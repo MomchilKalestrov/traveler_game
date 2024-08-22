@@ -69,7 +69,7 @@ const Page = (props: {
 
     const inputValue = parseInt(event.currentTarget.value);
 
-    if(isNaN(inputValue) || inputValue < 0) return;
+    if(isNaN(inputValue) || inputValue <= 0) return setFilteredLocations(props.newLocations);
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
