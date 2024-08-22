@@ -69,7 +69,7 @@ const Page = (props: {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         if(!props.newLocations || !event.currentTarget) return;
-        console.log(haversineDistance(
+        alert(haversineDistance(
           props.newLocations[0].location.lat,
           props.newLocations[0].location.lng,
           position.coords.latitude,
