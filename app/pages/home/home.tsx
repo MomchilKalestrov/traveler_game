@@ -76,7 +76,7 @@ const Page = (props: {
           position.coords.longitude
         ));
       },
-      (error) => console.error('Error getting user location: \n', error),
+      (error) => alert('Error getting user location: \n' + error.message),
       { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
     );
   }
