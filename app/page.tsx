@@ -65,7 +65,8 @@ const Page = () => {
                 
                 const all = await (
                     await fetch('/api/locations', {
-                        signal: abortControllerRef.current?.signal
+                        signal: abortControllerRef.current?.signal,
+                        next : { revalidate: 604800 } // revalidate every 7 days
                     })
                 ).json();
                 if(all.error || !all) throw Error('Error locations data.');
