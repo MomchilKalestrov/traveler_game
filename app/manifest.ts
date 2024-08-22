@@ -7,13 +7,13 @@ export default function manifest(): MetadataRoute.Manifest {
     description: 'A game to help you discover locations.',
     start_url: '/',
     display: 'standalone',
-    background_color: '#fff',
-    theme_color: '#fff',
+    background_color: '#454937',
+    theme_color: '#454937',
     icons: [
       {
-        src: '/favicon.ico',
+        src: '/favicon.svg',
         sizes: 'any',
-        type: 'image/x-icon',
+        type: 'image/svg+xml',
       },
     ],
   }
