@@ -66,10 +66,13 @@ const Page = (props: {
 
   const findCloseLocations = (event: React.FormEvent<HTMLInputElement>) => {
     if(!props.newLocations || !event.currentTarget) return;
+
+    const inputValue = parseInt(event.currentTarget.value);
+
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        console.log(props.newLocations, event.currentTarget);
-        if(!props.newLocations || !event.currentTarget) return alert('No locations found.');
+        console.log(props.newLocations, inputValue);
+        if(!props.newLocations) return alert('No locations found.');
         alert(haversineDistance(
           props.newLocations[0].location.lat,
           props.newLocations[0].location.lng,
