@@ -71,13 +71,15 @@ const Page = (props: {
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        console.log(props.newLocations, inputValue);
-        if(!props.newLocations) return alert('No locations found.');
-        alert(haversineDistance(
-          props.newLocations[0].location.lat,
-          props.newLocations[0].location.lng,
-          position.coords.latitude,
-          position.coords.longitude
+        if(!props.newLocations) return alert('An unknown exception has occured.');
+        setFilteredLocations(
+          props.newLocations.filter((location: location) =>
+            haversineDistance(
+              location.location.lat,
+              location.location.lng,
+              position.coords.latitude,
+              position.coords.longitude
+            ) <= inputValue
         ));
       },
       (error) => alert('Error getting user location: \n' + error.message),
