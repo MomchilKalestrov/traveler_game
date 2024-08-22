@@ -35,7 +35,7 @@ const Page = (props: {
 }) => {
   const reference = React.useRef<HTMLDivElement>(null);
   const [filteredLocations, setFilteredLocations] = React.useState<Array<location>>(props.newLocations || []);
-  const [filterOpen,        setFilterOpen       ] = React.useState(false);
+  const [filterOpen,        setFilterOpen       ] = React.useState(true);
   
   useEffect(() => {
     if (!props.newLocations) return;
@@ -45,7 +45,7 @@ const Page = (props: {
   const changeView = () => {
     if (!reference.current) return;
     const state = !filterOpen;
-    reference.current.style.padding = state ? '0 var(--padding)' : 'var(--padding)';
+    reference.current.style.paddingTop = state ? '0' : 'var(--padding)';
     reference.current.style.height  = state ? '0' : 'calc(3rem + 1px)';
     setFilterOpen(state);
   }

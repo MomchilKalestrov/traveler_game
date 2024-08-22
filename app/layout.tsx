@@ -10,7 +10,7 @@ const roboto = Roboto({
 
 export const metadata: Metadata = {
   title: 'Venture',
-  description: 'A game to help you explore locations.'
+  description: 'A game to help you discover locations.'
 }
 
 export default function RootLayout({

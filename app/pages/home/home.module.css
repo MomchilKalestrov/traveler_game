@@ -24,7 +24,7 @@
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: var(--padding);
+    column-gap: var(--padding);
 }
 
 .TitleWithSort > * {
@@ -37,28 +37,25 @@
     padding: 0.25rem;
     border-radius: 50%;
     border: none;
-    background-color: var(--color-bg);
+    background-color: var(--color-primary);
 }
 
 .TitleWithSort button img {
     width: 100%;
     height: 100%;
-    filter: var(--icon-filter-primary);
+    filter: var(--icon-filter-bg);
 }
 
 .TitleWithSort > div {
     height: 0;
     width: 100%;
-    padding: 0 var(--padding);
-    background-color: var(--color-bg);
-    border-radius: 0.75rem;
+    padding: 0;
     overflow: hidden;
     transition: height 0.5s, padding 0.5s;
     display: flex;
     justify-content: stretch;
     align-content: space-between;
     flex-wrap: wrap;
-    gap: var(--padding);
 }
 
 @keyframes progress {
