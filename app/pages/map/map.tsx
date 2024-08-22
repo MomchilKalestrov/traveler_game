@@ -27,14 +27,11 @@ const Page = (
   useEffect(() => {
     try {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            console.log('ddd',position);
-            setUserLocation({
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-              });
-          },
+        navigator.geolocation.getCurrentPosition((position) =>
+          setUserLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          }),
           (error) => console.error('Error getting user location: \n', error),
           { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
         );
