@@ -68,21 +68,15 @@ const Page = (props: {
     if(!props.newLocations || !event.currentTarget) return;
     alert(Number(props.newLocations.length));
     navigator.geolocation.getCurrentPosition(
-      (position) => {
-        alert('Got user location');
+      (position) =>
         setFilteredLocations((props.newLocations || []).filter((location: location) => 
-          // haversineDistance(
-          //   location.location.lat,
-          //   location.location.lng,
-          //   position.coords.latitude,
-          //   position.coords.longitude
-          // ) <= Number(event.currentTarget.value)
-          {
-            alert('Filtering');
-            return true;
-          }
-        ));
-      },
+          haversineDistance(
+            location.location.lat,
+            location.location.lng,
+            position.coords.latitude,
+            position.coords.longitude
+          ) <= Number(event.currentTarget.value)
+        )),
       (error) => console.error('Error getting user location: \n', error),
       { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
     );
