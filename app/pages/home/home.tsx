@@ -74,7 +74,8 @@ const Page = (props: {
               location.location.lng,
               position.coords.latitude,
               position.coords.longitude
-            );  
+            );
+            alert('fuck' + Number(event.currentTarget.value))
             alert(dist);
             return dist <= Number(event.currentTarget.value);
           }
