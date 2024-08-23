@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@vercel/blob": "^0.23.4",
     "@vis.gl/react-google-maps": "^1.1.0",
     "js-md5": "^0.8.3",
     "mongodb": "^6.8.0",

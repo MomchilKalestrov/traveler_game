@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import userCheck from '../../usercheck';
 import { cookies } from 'next/headers';
-import fs from 'fs';
+import { put } from '@vercel/blob';
 
 const POST = async (request: Request) => {
     const cookie = cookies();
@@ -12,15 +12,16 @@ const POST = async (request: Request) => {
 
     if (!body.image)
         return NextResponse.json({ error: 'Missing parameters.' });
-
-    if (!fs.existsSync(`${ process.cwd() }/user`))
-        fs.mkdirSync(`${ process.cwd() }/user`, { recursive: true });
-
-    const buffer = Buffer.from(body.image.split(',')[1], 'base64');
-
-    fs.writeFileSync(`${ process.cwd() }/user/${cookie.get('username')?.value}.png`, buffer);
-
-    return NextResponse.json({ ok: true });
+    
+    try {
+        const blob = await put(cookie.get('username')?.value || '', body.image, {
+            access: 'public',
+        });        
+        return NextResponse.json({ ok: true });
+    }
+    catch (error) {
+        return NextResponse.json({ error: 'Error uploading image.' });
+    }
 }
 
 export { POST };
