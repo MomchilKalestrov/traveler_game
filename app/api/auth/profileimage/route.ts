@@ -16,7 +16,9 @@ const POST = async (request: Request) => {
     try {
         const blob = await put(cookie.get('username')?.value || '', body.image, {
             access: 'public',
-        });        
+            contentType: 'image/png',
+            addRandomSuffix: false
+        });
         return NextResponse.json({ ok: true });
     }
     catch (error) {

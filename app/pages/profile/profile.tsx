@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import style from './profile.module.css';
 import { loading, stopLoading } from '@components/loading/loading';
 import Image from 'next/image';
@@ -12,6 +12,18 @@ const Page = (
 ) => {
   const reference = React.useRef<HTMLImageElement>(null);
 
+  useEffect(() => {
+    if (!reference.current || !props.userData) return;
+
+    fetch(`https://gsplsf3le8pssi3n.public.blob.vercel-storage.com/${ props.userData.username }.png`)
+      .then((res) => {
+        if (res.ok)
+          if (reference.current)
+            reference.current.src = `/api/auth/profileimage/${ props.userData.username }.png`;
+      });
+
+  }, [props.userData]);
+
   const changeProfilePhoto = (event: React.ChangeEvent<HTMLInputElement>) => {
     loading();
     const file = event.target?.files?.[0];
@@ -21,7 +33,7 @@ const Page = (
     reader.onload = (e) => {
       if (!e.target?.result) return;
 
-      fetch('/api/auth/setimage', {
+      fetch('/api/auth/profileimage', {
         method: 'POST',
         body: JSON.stringify({ image: e.target?.result })
       }).then(() => {
@@ -58,7 +70,13 @@ const Page = (
       <div className={ style.ProfileContainer }>
         <div className={ `${ style.ProfileCard } ${ style.ProfileInfo }` }>
             <div className={ style.ProfilePhoto }>
-              <Image ref={ reference } src={ `/user/${ props.userData.username }.png` } alt='profile' width={ 64 } height={ 64 } />
+              <Image
+                ref={ reference }
+                src={ `/user/noprofile.png` }
+                alt='profile'
+                width={ 64 }
+                height={ 64 }
+              />
               <input type="file" accept="image/png" onChange={ changeProfilePhoto } />
             </div>
             <h2>{ props.userData.username }</h2>

@@ -57,7 +57,7 @@ const Page = (
                 <div className={ userStyle.ProfileContainer }>
                     <div className={ `${ userStyle.ProfileCard } ${ userStyle.ProfileInfo }` }>
                         <div className={ userStyle.ProfilePhoto }>
-                            <img src={ `/user/${ props.user.username }.png` } />
+                            <img src={ `/api/auth/profileimage/${ props.user.username }.png` } />
                         </div>
                         <h2>{ props.user.username }</h2>
                     </div>
