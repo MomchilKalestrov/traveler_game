@@ -1,6 +1,9 @@
 import style from './usersearch.module.css';
 import userStyle from '@pages/profile/profile.module.css';
 import loadingStyle from '@components/loading/loading.module.css';
+import { useEffect } from 'react';
+import Image from 'next/image';
+import React from 'react';
 
 /*
     Like the crack of the whip, I Snap! attack
@@ -32,6 +35,15 @@ const Page = (
         user: user
     }
 ) => {
+    const reference = React.useRef<HTMLImageElement>(null);
+
+    useEffect(() => {
+        if (props.loading != status.founduser || !reference.current) return;
+
+        fetch(`https://gsplsf3le8pssi3n.public.blob.vercel-storage.com/${ props.user.username }`)
+          .then((res) => res.text())
+          .then((text) => { if (reference.current && text.split(':')[0] === 'data') reference.current.src = text; });
+    }, [props.loading]);
 
     switch (props.loading) {
         case status.loading: return (
@@ -57,7 +69,7 @@ const Page = (
                 <div className={ userStyle.ProfileContainer }>
                     <div className={ `${ userStyle.ProfileCard } ${ userStyle.ProfileInfo }` }>
                         <div className={ userStyle.ProfilePhoto }>
-                            <img src={ `/api/auth/profileimage/${ props.user.username }.png` } />
+                            <Image ref={ reference } src={ `/nouser.svg` } alt='profile image' width={ 64 } height={ 64 } />
                         </div>
                         <h2>{ props.user.username }</h2>
                     </div>

@@ -16,9 +16,8 @@ const Page = (
     if (!reference.current || !props.userData) return;
 
     fetch(`https://gsplsf3le8pssi3n.public.blob.vercel-storage.com/${ props.userData.username }`)
-      .then((res) => res.blob())
-      .then((blob) => console.log(blob));
-
+      .then((res) => res.text())
+      .then((text) => { if (reference.current && text.split(':')[0] === 'data') reference.current.src = text; });
   }, [props.userData]);
 
   const changeProfilePhoto = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,7 +68,7 @@ const Page = (
             <div className={ style.ProfilePhoto }>
               <Image
                 ref={ reference }
-                src={ `/user/noprofile.svg` }
+                src={ `/nouser.svg` }
                 alt='profile'
                 width={ 64 }
                 height={ 64 }
