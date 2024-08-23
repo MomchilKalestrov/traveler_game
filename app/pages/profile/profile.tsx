@@ -15,12 +15,9 @@ const Page = (
   useEffect(() => {
     if (!reference.current || !props.userData) return;
 
-    fetch(`https://gsplsf3le8pssi3n.public.blob.vercel-storage.com/${ props.userData.username }.png`)
-      .then((res) => {
-        if (res.ok)
-          if (reference.current)
-            reference.current.src = `/api/auth/profileimage/${ props.userData.username }.png`;
-      });
+    fetch(`https://gsplsf3le8pssi3n.public.blob.vercel-storage.com/${ props.userData.username }`)
+      .then((res) => res.blob())
+      .then((blob) => console.log(blob));
 
   }, [props.userData]);
 
@@ -72,7 +69,7 @@ const Page = (
             <div className={ style.ProfilePhoto }>
               <Image
                 ref={ reference }
-                src={ `/user/noprofile.png` }
+                src={ `/user/noprofile.svg` }
                 alt='profile'
                 width={ 64 }
                 height={ 64 }
