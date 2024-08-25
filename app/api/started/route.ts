@@ -1,9 +1,9 @@
 import { MongoClient } from 'mongodb';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import userCheck from '../usercheck';
 
-const GET = async (request: Request) => {
+const GET = async (request: NextRequest) => {
     const client = new MongoClient(process.env.MONGODB_URI as string);
     const cookie = cookies();
     let names: any = {};
@@ -26,7 +26,6 @@ const GET = async (request: Request) => {
         await client.close();
         return NextResponse.json(locations);
     } catch(error) {
-        console.log(error);
         console.log('An exception has occured:\n', error);
         await client.close();
         return NextResponse.json({ error: 'An error has occured.' });

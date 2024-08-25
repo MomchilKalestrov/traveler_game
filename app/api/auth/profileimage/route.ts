@@ -1,9 +1,9 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import userCheck from '../../usercheck';
 import { cookies } from 'next/headers';
 import { put } from '@vercel/blob';
 
-const POST = async (request: Request) => {
+const POST = async (request: NextRequest) => {
     const cookie = cookies();
     const body = await request.json();
 
@@ -19,7 +19,7 @@ const POST = async (request: Request) => {
             contentType: 'image/png',
             addRandomSuffix: false
         });
-        return NextResponse.json({ ok: true });
+        return NextResponse.json({ success: true });
     }
     catch (error) {
         return NextResponse.json({ error: 'Error uploading image.' });

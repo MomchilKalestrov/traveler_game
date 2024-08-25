@@ -1,8 +1,8 @@
 import { MongoClient } from 'mongodb';
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
 
-const GET = async (request: Request) => {
+const GET = async (request: NextRequest) => {
     const args = cookies();
     const client = new MongoClient(process.env.MONGODB_URI as string);
     let names: Array<any> = [];

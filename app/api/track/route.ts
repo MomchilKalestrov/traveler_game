@@ -1,9 +1,9 @@
 import { MongoClient } from 'mongodb';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import userCheck from '../usercheck';
 
-const POST = async (request: Request) => {
+const POST = async (request: NextRequest) => {
     const body = await request.json();
     if (!body.name) return NextResponse.json({ error: 'Missing parameters.' });
     const client = new MongoClient(process.env.MONGODB_URI as string);
@@ -28,8 +28,8 @@ const POST = async (request: Request) => {
             { username: cookie.get('username')?.value },
             { $push: { started: body.name } }
         );
-        client.close();
-        return NextResponse.json({ ok: true });
+        await client.close();
+        return NextResponse.json({ success: true });
     } catch(error) {
         console.log('An exception has occured:\n', error);
         await client.close();

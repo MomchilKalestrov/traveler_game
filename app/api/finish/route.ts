@@ -1,5 +1,5 @@
 import { MongoClient } from 'mongodb';
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
 import userCheck from '../usercheck';
 
@@ -16,7 +16,7 @@ function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
     return R * c * 1000;
 }
 
-const POST = async (request: Request) => {
+const POST = async (request: NextRequest) => {
     const args = await request.json();
     if (!args.name || !args.location.lat || !args.location.lng)
         return NextResponse.json({ error: 'Missing parameters.' });
@@ -65,8 +65,8 @@ const POST = async (request: Request) => {
             { username: cookie.get('username')?.value },
             { $push: { finished: args.name } }
         );
-        client.close();
-        return NextResponse.json({ ok: true });
+        await client.close();
+        return NextResponse.json({ success: true });
     } catch(error) {
         console.log('An exception has occured:\n', error);
         await client.close();

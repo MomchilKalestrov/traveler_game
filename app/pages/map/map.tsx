@@ -20,6 +20,7 @@ const Page = (
     reset: () => void
   }
 ) => {
+  const [watcherID,    setWatcherID   ] = React.useState<number>();
   const [name,         setName        ] = React.useState<string>();
   const [visible,      setVisible     ] = React.useState<boolean>(false);
   const [userLocation, setUserLocation] = React.useState<google.maps.LatLngLiteral | null>(null);
@@ -27,7 +28,7 @@ const Page = (
   useEffect(() => {
     try {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position) =>
+        const id = navigator.geolocation.watchPosition((position) =>
           setUserLocation({
             lat: position.coords.latitude,
             lng: position.coords.longitude
@@ -35,7 +36,7 @@ const Page = (
           (error) => console.error('Error getting user location: \n', error),
           { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
         );
-
+        setWatcherID(id);
       } else alert('Geolocation is not supported by this browser.');
     } catch {
       alert('Geolocation is not supported by this browser.')

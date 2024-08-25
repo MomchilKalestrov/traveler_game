@@ -1,9 +1,9 @@
 import { md5 } from 'js-md5';
 import { MongoClient } from 'mongodb';
 import { cookies } from 'next/headers';
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 
-const POST = async (request: Request) => {
+const POST = async (request: NextRequest) => {
     const args: URLSearchParams = new URL(request.url).searchParams;
     
     if(!args.get('password') || !args.get('username'))
@@ -35,14 +35,13 @@ const POST = async (request: Request) => {
         user.set('username', args.get('username') || '');
         user.set('password', md5(args.get('password') || ''));
         await client.close();
+        return NextResponse.json({ success: true });
     }
     catch(error) {
         console.log('An exception has occured:\n', error);
         await client.close();
         return NextResponse.json({ error: 'An error occurred.' });
     };
-
-    return NextResponse.json({ success: true });
 };
 
 export { POST };

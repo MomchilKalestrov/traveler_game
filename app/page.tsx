@@ -6,7 +6,6 @@ import Profile from '@pages/profile/profile';
 import { createRef, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Header from '@components/header/header';
-import { getCookie, setCookie } from './cookies';
 
 type location = {
     name: string,
@@ -27,6 +26,11 @@ const Page = () => {
 
     const resetRender = () => setReset(reset + 1);
     
+    useEffect(() => {
+        if('serviceWorker' in navigator)
+            navigator.serviceWorker.register('/workers/notifications.js')
+    }, []);
+
     useEffect(() => {
         const abortController = new AbortController();
         abortControllerRef.current = abortController;

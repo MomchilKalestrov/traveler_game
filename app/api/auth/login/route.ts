@@ -30,15 +30,14 @@ const POST = async (request: NextRequest) => {
         user.set('password', md5(args.get('password') || ''), {
             maxAge: Date.now() + 365 * 24 * 60 * 60 * 1000
         });
-        client.close();
+        await client.close();
+        return NextResponse.json({ success: true });
     }
     catch(error) {
         console.log('An exception has occured:\n', error);
         await client.close();
         return NextResponse.json({ error: 'An error occurred.' });
     };
-    
-    return NextResponse.json({ success: true });
 };
 
 export { POST };
