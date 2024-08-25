@@ -39,17 +39,10 @@ const Page = (
         try {
             const permission = await Notification.requestPermission();
             if(permission !== 'granted') return console.error('Permission not granted for Notification');
-            
-            const checkReg = await navigator.serviceWorker.ready;
-            const checkSub = await checkReg.pushManager.getSubscription();
-
-            if (checkSub) return setNotifAccess(true);
-                        
             const registration = await navigator.serviceWorker.register('/notificationsWorker.js');
             console.log('Service Worker registered:', registration);
             
             console.log(registration.active);
-            
             const subscription = await registration.pushManager.subscribe({
                 userVisibleOnly: true,
                 applicationServerKey: 'BLHIkvcg6jS1TYx4vpkVVGULrdKAiWvC7c6rxh7Dp8V1kkP6MVGPlPhz5_I5S5fbV1-wM4cJrKWHQfqJ0SlZ_4o'
@@ -61,12 +54,15 @@ const Page = (
                 body: JSON.stringify(subscription)
             });
 
+            alert((await response.json() as any).success);
+
             if((await response.json()).success)
                 console.log('Subscribed to notifications.');
             else
                 console.error('Failed to subscribe to notifications.');
         } catch (error) {
             console.error('Error registering Service Worker:', error);
+            alert('An error has occurred: \n' + error);
         }
     }
 

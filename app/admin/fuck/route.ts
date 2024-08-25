@@ -13,8 +13,6 @@ const GET = async () => {
     try {
         await client.connect();
         const collection = client.db('TestDB').collection('TestCollection');
-        
-        console.log('ddd', await collection.findOne({ subscribersInfo: true }));
     
         const subscriptions = (await collection.findOne({ subscribersInfo: true }) as any).subscribers;
 
@@ -24,9 +22,10 @@ const GET = async () => {
             icon: '/icons/notification.svg'
         });
 
-        await Promise.all(subscriptions.map((subscription: any) =>
-            webpush.sendNotification(subscription, notificationPayload)
-        ));
+        await Promise.all(subscriptions.map((subscription: any) => {
+            if(subscription.endpoint && subscription.key)
+                webpush.sendNotification(subscription, notificationPayload);
+        }));
     
         await client.close();
     }

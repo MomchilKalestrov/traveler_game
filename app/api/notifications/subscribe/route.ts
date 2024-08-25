@@ -12,6 +12,8 @@ const POST = async (request: NextRequest) => {
         await client.connect();
         const collection = client.db('TestDB').collection('TestCollection');
 
+        console.log('Subscription:', body);
+
         await collection.updateOne(
             { subscribersInfo: true },
             { $push: { subscribers: body } }
