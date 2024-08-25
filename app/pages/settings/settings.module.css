@@ -17,6 +17,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: var(--padding);
 }
 
 .SettingsHeader * {
@@ -58,4 +59,17 @@
     to {
         transform: translateX(100%);
     }
+}
+
+.Option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--padding);
+}
+
+.Option h3 {
+    font-size: 1.25rem;
+    line-height: 2rem;
+    margin: 0;
 }

@@ -25,11 +25,6 @@ const Page = () => {
     const [reset,             setReset   ]  = useState<number>(0);
 
     const resetRender = () => setReset(reset + 1);
-    
-    useEffect(() => {
-        if('serviceWorker' in navigator)
-            navigator.serviceWorker.register('/workers/notifications.js')
-    }, []);
 
     useEffect(() => {
         const abortController = new AbortController();

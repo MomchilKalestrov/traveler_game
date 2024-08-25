@@ -1,18 +1,30 @@
 import { MongoClient } from 'mongodb';
-import { NextRequest, NextResponse } from "next/server"
+import { NextRequest, NextResponse } from 'next/server';
 
 const POST = async (request: NextRequest) => {
     const client = new MongoClient(process.env.MONGODB_URI as string);
     const body = await request.json();
-    if(!body) return NextResponse.json({ error: 'Invalid request.' });
+    
+
+    if(!body || !body.endpoint || !body.keys) return NextResponse.json({ error: 'Invalid request.' });
 
     try {
+        await client.connect();
+        const collection = client.db('TestDB').collection('TestCollection');
+
+        await collection.updateOne(
+            { subscribersInfo: true },
+            { $push: { subscribers: body } }
+        );
 
         await client.close();
         return NextResponse.json({ success: true });
     }
     catch (error) {
+        console.log('An exception has occured:\n', error);
         await client.close();
         return NextResponse.json({ error: 'An error has occured.' });
     }
 }
+
+export { POST };
