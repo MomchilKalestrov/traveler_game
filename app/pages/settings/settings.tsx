@@ -3,6 +3,7 @@ import style from './settings.module.css';
 import Image from 'next/image';
 import ToggleButton from '@app/components/toggle/toggle';
 import { useRouter } from 'next/navigation';
+import { deleteCookie, getCookie, setCookie } from '@app/cookies';
 
 const Page = (
     props: {
@@ -14,7 +15,17 @@ const Page = (
     const reference = React.useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (navigator.userAgent.toLocaleLowerCase().includes('firefox')) setNotifAccess(true);
+        if (window.Notification.permission !== 'granted') {
+            setNotifAccess(false);
+            deleteCookie('notifAccess');
+        }
+
+        if (
+            navigator.userAgent.toLocaleLowerCase().includes('firefox') ||
+            getCookie('notifAccess')                                    || 
+            !window.Notification                                        ||
+            !navigator.serviceWorker
+        ) setNotifAccess(true);
     }, []);
 
     const close = () => {
@@ -24,7 +35,8 @@ const Page = (
     }
 
     const allowNotifications = async () => {
-        if(!window.Notification || !navigator.serviceWorker) return;
+        setNotifAccess(true);
+        if (!window.Notification || !navigator.serviceWorker) return;
 
         try {
             const permission = await Notification.requestPermission();
@@ -43,13 +55,18 @@ const Page = (
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(subscription)
             });
-            if((await response.json()).success)
+
+            if((await response.json()).success) {
                 alert('Subscribed to notifications.');
-            else
-                alert('Failed to subscribe to notifications.');
+                return setCookie('notifAccess', 'true');
+            }
+            
+            alert('Failed to subscribe to notifications.');
+            setNotifAccess(false);
         } catch (error) {
             console.error('Error registering Service Worker:', error);
             alert('An error has occurred: \n' + error);
+            setNotifAccess(false);
         }
     }
 
@@ -62,10 +79,7 @@ const Page = (
                     className={ style.SettingsBack }
                 ><Image src='/icons/back.svg' alt='go back' width={ 32 } height={ 32 } /></button>
                 <h2>Settings</h2>
-                <div style={ { 
-                    width: '2.5rem',
-                    height: '2.5rem'
-                } } />
+                <div style={ { width: '2.5rem', height: '2.5rem' } } />
             </div>
             <div className={ style.Option }>
                 <div>

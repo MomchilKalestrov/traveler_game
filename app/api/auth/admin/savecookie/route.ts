@@ -16,9 +16,7 @@ const POST = async (request: any) => {
 
     if (!args.passphrase) return NextResponse.json({ error: 'Missing parameters.' });
     
-    cookie.set('passphrase', md5(args.passphrase), {
-        maxAge: 60 * 60 * 24 * 7
-    });
+    cookie.set('passphrase', md5(args.passphrase));
     return NextResponse.json({ success: true });
 }
 

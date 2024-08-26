@@ -14,8 +14,6 @@ const getCookie = (key: string): { key: string, value: string } | undefined => {
 }
 
 const setCookie = (key: string, value: string): void => {
-    // this will be probably outlive the rapture
-    // prophesied by the Lord and Savior Jesus Christ
     const date: Date = new Date();
     date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000));
     document.cookie = `${key}=${value}; expires=${ date.toUTCString() };`;
