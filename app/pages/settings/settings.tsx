@@ -53,13 +53,10 @@ const Page = (
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(subscription)
             });
-
-            alert((await response.json() as any).success);
-
             if((await response.json()).success)
-                console.log('Subscribed to notifications.');
+                alert('Subscribed to notifications.');
             else
-                console.error('Failed to subscribe to notifications.');
+                alert('Failed to subscribe to notifications.');
         } catch (error) {
             console.error('Error registering Service Worker:', error);
             alert('An error has occurred: \n' + error);

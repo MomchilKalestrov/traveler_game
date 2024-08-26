@@ -24,7 +24,7 @@ const POST = async (request: NextRequest) => {
 
         subscriptions.map((subscription: any) => {
             console.log('endpoint: ' + subscription.endpoint);
-            if(subscription.endpoint && subscription.key)
+            if(subscription.endpoint && subscription.keys)
                 webpush.sendNotification(subscription, JSON.stringify({
                     title: body.title,
                     body: body.message,
