@@ -2,24 +2,14 @@ import React, { useEffect } from 'react';
 import style from './settings.module.css';
 import Image from 'next/image';
 import ToggleButton from '@app/components/toggle/toggle';
-
-const waitForServiceWorkerActivation = async (registration: any) => {
-    if (!navigator.serviceWorker.controller) {
-        await new Promise((resolve) => {
-            navigator.serviceWorker.addEventListener('controllerchange', function onControllerChange() {
-                navigator.serviceWorker.removeEventListener('controllerchange', onControllerChange);
-                resolve(null);
-            });
-        });
-    }
-    return registration;
-};
+import { useRouter } from 'next/navigation';
 
 const Page = (
     props: {
         setter: React.Dispatch<React.SetStateAction<boolean>>
     }
 ) => {
+    const router = useRouter();
     const [notifAccess, setNotifAccess] = React.useState<boolean>(false);
     const reference = React.useRef<HTMLDivElement>(null);
 
@@ -78,8 +68,23 @@ const Page = (
                 } } />
             </div>
             <div className={ style.Option }>
-                <h3>Notifications</h3>
+                <div>
+                    <h3>Notifications</h3>
+                    <p>Receive notifications for new messages and updates.</p>
+                </div>
                 <ToggleButton disabled={ notifAccess } onClick={ allowNotifications } />
+            </div>
+            <div className={ style.Option }>
+                <div>
+                    <h3>Log out</h3>
+                    <p>Log out of your profile.</p>
+                </div>
+                <button
+                    onClick={ () =>
+                        fetch('/api/auth/logout', { method: 'POST' })
+                            .then(() => router.replace('/login'))
+                    }
+                >Log out</button>
             </div>
         </div>
     );
