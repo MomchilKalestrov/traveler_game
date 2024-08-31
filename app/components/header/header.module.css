@@ -1,10 +1,10 @@
 .Header {
-    --padding: 0.5rem;
+    --padding: 1rem;
     --horizontal: max(calc(50vw - 15rem), var(--padding));
 
     padding: var(--padding) var(--horizontal);
     width: calc(100% - 2 * var(--horizontal));
-    background: linear-gradient(var(--color-bg), #00000000);
+    height: 3.5rem;
     display: flex;
     align-items: stretch;
     position: fixed;
@@ -13,7 +13,7 @@
 
 .Header div {
     position: relative;
-    min-width: 2.5rem;
+    min-width: 3.5rem;
 }
 
 .Header div button {
@@ -23,23 +23,22 @@
 
 .Header input {
     border: none;
-    padding: 0.75rem 0;
+    padding: 1.25rem 0;
     line-height: 1rem;
     font-size: 1rem;
     height: 1rem;
     width: calc(100% - 2.5rem);
     background-color: var(--color-secondary);
     outline: none;
-    --border-radius: 0 1.25rem 1.25rem 0;
 }
 
 .Header button {
     border: none;
     aspect-ratio: 1;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 3.5rem;
+    height: 3.5rem;
     background-color: var(--color-secondary);
-    padding: 0.25rem;
+    padding: 1rem;
 }
 
 .Header div:first-child button {
@@ -51,7 +50,32 @@
 }
 
 .Header button img {
-    aspect-ratio: 1;
     height: 100%;
+    width: 100%;
     filter: var(--icon-filter-primary);
+}
+
+.HeaderSearchBG {
+    --padding: 1rem;
+    --horizontal: max(calc(50vw - 15rem), var(--padding));
+
+    border-radius: 1.75rem;
+    margin: var(--padding) var(--horizontal);
+    width: calc(100% - 2 * var(--horizontal));
+    height: 3.5rem;
+    background: var(--color-secondary);
+    display: flex;
+    align-items: stretch;
+    position: fixed;
+    z-index: 1;
+    transition-property: margin, width, height, border-radius, border-bottom;
+    transition-duration: 0.25s;
+}
+
+.HeaderSearchBGActive {
+    margin: 0;
+    width: 100%;
+    height: 5.5rem;
+    border-radius: 0;
+    border-bottom: 1px solid var(--color-primary);
 }

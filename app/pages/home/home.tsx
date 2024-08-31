@@ -107,7 +107,7 @@ const Page = (props: {
 
       <div className={ style.TitleWithSort }>
         <h2>New adventures:</h2>
-        <button aria-label='open filter menu' onClick={ changeView }><Image alt='filter' src='/icons/filter.svg' width={ 32 } height={ 32 } /></button>
+        <button aria-label='toggle filter menu' onClick={ changeView }><Image alt='filter' src='/icons/filter.svg' width={ 32 } height={ 32 } /></button>
         <div ref={ reference }>
           <MaterialInput type='number' name='Distance (km)' onChange={ findCloseLocations } />
         </div>

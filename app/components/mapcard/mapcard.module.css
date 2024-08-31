@@ -47,11 +47,11 @@
 }
 
 .Button {
-    --padding: 0.25rem;
+    --padding: 0.5rem;
 
-    height: calc(2.5rem - var(--padding) * 2);
+    height: calc(3.5rem - var(--padding) * 2);
     padding: var(--padding) 1rem;
-    border-radius: 1.25rem;
+    border-radius: calc(1.75rem - var(--padding));
     border: 1px solid var(--color-primary);
     color: var(--color-primary);
     background-color: #ffffff00;

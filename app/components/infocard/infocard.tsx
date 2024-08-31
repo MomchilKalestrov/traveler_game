@@ -173,7 +173,7 @@ const InfoCard = (
         <div className={ style.Infocard }>
             <div ref={ reference }>
                 <div className={ style.InfocardHeader }>
-                    <button aria-label='Close card' onClick={ close }>
+                    <button aria-label='close card' onClick={ close }>
                         <Image src='/icons/back.svg' alt='back' width={ 32 } height={ 32 } />
                     </button>
                 </div>

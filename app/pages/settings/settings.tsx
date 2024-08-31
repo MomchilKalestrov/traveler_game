@@ -77,7 +77,7 @@ const Page = (
                     aria-label='Close settings'
                     onClick={ close }
                     className={ style.SettingsBack }
-                ><Image src='/icons/back.svg' alt='go back' width={ 32 } height={ 32 } /></button>
+                ><Image src='/icons/back.svg' alt='go back' width={ 24 } height={ 24 } /></button>
                 <h2>Settings</h2>
                 <div style={ { width: '2.5rem', height: '2.5rem' } } />
             </div>

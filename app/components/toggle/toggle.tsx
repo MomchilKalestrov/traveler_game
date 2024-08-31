@@ -8,9 +8,11 @@ const ToggleButton = (
         disabled?: boolean
     }
 ) => (
-    <div className={ style.Toggle }>
-        <input type='checkbox' ref={ props.ref } onClick={ props.onClick } disabled={ props.disabled } />
-        <div />
+    <div>
+        <div className={ style.Toggle }>
+            <input type='checkbox' ref={ props.ref } onClick={ props.onClick } disabled={ props.disabled } />
+            <div />
+        </div>
     </div>
 );
 

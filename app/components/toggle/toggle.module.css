@@ -7,6 +7,7 @@
     border-radius: 1rem;
     background-color: var(--color-primary);
     padding: var(--padding);
+    margin: 0.25rem 0;
 }
 
 .Toggle div {

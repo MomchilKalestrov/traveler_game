@@ -32,9 +32,9 @@
 }
 
 .TitleWithSort button {
+    padding: 0.5rem;
     width: 2.5rem;
     height: 2.5rem;
-    padding: 0.25rem;
     border-radius: 50%;
     border: none;
     background-color: var(--color-primary);

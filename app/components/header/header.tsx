@@ -19,6 +19,7 @@ const Header = () => {
     const inputReference             = React.useRef<HTMLInputElement>(null);
     const abortControllerRef         = React.useRef<AbortController | null>(null);
     const headerReference            = React.useRef<HTMLElement>(null);
+    const headerBGReference          = React.useRef<HTMLDivElement>(null);
 
     React.useEffect(() => {
         abortControllerRef.current = new AbortController();
@@ -26,13 +27,19 @@ const Header = () => {
     }, []);
 
     const clearSearch = () => {
-        if (!inputReference.current) return;
+        const bg = headerBGReference.current;
+        const header = headerReference.current;
 
-        inputReference.current.value = '';
+        if (!bg || !header) return;
 
-        if (!imgReference.current) return;
-        imgReference.current.style.display = 'none';
+        bg.classList.remove(style.HeaderSearchBGActive);
+        header.style.background = '';
+
+        const backButton = header.children[0].children[0] as HTMLButtonElement;
+        if (!backButton) return;
         
+        backButton.style.display = 'none';
+        setLookup(false);
         setLoading(status.loading);
         
         if (abortControllerRef.current)
@@ -40,17 +47,20 @@ const Header = () => {
     }
 
     const showSearch = () => {
-        if (!headerReference.current) return;
-        headerReference.current.style.background = 'var(--color-secondary)';
-        headerReference.current.style.borderBottom = '1px solid var(--color-primary)';
+        const bg = headerBGReference.current;
+        const header = headerReference.current;
+
+        if (!bg || !header) return;
+
+        bg.classList.add(style.HeaderSearchBGActive);
+        header.style.background = 'unset';
+
+        const backButton = header.children[0].children[0] as HTMLButtonElement;
+        if (!backButton) return;
+        
+        backButton.style.display = 'block';
         setLookup(true);
         setLoading(status.loading);
-
-        if (!headerReference.current) return;
-        const backButton = headerReference.current.children[0].children[0] as HTMLButtonElement;
-        if (!backButton) return;
-
-        backButton.style.display = 'block';
     }
 
     const closeLookup = () => {
@@ -135,13 +145,14 @@ const Header = () => {
         <>
             { settings && <Settings setter={ setSettings } /> }
             { userLookup && <UserSearch loading={ userLoading } user={ userData } /> }
+            <div className={ style.HeaderSearchBG } ref={ headerBGReference } />
             <header className={ style.Header } ref={ headerReference }>
                 <div>
                     <button onClick={ closeLookup } aria-label='back from search' style={ { zIndex: 1, display: 'none' } }>
-                        <Image alt='back' src='/icons/back.svg' width={ 32 } height={ 32 } />
+                        <Image alt='back' src='/icons/back.svg' width={ 24 } height={ 24 } />
                     </button>
                     <button onClick={ () => setSettings(true) } aria-label='settings'>
-                        <Image alt='settings' src='/icons/settings.svg' width={ 32 } height={ 32 } />
+                        <Image alt='settings' src='/icons/settings.svg' width={ 24 } height={ 24 } />
                     </button>
                 </div>
                 <input
@@ -161,8 +172,8 @@ const Header = () => {
                         style={ { display: 'none' } }
                         alt='clear'
                         src='/icons/close.svg'
-                        width={ 32 }
-                        height={ 32 }
+                        width={ 24 }
+                        height={ 24 }
                     />
                 </button>
             </header>
