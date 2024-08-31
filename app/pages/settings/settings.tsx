@@ -30,7 +30,7 @@ const Page = (
 
     const close = () => {
         if(!reference.current) return;
-        reference.current.style.animation = `${ style.slideOut } 0.5s ease-in-out`;
+        reference.current.style.animation = `${ style.slideOut } 0.5s ease-in-out forwards`;
         setTimeout(() => props.setter(false), 500);
     }
 

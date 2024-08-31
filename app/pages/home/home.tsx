@@ -2,7 +2,7 @@
 import style from './home.module.css';
 import Mapcard from '@components/mapcard/mapcard';
 import Minicard from '@components/minicard/minicard';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import MaterialInput from '@components/input/input';
 
@@ -37,7 +37,7 @@ const Page = (props: {
   const [filteredLocations, setFilteredLocations] = React.useState<Array<location>>(props.newLocations || []);
   const [filterOpen,        setFilterOpen       ] = React.useState(true);
   
-  useEffect(() => {
+  React.useEffect(() => {
     if (!props.newLocations) return;
     setFilteredLocations(props.newLocations);
   }, [props.newLocations]);

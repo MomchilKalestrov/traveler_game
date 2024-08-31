@@ -133,8 +133,8 @@ const InfoCard = (
         const parent = reference.current.parentElement;
         if(!parent) return;
 
-        reference.current.style.animation = `${ style.slideOut } 0.5s ease-in-out`;
-        parent.style.animation            = `${ style.blurOut  } 0.5s ease-in-out`;
+        reference.current.style.animation = `${ style.slideOut } 0.5s ease-in-out forwards`;
+        parent.style.animation            = `${ style.blurOut  } 0.5s ease-in-out forwards`;
 
         setTimeout(() => props.setter(false), 500);
     }

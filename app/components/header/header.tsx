@@ -33,6 +33,8 @@ const Header = () => {
         if (!imgReference.current) return;
         imgReference.current.style.display = 'none';
         
+        setLoading(status.loading);
+        
         if (abortControllerRef.current)
             abortControllerRef.current.abort();
     }
@@ -42,6 +44,7 @@ const Header = () => {
         headerReference.current.style.background = 'var(--color-secondary)';
         headerReference.current.style.borderBottom = '1px solid var(--color-primary)';
         setLookup(true);
+        setLoading(status.loading);
 
         if (!headerReference.current) return;
         const backButton = headerReference.current.children[0].children[0] as HTMLButtonElement;
@@ -55,6 +58,7 @@ const Header = () => {
         headerReference.current.style.background = '';
         headerReference.current.style.borderBottom = 'unset';
         setLookup(false);
+        setLoading(status.loading);
 
         if (!headerReference.current) return;
         const backButton = headerReference.current.children[0].children[0] as HTMLButtonElement;

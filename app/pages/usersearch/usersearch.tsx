@@ -48,8 +48,7 @@ const Page = (
     switch (props.loading) {
         case status.loading: return (
             <div className={ `${ style.UserSearch } ${ style.UserSearchCentered }` }>
-                <p>Looking up user</p>
-                <div className={ loadingStyle.LoadingWheel }></div>
+                <Image src='/icons/loading.svg' alt='Loading' width={ 64 } height={ 64 } />
             </div>
         );
         case status.nouser: return (

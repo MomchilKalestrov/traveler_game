@@ -11,27 +11,3 @@
     z-index: 1000;
     backdrop-filter: blur(1rem);
 }
-
-.Loading p {
-    font-size: 2rem;
-    line-height: 2rem;
-    font-weight: bold;
-    color: var(--color-primary);
-    text-align: center;
-    width: 100vw;
-}
-
-.LoadingWheel {
-    width: 4rem;
-    height: 4rem;
-    margin: 0 auto;
-    border: 0.5rem solid var(--color-bg);
-    border-top: 0.5rem solid var(--color-primary);
-    border-radius: 50%;
-    animation: rotation 1s linear infinite;
-}
-
-@keyframes rotation {
-    0%   { transform: rotate(0deg);   }
-    100% { transform: rotate(360deg); }
-}

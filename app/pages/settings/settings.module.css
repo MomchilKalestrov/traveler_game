@@ -9,7 +9,7 @@
     height: calc(100vh - var(--padding) * 2);
     z-index: 3;
     background-color: var(--color-bg);
-    animation: slideIn ease-in-out 0.5s;
+    animation: slideIn ease-in-out 0.5s forwards;
     padding: var(--padding) var(--horizontal);
 }
 
