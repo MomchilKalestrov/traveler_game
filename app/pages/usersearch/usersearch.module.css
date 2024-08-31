@@ -1,16 +1,16 @@
 .UserSearch {
-    --padding: 0.5rem;
+    --padding: 1rem;
     --horizontal: max(calc(50vw - 15rem), var(--padding));
 
     position: fixed;
     top: 0;
     left: 0;
     width: calc(100vw - var(--horizontal) * 2);
-    height: calc(100vh - 3.5rem - var(--padding) * 2);
+    height: calc(100vh - var(--padding) * 3 - 5rem);
     z-index: 1;
     background-color: var(--color-bg);
     animation: slideIn ease-in-out 0.5s;
-    padding: 4rem var(--horizontal) var(--padding) var(--horizontal);
+    padding: calc(var(--padding) + 5rem) var(--horizontal) var(--padding) var(--horizontal);
 }
 
 .UserSearchCentered {

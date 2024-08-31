@@ -27,19 +27,14 @@ const Header = () => {
     }, []);
 
     const clearSearch = () => {
-        const bg = headerBGReference.current;
-        const header = headerReference.current;
+        const input = inputReference.current;
+        const img = imgReference.current;
+        if (!input || !img) return;
 
-        if (!bg || !header) return;
-
-        bg.classList.remove(style.HeaderSearchBGActive);
-        header.style.background = '';
-
-        const backButton = header.children[0].children[0] as HTMLButtonElement;
-        if (!backButton) return;
+        input.value = '';
+        img.style.display = 'none';
         
-        backButton.style.display = 'none';
-        setLookup(false);
+        setLookup(true);
         setLoading(status.loading);
         
         if (abortControllerRef.current)
@@ -53,7 +48,6 @@ const Header = () => {
         if (!bg || !header) return;
 
         bg.classList.add(style.HeaderSearchBGActive);
-        header.style.background = 'unset';
 
         const backButton = header.children[0].children[0] as HTMLButtonElement;
         if (!backButton) return;
@@ -64,18 +58,20 @@ const Header = () => {
     }
 
     const closeLookup = () => {
-        if (!headerReference.current) return;
-        headerReference.current.style.background = '';
-        headerReference.current.style.borderBottom = 'unset';
-        setLookup(false);
-        setLoading(status.loading);
-
-        if (!headerReference.current) return;
-        const backButton = headerReference.current.children[0].children[0] as HTMLButtonElement;
+        const bg = headerBGReference.current;
+        const header = headerReference.current;
+        
+        if (!bg || !header) return;
+        
+        bg.classList.remove(style.HeaderSearchBGActive);
+        
+        const backButton = header.children[0].children[0] as HTMLButtonElement;
         if (!backButton) return;
+        
         backButton.style.display = 'none';
-
+        setLoading(status.loading);
         clearSearch();
+        setLookup(false);
         
         if (abortControllerRef.current)
             abortControllerRef.current.abort();
@@ -129,7 +125,7 @@ const Header = () => {
             });
     }
 
-    const onEdit = (event: React.FormEvent<HTMLInputElement>): void => {
+    const onEdit = (event: React.FormEvent<HTMLInputElement>) => {
         if (!event.currentTarget) return;
         if (!imgReference.current) return;
 
