@@ -1,5 +1,4 @@
 import style from './header.module.css';
-import { useCallback, useState } from 'react';
 import Settings from '@pages/settings/settings';
 import React from 'react';
 import UserSearch, { status } from '@pages/usersearch/usersearch';
@@ -12,37 +11,68 @@ type user = {
 }
 
 const Header = () => {
-    const [settings,    setSettings] = useState<boolean>(false);
-    const [userLookup,  setLookup  ] = useState<boolean>(false);
-    const [userLoading, setLoading ] = useState<status>(status.loading);
-    const [userData,    setUserData] = useState<user>({ username: '', finished: [], started: [] });
+    const [settings,    setSettings] = React.useState<boolean>(false);
+    const [userLookup,  setLookup  ] = React.useState<boolean>(false);
+    const [userLoading, setLoading ] = React.useState<status>(status.loading);
+    const [userData,    setUserData] = React.useState<user>({ username: '', finished: [], started: [] });
     const imgReference               = React.useRef<HTMLImageElement>(null);
     const inputReference             = React.useRef<HTMLInputElement>(null);
-    const typingTimeoutRef           = React.useRef<number | null>(null);
+    const abortControllerRef         = React.useRef<AbortController | null>(null);
+    const headerReference            = React.useRef<HTMLElement>(null);
 
-    const debounce = (func: Function, delay: number) => {
-        return (...args: any[]) => {
-            if (typingTimeoutRef.current) {
-                clearTimeout(typingTimeoutRef.current);
-            }
-            typingTimeoutRef.current = window.setTimeout(() => {
-                func(...args);
-            }, delay);
-        };
-    };
+    React.useEffect(() => {
+        abortControllerRef.current = new AbortController();
+        return () => abortControllerRef.current?.abort();
+    }, []);
 
-    const closeSearch = (): void => {
+    const clearSearch = () => {
         if (!inputReference.current) return;
 
         inputReference.current.value = '';
-        setLookup(false);
 
         if (!imgReference.current) return;
         imgReference.current.style.display = 'none';
+        
+        if (abortControllerRef.current)
+            abortControllerRef.current.abort();
+    }
+
+    const showSearch = () => {
+        if (!headerReference.current) return;
+        headerReference.current.style.background = 'var(--color-secondary)';
+        headerReference.current.style.borderBottom = '1px solid var(--color-primary)';
+        setLookup(true);
+
+        if (!headerReference.current) return;
+        const backButton = headerReference.current.children[0].children[0] as HTMLButtonElement;
+        if (!backButton) return;
+
+        backButton.style.display = 'block';
+    }
+
+    const closeLookup = () => {
+        if (!headerReference.current) return;
+        headerReference.current.style.background = '';
+        headerReference.current.style.borderBottom = 'unset';
+        setLookup(false);
+
+        if (!headerReference.current) return;
+        const backButton = headerReference.current.children[0].children[0] as HTMLButtonElement;
+        if (!backButton) return;
+        backButton.style.display = 'none';
+
+        clearSearch();
+        
+        if (abortControllerRef.current)
+            abortControllerRef.current.abort();
     }
 
     const startSearch = () => {
         if (!inputReference.current) return;
+        
+        if (abortControllerRef.current)
+            abortControllerRef.current.abort();
+        abortControllerRef.current = new AbortController();
         
         const username: string = inputReference.current.value;
 
@@ -50,12 +80,14 @@ const Header = () => {
             username === '' ||
             username === 'CURRENT_USER' ||
             username.length < 3
-        ) return;
+        ) return setLoading(status.loading);
 
         setLookup(true);
         setLoading(status.loading);
 
-        fetch(`/api/auth/get?username=${ username }`)
+        fetch(`/api/auth/get?username=${ username }`, {
+            signal: abortControllerRef.current?.signal
+        })
             .then(response => response.json())
             .then(data => {
                 if (data.error || data.error === 'User not found.') {
@@ -76,6 +108,10 @@ const Header = () => {
                     started: data.started
                 });
                 setLoading(status.founduser);
+            })
+            .catch((error) => {
+                if (error.toString().includes('AbortError')) return;
+                console.error(error);
             });
     }
 
@@ -83,44 +119,46 @@ const Header = () => {
         if (!event.currentTarget) return;
         if (!imgReference.current) return;
 
-        if (event.currentTarget.value !== '') {
+        if (event.currentTarget.value !== '')
             imgReference.current.style.display = 'unset';
-            setLookup(false);
-        }
-        else {
+        else
             imgReference.current.style.display = 'none';
-            setLookup(true);
-        }
-    }
 
-    const debouncedOnEdit = useCallback(debounce(startSearch, 300), []);
+        startSearch();
+    }
 
     return (
         <>
             { settings && <Settings setter={ setSettings } /> }
             { userLookup && <UserSearch loading={ userLoading } user={ userData } /> }
-            <header className={ style.Header }>
-                <button onClick={ () => setSettings(true) } aria-label='Settings'>
-                    <Image alt='settings' src='/icons/settings.svg' width={ 32 } height={ 32 } />
-                </button>
+            <header className={ style.Header } ref={ headerReference }>
+                <div>
+                    <button onClick={ closeLookup } aria-label='back from search' style={ { zIndex: 1, display: 'none' } }>
+                        <Image alt='back' src='/icons/back.svg' width={ 32 } height={ 32 } />
+                    </button>
+                    <button onClick={ () => setSettings(true) } aria-label='settings'>
+                        <Image alt='settings' src='/icons/settings.svg' width={ 32 } height={ 32 } />
+                    </button>
+                </div>
                 <input
                     ref={ inputReference }
                     type='text'
                     placeholder='Profile lookup ...'
-                    onInput={ (event) => {
-                        onEdit(event);
-                        debouncedOnEdit();
-                    } }
+                    onInput={ onEdit }
+                    onClick={ showSearch }
                 />
                 <button
                     className={ style.HeaderCloseSearch }
-                    onClick={ closeSearch}
+                    onClick={ clearSearch }
                     aria-label='Close search'
                 >
-                    <img
+                    <Image
                         ref={ imgReference }
                         style={ { display: 'none' } }
+                        alt='clear'
                         src='/icons/close.svg'
+                        width={ 32 }
+                        height={ 32 }
                     />
                 </button>
             </header>

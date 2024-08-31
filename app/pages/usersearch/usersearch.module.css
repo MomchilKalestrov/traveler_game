@@ -6,11 +6,11 @@
     top: 0;
     left: 0;
     width: calc(100vw - var(--horizontal) * 2);
-    height: calc(100vh - 3rem - var(--padding) * 2);
+    height: calc(100vh - 3.5rem - var(--padding) * 2);
     z-index: 1;
     background-color: var(--color-bg);
     animation: slideIn ease-in-out 0.5s;
-    padding: 3.5rem var(--horizontal) var(--padding) var(--horizontal);
+    padding: 4rem var(--horizontal) var(--padding) var(--horizontal);
 }
 
 .UserSearchCentered {

@@ -1,6 +1,7 @@
 * {
     user-select: none;
     color: var(--color-primary);
+    scrollbar-width: none;
 }
 
 body {

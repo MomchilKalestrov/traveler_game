@@ -3,7 +3,7 @@ import Navbar from '@components/navbar/navbar';
 import Home from '@pages/home/home';
 import Map from '@pages/map/map';
 import Profile from '@pages/profile/profile';
-import { createRef, useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/navigation';
 import Header from '@components/header/header';
 
@@ -17,16 +17,16 @@ type location = {
 
 const Page = () => {
     const router                            = useRouter();
-    const abortControllerRef                = useRef<AbortController | null>(null);
-    const [userData,          setUserData]  = useState<any | undefined>(undefined);
-    const [startedLocations,  setStarted ]  = useState<Array<location> | undefined>(undefined);
-    const [finishedLocations, setFinished]  = useState<Array<location> | undefined>(undefined);
-    const [newLocations,      setNew     ]  = useState<Array<location> | undefined>(undefined);
-    const [reset,             setReset   ]  = useState<number>(0);
+    const abortControllerRef                = React.useRef<AbortController | null>(null);
+    const [userData,          setUserData]  = React.useState<any | undefined>(undefined);
+    const [startedLocations,  setStarted ]  = React.useState<Array<location> | undefined>(undefined);
+    const [finishedLocations, setFinished]  = React.useState<Array<location> | undefined>(undefined);
+    const [newLocations,      setNew     ]  = React.useState<Array<location> | undefined>(undefined);
+    const [reset,             setReset   ]  = React.useState<number>(0);
 
     const resetRender = () => setReset(reset + 1);
 
-    useEffect(() => {
+    React.useEffect(() => {
         const abortController = new AbortController();
         abortControllerRef.current = abortController;
             
@@ -113,9 +113,9 @@ const Page = () => {
     }, [reset]);
 
     let refs: Array<React.RefObject<HTMLElement>> = [
-        createRef<HTMLElement>(),
-        createRef<HTMLElement>(),
-        createRef<HTMLElement>()
+        React.createRef<HTMLElement>(),
+        React.createRef<HTMLElement>(),
+        React.createRef<HTMLElement>()
     ];
 
     return (

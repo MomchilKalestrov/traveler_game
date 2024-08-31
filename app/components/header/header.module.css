@@ -12,8 +12,13 @@
 }
 
 .Header div {
-    display: flex;
-    align-items: center;
+    position: relative;
+    min-width: 2.5rem;
+}
+
+.Header div button {
+    position: absolute;
+    border-radius: 50%;
 }
 
 .Header input {
@@ -37,7 +42,7 @@
     padding: 0.25rem;
 }
 
-.Header button:first-child {
+.Header div:first-child button {
     border-radius: 50% 0 0 50%;
 }
 
