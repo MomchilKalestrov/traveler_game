@@ -23,7 +23,7 @@ const Page = (
   const [name,         setName        ] = React.useState<string>();
   const [visible,      setVisible     ] = React.useState<boolean>(false);
   const [userLocation, setUserLocation] = React.useState<google.maps.LatLngLiteral | null>(null);
-  const map = useMap('google-api-map');
+  //const map = useMap('google-api-map');
 
   React.useEffect(() => {
     try {
