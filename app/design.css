@@ -9,6 +9,34 @@
     --icon-filter-bg: brightness(0%) invert(94%) sepia(16%) saturate(84%) hue-rotate(31deg) brightness(101%) contrast(86%);
 }
 
+@font-face {
+    font-family: 'Product Sans';
+    src: url('/fonts/Product_Sans_Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Product Sans';
+    src: url('/fonts/Product_Sans_Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Product Sans';
+    src: url('/fonts/Product_Sans_Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Product Sans';
+    src: url('/fonts/Product_Sans_Bold_Italic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+
 @media (prefers-color-scheme: dark) {
     :root {
         --color-primary: #E9EBE1;

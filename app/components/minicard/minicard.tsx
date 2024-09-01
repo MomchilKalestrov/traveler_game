@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import style from './minicard.module.css';
 import InfoCard, { cardType } from '@components/infocard/infocard';
 import Image from 'next/image';
@@ -10,27 +10,23 @@ const Minicard = (
         reset: () => void
     }
 ) => {
-    const [viewing, setViewing] = useState<boolean>(false);
+    const [viewing, setViewing] = React.useState<boolean>(false);
 
     const reference: React.RefObject<HTMLDivElement> = React.useRef<HTMLDivElement>(null);
 
-    const SetBG = () => {
+    React.useEffect(() => {
         if(reference.current) {
             const width = reference.current.offsetWidth;
             const height = reference.current.offsetHeight
             //reference.current.style.backgroundImage = ``;
             reference.current.style.backgroundSize = `${width + 65}px ${(width + 65) / (width / height)}px`;
         }
-    };
-
-    useEffect(() => {
-        SetBG();
     }, [props.name]);
 
     return (
         <>
             <button aria-label={ `View started ${ props.name }` } className={ style.Minicard } onClick={ () => setViewing(true) }>
-                <p>{ props.name }</p>
+                <h3>{ props.name }</h3>
                 <Image alt={ props.name } src={ `/badges/${ props.name }.svg` } width={ 32 } height={ 32 } />
             </button>
             {
