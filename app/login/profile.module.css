@@ -13,8 +13,6 @@
     margin: 0px;
     padding-bottom: 1rem;
     border-bottom: 1px solid var(--color-primary);
-    font-size: 2.5rem;
-    line-height: 2.5rem;
 }
 
 div.FormInput {
@@ -76,16 +74,12 @@ div.FormInput input:focus + label {
 }
 
 button.FormInput, a.FormInput {
-    --padding: 0.5rem;
-
-    height: calc(3.5rem - var(--padding) * 2);
-    padding: var(--padding) 1rem;
-    border-radius: calc(1.75rem - var(--padding));
+    height: 2.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 1.25rem;
     background-color: var(--color-primary);
     border: none;
     color: var(--color-secondary);
-    font-size: 1rem;
-    line-height: 1.5rem;
     display: flex;
     align-items: center;
     justify-content: center;

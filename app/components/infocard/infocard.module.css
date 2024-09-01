@@ -76,16 +76,12 @@
 }
 
 .InfocardButton {
-    --padding: 0.5rem;
-
-    height: calc(3.5rem - var(--padding) * 2);
-    padding: var(--padding) 1rem;
-    border-radius: calc(1.75rem - var(--padding));
+    height: 2.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 1.25rem;
     border: 1px solid var(--color);
     color: var(--color);
     background-color: transparent;
-    font-size: 1rem;
-    line-height: 1rem;
 }
 
 .InfocardGreen { --color: var(--color-primary); }

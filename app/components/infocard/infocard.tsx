@@ -125,7 +125,6 @@ const InfoCard = (
         reset: () => void
     }
 ) => {
-    const router = useRouter();
     const reference: React.RefObject<HTMLDivElement> = React.useRef<HTMLDivElement>(null);
 
     const close = () => {
@@ -172,7 +171,7 @@ const InfoCard = (
     return (
         <div className={ style.Infocard }>
             <div ref={ reference }>
-                <div className={ style.InfocardHeader }>
+                <div className={ style.InfocardHeader } style={ { backgroundImage: `url('/locations/backgrounds/${ props.name }.png')` } }>
                     <button aria-label='close card' onClick={ close }>
                         <Image src='/icons/back.svg' alt='back' width={ 32 } height={ 32 } />
                     </button>

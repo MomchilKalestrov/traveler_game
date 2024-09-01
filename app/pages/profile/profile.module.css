@@ -9,8 +9,6 @@
 }
 
 .ProfileCard {
-    --padding: 1rem;
-
     border-radius: 0.75rem;
     background-color: var(--color-secondary);
     width: calc(100% - var(--padding) * 2);
@@ -35,11 +33,6 @@
     display: flex;
     flex-wrap: wrap;
     gap: var(--padding);
-}
-
-.ProfileCard h2 {
-    line-height: 1.5rem;
-    font-size: 1.5rem;
 }
 
 .ProfileBadges img {

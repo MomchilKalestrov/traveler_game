@@ -31,12 +31,10 @@ const Mapcard = (
         <>
             <div className={ style.Mapcard }>
                 <div ref={ reference } className={ style.MapcardLocation} onLoad={ SetBG }>
-                <div>
-                    <Image alt={ props.name } src={ `/badges/${ props.name }.svg`} width={ 40 } height={ 40 } />
-                </div>
+                    <div><Image alt={ props.name } src={ `/locations/badges/${ props.name }.svg`} width={ 40 } height={ 40 } /></div>
                 </div>
                 <div className={ style.MapcardMore }>
-                    <p className={ style.MapcardTitle }>{ props.name }</p>
+                    <h3 style={ { margin: 0 } }>{ props.name }</h3>
                     <button
                         aria-label={ `View new ${ props.name }` }
                         className={ style.Button }

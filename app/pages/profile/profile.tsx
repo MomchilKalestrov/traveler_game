@@ -78,19 +78,18 @@ const Page = (
             <h2>{ props.userData.username }</h2>
         </div>
         {
-          props.userData.finished.length > 0
-          ? <div className={ `${ style.ProfileCard }` }>
-              <h2>Badges</h2>
-              <div className={ style.ProfileDivider } />
-              <div className={ style.ProfileBadges }>
-                {
-                  props.userData.finished.map((data: string, key: number) =>
-                    <Image src={ `/badges/${ data }.svg` } alt={ data } key={ key } width={ 48 } height={ 48 } />
-                  )
-                }
-              </div>
+          props.userData.finished.length > 0 &&
+          <div className={ `${ style.ProfileCard }` }>
+            <h2>Badges</h2>
+            <div className={ style.ProfileDivider } />
+            <div className={ style.ProfileBadges }>
+              {
+                props.userData.finished.map((data: string, key: number) =>
+                  <Image src={ `/locations/badges/${ data }.svg` } alt={ data } key={ key } width={ 48 } height={ 48 } />
+                )
+              }
             </div>
-          : <></>
+          </div>
         }
       </div>
     </main>

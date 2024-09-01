@@ -48,18 +48,18 @@ const Page = (
     switch (props.loading) {
         case status.loading: return (
             <div className={ `${ style.UserSearch } ${ style.UserSearchCentered }` }>
-                <Image src='/icons/loading.svg' alt='Loading' width={ 64 } height={ 64 } />
+                <Image style={ { filter: 'none' } } src='/icons/loading.svg' alt='Loading' width={ 64 } height={ 64 } />
             </div>
         );
         case status.nouser: return (
             <div className={ `${ style.UserSearch } ${ style.UserSearchCentered }` }>
-                <img src='/icons/nouser.svg' />
+                <Image src='/icons/nouser.svg' alt='no user' width={ 48 } height={ 48 } />
                 <p>No user with the name { `"${ props.user.username }"` } found.</p>
             </div>
         );
         case status.error: return (
             <div className={ `${ style.UserSearch } ${ style.UserSearchCentered }` }>
-                <img src='/icons/error.svg' />
+                <Image src='/icons/error.svg' alt='error' width={ 48 } height={ 48 } />
                 <p>An error occurred while looking up the user.</p>
             </div>
         );
@@ -80,7 +80,7 @@ const Page = (
                             <div className={ userStyle.ProfileBadges }>
                                 {
                                     props.user.finished.map((data: string, key: number) =>
-                                        <img src={ `/badges/${ data }.svg` } alt={ data } key={ key } />
+                                        <img src={ `/locations/badges/${ data }.svg` } alt={ data } key={ key } />
                                     )
                                 }
                             </div>

@@ -27,7 +27,7 @@ const Minicard = (
         <>
             <button aria-label={ `View started ${ props.name }` } className={ style.Minicard } onClick={ () => setViewing(true) }>
                 <h3>{ props.name }</h3>
-                <Image alt={ props.name } src={ `/badges/${ props.name }.svg` } width={ 32 } height={ 32 } />
+                <Image alt={ props.name } src={ `/locations/badges/${ props.name }.svg` } width={ 32 } height={ 32 } />
             </button>
             {
                 viewing &&

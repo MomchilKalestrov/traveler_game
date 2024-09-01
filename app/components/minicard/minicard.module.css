@@ -12,12 +12,9 @@
     padding: 0px;
 }
 
-.Minicard h3 {
+.Minicard h4 {
     margin: 0px;
-    font-weight: bold;
     margin: 1rem 0px 1rem 1rem;
-    line-height: 1rem;
-    font-size: 1rem;
     color: var(--color-primary);
 }
 

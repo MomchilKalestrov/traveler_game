@@ -4,24 +4,26 @@
     overflow: hidden;
     color: var(--color-primary);
     margin-bottom: 0.5rem;
+    background-color: var(--color-secondary);
 }
 
 .MapcardLocation {
-    --padding: 0.5rem;
+    --padding: 1rem;
 
     width: calc(100% - var(--padding) * 2);
-    height: calc(8rem - var(--padding) * 2);
+    height: calc(10rem - var(--padding) * 2);
+    border-radius: 0.75rem;
     padding: var(--padding);
-    background-image: url('/placeholder.png');
+    background-color: #a7caff;
 }
 
 .MapcardLocation > div {
     width: 2.5rem;
     height: 2.5rem;
     border-radius: 0.75rem;
-    background-color: var(--color-secondary);
     border: none;
     padding: 0.5rem;
+    background-color: var(--color-secondary);
 }
 
 .MapcardLocation > div > img {
@@ -40,21 +42,11 @@
     align-items: center;
 }
 
-.MapcardTitle {
-    margin: 0px;
-    font-weight: bold;
-    color: var(--color-primary);
-}
-
 .Button {
-    --padding: 0.5rem;
-
-    height: calc(3.5rem - var(--padding) * 2);
-    padding: var(--padding) 1rem;
-    border-radius: calc(1.75rem - var(--padding));
+    height: 2.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 1.25rem;
     border: 1px solid var(--color-primary);
     color: var(--color-primary);
-    background-color: #ffffff00;
-    font-size: 1rem;
-    line-height: 1rem;
+    background-color: transparent;
 }

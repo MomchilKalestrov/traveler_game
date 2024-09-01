@@ -1,7 +1,6 @@
 'use client'
-import { AdvancedMarker, APIProvider, Map } from '@vis.gl/react-google-maps';
+import { AdvancedMarker, APIProvider, Map, useMap } from '@vis.gl/react-google-maps';
 import React from 'react';
-import { useEffect } from 'react';
 import InfoCard, { cardType } from '@components/infocard/infocard';
 import Image from 'next/image';
 
@@ -24,8 +23,9 @@ const Page = (
   const [name,         setName        ] = React.useState<string>();
   const [visible,      setVisible     ] = React.useState<boolean>(false);
   const [userLocation, setUserLocation] = React.useState<google.maps.LatLngLiteral | null>(null);
+  const map = useMap('google-api-map');
 
-  useEffect(() => {
+  React.useEffect(() => {
     try {
       if (navigator.geolocation) {
         const id = navigator.geolocation.watchPosition((position) =>
@@ -87,10 +87,17 @@ const Page = (
       }
       <APIProvider apiKey={ '' } onLoad={ () => console.log('Maps API has loaded.') }>
         <Map
+          id='google-api-map'
           defaultZoom={ 11 }
           mapId={ 'e62456ff6a25971e' }
           defaultCenter={ { lat: 42.143002, lng: 24.749651 } }
+          zoomControl={ false }
+          mapTypeControl={ false }
+          scaleControl={ false }
+          streetViewControl={ false }
+          rotateControl={ false }
           fullscreenControl={ false }
+          keyboardShortcuts={ false }
         >
           {
             userLocation &&
