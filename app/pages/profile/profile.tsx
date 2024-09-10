@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import style from './profile.module.css';
 import { loading, stopLoading } from '@components/loading/loading';
 import Image from 'next/image';
@@ -12,12 +12,16 @@ const Page = (
 ) => {
   const reference = React.useRef<HTMLImageElement>(null);
 
-  useEffect(() => {
-    if (!reference.current || !props.userData) return;
+  React.useEffect(() => {
+    if (!reference.current) return;
 
-    fetch(`https://gsplsf3le8pssi3n.public.blob.vercel-storage.com/${ props.userData.username }`)
-      .then((res) => res.text())
-      .then((text) => { if (reference.current && text.split(':')[0] === 'data') reference.current.src = text; });
+    const img = reference.current;
+    fetch(`https://gsplsf3le8pssi3n.public.blob.vercel-storage.com/user/${ props.userData.username }`)
+      .then((res) => res.status === 200 ? res.text() : undefined)
+      .then((text) => {
+        if (img && text)
+          img.src = text;
+      });
   }, [props.userData]);
 
   const changeProfilePhoto = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,7 +72,7 @@ const Page = (
             <div className={ style.ProfilePhoto }>
               <Image
                 ref={ reference }
-                src={ `/nouser.svg` }
+                src='/default_assets/user.svg'
                 alt='profile'
                 width={ 64 }
                 height={ 64 }
@@ -85,7 +89,21 @@ const Page = (
             <div className={ style.ProfileBadges }>
               {
                 props.userData.finished.map((data: string, key: number) =>
-                  <Image src={ `/locations/badges/${ data }.svg` } alt={ data } key={ key } width={ 48 } height={ 48 } />
+                  <Image
+                    src='/default_assets/badge.svg'
+                    alt={ data } key={ key } width={ 48 } height={ 48 }
+                    onLoad={ (event: React.SyntheticEvent<HTMLImageElement>) => {
+                      if (!event.currentTarget) return;
+  
+                      const ico = event.currentTarget;
+                      fetch(`https://gsplsf3le8pssi3n.public.blob.vercel-storage.com/ico/${ data }.svg`)
+                        .then((res) => res.status === 200 ? res.text() : undefined)
+                        .then((text) => {
+                          if (ico && text)
+                            ico.src = `data:image/svg+xml;base64,${ btoa(text) }`;
+                        });
+                  }}
+                  />
                 )
               }
             </div>

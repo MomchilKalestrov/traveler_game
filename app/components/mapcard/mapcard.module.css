@@ -3,7 +3,6 @@
     border-radius: 0.75rem;
     overflow: hidden;
     color: var(--color-primary);
-    margin-bottom: 0.5rem;
     background-color: var(--color-secondary);
 }
 
@@ -14,7 +13,9 @@
     height: calc(10rem - var(--padding) * 2);
     border-radius: 0.75rem;
     padding: var(--padding);
-    background-color: #a7caff;
+    background: url('/default_assets/background.png');
+    background-position: center;
+    background-size: cover;
 }
 
 .MapcardLocation > div {

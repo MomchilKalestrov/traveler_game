@@ -14,7 +14,7 @@ const POST = async (request: NextRequest) => {
         return NextResponse.json({ error: 'Missing parameters.' });
     
     try {
-        const blob = await put(cookie.get('username')?.value || '', body.image, {
+        const blob = await put(`/user/${ cookie.get('username')?.value || '' }`, body.image, {
             access: 'public',
             contentType: 'image/png',
             addRandomSuffix: false

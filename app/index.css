@@ -24,17 +24,17 @@ body {
     padding: 0px;
     width: 100vw;
     height: 100vh;
-    background-color: var(--color-bg);
+    background: var(--color-bg) url('/backgrounds/spotbg.svg') center;
+    background-size: 12.5rem;
+    display: inline-block; /* Fix for collapsing margins */
 }
 
 main {
     --padding: 1rem;
     --horizontal: max(calc(50vw - 15rem), var(--padding));
 
-    height: calc(100% - 9rem - var(--padding) * 2);
-    padding: 5rem var(--horizontal) var(--padding) var(--horizontal);
+    height: calc(100% - 9rem - var(--padding));
+    margin: 5rem var(--horizontal) 0rem var(--horizontal);
     overflow-x: hidden;
     overflow-y: scroll;
-    background: url('/backgrounds/spotbg.svg') center;
-    background-size: 12.5rem;
 }

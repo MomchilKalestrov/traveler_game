@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import style from './mapcard.module.css';
 import InfoCard, { cardType } from '@components/infocard/infocard';
 import Image from 'next/image';
@@ -10,28 +10,42 @@ const Mapcard = (
         reset: () => void
     }
 ) => {
-    const [viewing, setViewing] = useState<boolean>(false);
+    const [viewing, setViewing] = React.useState<boolean>(false);
+    const reference = React.useRef<HTMLImageElement>(null);
 
-    const reference: React.RefObject<HTMLDivElement> = React.useRef<HTMLDivElement>(null);
+    React.useEffect(() => {
+        if(!reference.current) return;
 
-    const SetBG = () => {
-        if(reference.current) {
-            const width = reference.current.offsetWidth;
-            const height = reference.current.offsetHeight
-            //reference.current.style.backgroundImage = `url('https://maps.googleapis.com/maps/api/staticmap?center=${ props.name },Bulgaria&zoom=13&size=${width + 65}x${Math.round((width + 65) / (width / height))}&maptype=satellite&style=feature:all|element:labels|visibility:off&key=AIzaSyBPYpCcdRsOe4Mci-EkrfBKwNAwwLQzTQ0')`;
-            reference.current.style.backgroundSize = `${width + 65}px ${(width + 65) / (width / height)}px`;
-        }
-    };
-
-    useEffect(() => {
-        SetBG();
-    }, []);
+        const bg = reference.current.parentElement?.parentElement;
+        fetch(`https://gsplsf3le8pssi3n.public.blob.vercel-storage.com/bg/${ props.name }.png`)
+            .then((res) => res.status === 200 ? res.text() : undefined)
+            .then((text) => {
+                if (bg && text)
+                    bg.style.backgroundImage = `url(${ text })`;
+            })
+        
+        const ico = reference.current;
+        fetch(`https://gsplsf3le8pssi3n.public.blob.vercel-storage.com/ico/${ props.name }.svg`)
+            .then((res) => res.status === 200 ? res.text() : undefined)
+            .then((text) => {
+                if (ico && text)
+                    ico.src = `data:image/svg+xml;base64,${ btoa(text) }`;
+            })
+    }, [props.name]);
 
     return (
         <>
             <div className={ style.Mapcard }>
-                <div ref={ reference } className={ style.MapcardLocation} onLoad={ SetBG }>
-                    <div><Image alt={ props.name } src={ `/locations/badges/${ props.name }.svg`} width={ 40 } height={ 40 } /></div>
+                <div className={ style.MapcardLocation}>
+                    <div>
+                        <Image
+                            alt={ props.name }
+                            src='/default_assets/badge.svg'
+                            width={ 40 }
+                            height={ 40 }
+                            ref={ reference }
+                        />
+                    </div>
                 </div>
                 <div className={ style.MapcardMore }>
                     <h3 style={ { margin: 0 } }>{ props.name }</h3>
