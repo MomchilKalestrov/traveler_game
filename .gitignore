@@ -49,3 +49,6 @@ next-env.d.ts
 # Built Visual Studio Code Extensions
 *.vsix
 certificates
+
+# crap from my setup
+.vs*
