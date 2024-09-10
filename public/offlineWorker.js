@@ -1,9 +1,11 @@
 // service-worker.js
 
-const cacheName = 'offlineCacheVersion1';
+const cacheName = 'offlineCacheV3';
 
 const offlinePages = [
-    '/'
+    '/offline/offline.html',
+    '/offline/style.css',
+    '/backgrounds/spotbg.svg'
 ];
 
 self.addEventListener('install', (e) => {
@@ -41,7 +43,7 @@ self.addEventListener('fetch', (e) => {
                     return response;
                 } else if (e.request.headers.get('accept').includes('text/html')) {
                     // If the request is for an HTML page, return the offline page
-                    return caches.match('/offline.html');
+                    return caches.match('/offline/offline.html');
                 }
             });
         })
