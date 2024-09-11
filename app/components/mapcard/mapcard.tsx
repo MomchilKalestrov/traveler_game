@@ -2,7 +2,7 @@
 import React from 'react';
 import style from './mapcard.module.css';
 import InfoCard, { cardType } from '@components/infocard/infocard';
-import Image from 'next/image';
+import ImageAndFallback from '@components/imageAndFallback/imageAndFallback';
 
 const Mapcard = (
     props: {
@@ -11,39 +11,25 @@ const Mapcard = (
     }
 ) => {
     const [viewing, setViewing] = React.useState<boolean>(false);
-    const reference = React.useRef<HTMLImageElement>(null);
-
-    React.useEffect(() => {
-        if(!reference.current) return;
-
-        const bg = reference.current.parentElement?.parentElement;
-        fetch(`https://gsplsf3le8pssi3n.public.blob.vercel-storage.com/bg/${ props.name }.png`)
-            .then((res) => res.status === 200 ? res.text() : undefined)
-            .then((text) => {
-                if (bg && text)
-                    bg.style.backgroundImage = `url(${ text })`;
-            })
-        
-        const ico = reference.current;
-        fetch(`https://gsplsf3le8pssi3n.public.blob.vercel-storage.com/ico/${ props.name }.svg`)
-            .then((res) => res.status === 200 ? res.text() : undefined)
-            .then((text) => {
-                if (ico && text)
-                    ico.src = `data:image/svg+xml;base64,${ btoa(text) }`;
-            })
-    }, [props.name]);
 
     return (
         <>
             <div className={ style.Mapcard }>
-                <div className={ style.MapcardLocation}>
+                <div className={ style.MapcardLocation} onLoad={ (event: React.SyntheticEvent<HTMLDivElement>) =>
+                    fetch(`https://gsplsf3le8pssi3n.public.blob.vercel-storage.com/bg/${ props.name }.png`)
+                        .then((res) => res.status === 200 ? res.text() : undefined)
+                        .then((text) => {
+                            if (event.currentTarget && text)
+                                event.currentTarget.style.backgroundImage = `url(${ text })`;
+                        })
+                }>
                     <div>
-                        <Image
+                        <ImageAndFallback
                             alt={ props.name }
-                            src='/default_assets/badge.svg'
+                            src={ `https://gsplsf3le8pssi3n.public.blob.vercel-storage.com/ico/${ props.name }.svg` }
+                            fallback='/default_assets/badge.svg'
                             width={ 40 }
                             height={ 40 }
-                            ref={ reference }
                         />
                     </div>
                 </div>

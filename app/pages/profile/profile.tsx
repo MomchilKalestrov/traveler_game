@@ -3,6 +3,7 @@ import React from 'react';
 import style from './profile.module.css';
 import { loading, stopLoading } from '@components/loading/loading';
 import Image from 'next/image';
+import ImageAndFallback from '@app/components/imageAndFallback/imageAndFallback';
 
 const Page = (
   props: {
@@ -11,18 +12,6 @@ const Page = (
   }
 ) => {
   const reference = React.useRef<HTMLImageElement>(null);
-
-  React.useEffect(() => {
-    if (!reference.current) return;
-
-    const img = reference.current;
-    fetch(`https://gsplsf3le8pssi3n.public.blob.vercel-storage.com/user/${ props.userData.username }`)
-      .then((res) => res.status === 200 ? res.text() : undefined)
-      .then((text) => {
-        if (img && text)
-          img.src = text;
-      });
-  }, [props.userData]);
 
   const changeProfilePhoto = (event: React.ChangeEvent<HTMLInputElement>) => {
     loading();
@@ -70,12 +59,11 @@ const Page = (
       <div className={ style.ProfileContainer }>
         <div className={ `${ style.ProfileCard } ${ style.ProfileInfo }` }>
             <div className={ style.ProfilePhoto }>
-              <Image
-                ref={ reference }
-                src='/default_assets/user.svg'
-                alt='profile'
-                width={ 64 }
-                height={ 64 }
+              <ImageAndFallback
+                src={ `https://gsplsf3le8pssi3n.public.blob.vercel-storage.com/user/${ props.userData.username }` }
+                fallback='/default_assets/user.svg'
+                ref={ reference } alt='profile picture'
+                width={ 64 } height={ 64 }
               />
               <input type="file" accept="image/png" onChange={ changeProfilePhoto } />
             </div>
@@ -89,20 +77,11 @@ const Page = (
             <div className={ style.ProfileBadges }>
               {
                 props.userData.finished.map((data: string, key: number) =>
-                  <Image
-                    src='/default_assets/badge.svg'
-                    alt={ data } key={ key } width={ 48 } height={ 48 }
-                    onLoad={ (event: React.SyntheticEvent<HTMLImageElement>) => {
-                      if (!event.currentTarget) return;
-  
-                      const ico = event.currentTarget;
-                      fetch(`https://gsplsf3le8pssi3n.public.blob.vercel-storage.com/ico/${ data }.svg`)
-                        .then((res) => res.status === 200 ? res.text() : undefined)
-                        .then((text) => {
-                          if (ico && text)
-                            ico.src = `data:image/svg+xml;base64,${ btoa(text) }`;
-                        });
-                  }}
+                  <ImageAndFallback
+                    src={ `https://gsplsf3le8pssi3n.public.blob.vercel-storage.com/ico/${ data }.svg` }
+                    fallback='/default_assets/badge.svg'
+                    alt={ data } key={ key }
+                    width={ 48 } height={ 48 }
                   />
                 )
               }
