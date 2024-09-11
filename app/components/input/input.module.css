@@ -33,6 +33,10 @@ div.FormInput input {
     height: calc(100% - 2rem);
 }
 
+div.FormInput input::placeholder {
+    opacity: 0;
+}
+
 div.FormInput:focus-within {
     border-bottom: 2px solid var(--color-primary);
 }
