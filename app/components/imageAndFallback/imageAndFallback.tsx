@@ -1,8 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 
-const ImageAndFallback = (
-    props: {
+const ImageAndFallback = React.forwardRef<HTMLImageElement, {
         src: string,
         fallback: string,
         alt: string,
@@ -10,9 +9,8 @@ const ImageAndFallback = (
         height: number,
         style?: React.CSSProperties,
         className?: string,
-        ref?: React.Ref<HTMLImageElement>
     }
-) => {
+>((props, ref) => {
     const [fallback, setFallback] = React.useState(false);
     
     return (
@@ -22,10 +20,10 @@ const ImageAndFallback = (
             width={ props.width }
             height={ props.height }
             style={ props.style }
-            ref={ props.ref }
+            ref={ ref }
             onError={ () => setFallback(true) }
         />
     );
-}
+});
 
 export default ImageAndFallback;
