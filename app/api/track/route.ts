@@ -31,7 +31,7 @@ const POST = async (request: NextRequest) => {
             { $push: { started: body.name } }
         );
         await client.close();
-        return NextResponse.json({ success: true }, { status: 204 });
+        return new NextResponse(null, { status: 204 });
     } catch(error) {
         console.log('An exception has occured:\n', error);
         await client.close();

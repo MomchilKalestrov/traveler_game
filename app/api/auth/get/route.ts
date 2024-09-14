@@ -30,7 +30,7 @@ const GET = async (request: NextRequest) => {
         }
         // Return the locations
         await client.close();
-        return NextResponse.json(userInfo, { status: 200 });
+        return new NextResponse(null, { status: 200 });
     } catch(error) {
         console.log('An exception has occured:\n', error);
         await client.close();

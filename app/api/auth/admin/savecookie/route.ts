@@ -16,7 +16,7 @@ const POST = async (request: any) => {
     if (!args.passphrase) return NextResponse.json({ error: 'Missing parameters.' }, { status: 412 });
     
     cookie.set('passphrase', md5(args.passphrase));
-    return NextResponse.json({ success: true }, { status: 204 });
+    return new NextResponse(null, { status: 204 });
 }
 
 export { POST };

@@ -39,7 +39,7 @@ const POST = async (request: NextRequest) => {
         });
     
         await client.close();
-        return NextResponse.json({ success: true }, { status: 204 });
+        return new NextResponse(null, { status: 204 });
     }
     catch (error) {
         await client.close();

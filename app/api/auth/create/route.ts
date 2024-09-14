@@ -38,7 +38,7 @@ const POST = async (request: NextRequest) => {
         user.set('password', md5(args.get('password') || ''));
         
         await client.close();
-        return NextResponse.json({ success: true }, { status: 201 });
+        return new NextResponse(null, { status: 201 });
     }
     catch(error) {
         console.log('An exception has occured:\n', error);

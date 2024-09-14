@@ -22,6 +22,8 @@ const Page = (
     reader.onload = (e) => {
       if (!e.target?.result) return;
 
+      console.log(e.target?.result);
+
       fetch('/api/auth/profileimage', {
         method: 'POST',
         body: JSON.stringify({ image: e.target?.result })
@@ -34,7 +36,7 @@ const Page = (
       console.error('Error reading file:', e);
       stopLoading();
     };
-    reader.readAsArrayBuffer(file);
+    reader.readAsText(file);
   }
 
   if (!props.userData)

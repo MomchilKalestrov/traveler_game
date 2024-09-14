@@ -33,7 +33,7 @@ const POST = async (request: NextRequest) => {
             maxAge: Date.now() + 365 * 24 * 60 * 60 * 1000
         });
         await client.close();
-        return NextResponse.json({ success: true }, { status: 204 });
+        return new NextResponse(null, { status: 204 });
     }
     catch(error) {
         console.log('An exception has occured:\n', error);

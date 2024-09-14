@@ -12,6 +12,8 @@ const POST = async (request: NextRequest) => {
 
     if (!body.image)
         return NextResponse.json({ error: 'Missing parameters.' }, { status: 412 });
+
+    console.log(body.image);
     
     try {
         const blob = await put(`user/${ cookie.get('username')?.value || '' }.png`, body.image, {
@@ -20,9 +22,10 @@ const POST = async (request: NextRequest) => {
             addRandomSuffix: false
         });
         console.log(blob);
-        return NextResponse.json({ success: true }, { status: 204 });
+        return new NextResponse(null, { status: 204 });
     }
     catch (error) {
+        console.error(error);
         return NextResponse.json({ error: 'Error uploading image.' }, { status: 500 });
     }
 }
