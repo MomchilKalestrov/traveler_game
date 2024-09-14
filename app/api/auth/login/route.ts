@@ -7,7 +7,7 @@ const POST = async (request: NextRequest) => {
     const args: URLSearchParams = new URL(request.url).searchParams;
     
     if(!args.get('password') || !args.get('username'))
-        return NextResponse.json({ error: 'Missing parameters.' });
+        return NextResponse.json({ error: 'Missing parameters.' }, { status: 412 });
     
     const client = new MongoClient(process.env.MONGODB_URI as string);
     
@@ -20,8 +20,10 @@ const POST = async (request: NextRequest) => {
             username: args.get('username'),
             password: md5(args.get('password') || '')
         });
-        if(!dataExists)
-            return NextResponse.json({ error: 'Incorrect credentials.' });
+        if(!dataExists) {
+            await client.close();
+            return NextResponse.json({ error: 'Incorrect credentials.' }, { status: 401 });
+        }
         // Set the cookies
         const user = cookies();
         user.set('username', args.get('username') || '', {
@@ -31,12 +33,12 @@ const POST = async (request: NextRequest) => {
             maxAge: Date.now() + 365 * 24 * 60 * 60 * 1000
         });
         await client.close();
-        return NextResponse.json({ success: true });
+        return NextResponse.json({ success: true }, { status: 204 });
     }
     catch(error) {
         console.log('An exception has occured:\n', error);
         await client.close();
-        return NextResponse.json({ error: 'An error occurred.' });
+        return NextResponse.json({ error: 'An error occurred.' }, { status: 500 });
     };
 };
 

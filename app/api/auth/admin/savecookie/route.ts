@@ -1,5 +1,4 @@
 import webpush from 'web-push';
-import { MongoClient } from 'mongodb';
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { md5 } from 'js-md5';
@@ -14,10 +13,10 @@ const POST = async (request: any) => {
     const cookie = cookies();
     const args = await request.json();
 
-    if (!args.passphrase) return NextResponse.json({ error: 'Missing parameters.' });
+    if (!args.passphrase) return NextResponse.json({ error: 'Missing parameters.' }, { status: 412 });
     
     cookie.set('passphrase', md5(args.passphrase));
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true }, { status: 204 });
 }
 
 export { POST };

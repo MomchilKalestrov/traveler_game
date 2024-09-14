@@ -10,7 +10,7 @@ const GET = async (request: NextRequest) => {
     let locations: any = {};
 
     if(await userCheck(cookie.get('username')?.value || '', cookie.get('password')?.value || ''))
-        return NextResponse.json({ error: 'Invalid credentials.' });
+        return NextResponse.json({ error: 'Invalid credentials.' }, { status: 401 });
 
     try {
         await client.connect();
@@ -24,11 +24,11 @@ const GET = async (request: NextRequest) => {
         ]).toArray();
         
         await client.close();
-        return NextResponse.json(locations);
+        return NextResponse.json(locations, { status: 200 });
     } catch(error) {
         console.log('An exception has occured:\n', error);
         await client.close();
-        return NextResponse.json({ error: 'An error has occured.' });
+        return NextResponse.json({ error: 'An error has occured.' }, { status: 500 });
     }
 };
 

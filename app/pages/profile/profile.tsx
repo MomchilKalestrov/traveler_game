@@ -25,7 +25,7 @@ const Page = (
       fetch('/api/auth/profileimage', {
         method: 'POST',
         body: JSON.stringify({ image: e.target?.result })
-      }).then(() => {
+      }).then((response) => {
         if (reference.current) reference.current.src = e.target?.result as string;
         stopLoading();
       });
@@ -34,7 +34,7 @@ const Page = (
       console.error('Error reading file:', e);
       stopLoading();
     };
-    reader.readAsDataURL(file);
+    reader.readAsArrayBuffer(file);
   }
 
   if (!props.userData)
@@ -60,7 +60,7 @@ const Page = (
         <div className={ `${ style.ProfileCard } ${ style.ProfileInfo }` }>
             <div className={ style.ProfilePhoto }>
               <ImageAndFallback
-                src={ `https://gsplsf3le8pssi3n.public.blob.vercel-storage.com/user/${ props.userData.username }` }
+                src={ `https://gsplsf3le8pssi3n.public.blob.vercel-storage.com/user/${ props.userData.username }.png` }
                 fallback='/default_assets/user.svg'
                 ref={ reference } alt='profile picture'
                 width={ 64 } height={ 64 }

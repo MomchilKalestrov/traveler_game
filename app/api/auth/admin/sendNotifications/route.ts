@@ -17,10 +17,10 @@ const POST = async (request: NextRequest) => {
     const passphrase: string = cookie.get('passphrase')?.value || '';
 
     if (passphrase !== md5(process.env.ADMIN_PASS as string))
-        return NextResponse.json({ error: 'Unauthorized' });
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     if(!body || !body.title || !body.message || !body.image)
-        return NextResponse.json({ error: 'Missing parameters.' });
+        return NextResponse.json({ error: 'Missing parameters.' }, { status: 412 });
 
     try {
         await client.connect();
@@ -39,12 +39,12 @@ const POST = async (request: NextRequest) => {
         });
     
         await client.close();
-        return NextResponse.json({ success: true });
+        return NextResponse.json({ success: true }, { status: 204 });
     }
     catch (error) {
         await client.close();
         console.log('An exception has occured:\n', error);
-        return NextResponse.json({ error: 'An error has occurred.' });
+        return NextResponse.json({ error: 'An error has occurred.' }, { status: 500 });
     }
 }
 

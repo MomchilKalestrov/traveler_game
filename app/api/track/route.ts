@@ -11,7 +11,7 @@ const POST = async (request: NextRequest) => {
     let names: any = {};
 
     if(await userCheck(cookie.get('username')?.value || '', cookie.get('password')?.value || ''))
-        return NextResponse.json({ error: 'Invalid credentials.' });
+        return NextResponse.json({ error: 'Invalid credentials.' }, { status: 401 });
 
     try {
         // Connect to the database
@@ -21,19 +21,21 @@ const POST = async (request: NextRequest) => {
         names = (await collection.aggregate([{
             $match: { username: cookie.get('username')?.value }
         }]).toArray())[0];
-        if (names.started.includes(body.name))
-            return NextResponse.json({ error: 'User is already tracking this location.' });
+        if (names.started.includes(body.name)) {
+            await client.close();
+            return NextResponse.json({ error: 'User is already tracking this location.' }, { status: 404 });
+        }
         // Remove the location from the tracked
         await collection.updateOne(
             { username: cookie.get('username')?.value },
             { $push: { started: body.name } }
         );
         await client.close();
-        return NextResponse.json({ success: true });
+        return NextResponse.json({ success: true }, { status: 204 });
     } catch(error) {
         console.log('An exception has occured:\n', error);
         await client.close();
-        return NextResponse.json({ error: 'An error has occured.' });
+        return NextResponse.json({ error: 'An error has occured.' }, { status: 500 });
     };
 };
 

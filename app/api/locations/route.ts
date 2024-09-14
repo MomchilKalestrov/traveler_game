@@ -15,11 +15,11 @@ const GET = async (request: NextRequest) => {
             { $match:   { name: { $exists: true } } }
         ]).toArray();
         await client.close();
-        return NextResponse.json(names);
+        return NextResponse.json(names, { status: 200 });
     } catch(error) {
         console.log('An exception has occured:\n', error);
         await client.close();
-        return NextResponse.json({ error: 'An error has occured.' });
+        return NextResponse.json({ error: 'An error has occured.' }, { status: 500 });
     };
 };
 

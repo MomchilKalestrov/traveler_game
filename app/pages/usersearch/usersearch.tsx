@@ -60,7 +60,7 @@ const Page = (
                     <div className={ `${ userStyle.ProfileCard } ${ userStyle.ProfileInfo }` }>
                         <div className={ userStyle.ProfilePhoto }>
                             <ImageAndFallback
-                                src={ `https://gsplsf3le8pssi3n.public.blob.vercel-storage.com/user/${ props.user.username }` }
+                                src={ `https://gsplsf3le8pssi3n.public.blob.vercel-storage.com/user/${ props.user.username }.png` }
                                 fallback='/default_assets/user.svg'
                                 ref={ reference } alt='profile picture'
                                 width={ 64 } height={ 64 }

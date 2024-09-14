@@ -128,6 +128,11 @@ const Page = (
           }
         </Map>
       </APIProvider>
+      <style jsx global>{`
+        .gmnoprint, .gm-style-cc {
+          display: none;
+        }
+      `}</style>
     </main>
   );
 };

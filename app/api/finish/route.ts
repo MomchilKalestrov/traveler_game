@@ -26,7 +26,7 @@ const POST = async (request: NextRequest) => {
     let user: any = {};
 
     if(await userCheck(cookie.get('username')?.value || '', cookie.get('password')?.value || ''))
-        return NextResponse.json({ error: 'Invalid credentials.' });
+        return NextResponse.json({ error: 'Invalid credentials.' }, { status: 401 });
 
     try {
         // Connect to the database
@@ -38,13 +38,18 @@ const POST = async (request: NextRequest) => {
         }]).toArray();
         // Get the tracked locations
         let started = user[0].started;
-        if (!started.includes(args.name))
-            return NextResponse.json({ error: 'User isn\'t tracking this location.' });
+        if (!started.includes(args.name)) {
+            await client.close();
+            return NextResponse.json({ error: 'User isn\'t tracking this location.' }, { status: 412 });
+        }
         // Get the location
         location = (await collection.aggregate([{
             $match: { name: args.name }
         }]).toArray())[0];
-        if(!location) return NextResponse.json({ error: 'Location not found.' });
+        if(!location) {
+            await client.close();
+            return NextResponse.json({ error: 'Location not found.' }, { status: 404 });
+        }
         // Calculate the distance
         // If the user is within 100 meters of the location, remove it from the tracked
         const distance = haversineDistance(
@@ -54,7 +59,10 @@ const POST = async (request: NextRequest) => {
             parseFloat(location.location.lng.toString())
         );
         
-        if(distance > 100) return NextResponse.json({ error: 'User is not within 100 meters of the location.' });
+        if(distance > 100) {
+            await client.close();
+            return NextResponse.json({ error: 'User is not within 100 meters of the location.' }, { status: 400 });
+        }
         // Remove the location from the tracked
         await collection.updateOne(
             { username: cookie.get('username')?.value },
@@ -66,11 +74,11 @@ const POST = async (request: NextRequest) => {
             { $push: { finished: args.name } }
         );
         await client.close();
-        return NextResponse.json({ success: true });
+        return NextResponse.json({ success: true }, { status: 204 });
     } catch(error) {
         console.log('An exception has occured:\n', error);
         await client.close();
-        return NextResponse.json({ error: 'An error has occured.' });
+        return NextResponse.json({ error: 'An error has occured.' }, { status: 500 });
     };
 };
 

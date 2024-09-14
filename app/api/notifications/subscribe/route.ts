@@ -6,7 +6,7 @@ const POST = async (request: NextRequest) => {
     const body = await request.json();
     
 
-    if(!body || !body.endpoint || !body.keys) return NextResponse.json({ error: 'Invalid request.' });
+    if(!body || !body.endpoint || !body.keys) return NextResponse.json({ error: 'Invalid request.' }, { status: 412 });
 
     try {
         await client.connect();
@@ -20,12 +20,12 @@ const POST = async (request: NextRequest) => {
         );
 
         await client.close();
-        return NextResponse.json({ success: true });
+        return NextResponse.json({ success: true }, { status: 204 });
     }
     catch (error) {
         console.log('An exception has occured:\n', error);
         await client.close();
-        return NextResponse.json({ error: 'An error has occured.' });
+        return NextResponse.json({ error: 'An error has occured.' }, { status: 500 });
     }
 }
 

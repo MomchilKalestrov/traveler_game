@@ -8,21 +8,22 @@ const POST = async (request: NextRequest) => {
     const body = await request.json();
 
     if(await userCheck(cookie.get('username')?.value || '', cookie.get('password')?.value || ''))
-        return NextResponse.json({ error: 'Invalid credentials.' });
+        return NextResponse.json({ error: 'Invalid credentials.' }, { status: 401 });
 
     if (!body.image)
-        return NextResponse.json({ error: 'Missing parameters.' });
+        return NextResponse.json({ error: 'Missing parameters.' }, { status: 412 });
     
     try {
-        const blob = await put(`/user/${ cookie.get('username')?.value || '' }`, body.image, {
+        const blob = await put(`user/${ cookie.get('username')?.value || '' }.png`, body.image, {
             access: 'public',
             contentType: 'image/png',
             addRandomSuffix: false
         });
-        return NextResponse.json({ success: true });
+        console.log(blob);
+        return NextResponse.json({ success: true }, { status: 204 });
     }
     catch (error) {
-        return NextResponse.json({ error: 'Error uploading image.' });
+        return NextResponse.json({ error: 'Error uploading image.' }, { status: 500 });
     }
 }
 
