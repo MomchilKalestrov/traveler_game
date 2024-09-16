@@ -23,6 +23,7 @@ const Page = (
   const [name,         setName        ] = React.useState<string>();
   const [visible,      setVisible     ] = React.useState<boolean>(false);
   const [userLocation, setUserLocation] = React.useState<google.maps.LatLngLiteral | null>(null);
+  // someday I'll use this hook, but not today...
   //const map = useMap('google-api-map');
 
   React.useEffect(() => {
@@ -66,7 +67,6 @@ const Page = (
       </main>
     );
 
-  // AIzaSyBPYpCcdRsOe4Mci-EkrfBKwNAwwLQzTQ0
   return (
     <main
       ref={ props.refs }
@@ -85,7 +85,7 @@ const Page = (
           reset={ props.reset }
         />
       }
-      <APIProvider apiKey={ '' } onLoad={ () => console.log('Maps API has loaded.') }>
+      <APIProvider apiKey={ process.env.NEXT_PUBLIC_GOOGLE_API_KEY || '' } onLoad={ () => console.log('Maps API has loaded.') }>
         <Map
           id='google-api-map'
           defaultZoom={ 11 }

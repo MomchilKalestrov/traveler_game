@@ -18,7 +18,7 @@ const Minicard = (
                 <h4>{ props.name }</h4>
                 <ImageAndFallback
                     alt={ props.name } width={ 32 } height={ 32 } fallback='/default_assets/badge.svg'
-                    src={ `https://gsplsf3le8pssi3n.public.blob.vercel-storage.com/ico/${ props.name }.svg` }
+                    src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ props.name }.svg` }
                 />
             </button>
             {

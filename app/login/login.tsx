@@ -19,11 +19,8 @@ const LogIn = (
         fetch(`/api/auth/login?username=${data.get('username')}&password=${data.get('password')}`, {
             method: 'POST'
         }).then(async (res) => {
-            res.json().then((data) => {
-                if(data.error)
-                    return alert(data.error);
-                router.replace('/');
-            });
+            if (!res.ok) return alert('Failed to log in.');
+            router.replace('/');
         });
     }
 

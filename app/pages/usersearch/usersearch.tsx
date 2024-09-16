@@ -60,7 +60,7 @@ const Page = (
                     <div className={ `${ userStyle.ProfileCard } ${ userStyle.ProfileInfo }` }>
                         <div className={ userStyle.ProfilePhoto }>
                             <ImageAndFallback
-                                src={ `https://gsplsf3le8pssi3n.public.blob.vercel-storage.com/user/${ props.user.username }.png` }
+                                src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/user/${ props.user.username }.png` }
                                 fallback='/default_assets/user.svg'
                                 ref={ reference } alt='profile picture'
                                 width={ 64 } height={ 64 }
@@ -77,7 +77,7 @@ const Page = (
                                 {
                                     props.user.finished.map((data: string, key: number) =>
                                         <ImageAndFallback
-                                            src={ `https://gsplsf3le8pssi3n.public.blob.vercel-storage.com/ico/${ data }.svg` }
+                                            src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ data }.svg` }
                                             fallback='/default_assets/badge.svg'
                                             alt={ data } key={ key }
                                             width={ 48 } height={ 48 }

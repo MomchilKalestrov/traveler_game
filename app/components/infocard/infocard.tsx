@@ -40,7 +40,7 @@ const InfoCard = (
                             src='/icons/back.svg' alt='back'
                             width={ 32 } height={ 32 }
                             onLoad={ (event: React.SyntheticEvent<HTMLImageElement>) =>
-                                fetch(`https://gsplsf3le8pssi3n.public.blob.vercel-storage.com/bg/${ props.name }.png`, {
+                                fetch(`${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/bg/${ props.name }.png`, {
                                     cache: 'force-cache', next: { revalidate: 60 * 60 * 24 * 30 }
                                 })
                                     .then((res) => res.status === 200 ? res.text() : undefined)

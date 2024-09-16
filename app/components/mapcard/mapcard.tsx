@@ -16,7 +16,7 @@ const Mapcard = (
         <>
             <div className={ style.Mapcard }>
                 <div className={ style.MapcardLocation} onLoad={ (event: React.SyntheticEvent<HTMLDivElement>) =>
-                    fetch(`https://gsplsf3le8pssi3n.public.blob.vercel-storage.com/bg/${ props.name }.png`)
+                    fetch(`${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/bg/${ props.name }.png`)
                         .then((res) => res.status === 200 ? res.text() : undefined)
                         .then((text) => {
                             if (event.currentTarget && text)
@@ -26,7 +26,7 @@ const Mapcard = (
                     <div>
                         <ImageAndFallback
                             alt={ props.name }
-                            src={ `https://gsplsf3le8pssi3n.public.blob.vercel-storage.com/ico/${ props.name }.svg` }
+                            src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ props.name }.svg` }
                             fallback='/default_assets/badge.svg'
                             width={ 40 }
                             height={ 40 }

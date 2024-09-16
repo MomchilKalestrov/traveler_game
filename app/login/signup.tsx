@@ -26,8 +26,7 @@ const SignUp = (
             method: 'POST'
         }).then(async (res) => {
             res.json().then((data) => {
-                if(data.error)
-                    return alert(data.error);
+                if (!res.ok) return alert('Failed to sign up.');
                 router.replace('/');
             });
         });

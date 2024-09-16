@@ -27,7 +27,6 @@ const Page = (
         body: JSON.stringify({ image: event.target?.result })
       }).then((response) => {
         if (!response.ok) return alert('Failed to upload image');
-        console.log(event.target?.result);
         if (reference.current) reference.current.src = event.target?.result as string;
         stopLoading();
       });
@@ -64,7 +63,7 @@ const Page = (
         <div className={ `${ style.ProfileCard } ${ style.ProfileInfo }` }>
             <div className={ style.ProfilePhoto }>
               <ImageAndFallback
-                src={ `https://gsplsf3le8pssi3n.public.blob.vercel-storage.com/user/${ props.userData.username }.png` }
+                src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/user/${ props.userData.username }.png` }
                 fallback='/default_assets/user.svg'
                 ref={ reference } alt='profile picture'
                 width={ 64 } height={ 64 }
@@ -82,7 +81,7 @@ const Page = (
               {
                 props.userData.finished.map((data: string, key: number) =>
                   <ImageAndFallback
-                    src={ `https://gsplsf3le8pssi3n.public.blob.vercel-storage.com/ico/${ data }.svg` }
+                    src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ data }.svg` }
                     fallback='/default_assets/badge.svg'
                     alt={ data } key={ key }
                     width={ 48 } height={ 48 }
