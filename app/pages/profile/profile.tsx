@@ -19,24 +19,26 @@ const Page = (
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = (e) => {
-      if (!e.target?.result) return;
-
-      console.log(e.target?.result);
+    reader.onload = (event) => {
+      if (!event.target?.result) return;
 
       fetch('/api/auth/profileimage', {
         method: 'POST',
-        body: JSON.stringify({ image: e.target?.result })
+        body: JSON.stringify({ image: event.target?.result })
       }).then((response) => {
-        if (reference.current) reference.current.src = e.target?.result as string;
+        if (!response.ok) return alert('Failed to upload image');
+        console.log(event.target?.result);
+        if (reference.current) reference.current.src = event.target?.result as string;
         stopLoading();
       });
     };
-    reader.onerror = (e) => {
-      console.error('Error reading file:', e);
+    
+    reader.onerror = (error) => {
+      console.error('Error reading file:', error);
       stopLoading();
     };
-    reader.readAsText(file);
+    
+    reader.readAsDataURL(file);
   }
 
   if (!props.userData)

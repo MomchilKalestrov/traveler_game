@@ -42,7 +42,7 @@ const Page = () => {
                 setUserData(data);
             }
             catch (error) {
-                alert('Error fetching data: \n' + error);
+                alert('Error fetching user data: \n' + error);
             };
         }
 
