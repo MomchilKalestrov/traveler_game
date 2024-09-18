@@ -1,11 +1,40 @@
 // service-worker.js
 
-const cacheName = 'offlineCacheV3';
+const cacheName = 'offlineCacheV4';
 
 const offlinePages = [
     '/offline/offline.html',
     '/offline/style.css',
-    '/backgrounds/spotbg.svg'
+
+    '/backgrounds/spotbg.svg',
+    '/backgrounds/bg.svg',
+    '/backgrounds/rbg.svg',
+
+    '/default_assets/background.png',
+    '/default_assets/badge.svg',
+    '/default_assets/user.svg',
+
+    '/fonts/ProductSans_Regular.ttf',
+    '/fonts/ProductSans_Bold.ttf',
+    '/fonts/ProductSans_Italic.ttf',
+    '/fonts/ProductSans_Bold_Italic.ttf',
+
+    '/icons/back.svg',
+    '/icons/close.svg',
+    '/icons/error.svg',
+    '/icons/filter.svg',
+    '/icons/Home.svg',
+    '/icons/loading.svg',
+    '/icons/login.svg',
+    '/icons/Map.svg',
+    '/icons/nouser.svg',
+    '/icons/poipin.svg',
+    '/icons/Profile.svg',
+    '/icons/settings.svg',
+    '/icons/userpin.svg',
+
+    '/favicon.ico',
+    '/favicon.png',
 ];
 
 self.addEventListener('install', (e) => {
