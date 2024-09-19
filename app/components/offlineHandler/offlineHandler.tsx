@@ -6,9 +6,8 @@ const OfflineHandler = ({ children }: { children: React.ReactNode }) => {
         console.log('OfflineHandler mounted');
         if (!navigator) return;
         if ("serviceWorker" in navigator) {
-            const swUrl = "/offlineWorker.js";
             navigator.serviceWorker
-                .register(swUrl)
+                .register('/offlineWorker.js')
                 .then((registration) => {
                     console.log("ServiceWorker registration successful with scope: ", registration.scope);
                 })

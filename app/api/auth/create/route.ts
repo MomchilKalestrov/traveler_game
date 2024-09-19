@@ -30,7 +30,9 @@ const POST = async (request: NextRequest) => {
             username: args.get('username'),
             password: md5(args.get('password') || ''),
             started: [],
-            finished: []
+            finished: [],
+            following: [],
+            followers: []
         });
         // Set the cookies
         const user = cookies();

@@ -36,12 +36,9 @@ const untrack = (
         },
         body: JSON.stringify({ name: name })
     })
-        .then(response => response.json())
-        .then(data => {
-            if(data.error) {
-                alert('An error has occured:\n' + data.error);
-                return stopLoading();
-            }
+        .then(response => {
+            if (!response.ok)
+                return alert('An error has occured.');
             close();
             reset();
         });
@@ -60,12 +57,9 @@ const track = (
         },
         body: JSON.stringify({ name: name })
     })
-        .then(response => response.json())
-        .then(data => {
-            if(data.error) {
-                alert('An error has occured:\n' + data.error);
-                return stopLoading();
-            }
+        .then(response => {
+            if (!response.ok)
+                return alert('An error has occured.');
             close();
             reset();
         });

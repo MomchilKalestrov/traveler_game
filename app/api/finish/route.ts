@@ -19,7 +19,7 @@ function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
 const POST = async (request: NextRequest) => {
     const args = await request.json();
     if (!args.name || !args.location.lat || !args.location.lng)
-        return NextResponse.json({ error: 'Missing parameters.' });
+        return NextResponse.json({ error: 'Missing parameters.' }, { status: 412 });
     const client = new MongoClient(process.env.MONGODB_URI as string);
     const cookie = cookies();
     let location: any = {};
@@ -74,7 +74,8 @@ const POST = async (request: NextRequest) => {
             { $push: { finished: args.name } }
         );
         await client.close();
-        return new NextResponse(null, { status: 204 });
+        // it should stay like this!!!!
+        return NextResponse.json({ success: true }, { status: 204 });
     } catch(error) {
         console.log('An exception has occured:\n', error);
         await client.close();
