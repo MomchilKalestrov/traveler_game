@@ -1,6 +1,6 @@
 // service-worker.js
 
-const cacheName = 'offlineCacheV4';
+const cacheName = 'offlineCacheV5';
 
 const offlinePages = [
     '/offline/offline.html',
@@ -14,10 +14,10 @@ const offlinePages = [
     '/default_assets/badge.svg',
     '/default_assets/user.svg',
 
-    '/fonts/ProductSans_Regular.ttf',
-    '/fonts/ProductSans_Bold.ttf',
-    '/fonts/ProductSans_Italic.ttf',
-    '/fonts/ProductSans_Bold_Italic.ttf',
+    '/fonts/Product_Sans_Regular.ttf',
+    '/fonts/Product_Sans_Bold.ttf',
+    '/fonts/Product_Sans_Italic.ttf',
+    '/fonts/Product_Sans_Bold_Italic.ttf',
 
     '/icons/back.svg',
     '/icons/close.svg',

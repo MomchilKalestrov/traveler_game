@@ -19,10 +19,46 @@
 }
 
 .ProfileInfo {
-    gap: var(--padding);
+    row-gap: 0.5rem;
+    column-gap: 1rem;
+    display: grid;
+    grid-template-areas: 
+        'photo name      follow'
+        'photo followers follow'
+    ;
+    grid-template-columns: 4rem 1fr;
+}
+
+.ProfileInfo div:first-child {
+    grid-area: photo;
+    height: 4rem;
+    width: 4rem;
+}
+
+.ProfileInfo h2 {
+    grid-area: name;
+    margin: 0px;
+    align-self: end;
+}
+
+.ProfileInfo div:last-child {
+    grid-area: followers;
+    margin: 0px;
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    gap: 0.5rem;
+    align-self: start;
+    flex-wrap: wrap;
+}
+
+.ProfileInfo button {
+    grid-area: follow;
+    align-self: center;
+    height: 2.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 1.25rem;
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
+    background-color: transparent;
 }
 
 .ProfileCard * {

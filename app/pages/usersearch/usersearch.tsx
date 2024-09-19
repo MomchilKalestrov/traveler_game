@@ -17,11 +17,13 @@ import React from 'react';
 
 type user = {
     username: string,
-    finished: string[]
-    started: string[]
+    finished: string[],
+    started: string[],
+    followers: string[],
+    following: string[]
 }
 
-export enum status {
+enum status {
     loading,
     nouser,
     founduser,
@@ -31,10 +33,18 @@ export enum status {
 const Page = (
     props: {
         loading: status,
-        user: user
+        user?: user | null | undefined
     }
 ) => {
     const reference = React.useRef<HTMLImageElement>(null);
+
+    if (!props.user)
+        return (
+            <div className={ `${ style.UserSearch } ${ style.UserSearchCentered }` }>
+                <Image src='/icons/nouser.svg' alt='no user' width={ 48 } height={ 48 } />
+                <p>No user has found.</p>
+            </div>
+        );
 
     switch (props.loading) {
         case status.loading: return (
@@ -67,6 +77,11 @@ const Page = (
                             />
                         </div>
                         <h2>{ props.user.username }</h2>
+                        <button>Follow</button>
+                        <div>
+                            <p><b>{ props.user.followers.length }</b> followers</p>
+                            <p><b>{ props.user.following.length }</b> following</p>
+                        </div>
                     </div>
                     {
                         props.user.finished.length > 0 &&
@@ -94,3 +109,5 @@ const Page = (
 }
 
 export default Page;
+export { status };
+export type { user };

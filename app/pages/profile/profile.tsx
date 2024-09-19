@@ -71,6 +71,10 @@ const Page = (
               <input type="file" accept="image/png" onChange={ changeProfilePhoto } />
             </div>
             <h2>{ props.userData.username }</h2>
+            <div>
+              <p><b>{ props.userData.followers.length }</b> followers</p>
+              <p><b>{ props.userData.following.length }</b> following</p>
+            </div>
         </div>
         {
           props.userData.finished.length > 0 &&

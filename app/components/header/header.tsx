@@ -2,19 +2,14 @@ import style from './header.module.css';
 import Settings from '@pages/settings/settings';
 import React from 'react';
 import UserSearch, { status } from '@pages/usersearch/usersearch';
+import type { user } from '@pages/usersearch/usersearch';
 import Image from 'next/image';
-
-type user = {
-    username: string,
-    finished: string[]
-    started: string[]
-}
 
 const Header = () => {
     const [settings,    setSettings] = React.useState<boolean>(false);
     const [userLookup,  setLookup  ] = React.useState<boolean>(false);
     const [userLoading, setLoading ] = React.useState<status>(status.loading);
-    const [userData,    setUserData] = React.useState<user>({ username: '', finished: [], started: [] });
+    const [userData,    setUserData] = React.useState<user | null>(null);
     const imgReference               = React.useRef<HTMLImageElement>(null);
     const inputReference             = React.useRef<HTMLInputElement>(null);
     const abortControllerRef         = React.useRef<AbortController | null>(null);
@@ -101,22 +96,15 @@ const Header = () => {
             .then(response => response.json())
             .then(data => {
                 if (data.error || data.error === 'User not found.') {
-                    setUserData({
-                        username: username,
-                        finished: [],
-                        started: []
-                    })
+                    setUserData(null)
                     return setLoading(status.nouser);
                 }
                 else if (data.error) {
                     console.log(data.error);
                     return setLoading(status.error);
                 }
-                setUserData({
-                    username: data.username,
-                    finished: data.finished,
-                    started: data.started
-                });
+
+                setUserData(data as user);
                 setLoading(status.founduser);
             })
             .catch((error) => {
