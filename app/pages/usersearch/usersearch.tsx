@@ -3,6 +3,8 @@ import style from './usersearch.module.css';
 import userStyle from '@pages/profile/profile.module.css';
 import Image from 'next/image';
 import React from 'react';
+import { getCookie } from '@app/cookies';
+import { loading } from '@app/components/loading/loading';
 
 /*
     Like the crack of the whip, I Snap! attack
@@ -33,7 +35,8 @@ enum status {
 const Page = (
     props: {
         loading: status,
-        user?: user | null | undefined
+        user?: user | null | undefined,
+        reset: (resetting?: boolean) => void
     }
 ) => {
     const reference = React.useRef<HTMLImageElement>(null);
@@ -45,6 +48,31 @@ const Page = (
                 <p>No user has found.</p>
             </div>
         );
+
+    const currentUser: string = getCookie('username')?.value || '';
+    // we assume that the user is not followed
+    let type: string = 'Follow';
+    let action: () => void = () => {
+        loading();
+        fetch(`/api/auth/follow?username=${ props.user?.username }`, { method: 'POST' })
+            .then(response => {
+                if (!response.ok)
+                    alert('An error occurred while trying to follow the user.');
+                props.reset(true);
+            });
+    }
+    if (props.user.followers.includes(currentUser)) {
+        type = 'Unfollow';
+        action = () => {
+            loading();
+            fetch(`/api/auth/unfollow?username=${ props.user?.username }`, { method: 'POST' })
+                .then(response => {
+                    if (!response.ok)
+                        alert('An error occurred while trying to unfollow the user.');
+                    props.reset(true);
+                });
+        }
+    }
 
     switch (props.loading) {
         case status.loading: return (
@@ -77,7 +105,7 @@ const Page = (
                             />
                         </div>
                         <h2>{ props.user.username }</h2>
-                        <button>Follow</button>
+                        <button onClick={ action }>{ type }</button>
                         <div>
                             <p><b>{ props.user.followers.length }</b> followers</p>
                             <p><b>{ props.user.following.length }</b> following</p>

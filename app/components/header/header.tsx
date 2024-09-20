@@ -4,12 +4,20 @@ import React from 'react';
 import UserSearch, { status } from '@pages/usersearch/usersearch';
 import type { user } from '@pages/usersearch/usersearch';
 import Image from 'next/image';
+import { getCookie } from '@app/cookies';
+import { stopLoading } from '../loading/loading';
 
 const Header = () => {
     const [settings,    setSettings] = React.useState<boolean>(false);
     const [userLookup,  setLookup  ] = React.useState<boolean>(false);
     const [userLoading, setLoading ] = React.useState<status>(status.loading);
-    const [userData,    setUserData] = React.useState<user | null>(null);
+    const [userData,    setUserData] = React.useState<user | null>({
+        username: '',
+        finished: [],
+        started: [],
+        followers: [],
+        following: []
+    });
     const imgReference               = React.useRef<HTMLImageElement>(null);
     const inputReference             = React.useRef<HTMLInputElement>(null);
     const abortControllerRef         = React.useRef<AbortController | null>(null);
@@ -72,7 +80,7 @@ const Header = () => {
             abortControllerRef.current.abort();
     }
 
-    const startSearch = () => {
+    const startSearch = (resetting?: boolean) => {
         if (!inputReference.current) return;
         
         if (abortControllerRef.current)
@@ -84,8 +92,19 @@ const Header = () => {
         if (
             username === '' ||
             username === 'CURRENT_USER' ||
+            username === getCookie('username')?.value ||
             username.length < 3
-        ) return setLoading(status.loading);
+        ) {
+            setLoading(status.loading);
+            setUserData({
+                username: '',
+                finished: [],
+                started: [],
+                followers: [],
+                following: []
+            });
+            return;
+        }
 
         setLookup(true);
         setLoading(status.loading);
@@ -106,6 +125,8 @@ const Header = () => {
 
                 setUserData(data as user);
                 setLoading(status.founduser);
+                if (resetting)
+                    stopLoading();
             })
             .catch((error) => {
                 if (error.toString().includes('AbortError')) return;
@@ -128,7 +149,7 @@ const Header = () => {
     return (
         <>
             { settings && <Settings setter={ setSettings } /> }
-            { userLookup && <UserSearch loading={ userLoading } user={ userData } /> }
+            { userLookup && <UserSearch loading={ userLoading } user={ userData } reset={ startSearch } /> }
             <div className={ style.HeaderSearchBG } ref={ headerBGReference } />
             <header className={ style.Header } ref={ headerReference }>
                 <div>
