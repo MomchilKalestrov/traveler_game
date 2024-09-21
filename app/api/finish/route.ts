@@ -39,7 +39,7 @@ const POST = async (request: NextRequest) => {
         // Get the tracked locations
         let started = user[0].started;
         if (!started.includes(args.name)) {
-            await client.close();
+            await client.close(true);
             return NextResponse.json({ error: 'User isn\'t tracking this location.' }, { status: 412 });
         }
         // Get the location
@@ -47,7 +47,7 @@ const POST = async (request: NextRequest) => {
             $match: { name: args.name }
         }]).toArray())[0];
         if(!location) {
-            await client.close();
+            await client.close(true);
             return NextResponse.json({ error: 'Location not found.' }, { status: 404 });
         }
         // Calculate the distance
@@ -60,7 +60,7 @@ const POST = async (request: NextRequest) => {
         );
         
         if(distance > 100) {
-            await client.close();
+            await client.close(true);
             return NextResponse.json({ error: 'User is not within 100 meters of the location.' }, { status: 400 });
         }
         // Remove the location from the tracked
@@ -73,12 +73,12 @@ const POST = async (request: NextRequest) => {
             { username: cookie.get('username')?.value },
             { $push: { finished: args.name } }
         );
-        await client.close();
+        await client.close(true);
         // it should stay like this!!!!
         return NextResponse.json({ success: true }, { status: 204 });
     } catch(error) {
         console.log('An exception has occured:\n', error);
-        await client.close();
+        await client.close(true);
         return NextResponse.json({ error: 'An error has occured.' }, { status: 500 });
     };
 };

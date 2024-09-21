@@ -22,7 +22,7 @@ const GET = async (request: NextRequest) => {
             $match: { username: username }
         }]).toArray())[0];
         if(!userInfo) {
-            await client.close();
+            await client.close(true);
             return NextResponse.json({ error: 'User not found.' }, { status: 404 });
         }
         // Get the locations
@@ -31,7 +31,7 @@ const GET = async (request: NextRequest) => {
             { $match:   { name: { $in: userInfo.finished } } }
         ]).toArray();
         // Return the locations
-        await client.close();
+        await client.close(true);
         return NextResponse.json(locations, { status: 200 });
     } catch(error) {
         console.log('An exception has occured:\n', error);

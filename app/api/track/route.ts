@@ -22,7 +22,7 @@ const POST = async (request: NextRequest) => {
             $match: { username: cookie.get('username')?.value }
         }]).toArray())[0];
         if (names.started.includes(body.name)) {
-            await client.close();
+            await client.close(true);
             return NextResponse.json({ error: 'User is already tracking this location.' }, { status: 404 });
         }
         // Remove the location from the tracked
@@ -30,11 +30,11 @@ const POST = async (request: NextRequest) => {
             { username: cookie.get('username')?.value },
             { $push: { started: body.name } }
         );
-        await client.close();
+        await client.close(true);
         return new NextResponse(null, { status: 204 });
     } catch(error) {
         console.log('An exception has occured:\n', error);
-        await client.close();
+        await client.close(true);
         return NextResponse.json({ error: 'An error has occured.' }, { status: 500 });
     };
 };

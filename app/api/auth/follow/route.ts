@@ -29,12 +29,12 @@ const POST = async (request: NextRequest) => {
         }]).toArray())[0];
     
         if (!requestedUser || !currentUser) {
-            await client.close();
+            await client.close(true);
             return NextResponse.json({ error: 'User not found.' }, { status: 404 });
         }
 
         if (currentUser.following.includes(args.get('username'))) {
-            await client.close();
+            await client.close(true);
             return NextResponse.json({ error: 'User is already following this user.' }, { status: 400 });
         }
 
@@ -47,15 +47,14 @@ const POST = async (request: NextRequest) => {
             { $push: { followers: cookie.get('username')?.value as any } }
         );
 
+        await client.close(true);
         return new NextResponse(null, { status: 204 });
     }
     catch (error) {
         console.log('An exception has occured:\n', error);
-        await client.close();
+        await client.close(true);
         return NextResponse.json({ error: 'An error has occured.' }, { status: 500 });
     }
 };
 
-const GET = async (request: NextRequest) => await POST(request);
-
-export { GET, POST };
+export { POST };

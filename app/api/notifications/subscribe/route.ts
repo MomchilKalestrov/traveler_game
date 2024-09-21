@@ -19,12 +19,12 @@ const POST = async (request: NextRequest) => {
             { $push: { subscribers: body } }
         );
 
-        await client.close();
+        await client.close(true);
         return new NextResponse(null, { status: 204 });
     }
     catch (error) {
         console.log('An exception has occured:\n', error);
-        await client.close();
+        await client.close(true);
         return NextResponse.json({ error: 'An error has occured.' }, { status: 500 });
     }
 }

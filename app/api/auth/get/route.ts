@@ -25,15 +25,15 @@ const GET = async (request: NextRequest) => {
             { $match: { username: username } }
         ]).toArray())[0];
         if (!userInfo) {
-            await client.close();
+            await client.close(true);
             return NextResponse.json({ error: 'User not found.' }, { status: 404 });
         }
         // Return the locations
-        await client.close();
+        await client.close(true);
         return NextResponse.json(userInfo, { status: 200 });
     } catch(error) {
         console.log('An exception has occured:\n', error);
-        await client.close();
+        await client.close(true);
         return NextResponse.json({ error: 'An error has occured.' }, { status: 500 });
     };
 };

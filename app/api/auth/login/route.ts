@@ -21,7 +21,7 @@ const POST = async (request: NextRequest) => {
             password: md5(args.get('password') || '')
         });
         if(!dataExists) {
-            await client.close();
+            await client.close(true);
             return NextResponse.json({ error: 'Incorrect credentials.' }, { status: 401 });
         }
         // Set the cookies
@@ -32,12 +32,12 @@ const POST = async (request: NextRequest) => {
         user.set('password', md5(args.get('password') || ''), {
             maxAge: Date.now() + 365 * 24 * 60 * 60 * 1000
         });
-        await client.close();
+        await client.close(true);
         return new NextResponse(null, { status: 204 });
     }
     catch(error) {
         console.log('An exception has occured:\n', error);
-        await client.close();
+        await client.close(true);
         return NextResponse.json({ error: 'An error occurred.' }, { status: 500 });
     };
 };

@@ -38,11 +38,11 @@ const POST = async (request: NextRequest) => {
                 }));
         });
     
-        await client.close();
+        await client.close(true);
         return new NextResponse(null, { status: 204 });
     }
     catch (error) {
-        await client.close();
+        await client.close(true);
         console.log('An exception has occured:\n', error);
         return NextResponse.json({ error: 'An error has occurred.' }, { status: 500 });
     }

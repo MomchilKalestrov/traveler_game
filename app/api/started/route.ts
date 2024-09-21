@@ -23,11 +23,11 @@ const GET = async (request: NextRequest) => {
             { $match:   { name: { $in: names } } }
         ]).toArray();
         
-        await client.close();
+        await client.close(true);
         return NextResponse.json(locations, { status: 200 });
     } catch(error) {
         console.log('An exception has occured:\n', error);
-        await client.close();
+        await client.close(true);
         return NextResponse.json({ error: 'An error has occured.' }, { status: 500 });
     }
 };
