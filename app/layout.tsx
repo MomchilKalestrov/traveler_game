@@ -3,6 +3,7 @@ import './index.css'
 import './design.css'
 import { Metadata } from 'next';
 import OfflineHandler from '@components/offlineHandler/offlineHandler';
+import { Analytics } from '@vercel/analytics/react';
 
 const roboto = Roboto({
   weight: [ '400', '500', '700', '900' ],
@@ -28,6 +29,7 @@ const RootLayout = ({
       <OfflineHandler>
         { children }
       </OfflineHandler>
+      <Analytics />
     </body>
   </html>
 );

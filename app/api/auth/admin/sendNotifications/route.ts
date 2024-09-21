@@ -1,4 +1,4 @@
-import { MongoClient } from "mongodb";
+import { MongoClient } from 'mongodb';
 import webpush from 'web-push';
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";

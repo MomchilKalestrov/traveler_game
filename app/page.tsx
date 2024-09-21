@@ -121,7 +121,7 @@ const Page = () => {
     return (
         <>
             <Header />
-            <Home 
+            <Home
                 refs={ refs[0] }
                 startedLocations={ startedLocations }
                 newLocations={ newLocations }

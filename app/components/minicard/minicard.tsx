@@ -2,7 +2,7 @@
 import React from 'react';
 import style from './minicard.module.css';
 import InfoCard, { cardType } from '@components/infocard/infocard';
-import ImageAndFallback from '@components/imageAndFallback/imageAndFallback';
+import Image from 'next/image';
 
 const Minicard = (
     props: {
@@ -12,12 +12,14 @@ const Minicard = (
 ) => {
     const [viewing, setViewing] = React.useState<boolean>(false);
 
+    console.log(`${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ props.name }.svg`)
+
     return (
         <>
             <button aria-label={ `View started ${ props.name }` } className={ style.Minicard } onClick={ () => setViewing(true) }>
                 <h4>{ props.name }</h4>
-                <ImageAndFallback
-                    alt={ props.name } width={ 32 } height={ 32 } fallback='/default_assets/badge.svg'
+                <Image
+                    alt={ props.name } width={ 32 } height={ 32 }
                     src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ props.name }.svg` }
                 />
             </button>

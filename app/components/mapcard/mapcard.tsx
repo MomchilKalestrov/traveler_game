@@ -2,7 +2,7 @@
 import React from 'react';
 import style from './mapcard.module.css';
 import InfoCard, { cardType } from '@components/infocard/infocard';
-import ImageAndFallback from '@components/imageAndFallback/imageAndFallback';
+import Image from 'next/image';
 
 const Mapcard = (
     props: {
@@ -24,10 +24,9 @@ const Mapcard = (
                         })
                 }>
                     <div>
-                        <ImageAndFallback
+                        <Image
                             alt={ props.name }
                             src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ props.name }.svg` }
-                            fallback='/default_assets/badge.svg'
                             width={ 40 }
                             height={ 40 }
                         />
