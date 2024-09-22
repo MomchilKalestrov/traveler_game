@@ -2,18 +2,18 @@ import { md5 } from 'js-md5';
 import { MongoClient } from 'mongodb';
 import { cookies } from 'next/headers';
 import { NextResponse, NextRequest } from 'next/server';
+import validateName from './validateName';
 
 const POST = async (request: NextRequest) => {
     const args: URLSearchParams = new URL(request.url).searchParams;
-    
+    const client = new MongoClient(process.env.MONGODB_URI as string);
+
     if (!args.get('password') || !args.get('username'))
         return NextResponse.json({ error: 'Missing parameters.' }, { status: 412 });
-    if ((args.get('username') as string).length < 3)
-        return NextResponse.json({ error: 'Username must be atleast 3 symbols long.' }, { status: 412 });
     if ((args.get('password') as string).length < 8)
         return NextResponse.json({ error: 'Password must be atleast 8 symbols long.' }, { status: 412 });
-
-    const client = new MongoClient(process.env.MONGODB_URI as string);
+    if (!validateName(args.get('username') as string))
+        return NextResponse.json({ error: 'Invalid username.' }, { status: 412 });
 
     try {
         // Connect to the MongoDB

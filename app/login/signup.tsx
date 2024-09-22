@@ -1,9 +1,9 @@
 'use client';
-
 import { Dispatch, FormEvent, SetStateAction } from 'react';
 import style from './profile.module.css';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import validateName from '@app/api/auth/create/validateName';
 
 const SignUp = (
     props: {
@@ -16,11 +16,12 @@ const SignUp = (
         event.preventDefault();
         const data: FormData = new FormData(event.currentTarget);
         
-        if(data.get('password') !== data.get('verify-password'))
+        if (data.get('password') !== data.get('verify-password'))
             return alert('Passwords do not match.');
-
-        if(((data.get('password') as string).length || 0) < 8)
+        if (((data.get('password') as string).length || 0) < 8)
             return alert('Password must be atleast 8 symbols long.');
+        if (!validateName(data.get('username') as string))
+            return alert('Invalid username.');
 
         fetch(`/api/auth/create?username=${data.get('username')}&password=${data.get('password')}`, {
             method: 'POST'
