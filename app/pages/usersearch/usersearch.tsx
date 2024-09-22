@@ -34,13 +34,13 @@ enum status {
 const Page = (
     props: {
         loading: status,
-        user?: user | null | undefined,
+        userData?: user | null | undefined,
         reset: (resetting?: boolean) => void
     }
 ) => {
     const reference = React.useRef<HTMLImageElement>(null);
 
-    if (!props.user)
+    if (!props.userData)
         return (
             <div className={ `${ style.UserSearch } ${ style.UserSearchCentered }` }>
                 <Image src='/icons/nouser.svg' alt='no user' width={ 48 } height={ 48 } />
@@ -53,18 +53,18 @@ const Page = (
     let type: string = 'Follow';
     let action: () => void = () => {
         loading();
-        fetch(`/api/auth/follow?username=${ props.user?.username }`, { method: 'POST' })
+        fetch(`/api/auth/follow?username=${ props.userData?.username }`, { method: 'POST' })
             .then(response => {
                 if (!response.ok)
                     alert('An error occurred while trying to follow the user.');
                 props.reset(true);
             });
     }
-    if (props.user.followers.includes(currentUser)) {
+    if (props.userData.followers.includes(currentUser)) {
         type = 'Unfollow';
         action = () => {
             loading();
-            fetch(`/api/auth/unfollow?username=${ props.user?.username }`, { method: 'POST' })
+            fetch(`/api/auth/unfollow?username=${ props.userData?.username }`, { method: 'POST' })
                 .then(response => {
                     if (!response.ok)
                         alert('An error occurred while trying to unfollow the user.');
@@ -85,7 +85,7 @@ const Page = (
         case status.nouser: return (
             <div className={ `${ style.UserSearch } ${ style.UserSearchCentered }` }>
                 <Image src='/icons/nouser.svg' alt='no user' width={ 48 } height={ 48 } />
-                <p>No user with the name { `"${ props.user.username }"` } found.</p>
+                <p>No user with the name { `"${ props.userData.username }"` } found.</p>
             </div>
         );
         case status.error: return (
@@ -95,7 +95,7 @@ const Page = (
             </div>
         );
         case status.founduser:
-            const bytes = new TextEncoder().encode(props.user.username);
+            const bytes = new TextEncoder().encode(props.userData.username);
             
             const red = bytes[0].toString(16).padStart(2, '0');
             const green = bytes[1].toString(16).padStart(2, '0');
@@ -111,28 +111,25 @@ const Page = (
                 <div className={ style.UserSearch }>
                     <div className={ userStyle.ProfileContainer }>
                         <div className={ `${ userStyle.ProfileCard } ${ userStyle.ProfileInfo }` }>
-                            <div className={ userStyle.ProfilePhoto }>
-                                <Image
-                                    src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/user/${ props.user.username }.png` }
-                                    ref={ reference } alt={ props.user.username[0] } width={ 64 } height={ 64 }
-                                    style={ { backgroundColor: color, color: r_color } }
-                                />
-                            </div>
-                            <h2>{ props.user.username }</h2>
+                            <p
+                            className={ style.ProfilePhoto }
+                            style={ { backgroundColor: color, color: r_color } }
+                            >{ props.userData.username[0] }</p>
+                            <h2>{ props.userData.username }</h2>
                             <button onClick={ action }>{ type }</button>
                             <div>
-                                <p><b>{ props.user.followers.length }</b> followers</p>
-                                <p><b>{ props.user.following.length }</b> following</p>
+                                <p><b>{ props.userData.followers.length }</b> followers</p>
+                                <p><b>{ props.userData.following.length }</b> following</p>
                             </div>
                         </div>
                         {
-                            props.user.finished.length > 0 &&
+                            props.userData.finished.length > 0 &&
                             <div className={ `${ userStyle.ProfileCard }` }>
                                 <h2>Badges</h2>
                                 <div className={ userStyle.ProfileDivider } />
                                 <div className={ userStyle.ProfileBadges }>
                                     {
-                                        props.user.finished.map((data: string, key: number) =>
+                                        props.userData.finished.map((data: string, key: number) =>
                                             <Image
                                                 src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ data }.svg` }
                                                 alt={ data } key={ key } width={ 48 } height={ 48 }

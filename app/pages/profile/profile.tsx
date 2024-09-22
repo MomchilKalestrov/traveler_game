@@ -10,53 +10,6 @@ const Page = (
     userData?: any
   }
 ) => {
-  const reference = React.useRef<HTMLImageElement>(null);
-
-  React.useEffect(() => {
-    if (!props.userData)
-      fetch('/api/auth/profile')
-        .then(response => {
-          if (!response.ok) return;
-          return response.json();
-        })
-        .then(data => {
-          if (!data || !reference.current) return;
-          
-          reference.current.src = data;
-          reference.current.srcset = data;
-        });
-  }, [props]);
-
-  const changeProfilePhoto = (event: React.ChangeEvent<HTMLInputElement>) => {
-    loading();
-    const file = event.target?.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      if (!event.target?.result) return;
-
-      fetch('/api/auth/profileimage', {
-        method: 'POST',
-        body: JSON.stringify({ image: event.target?.result })
-      }).then((response) => {
-        if (!response.ok) return alert('Failed to upload image');
-        if (reference.current) {
-          reference.current.src = event.target?.result as string;
-          reference.current.srcset = event.target?.result as string;
-        }
-        stopLoading();
-      });
-    };
-    
-    reader.onerror = (error) => {
-      console.error('Error reading file:', error);
-      stopLoading();
-    };
-    
-    reader.readAsDataURL(file);
-  }
-
   if (!props.userData)
     return (
       <main ref={ props.refs } style={ { display: 'none' } }>
@@ -91,14 +44,10 @@ const Page = (
     <main ref={ props.refs } style={ { display: 'none' } }>
       <div className={ style.ProfileContainer }>
         <div className={ `${ style.ProfileCard } ${ style.ProfileInfo }` }>
-            <div className={ style.ProfilePhoto }>
-              <Image
-                src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/user/${ props.userData.username }.png` }
-                ref={ reference } alt={ props.userData.username[0] } width={ 64 } height={ 64 }
-                style={ { backgroundColor: color, color: r_color } }
-              />
-              <input type="file" accept="image/png" onChange={ changeProfilePhoto } />
-            </div>
+            <p
+              className={ style.ProfilePhoto }
+              style={ { backgroundColor: color, color: r_color } }
+            >{ props.userData.username[0] }</p>
             <h2>{ props.userData.username }</h2>
             <div>
               <p><b>{ props.userData.followers.length }</b> followers</p>
