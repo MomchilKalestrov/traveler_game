@@ -5,15 +5,8 @@ import Minicard from '@components/minicard/minicard';
 import React from 'react';
 import Image from 'next/image';
 import MaterialInput from '@components/input/input';
-
-type location = {
-  name: string,
-  location: {
-    lat: number,
-    lng: number
-  }
-};
-
+import Accomplishment from '@components/accomplishment/accomplishment';
+import type { location, user, accomplishment } from '@app/types';
 function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
   const toRadians = (degree: number) => degree * (Math.PI / 180);
   const R = 6371;
@@ -29,13 +22,40 @@ function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
 
 const Page = (props: {
   refs: React.Ref<HTMLElement>,
-  startedLocations?: Array<location>,
+  userData: user | undefined,
   newLocations?: Array<location>,
   reset: () => void
 }) => {
   const reference = React.useRef<HTMLDivElement>(null);
   const [filteredLocations, setFilteredLocations] = React.useState<Array<location>>(props.newLocations || []);
   const [filterOpen,        setFilterOpen       ] = React.useState(true);
+  const [followerActivity,  setFollowerActivity ] = React.useState<Array<accomplishment>>([]);  
+
+  React.useEffect(() => {
+    const getActivities = async () => {
+      if (!props.userData) return;
+      let activities: Array<accomplishment> = [];
+      
+      for (const user of props.userData.following) {
+        const data: any = (await (
+          await fetch(`/api/auth/get?username=${ encodeURIComponent(user) }`)
+        ).json()) as { username: string, finished: Array<{ location: string, time: number, user?: string }> }
+        
+        if (data.finished.length > 0)
+          activities = activities.concat(
+            data.finished.map((info: { location: string, time: number }) => ({
+              ...info,
+              user: data.username
+            }))
+          );
+      }
+      // the bigger the number, the more recent the activity
+      activities.sort((a, b) => b.time - a.time);
+      setFollowerActivity(activities.slice(0, Math.min(activities.length, 6)));
+    };
+
+    getActivities();
+  }, [props.userData]);
   
   React.useEffect(() => {
     if (!props.newLocations) return;
@@ -50,7 +70,7 @@ const Page = (props: {
     setFilterOpen(state);
   }
 
-  if (!props.startedLocations || !props.newLocations)
+  if (!props.userData || !props.newLocations)
     return (
       <main ref={ props.refs }>
         <Image src='/icons/loading.svg' alt='Loading' width={ 64 } height={ 64 }
@@ -93,21 +113,21 @@ const Page = (props: {
     <main ref={ props.refs } className={ style.Home }>
       <h2>Started adventures:</h2>
       { 
-        props.startedLocations.length === 0
+        props.userData.started.length === 0
         ? <p>No adventures started.</p>
         : <div className={ style.HorizontalCarousel }>
           {
-            props.startedLocations.map((
-              location: location,
-              index: number
-            ) => <Minicard key={ index } name={ location.name } reset={ props.reset } />)
+            props.userData.started.map((name: string, index: number) =>
+              <Minicard key={ index } name={ name } reset={ props.reset } />
+            )
           }
           </div>
       }
-
       <div className={ style.TitleWithSort }>
         <h2>New adventures:</h2>
-        <button aria-label='toggle filter menu' onClick={ changeView }><Image alt='filter' src='/icons/filter.svg' width={ 32 } height={ 32 } /></button>
+        <button aria-label='toggle filter menu' onClick={ changeView }>
+          <Image alt='filter' src='/icons/filter.svg' width={ 32 } height={ 32 } />
+        </button>
         <div ref={ reference }>
           <MaterialInput type='number' name='Distance (km)' onChange={ findCloseLocations } />
         </div>
@@ -119,6 +139,14 @@ const Page = (props: {
             location: location,
             index: number
           ) => <Mapcard key={ index } name={ location.name } reset={ props.reset } />)
+      }
+      <h2>Followers&apos; activity:</h2>
+      {
+        followerActivity.length === 0
+        ? <p>No followers&apos; activity.</p>
+        : followerActivity.map((accomplishment: accomplishment, key: number) => 
+            <Accomplishment key={ key } accomplishment={ accomplishment } />
+          )
       }
     </main>
   );

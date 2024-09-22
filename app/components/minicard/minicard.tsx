@@ -12,8 +12,6 @@ const Minicard = (
 ) => {
     const [viewing, setViewing] = React.useState<boolean>(false);
 
-    console.log(`${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ props.name }.svg`)
-
     return (
         <>
             <button aria-label={ `View started ${ props.name }` } className={ style.Minicard } onClick={ () => setViewing(true) }>

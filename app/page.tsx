@@ -6,21 +6,13 @@ import Profile from '@pages/profile/profile';
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import Header from '@components/header/header';
-
-type location = {
-    name: string,
-    location: {
-        lat: number,
-        lng: number
-    }
-};
+import type { location, user } from '@app/types';
 
 const Page = () => {
     const router                            = useRouter();
     const abortControllerRef                = React.useRef<AbortController | null>(null);
-    const [userData,          setUserData]  = React.useState<any | undefined>(undefined);
+    const [userData,          setUserData]  = React.useState<user | undefined>(undefined);
     const [startedLocations,  setStarted ]  = React.useState<Array<location> | undefined>(undefined);
-    const [finishedLocations, setFinished]  = React.useState<Array<location> | undefined>(undefined);
     const [newLocations,      setNew     ]  = React.useState<Array<location> | undefined>(undefined);
     const [reset,             setReset   ]  = React.useState<number>(0);
 
@@ -69,30 +61,20 @@ const Page = () => {
                     })
                 ).json();
                 if(all.error || !all) throw Error('Error locations data.');
-                
                 let locArr: Array<location> = [];
                 for(let i: number = 0; i < all.length; i++)
                     if (
                         !started.some((loc: location) => loc.name === all[i].name) &&
-                        !finished.some((loc: location) => loc.name === all[i].name)
+                        !finished.some((loc: any) => loc.location === all[i].name)
                     )
-                    locArr.push({
-                        name: all[i].name,
-                        location: {
-                            lat: parseFloat(all[i].location.lat['$numberDecimal']),
-                            lng: parseFloat(all[i].location.lng['$numberDecimal'])
-                        }
-                    });
+                        locArr.push({
+                            name: all[i].name,
+                            location: {
+                                lat: parseFloat(all[i].location.lat['$numberDecimal']),
+                                lng: parseFloat(all[i].location.lng['$numberDecimal'])
+                            }
+                        });
                 setStarted(started.map((data: any) => {
-                    return {
-                        name: data.name,
-                        location: {
-                            lat: parseFloat(data.location.lat['$numberDecimal']),
-                            lng: parseFloat(data.location.lng['$numberDecimal'])
-                        }
-                    }
-                }));
-                setFinished(finished.map((data: any) => {
                     return {
                         name: data.name,
                         location: {
@@ -123,7 +105,7 @@ const Page = () => {
             <Header />
             <Home
                 refs={ refs[0] }
-                startedLocations={ startedLocations }
+                userData={ userData }
                 newLocations={ newLocations }
                 reset={ resetRender }
             />

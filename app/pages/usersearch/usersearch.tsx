@@ -4,6 +4,7 @@ import Image from 'next/image';
 import React from 'react';
 import { getCookie } from '@app/cookies';
 import { loading } from '@app/components/loading/loading';
+import type { user } from '@app/types';
 
 /*
     Like the crack of the whip, I Snap! attack
@@ -14,15 +15,9 @@ import { loading } from '@app/components/loading/loading';
     7:14, wise, divine
     Maniac brainiac, winnin' the game
     I'm the lyrical Jesse James
+    
+    - Snap! - The Power
 */
-
-type user = {
-    username: string,
-    finished: string[],
-    started: string[],
-    followers: string[],
-    following: string[]
-}
 
 enum status {
     loading,
@@ -38,8 +33,6 @@ const Page = (
         reset: (resetting?: boolean) => void
     }
 ) => {
-    const reference = React.useRef<HTMLImageElement>(null);
-
     if (!props.userData)
         return (
             <div className={ `${ style.UserSearch } ${ style.UserSearchCentered }` }>
@@ -112,7 +105,7 @@ const Page = (
                     <div className={ userStyle.ProfileContainer }>
                         <div className={ `${ userStyle.ProfileCard } ${ userStyle.ProfileInfo }` }>
                             <p
-                            className={ style.ProfilePhoto }
+                            className={ userStyle.ProfilePhoto }
                             style={ { backgroundColor: color, color: r_color } }
                             >{ props.userData.username[0] }</p>
                             <h2>{ props.userData.username }</h2>
@@ -129,11 +122,11 @@ const Page = (
                                 <div className={ userStyle.ProfileDivider } />
                                 <div className={ userStyle.ProfileBadges }>
                                     {
-                                        props.userData.finished.map((data: string, key: number) =>
-                                            <Image
-                                                src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ data }.svg` }
-                                                alt={ data } key={ key } width={ 48 } height={ 48 }
-                                            />
+                                        props.userData.finished.map((data: { location: string, time: number }, key: number) =>
+                                        <Image
+                                            src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ data.location }.svg` }
+                                            alt={ data.location } key={ key } width={ 48 } height={ 48 }
+                                        />
                                         )
                                     }
                                 </div>
@@ -147,4 +140,3 @@ const Page = (
 
 export default Page;
 export { status };
-export type { user };

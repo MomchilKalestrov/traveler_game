@@ -1,6 +1,5 @@
-import { Roboto } from 'next/font/google'
-import './index.css'
-import './design.css'
+import { Roboto } from 'next/font/google';
+import './design.css';
 import { Metadata } from 'next';
 import OfflineHandler from '@components/offlineHandler/offlineHandler';
 import { Analytics } from '@vercel/analytics/react';
@@ -26,10 +25,10 @@ const RootLayout = ({
 }>) => (
   <html lang="en">
     <body className={ roboto.className }>
+      <Analytics />
       <OfflineHandler>
         { children }
       </OfflineHandler>
-      <Analytics />
     </body>
   </html>
 );

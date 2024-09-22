@@ -2,22 +2,24 @@ import style from './header.module.css';
 import Settings from '@pages/settings/settings';
 import React from 'react';
 import UserSearch, { status } from '@pages/usersearch/usersearch';
-import type { user } from '@pages/usersearch/usersearch';
+import type { user } from '@app/types';
 import Image from 'next/image';
 import { getCookie } from '@app/cookies';
 import { stopLoading } from '../loading/loading';
+
+const emptyUser: user = {
+    username: '',
+    finished: [],
+    started: [],
+    followers: [],
+    following: []
+};
 
 const Header = () => {
     const [settings,    setSettings] = React.useState<boolean>(false);
     const [userLookup,  setLookup  ] = React.useState<boolean>(false);
     const [userLoading, setLoading ] = React.useState<status>(status.loading);
-    const [userData,    setUserData] = React.useState<user | null>({
-        username: '',
-        finished: [],
-        started: [],
-        followers: [],
-        following: []
-    });
+    const [userData,    setUserData] = React.useState<user | null>(emptyUser);
     const imgReference               = React.useRef<HTMLImageElement>(null);
     const inputReference             = React.useRef<HTMLInputElement>(null);
     const abortControllerRef         = React.useRef<AbortController | null>(null);
@@ -96,13 +98,7 @@ const Header = () => {
             username.length < 3
         ) {
             setLoading(status.loading);
-            setUserData({
-                username: '',
-                finished: [],
-                started: [],
-                followers: [],
-                following: []
-            });
+            setUserData(emptyUser);
             return;
         }
 

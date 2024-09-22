@@ -3,14 +3,7 @@ import { AdvancedMarker, APIProvider, Map, useMap } from '@vis.gl/react-google-m
 import React from 'react';
 import InfoCard, { cardType } from '@components/infocard/infocard';
 import Image from 'next/image';
-
-type location = {
-  name: string,
-  location: {
-    lat: number,
-    lng: number
-  }
-};
+import type { location } from '@app/types';
 
 const Page = (
   props: {

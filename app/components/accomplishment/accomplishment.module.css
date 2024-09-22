@@ -1,0 +1,38 @@
+.Accomplishment {
+    --padding: 1rem;
+    width: calc(100% - var(--padding) * 2);
+    padding: var(--padding);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    color: var(--color-primary);
+    background-color: var(--color-secondary);
+    display: grid;
+    grid-template-areas:
+        'icon info'
+        'icon date'
+    ;
+    gap: 0.5rem;
+    column-gap: var(--padding);
+    grid-template-columns: min-content 1fr;
+}
+
+.Accomplishment img {
+    grid-area: icon;
+    justify-self: center;
+    align-self: center;
+}
+
+.Accomplishment p,
+.Accomplishment h3 {
+    margin: 0;
+}
+
+.Accomplishment h3 {
+    grid-area: info;
+    align-self: end;
+}
+
+.Accomplishment p {
+    grid-area: date;
+    align-self: start;
+}

@@ -1,7 +1,6 @@
 'use client';
 import React from 'react';
 import style from './profile.module.css';
-import { loading, stopLoading } from '@components/loading/loading';
 import Image from 'next/image';
 
 const Page = (
@@ -61,10 +60,10 @@ const Page = (
             <div className={ style.ProfileDivider } />
             <div className={ style.ProfileBadges }>
               {
-                props.userData.finished.map((data: string, key: number) =>
+                props.userData.finished.map((data: { location: string, time: number }, key: number) =>
                   <Image
-                    src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ data }.svg` }
-                    alt={ data } key={ key } width={ 48 } height={ 48 }
+                    src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ data.location }.svg` }
+                    alt={ data.location } key={ key } width={ 48 } height={ 48 }
                   />
                 )
               }

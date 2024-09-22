@@ -9,7 +9,6 @@ const GET = async (request: NextRequest) => {
     if(!args.get('username'))
         return NextResponse.json({ error: 'Missing parameters.' }, { status: 412 });
     let userInfo: any = {};
-    let locations: any = {};
 
     const username = args.get('username')?.toUpperCase() === 'CURRENT_USER' ? cookie.get('username')?.value : args.get('username');
 
@@ -25,14 +24,9 @@ const GET = async (request: NextRequest) => {
             await client.close(true);
             return NextResponse.json({ error: 'User not found.' }, { status: 404 });
         }
-        // Get the locations
-        locations = await collection.aggregate([
-            { $project: { _id: 0, name: 1, location: 1 } },
-            { $match:   { name: { $in: userInfo.finished } } }
-        ]).toArray();
         // Return the locations
         await client.close(true);
-        return NextResponse.json(locations, { status: 200 });
+        return NextResponse.json(userInfo.finished, { status: 200 });
     } catch(error) {
         console.log('An exception has occured:\n', error);
         return NextResponse.json({ error: 'An error has occured.' }, { status: 500 });

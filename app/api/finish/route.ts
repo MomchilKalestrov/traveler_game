@@ -71,11 +71,14 @@ const POST = async (request: NextRequest) => {
         // Add to finished
         await collection.updateOne(
             { username: cookie.get('username')?.value },
-            { $push: { finished: args.name } }
+            { $push: { finished: {
+                location: args.name,
+                time: Date.now(),
+            } as any } }
         );
         await client.close(true);
         // it should stay like this!!!!
-        return NextResponse.json({ success: true }, { status: 204 });
+        return NextResponse.json({ success: true }, { status: 200 });
     } catch(error) {
         console.log('An exception has occured:\n', error);
         await client.close(true);
