@@ -16,15 +16,15 @@ const userCheck = async (username: string, password: string): Promise<boolean> =
             $match: { username: username }
         }]).toArray())[0];
 
-        result = (!user || user.password !== password);
+        
+        await client.close(true);
+        return (!user || user.password !== password);
     }
     catch (error) {
         console.log(error);
-        client.close();
-        result = false;
+        await client.close(true);
+        return false;
     }
-
-    return result;
 }
 
 export default userCheck;
