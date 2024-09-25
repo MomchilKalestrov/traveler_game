@@ -2,13 +2,12 @@
     border-radius: 0.75rem;
     background-color: var(--color-secondary);
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
-    width: 15rem;
+    max-width: 20rem;
     height: 5rem;
     background-size: 25px 25px;
     overflow: hidden;
-    gap: 1rem;
     border: none;
     padding: 0px;
 }
