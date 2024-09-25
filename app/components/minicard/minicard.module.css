@@ -4,7 +4,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 10rem;
+    width: 15rem;
+    height: 5rem;
     background-size: 25px 25px;
     overflow: hidden;
     gap: 1rem;
@@ -12,14 +13,13 @@
     padding: 0px;
 }
 
-.Minicard h4 {
-    margin: 0px;
-    margin: 1rem 0px 1rem 1rem;
+.Minicard h2 {
+    margin: 0px 1.75rem 0px 0px;
     color: var(--color-primary);
 }
 
 .Minicard img {
-    aspect-ratio: 1;
-    height: 2rem;
-    padding: 0.5rem;
+    height: 2.5rem;
+    width: 2.5rem;
+    padding: 1.25rem;
 }
