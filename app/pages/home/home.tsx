@@ -140,13 +140,14 @@ const Page = (props: {
             index: number
           ) => <Mapcard key={ index } name={ location.name } reset={ props.reset } />)
       }
-      <h2>Followers&apos; activity:</h2>
+      
       {
-        followerActivity.length === 0
-        ? <p>No followers&apos; activity.</p>
-        : followerActivity.map((accomplishment: accomplishment, key: number) => 
+        followerActivity.length > 0 && [
+          <h2>Followers&apos; activity:</h2>,
+          followerActivity.map((accomplishment: accomplishment, key: number) => 
             <Accomplishment key={ key } accomplishment={ accomplishment } />
           )
+        ]
       }
     </main>
   );

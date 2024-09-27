@@ -2,6 +2,7 @@
 import React from 'react';
 import style from './profile.module.css';
 import Image from 'next/image';
+import getColors from '@app/profileColor';
 
 const Page = (
   props: {
@@ -27,17 +28,7 @@ const Page = (
       </main>
     );
 
-  const bytes = new TextEncoder().encode(props.userData.username.slice(0, 3));
-    
-  const red = bytes[0].toString(16).padStart(2, '0');
-  const green = bytes[1].toString(16).padStart(2, '0');
-  const blue = bytes[2].toString(16).padStart(2, '0');
-  const color = `#${ red }${ green }${ blue }`;
-
-  const r_red = (256 - bytes[0]).toString(16).padStart(2, '0');
-  const r_green = (256 - bytes[1]).toString(16).padStart(2, '0');
-  const r_blue = (256 - bytes[2]).toString(16).padStart(2, '0');
-  const r_color = `#${ r_red }${ r_green }${ r_blue }`;
+  const [ color, r_color ] = getColors(props.userData.username.slice(0, 3));
 
   return (
     <main ref={ props.refs } style={ { display: 'none' } }>
