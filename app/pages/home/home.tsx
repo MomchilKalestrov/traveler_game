@@ -115,13 +115,13 @@ const Page = (props: {
       { 
         props.userData.started.length === 0
         ? <p>No adventures started.</p>
-        : <div className={ style.HorizontalCarousel }>
+        : <div className={ style.HorizontalCarousel }><div>
           {
             props.userData.started.map((name: string, index: number) =>
               <Minicard key={ index } name={ name } reset={ props.reset } />
             )
           }
-          </div>
+          </div></div>
       }
       <div className={ style.TitleWithSort }>
         <h2>New adventures:</h2>

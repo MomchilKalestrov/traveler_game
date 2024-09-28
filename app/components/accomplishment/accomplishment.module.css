@@ -30,6 +30,7 @@
 .Accomplishment h3 {
     grid-area: info;
     align-self: end;
+    line-height: calc(var(--font-size) + 2px);
 }
 
 .Accomplishment p {

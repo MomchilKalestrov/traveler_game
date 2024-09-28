@@ -64,7 +64,7 @@ const Page = (
     <main
       ref={ props.refs }
       style={ {
-        margin: '0px',
+        padding: '0px',
         height: 'calc(100vh - 5rem)',
         display: 'none'
       } }

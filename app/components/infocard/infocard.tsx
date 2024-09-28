@@ -32,7 +32,7 @@ const InfoCard = (
     }
 
     return (
-        <div className={ style.Infocard }>
+        <div className={ style.Infocard } onClick={ props.reset }>
             <div ref={ reference }>
                 <div className={ style.InfocardHeader }>
                     <button aria-label='close card' onClick={ close }>

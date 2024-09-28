@@ -7,6 +7,13 @@
 }
 
 .HorizontalCarousel {
+    margin-left: calc(var(--padding) * -1);
+    margin-right: calc(var(--padding) * -1);
+    position: relative;
+}
+
+.HorizontalCarousel > div {
+    padding: 0px var(--padding);
     overflow: scroll;
     display: flex;
     justify-content: left;
@@ -14,8 +21,27 @@
     gap: 0.5rem;
 }
 
-.HorizontalCarousel > * {
+.HorizontalCarousel > div > * {
     flex-shrink: 0;
+}
+
+.HorizontalCarousel::after,
+.HorizontalCarousel::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: var(--padding);
+    z-index: 1;
+    height: 100%;
+}
+
+.HorizontalCarousel::after {
+    right: 0;
+    background: linear-gradient(90deg, transparent, var(--color-bg));  
+}
+.HorizontalCarousel::before {
+    left: 0;
+    background: linear-gradient(90deg, var(--color-bg), transparent);
 }
 
 .TitleWithSort {

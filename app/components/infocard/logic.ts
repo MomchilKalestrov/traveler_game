@@ -1,4 +1,5 @@
 import { loading, stopLoading } from '@components/loading/loading';
+import JSConfetti from 'js-confetti';
 
 const getUserLocation = (): Promise<{ lat: number, lng: number } | undefined> => {
     return new Promise((resolve, reject) => {
@@ -73,7 +74,7 @@ const finish = (
 ) => {
     getUserLocation().then(location => {
         if(!location) return;
-
+        
         loading();
         fetch(`/api/finish`, {
             method: 'POST',
@@ -97,6 +98,7 @@ const finish = (
                 }
                 close();
                 reset();
+                new JSConfetti().addConfetti();
             });
     });
 }
