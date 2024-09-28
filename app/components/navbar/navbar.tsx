@@ -23,7 +23,7 @@ const NavbarEntry = (
     );
 }
 const Navbar = (props: { refs: Array<React.RefObject<HTMLElement>> }) => {
-    const posibilities: string[] = ['Home', 'Map', 'Profile'];
+    const posibilities: Array<string> = [ 'Home', 'Map', 'Profile' ];
     const [active, setActive] = React.useState<Array<boolean>>([ true, false, false ]);
 
     const pageSwap = (id: number) => {
