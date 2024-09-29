@@ -1,12 +1,12 @@
 :root {
-    --color-primary: #454937;
-    --color-secondary: #CDD0C4;
-    --color-tertiary: #A9AD9C;
-    --color-bg: #E9EBE1;
+    --color-primary: #484b3d;
+    --color-secondary: #dcdfd4;
+    --color-tertiary: #c8cac0;
+    --color-bg: #e9ebe1;
     --color-danger: var(--color-primary);
     --color-disabled: #666666;
-    --icon-filter-primary: brightness(0%) invert(20%) sepia(7%) saturate(1890%) hue-rotate(33deg) brightness(102%) contrast(75%);
-    --icon-filter-bg: brightness(0%) invert(94%) sepia(16%) saturate(84%) hue-rotate(31deg) brightness(101%) contrast(86%);
+    --icon-filter-primary: brightness(0%) invert(27%) sepia(11%) saturate(604%) hue-rotate(32deg) brightness(97%) contrast(93%);
+    --icon-filter-bg: brightness(0%) invert(93%) sepia(13%) saturate(102%) hue-rotate(32deg) brightness(99%) contrast(92%);
 }
 
 @font-face {
@@ -43,14 +43,14 @@
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --color-primary: #E9EBE1;
-        --color-secondary: #525741;
-        --color-tertiary: #656B52;
-        --color-bg: #454937;
+        --color-primary: #e9ebe1;
+        --color-secondary: #3D4133;
+        --color-tertiary: #494d3d;
+        --color-bg: #36392C;
         --color-danger: var(--color-primary);
         --color-disabled: #949494;
-        --icon-filter-primary: brightness(0%) invert(94%) sepia(16%) saturate(84%) hue-rotate(31deg) brightness(101%) contrast(86%);
-        --icon-filter-bg: brightness(0%) invert(20%) sepia(7%) saturate(1890%) hue-rotate(33deg) brightness(102%) contrast(75%);
+        --icon-filter-primary: brightness(0%) invert(93%) sepia(13%) saturate(102%) hue-rotate(32deg) brightness(99%) contrast(92%);
+        --icon-filter-bg: brightness(0%) invert(19%) sepia(35%) saturate(238%) hue-rotate(33deg) brightness(96%) contrast(95%);
     }
 }
 

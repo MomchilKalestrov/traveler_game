@@ -7,6 +7,7 @@ import Image from 'next/image';
 import MaterialInput from '@components/input/input';
 import Accomplishment from '@components/accomplishment/accomplishment';
 import type { location, user, accomplishment } from '@app/types';
+import getActivities from './followerActivity';
 function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
   const toRadians = (degree: number) => degree * (Math.PI / 180);
   const R = 6371;
@@ -32,29 +33,12 @@ const Page = (props: {
   const [followerActivity,  setFollowerActivity ] = React.useState<Array<accomplishment>>([]);  
 
   React.useEffect(() => {
-    const getActivities = async () => {
-      if (!props.userData) return;
-      let activities: Array<accomplishment> = [];
-      
-      for (const user of props.userData.following) {
-        const data: any = (await (
-          await fetch(`/api/auth/get?username=${ encodeURIComponent(user) }`)
-        ).json()) as { username: string, finished: Array<{ location: string, time: number, user?: string }> }
-        
-        if (data.finished.length > 0)
-          activities = activities.concat(
-            data.finished.map((info: { location: string, time: number }) => ({
-              ...info,
-              user: data.username
-            }))
-          );
-      }
-      // the bigger the number, the more recent the activity
-      activities.sort((a, b) => b.time - a.time);
-      setFollowerActivity(activities.slice(0, Math.min(activities.length, 6)));
-    };
-
-    getActivities();
+    if (!props.userData) return;
+    
+    getActivities(props.userData)
+      .then((activities) =>
+        setFollowerActivity(activities)
+      );
   }, [props.userData]);
   
   React.useEffect(() => {
