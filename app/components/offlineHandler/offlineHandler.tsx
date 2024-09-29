@@ -17,7 +17,7 @@ const OfflineHandler = ({ children }: { children: React.ReactNode }) => {
         }
     }, []);
 
-    return <>{ children }</>;
+    return children;
 };
 
 export default OfflineHandler;

@@ -6,8 +6,9 @@ import React from 'react';
 import Image from 'next/image';
 import MaterialInput from '@components/input/input';
 import Accomplishment from '@components/accomplishment/accomplishment';
-import type { location, user, accomplishment } from '@app/types';
-import getActivities from './followerActivity';
+import type { location, user, accomplishment } from '@logic/types';
+import getActivities from '@logic/followerActivity';
+
 function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
   const toRadians = (degree: number) => degree * (Math.PI / 180);
   const R = 6371;
@@ -34,7 +35,7 @@ const Page = (props: {
 
   React.useEffect(() => {
     if (!props.userData) return;
-    
+
     getActivities(props.userData)
       .then((activities) =>
         setFollowerActivity(activities)

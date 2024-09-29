@@ -1,4 +1,4 @@
-import type { accomplishment } from '@app/types';
+import type { accomplishment } from '@logic/types';
 import style from './accomplishment.module.css';
 import Image from 'next/image';
 

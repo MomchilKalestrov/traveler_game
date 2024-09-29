@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb';
 import { NextResponse, NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
-import userCheck from '../usercheck';
+import userCheck from '@logic/usercheck';
 
 function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
     const toRadians = (degree: number) => degree * (Math.PI / 180);

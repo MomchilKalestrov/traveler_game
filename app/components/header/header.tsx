@@ -2,10 +2,10 @@ import style from './header.module.css';
 import Settings from '@pages/settings/settings';
 import React from 'react';
 import UserSearch, { status } from '@pages/usersearch/usersearch';
-import type { user } from '@app/types';
+import type { user } from '@logic/types';
 import Image from 'next/image';
-import { getCookie } from '@app/cookies';
-import { stopLoading } from '../loading/loading';
+import { getCookie } from '@logic/cookies';
+import { stopLoading } from '@components/loading/loading';
 
 const emptyUser: user = {
     username: '',

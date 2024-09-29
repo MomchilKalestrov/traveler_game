@@ -2,7 +2,7 @@
 import React from 'react';
 import style from './profile.module.css';
 import Image from 'next/image';
-import getColors from '@app/profileColor';
+import getColors from '@logic/profileColor';
 
 const Page = (
   props: {

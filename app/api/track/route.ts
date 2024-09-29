@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb';
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import userCheck from '../usercheck';
+import userCheck from '@logic/usercheck';
 
 const POST = async (request: NextRequest) => {
     const body = await request.json();

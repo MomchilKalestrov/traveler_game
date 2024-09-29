@@ -6,7 +6,7 @@ import Profile from '@pages/profile/profile';
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import Header from '@components/header/header';
-import type { location, user } from '@app/types';
+import type { location, user } from '@logic/types';
 
 const Page = () => {
     const router                            = useRouter();

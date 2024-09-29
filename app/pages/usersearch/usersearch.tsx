@@ -2,10 +2,10 @@ import style from './usersearch.module.css';
 import userStyle from '@pages/profile/profile.module.css';
 import Image from 'next/image';
 import React from 'react';
-import { getCookie } from '@app/cookies';
+import { getCookie } from '@logic/cookies';
 import { loading } from '@app/components/loading/loading';
-import type { user } from '@app/types';
-import getColors from '@app/profileColor';
+import type { user } from '@logic/types';
+import getColors from '@logic/profileColor';
 
 /*
     Like the crack of the whip, I Snap! attack

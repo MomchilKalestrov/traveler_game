@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import userCheck from '@app/api/usercheck';
+import userCheck from '@logic/usercheck';
 import { MongoClient } from 'mongodb';
 
 const POST = async (request: NextRequest) => {

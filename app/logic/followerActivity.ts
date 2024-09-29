@@ -1,4 +1,4 @@
-import { accomplishment, user } from '@app/types';
+import { accomplishment, user } from '@logic/types';
 
 type follower = {
     username: string,
