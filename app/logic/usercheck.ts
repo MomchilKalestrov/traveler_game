@@ -9,10 +9,9 @@ const userCheck = async (username: string, password: string): Promise<boolean> =
 
     try {
         await client.connect();
-        const db = client.db('TestDB');
-        const collection = db.collection('TestCollection');
+        const userCollection = client.db('TestDB').collection('UserCollection');
 
-        const user = (await collection.aggregate([{
+        const user = (await userCollection.aggregate([{
             $match: { username: username }
         }]).toArray())[0];
 

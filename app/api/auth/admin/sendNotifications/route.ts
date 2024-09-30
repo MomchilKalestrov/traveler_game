@@ -24,9 +24,9 @@ const POST = async (request: NextRequest) => {
 
     try {
         await client.connect();
-        const collection = client.db('TestDB').collection('TestCollection');
+        const subscriberCollection = client.db('TestDB').collection('SubscriberCollection');
     
-        const subscriptions = (await collection.findOne({ subscribersInfo: true }) as any).subscribers;
+        const subscriptions = (await subscriberCollection.findOne({ subscribersInfo: true }) as any).subscribers;
 
         subscriptions.map((subscription: any) => {
             console.log('endpoint: ' + subscription.endpoint);

@@ -18,9 +18,9 @@ const GET = async (request: NextRequest) => {
     try {
         // Connect to the database
         await client.connect();
-        const collection = client.db('TestDB').collection('TestCollection');
+        const userCollection = client.db('TestDB').collection('UserCollection');
         // Find the user
-        userInfo = (await collection.aggregate([
+        userInfo = (await userCollection.aggregate([
             { $project: { _id: 0, password: 0 }},
             { $match: { username: username } }
         ]).toArray())[0];

@@ -81,13 +81,15 @@ const Page = (
                 <h2>Settings</h2>
                 <div style={ { width: '2.5rem', height: '2.5rem' } } />
             </div>
-            <div className={ style.Option }>
-                <div>
-                    <h3>Notifications</h3>
-                    <p>Receive notifications for new messages and updates.</p>
+            {/*
+                <div className={ style.Option }>
+                    <div>
+                        <h3>Notifications</h3>
+                        <p>Receive notifications for new messages and updates.</p>
+                    </div>
+                    <ToggleButton disabled={ notifAccess } onClick={ allowNotifications } />
                 </div>
-                <ToggleButton disabled={ notifAccess } onClick={ allowNotifications } />
-            </div>
+            */}
             <div className={ style.Option }>
                 <div>
                     <h3>Log out</h3>

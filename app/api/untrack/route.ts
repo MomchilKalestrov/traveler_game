@@ -17,9 +17,9 @@ const POST = async (request: NextRequest) => {
     try {
         // Connect to the database
         await client.connect();
-        const collection = client.db('TestDB').collection('TestCollection');
+        const userCollection = client.db('TestDB').collection('UserCollection');
         // Get the user
-        names = await collection.aggregate([{
+        names = await userCollection.aggregate([{
             $match: { username: cookie.get('username')?.value }
         }]).toArray();
         // Get the tracked locations
@@ -29,7 +29,7 @@ const POST = async (request: NextRequest) => {
             return NextResponse.json({ error: 'User isn\'t tracking this location.' }, { status: 400 });
         }
         // Remove the location from the tracked
-        await collection.updateOne(
+        await userCollection.updateOne(
             { username: cookie.get('username')?.value },
             { $set: { started: started.filter((name: string) => name !== args.name) } }
         );

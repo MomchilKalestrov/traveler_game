@@ -14,11 +14,13 @@ const GET = async (request: NextRequest) => {
 
     try {
         await client.connect();
-        const collection = client.db('TestDB').collection('TestCollection');
-        names = (await collection.aggregate([{
+        const userCollection = client.db('TestDB').collection('UserCollection');
+        names = (await userCollection.aggregate([{
             $match: { username: cookie.get('username')?.value }
         }]).toArray())[0].started;
-        locations = await collection.aggregate([
+
+        const locationCollection = client.db('TestDB').collection('LocationCollection');
+        locations = await locationCollection.aggregate([
             { $project: { _id: 0, name: 1, location: 1 } },
             { $match:   { name: { $in: names } } }
         ]).toArray();

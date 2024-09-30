@@ -19,12 +19,12 @@ const POST = async (request: NextRequest) => {
 
     try {
         client.connect();
-        const collection = client.db('TestDB').collection('TestCollection');
+        const userCollection = client.db('TestDB').collection('UserCollection');
 
-        const currentUser = (await collection.aggregate([{
+        const currentUser = (await userCollection.aggregate([{
             $match: { username: cookie.get('username')?.value }
         }]).toArray())[0];
-        const requestedUser = (await collection.aggregate([{
+        const requestedUser = (await userCollection.aggregate([{
             $match: { username: args.get('username') }
         }]).toArray())[0];
     
@@ -38,13 +38,13 @@ const POST = async (request: NextRequest) => {
             return NextResponse.json({ error: 'User is not following this user.' }, { status: 400 });
         }
 
-        await collection.updateOne(
+        await userCollection.updateOne(
             { username: cookie.get('username')?.value },
             { $set: {
                 following: currentUser.following.filter((username: string) => username !== args.get('username'))
             } }
         );
-        await collection.updateOne(
+        await userCollection.updateOne(
             { username: args.get('username') },
             { $set: {
                 followers: requestedUser.following.filter((username: string) => username !== cookie.get('username')?.value)

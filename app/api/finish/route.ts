@@ -31,9 +31,9 @@ const POST = async (request: NextRequest) => {
     try {
         // Connect to the database
         await client.connect();
-        const collection = client.db('TestDB').collection('TestCollection');
+        const userCollection = client.db('TestDB').collection('UserCollection');
         // Get the user
-        user = await collection.aggregate([{
+        user = await userCollection.aggregate([{
             $match: { username: cookie.get('username')?.value }
         }]).toArray();
         // Get the tracked locations
@@ -43,7 +43,7 @@ const POST = async (request: NextRequest) => {
             return NextResponse.json({ error: 'User isn\'t tracking this location.' }, { status: 412 });
         }
         // Get the location
-        location = (await collection.aggregate([{
+        location = (await userCollection.aggregate([{
             $match: { name: args.name }
         }]).toArray())[0];
         if(!location) {
@@ -64,12 +64,12 @@ const POST = async (request: NextRequest) => {
             return NextResponse.json({ error: 'User is not within 100 meters of the location.' }, { status: 400 });
         }
         // Remove the location from the tracked
-        await collection.updateOne(
+        await userCollection.updateOne(
             { username: cookie.get('username')?.value },
             { $set: { started: started.filter((name: string) => name !== args.name) } }
         );
         // Add to finished
-        await collection.updateOne(
+        await userCollection.updateOne(
             { username: cookie.get('username')?.value },
             { $push: { finished: {
                 location: args.name,

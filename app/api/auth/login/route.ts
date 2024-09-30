@@ -14,9 +14,9 @@ const POST = async (request: NextRequest) => {
     try {
         // Connect to the MongoDB
         await client.connect();
-        const collection = client.db('TestDB').collection('TestCollection');
+        const userCollection = client.db('TestDB').collection('UserCollection');
         // Check if the data already exists
-        const dataExists = await collection.findOne({
+        const dataExists = await userCollection.findOne({
             username: args.get('username'),
             password: md5(args.get('password') || '')
         });

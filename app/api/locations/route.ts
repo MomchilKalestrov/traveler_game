@@ -9,10 +9,9 @@ const GET = async (request: NextRequest) => {
 
     try {
         await client.connect();
-        const collection = client.db('TestDB').collection('TestCollection');
-        names = await collection.aggregate([
-            { $project: { _id: 0 } },
-            { $match:   { name: { $exists: true } } }
+        const locationCollection = client.db('TestDB').collection('LocationCollection');
+        names = await locationCollection.aggregate([
+            { $project: { _id: 0 } }
         ]).toArray();
         await client.close(true);
         return NextResponse.json(names, { status: 200 });

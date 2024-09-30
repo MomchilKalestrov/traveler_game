@@ -3,7 +3,7 @@ import { Dispatch, FormEvent, SetStateAction } from 'react';
 import style from './profile.module.css';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import validateName from '@app/api/auth/create/validateName';
+import validateName from '@logic/validateName';
 
 const SignUp = (
     props: {

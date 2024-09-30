@@ -10,11 +10,9 @@ const POST = async (request: NextRequest) => {
 
     try {
         await client.connect();
-        const collection = client.db('TestDB').collection('TestCollection');
+        const subscriptionCollection = client.db('TestDB').collection('SubscriptionCollection');
 
-        console.log('Subscription:', body);
-
-        await collection.updateOne(
+        await subscriptionCollection.updateOne(
             { subscribersInfo: true },
             { $push: { subscribers: body } }
         );

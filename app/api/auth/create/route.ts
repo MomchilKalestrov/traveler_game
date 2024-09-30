@@ -2,7 +2,7 @@ import { md5 } from 'js-md5';
 import { MongoClient } from 'mongodb';
 import { cookies } from 'next/headers';
 import { NextResponse, NextRequest } from 'next/server';
-import validateName from './validateName';
+import validateName from '@logic/validateName';
 
 const POST = async (request: NextRequest) => {
     const args: URLSearchParams = new URL(request.url).searchParams;
@@ -18,15 +18,15 @@ const POST = async (request: NextRequest) => {
     try {
         // Connect to the MongoDB
         await client.connect();
-        const collection = client.db('TestDB').collection('TestCollection');
+        const userCollection = client.db('TestDB').collection('UserCollection');
         // Check if the data already exists
-        const dataExists = await collection.findOne({ username: args.get('username') });
+        const dataExists = await userCollection.findOne({ username: args.get('username') });
         if(dataExists) {
             await client.close(true);
             return NextResponse.json({ error: 'User with the same username already exists.' }, { status: 400 });
         }
         // Insert the data
-        await collection.insertOne({
+        await userCollection.insertOne({
             username: args.get('username'),
             password: md5(args.get('password') || ''),
             started: [],
