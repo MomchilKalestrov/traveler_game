@@ -14,7 +14,7 @@ const POST = async (request: NextRequest) => {
     if (args.get('username') === cookie.get('username')?.value)
         return NextResponse.json({ error: 'You cannot unfollow yourself.' }, { status: 400 });
 
-    if (await userCheck(cookie.get('username')?.value || '', cookie.get('password')?.value || ''))
+    if (!await userCheck(cookie.get('username')?.value || '', cookie.get('password')?.value || ''))
         return NextResponse.json({ error: 'Invalid credentials.' }, { status: 401 });
 
     try {

@@ -25,7 +25,7 @@ const POST = async (request: NextRequest) => {
     let location: any = {};
     let user: any = {};
 
-    if(await userCheck(cookie.get('username')?.value || '', cookie.get('password')?.value || ''))
+    if(!await userCheck(cookie.get('username')?.value || '', cookie.get('password')?.value || ''))
         return NextResponse.json({ error: 'Invalid credentials.' }, { status: 401 });
 
     try {

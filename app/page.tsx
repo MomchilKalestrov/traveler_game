@@ -7,6 +7,7 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import Header from '@components/header/header';
 import type { location, user } from '@logic/types';
+import { getCookie } from './logic/cookies';
 
 const Page = () => {
     const router                            = useRouter();
@@ -25,8 +26,9 @@ const Page = () => {
         const verifyLogin = async () => {
             try {
                 const data = await (await fetch(`/api/auth/get?username=${ encodeURIComponent('CURRENT_USER') }`)).json();
-                const cookies = await (await fetch('/api/auth/cookies')).json();
-                if (!cookies.username || !cookies.password || data.error) {
+                const username = getCookie('username')?.value;
+                const password = getCookie('password')?.value;
+                if (!username || !password || data.error) {
                     if (abortControllerRef.current)
                         abortControllerRef.current.abort();
                     return router.replace('/login');

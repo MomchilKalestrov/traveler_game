@@ -2,8 +2,7 @@ import { MongoClient } from 'mongodb';
 import { NextResponse, NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
 
-const GET = async (request: NextRequest) => {
-    const args = cookies();
+const GET = async () => {
     const client = new MongoClient(process.env.MONGODB_URI as string);
     let names: Array<any> = [];
 

@@ -96,9 +96,11 @@ const Page = (
                     <p>Log out of your profile.</p>
                 </div>
                 <button
-                    onClick={ () =>
-                        fetch('/api/auth/logout', { method: 'POST' })
-                            .then(() => router.replace('/login'))
+                    onClick={ () => {
+                        deleteCookie('username');
+                        deleteCookie('password');
+                        router.replace('/login');
+                    }
                     }
                 >Log out</button>
             </div>

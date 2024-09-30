@@ -1,15 +1,15 @@
 import { MongoClient } from 'mongodb';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import userCheck from '@logic/usercheck';
 
-const GET = async (request: NextRequest) => {
+const GET = async () => {
     const client = new MongoClient(process.env.MONGODB_URI as string);
     const cookie = cookies();
     let names: any = {};
     let locations: any = {};
 
-    if(await userCheck(cookie.get('username')?.value || '', cookie.get('password')?.value || ''))
+    if(!await userCheck(cookie.get('username')?.value || '', cookie.get('password')?.value || ''))
         return NextResponse.json({ error: 'Invalid credentials.' }, { status: 401 });
 
     try {
