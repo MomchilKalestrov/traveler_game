@@ -1,11 +1,11 @@
 'use client'
-import Navbar from '@components/navbar/navbar';
-import Home from '@pages/home/home';
-import Map from '@pages/map/map';
-import Profile from '@pages/profile/profile';
+import Navbar from '@components/navbar';
+import Home from '@pages/home';
+import Map from '@pages/map';
+import Profile from '@pages/profile';
+import Header from '@components/header';
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import Header from '@components/header/header';
 import type { location, user } from '@logic/types';
 import { getCookie } from './logic/cookies';
 

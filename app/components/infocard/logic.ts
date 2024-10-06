@@ -1,4 +1,4 @@
-import { loading, stopLoading } from '@components/loading/loading';
+import { loading, stopLoading } from '@components/loading';
 import JSConfetti from 'js-confetti';
 
 const getUserLocation = (): Promise<{ lat: number, lng: number } | undefined> => {

@@ -1,11 +1,11 @@
 'use client'
 import style from './home.module.css';
-import Mapcard from '@components/mapcard/mapcard';
-import Minicard from '@components/minicard/minicard';
+import Mapcard from '@components/mapcard';
+import Minicard from '@components/minicard';
 import React from 'react';
 import Image from 'next/image';
-import MaterialInput from '@components/input/input';
-import Accomplishment from '@components/accomplishment/accomplishment';
+import MaterialInput from '@components/input';
+import Accomplishment from '@components/accomplishment';
 import type { location, user, accomplishment } from '@logic/types';
 import getActivities from '@logic/followerActivity';
 

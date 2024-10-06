@@ -3,7 +3,7 @@ import userStyle from '@pages/profile/profile.module.css';
 import Image from 'next/image';
 import React from 'react';
 import { getCookie } from '@logic/cookies';
-import { loading } from '@app/components/loading/loading';
+import { loading } from '@app/components/loading';
 import type { user } from '@logic/types';
 import getColors from '@logic/profileColor';
 

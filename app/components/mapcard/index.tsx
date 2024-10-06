@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
 import style from './mapcard.module.css';
-import InfoCard, { cardType } from '@components/infocard/infocard';
+import InfoCard, { cardType } from '@components/infocard';
 import Image from 'next/image';
 
 const Mapcard = (

@@ -1,7 +1,7 @@
 import { Roboto } from 'next/font/google';
 import './design.css';
 import { Metadata } from 'next';
-import OfflineHandler from '@components/offlineHandler/offlineHandler';
+import OfflineHandler from '@components/offlineHandler';
 import { Analytics } from '@vercel/analytics/react';
 
 const roboto = Roboto({
