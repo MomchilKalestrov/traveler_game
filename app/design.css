@@ -7,6 +7,7 @@
     --color-disabled: #666666;
     --icon-filter-primary: brightness(0%) invert(27%) sepia(11%) saturate(604%) hue-rotate(32deg) brightness(97%) contrast(93%);
     --icon-filter-bg: brightness(0%) invert(93%) sepia(13%) saturate(102%) hue-rotate(32deg) brightness(99%) contrast(92%);
+    --z: 1000;
 }
 
 @font-face {

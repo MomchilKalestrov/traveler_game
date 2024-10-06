@@ -31,7 +31,7 @@
     position: absolute;
     top: 0;
     width: var(--padding);
-    z-index: 1;
+    z-index: calc(var(--z) + 1);
     height: 100%;
 }
 

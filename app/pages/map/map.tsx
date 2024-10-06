@@ -1,26 +1,35 @@
-// src/components/map/index.tsx
+'use client';
 
-"use client"
-
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import { LatLngExpression, LatLngTuple } from 'leaflet';
+import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import L, { LatLngExpression, } from 'leaflet';
 import InfoCard, { cardType } from "@app/components/infocard";
 import React from "react";
 import { location } from "@app/logic/types";
 import "leaflet/dist/leaflet.css";
-import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
-import "leaflet-defaulticon-compatibility";
+
+const playerPin = new L.Icon({
+    iconUrl: '/icons/userpin.svg',
+    iconSize: [ 26, 37 ],
+});
+
+const poiPin = new L.Icon({
+    iconUrl: '/icons/poipin.svg',
+    iconSize: [ 26, 37 ],
+});
 
 const Map = (
     props: {
-        posix: LatLngExpression | LatLngTuple,
         zoom?: number,
-        playerLocation?: LatLngExpression | LatLngTuple,
+        userLocation?: { lat: number, lng: number } | undefined,
         locations?: Array<location>,
         reset: () => void
     }
 ) => {
     const [ visible, setVisible ] = React.useState<boolean>(false);
+    const [ name,    setName    ] = React.useState<string | undefined>(undefined);
+    const center: LatLngExpression = props.userLocation
+        ? [ props.userLocation.lat, props.userLocation.lng ]
+        : [ 42.143013705260884, 24.749279022216797 ];
 
     return (
         <>
@@ -28,13 +37,13 @@ const Map = (
                 visible &&
                 <InfoCard
                     setter={ setVisible }
-                    name={ "name" }
+                    name={ name || '' }
                     type={ cardType.Track }
                     reset={ props.reset }
                 />
             }
             <MapContainer
-                center={ props.posix }
+                center={ center }
                 zoom={ 19 }
                 scrollWheelZoom={ true }
                 style={ { height: "100%", width: "100%" } }
@@ -44,12 +53,23 @@ const Map = (
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
                 {
+                    props.userLocation &&
+                    <Marker
+                        position={ [ props.userLocation.lat, props.userLocation.lng ] }
+                        icon={ playerPin }
+                    ></Marker>
+                }
+                {
                     props.locations?.map((location, index) => (
                         <Marker
                             key={ index }
                             position={ [ location.location.lat, location.location.lng ] }
+                            icon={ poiPin }
                             eventHandlers={ {
-                                click: () => setVisible(true)
+                                click: () => {
+                                    setVisible(true);
+                                    setName(location.name);
+                                }
                             } }                            
                         ></Marker>
                     ))

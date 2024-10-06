@@ -1,6 +1,5 @@
 'use client'
 import React from 'react';
-import InfoCard, { cardType } from '@components/infocard';
 import Image from 'next/image';
 import type { location } from '@logic/types';
 import dynamic from "next/dynamic";
@@ -14,9 +13,7 @@ const Page = (
   }
 ) => {
   const [watcherID,    setWatcherID   ] = React.useState<number>();
-  const [name,         setName        ] = React.useState<string>();
-  const [visible,      setVisible     ] = React.useState<boolean>(false);
-  const [userLocation, setUserLocation] = React.useState<google.maps.LatLngLiteral | null>(null);
+  const [userLocation, setUserLocation] = React.useState<{ lat: number, lng: number } | undefined>(undefined);
 
   const Map = useMemo(() => dynamic(
     () => import('./map'), {
@@ -42,11 +39,6 @@ const Page = (
       alert('Geolocation is not supported by this browser.')
     };
   }, []);
-
-  const view = (name: string) => {
-    setName(name);
-    setVisible(true);
-  };
 
   if (!props.startedLocations)
     return (
@@ -74,7 +66,7 @@ const Page = (
         height: 'calc(100vh - 5rem)',
         display: 'none'
       } }
-    ><Map posix={[4.79029, -75.69003]} reset={ props.reset } locations={ props.startedLocations } /></main>
+    ><Map userLocation={ userLocation } reset={ props.reset } locations={ props.startedLocations } /></main>
   );
 };
 

@@ -8,7 +8,7 @@
     display: flex;
     align-items: stretch;
     position: fixed;
-    z-index: 2;
+    z-index: calc(var(--z) + 2);
 }
 
 .Header div {
@@ -66,7 +66,7 @@
     display: flex;
     align-items: stretch;
     position: fixed;
-    z-index: 1;
+    z-index: calc(var(--z) + 1);
     transition-property: margin, width, height, border-radius, border-bottom;
     transition-duration: 0.25s;
 }

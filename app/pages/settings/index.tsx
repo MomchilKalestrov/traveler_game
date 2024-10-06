@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import style from './settings.module.css';
 import Image from 'next/image';
-import ToggleButton from '@app/components/toggle/toggle';
+import ToggleButton from '@app/components/toggle';
 import { useRouter } from 'next/navigation';
 import { deleteCookie, getCookie, setCookie } from '@logic/cookies';
 
