@@ -89,6 +89,18 @@ const Map = (
                     ))
                 }
             </MapContainer>
+            <style>
+                { /*
+                    there will be absolutely no support for either side of any wars in this app.
+                */ }
+                {`
+                    .leaflet-attribution-flag {
+                        opacity: 0;
+                        width: 0;
+                        height: 0;  
+                    }
+                `}
+            </style>
         </>
     )
 }
