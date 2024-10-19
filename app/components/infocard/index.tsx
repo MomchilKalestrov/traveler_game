@@ -2,6 +2,7 @@ import style from './infocard.module.css';
 import React from 'react';
 import Image from 'next/image';
 import buttons from './buttonTypes';
+import { location } from '@app/logic/types';
 
 export enum cardType {
     Untrack,
@@ -17,8 +18,20 @@ const InfoCard = (
         reset: () => void
     }
 ) => {
-    const reference= React.useRef<HTMLDivElement>(null);
+    const reference = React.useRef<HTMLDivElement>(null);
+    const paraRef = React.useRef<HTMLParagraphElement>(null);
     const Button = buttons[props.type];
+
+    React.useEffect(() => {
+        fetch(`${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/info/${ props.name }.txt`, {
+            cache: 'force-cache', next: { revalidate: 60 * 60 * 24 * 30 }
+        })
+            .then((res) => res.status === 200 ? res.text() : undefined)
+            .then((text) => {
+                if (paraRef.current && text)
+                    paraRef.current.innerText = text;
+            });
+    }, []);
 
     const close = () => {
         if(!reference.current) return;
@@ -54,7 +67,7 @@ const InfoCard = (
                 </div>
                 <div className={ style.InfocardData }>
                     <h3>{ props.name }</h3>
-                    <p></p>
+                    <p ref={ paraRef }></p>
                     <Button name={ props.name } reset={ props.reset } close={ close } />
                 </div>
             </div>

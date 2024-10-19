@@ -48,6 +48,7 @@
 .InfocardData p {
     margin: 1rem 0px;
     width: 100%;
+    text-align: center;
 }
 
 .InfocardHeader {
