@@ -44,10 +44,10 @@ const InfoCard = (
     }
 
     return (
-        <div className={ style.Infocard } onClick={ close }>
+        <div className={ style.Infocard }>
             <div ref={ reference }>
                 <div className={ style.InfocardHeader }>
-                    <button aria-label='close card' onClick={ close }>
+                    <button aria-label='Close card' onClick={ close }>
                         <Image
                             src='/icons/back.svg' alt='back'
                             width={ 32 } height={ 32 }
@@ -67,7 +67,7 @@ const InfoCard = (
                 </div>
                 <div className={ style.InfocardData }>
                     <h3>{ props.name }</h3>
-                    <p ref={ paraRef }></p>
+                    <p ref={ paraRef } />
                     <Button name={ props.name } reset={ props.reset } close={ close } />
                 </div>
             </div>
