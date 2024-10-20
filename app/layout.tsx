@@ -26,9 +26,8 @@ const RootLayout = ({
   <html lang="en">
     <body className={ roboto.className }>
       <Analytics />
-      <OfflineHandler>
-        { children }
-      </OfflineHandler>
+      <OfflineHandler />
+      { children }
     </body>
   </html>
 );
