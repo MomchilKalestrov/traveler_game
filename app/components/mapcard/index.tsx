@@ -15,13 +15,18 @@ const Mapcard = (
     return (
         <>
             <div className={ style.Mapcard }>
-                <div className={ style.MapcardLocation} onLoad={ (event: React.SyntheticEvent<HTMLDivElement>) =>
-                    fetch(`${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/bg/${ props.name }.png`)
-                        .then((res) => res.status === 200 ? res.text() : undefined)
-                        .then((text) => {
-                            if (event.currentTarget && text)
-                                event.currentTarget.style.backgroundImage = `url(${ text })`;
-                        })
+                <div
+                    className={ style.MapcardLocation }
+                    onLoad={ (event: React.SyntheticEvent<HTMLDivElement>) => {
+                        const target = event.currentTarget;
+                        const URL = `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/bg/${ props.name }.png`;
+                        fetch(URL)
+                            .then((res) => res.status === 200 ? res.text() : undefined)
+                            .then((text) => {
+                                if (target && text)
+                                    target.style.backgroundImage = `url('${ URL }')`;
+                            });
+                    }
                 }>
                     <div>
                         <Image

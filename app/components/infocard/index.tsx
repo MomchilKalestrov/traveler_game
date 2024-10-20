@@ -2,7 +2,6 @@ import style from './infocard.module.css';
 import React from 'react';
 import Image from 'next/image';
 import buttons from './buttonTypes';
-import { location } from '@app/logic/types';
 
 export enum cardType {
     Untrack,
@@ -52,15 +51,16 @@ const InfoCard = (
                         <Image
                             src='/icons/back.svg' alt='back'
                             width={ 32 } height={ 32 }
-                            onLoad={ (event: React.SyntheticEvent<HTMLImageElement>) =>
-                                fetch(`${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/bg/${ props.name }.png`, {
-                                    cache: 'force-cache', next: { revalidate: 60 * 60 * 24 * 30 }
-                                })
+                            onLoad={ (event: React.SyntheticEvent<HTMLImageElement>) => {
+                                const target = event.currentTarget.parentElement?.parentNode as HTMLDivElement;
+                                const URL = `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/bg/${ props.name }.png`;
+                                fetch(URL)
                                     .then((res) => res.status === 200 ? res.text() : undefined)
                                     .then((text) => {
-                                        if (event.currentTarget && text)
-                                            event.currentTarget.style.backgroundImage = `url(${ text })`;
-                                    })
+                                        if (target && text)
+                                            target.style.backgroundImage = `url('${ URL }')`;
+                                    });
+                                }
                             }
                         />
                     </button>
