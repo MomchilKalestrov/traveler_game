@@ -46,22 +46,19 @@ const InfoCard = (
     return (
         <div className={ style.Infocard }>
             <div ref={ reference }>
-                <div className={ style.InfocardHeader }>
+                <div
+                    className={ style.InfocardHeader }
+                    style={ {
+                        backgroundImage: `
+                            url('${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/bg/${ props.name }.png'),
+                            url('/default_assets/background.png')
+                        `
+                    } }
+                >
                     <button aria-label='Close card' onClick={ close }>
                         <Image
                             src='/icons/back.svg' alt='back'
                             width={ 32 } height={ 32 }
-                            onLoad={ (event: React.SyntheticEvent<HTMLImageElement>) => {
-                                const target = event.currentTarget.parentElement?.parentNode as HTMLDivElement;
-                                const URL = `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/bg/${ props.name }.png`;
-                                fetch(URL)
-                                    .then((res) => res.status === 200 ? res.text() : undefined)
-                                    .then((text) => {
-                                        if (target && text)
-                                            target.style.backgroundImage = `url('${ URL }')`;
-                                    });
-                                }
-                            }
                         />
                     </button>
                 </div>

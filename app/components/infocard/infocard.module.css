@@ -47,6 +47,7 @@
 
 .InfocardData p {
     margin: 1rem 0px;
+    line-height: 1.5rem;
     width: 100%;
     text-align: center;
 }

@@ -17,17 +17,13 @@ const Mapcard = (
             <div className={ style.Mapcard }>
                 <div
                     className={ style.MapcardLocation }
-                    onLoad={ (event: React.SyntheticEvent<HTMLDivElement>) => {
-                        const target = event.currentTarget;
-                        const URL = `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/bg/${ props.name }.png`;
-                        fetch(URL)
-                            .then((res) => res.status === 200 ? res.text() : undefined)
-                            .then((text) => {
-                                if (target && text)
-                                    target.style.backgroundImage = `url('${ URL }')`;
-                            });
-                    }
-                }>
+                    style={ {
+                        backgroundImage: `
+                            url('${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/bg/${ props.name }.png'),
+                            url('/default_assets/background.png')
+                        `
+                    } }
+                >
                     <div>
                         <Image
                             alt={ props.name }
