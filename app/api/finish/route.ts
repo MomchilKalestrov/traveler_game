@@ -32,6 +32,7 @@ const POST = async (request: NextRequest) => {
         // Connect to the database
         await client.connect();
         const userCollection = client.db('TestDB').collection('UserCollection');
+        const locationCollection = client.db('TestDB').collection('LocationCollection');
         // Get the user
         user = await userCollection.aggregate([{
             $match: { username: cookie.get('username')?.value }
@@ -43,7 +44,7 @@ const POST = async (request: NextRequest) => {
             return NextResponse.json({ error: 'User isn\'t tracking this location.' }, { status: 412 });
         }
         // Get the location
-        location = (await userCollection.aggregate([{
+        location = (await locationCollection.aggregate([{
             $match: { name: args.name }
         }]).toArray())[0];
         if(!location) {

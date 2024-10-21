@@ -49,7 +49,7 @@ const Map = (
                 <InfoCard
                     setter={ setVisible }
                     name={ name || '' }
-                    type={ cardType.Track }
+                    type={ cardType.Finish }
                     reset={ props.reset }
                 />
             }
