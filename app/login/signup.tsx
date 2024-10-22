@@ -25,11 +25,9 @@ const SignUp = (
 
         fetch(`/api/auth/create?username=${data.get('username')}&password=${data.get('password')}`, {
             method: 'POST'
-        }).then(async (res) => {
-            res.json().then((data) => {
-                if (!res.ok) return alert('Failed to sign up.');
-                router.replace('/');
-            });
+        }).then((res) => {
+            if (res.ok) return router.replace('/');
+            else return alert('Failed to sign up.');
         });
     }
 

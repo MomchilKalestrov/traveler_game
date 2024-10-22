@@ -19,8 +19,8 @@ const LogIn = (
         fetch(`/api/auth/login?username=${data.get('username')}&password=${data.get('password')}`, {
             method: 'POST'
         }).then(async (res) => {
-            if (!res.ok) return alert('Failed to log in.');
-            router.replace('/');
+            if (res.ok) return router.replace('/');
+            else return alert('Failed to sign up.');
         });
     }
 
