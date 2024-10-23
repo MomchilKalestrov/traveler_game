@@ -8,7 +8,7 @@ import { useMemo } from "react";
 const Page = (
   props: {
     refs: React.Ref<HTMLElement>,
-    startedLocations?: Array<location>,
+    started?: Array<location> | undefined,
     reset: () => void
   }
 ) => {
@@ -40,7 +40,7 @@ const Page = (
     };
   }, []);
 
-  if (!props.startedLocations)
+  if (!props.started)
     return (
       <main ref={ props.refs } style={ { display: 'none' } }>
         <Image
@@ -66,7 +66,7 @@ const Page = (
         height: 'calc(100vh - 5rem)',
         display: 'none'
       } }
-    ><Map userLocation={ userLocation } reset={ props.reset } locations={ props.startedLocations } /></main>
+    ><Map userLocation={ userLocation } reset={ props.reset } locations={ props.started } /></main>
   );
 };
 

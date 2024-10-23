@@ -37,8 +37,8 @@ const Map = (
         reset: () => void
     }
 ) => {
-    const [ visible, setVisible ] = React.useState<boolean>(false);
-    const [ name,    setName    ] = React.useState<string | undefined>(undefined);
+    const [ visible,  setVisible  ] = React.useState<boolean>(false);
+    const [ location, setLocation ] = React.useState<location | undefined>(undefined);
     const center: LatLngExpression = props.userLocation
         ? [ props.userLocation.lat, props.userLocation.lng ]
         : [ 42.143013705260884, 24.749279022216797 ]; // Center of Plovdiv
@@ -49,7 +49,7 @@ const Map = (
                 visible &&
                 <InfoCard
                     setter={ setVisible }
-                    name={ name || '' }
+                    location={ location || { name: 'N/A', location: { lat: 0, lng: 0 }, description: 'You shouldn\'t be able to read this >:(', xp: 0 } }
                     type={ cardType.Finish }
                     reset={ props.reset }
                 />
@@ -83,7 +83,7 @@ const Map = (
                             eventHandlers={ {
                                 click: () => {
                                     setVisible(true);
-                                    setName(location.name);
+                                    setLocation(location);
                                 }
                             } }                            
                         ></Marker>

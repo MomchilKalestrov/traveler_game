@@ -32,7 +32,8 @@ const POST = async (request: NextRequest) => {
             started: [],
             finished: [],
             following: [],
-            followers: []
+            followers: [],
+            xp: 0
         });
         // Set the cookies
         const user = cookies();

@@ -3,10 +3,11 @@ import React from 'react';
 import style from './minicard.module.css';
 import InfoCard, { cardType } from '@components/infocard';
 import Image from 'next/image';
+import { location } from '@logic/types';
 
 const Minicard = (
     props: {
-        name: string,
+        location: location,
         reset: () => void
     }
 ) => {
@@ -14,19 +15,19 @@ const Minicard = (
 
     return (
         <>
-            <button aria-label={ `View started ${ props.name }` } className={ style.Minicard } onClick={ () => setViewing(true) }>
+            <button aria-label={ `View started ${ props.location.name }` } className={ style.Minicard } onClick={ () => setViewing(true) }>
                 <Image
-                    alt={ `${ props.name } icon` } width={ 32 } height={ 32 }
-                    src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ props.name }.svg` }
+                    alt={ `${ props.location.name } icon` } width={ 32 } height={ 32 }
+                    src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ props.location.name }.svg` }
                 />
-                <h2>{ props.name }</h2>
+                <h2>{ props.location.name }</h2>
             </button>
             {
                 viewing &&
                 <InfoCard
                     type={ cardType.Untrack }
                     setter={ setViewing }
-                    name={ props.name }
+                    location={ props.location }
                     reset={ props.reset }
                 />
             }

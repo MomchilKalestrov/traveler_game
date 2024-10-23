@@ -82,6 +82,25 @@
     filter: var(--icon-filter-primary);
 }
 
+.InfocardHeader p {
+    font-size: 1rem;
+    line-height: 1rem;
+    font-weight: bold;
+    padding: 0.5rem;
+    margin: 0px;
+    border-radius: 1rem;
+    background-color: #ffffff;
+    color: #306928;
+}
+
+.InfocardHeader p::before {
+    content: "+ ";
+}
+
+.InfocardHeader p::after {
+    content: " xp";
+}
+
 @keyframes slideIn {
     from { transform: translateY(calc(50vh + var(--height) / 2)); }
     to   { transform: translateY(0vh); }

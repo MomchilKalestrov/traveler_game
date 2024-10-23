@@ -21,7 +21,7 @@ const GET = async () => {
 
         const locationCollection = client.db('TestDB').collection('LocationCollection');
         locations = await locationCollection.aggregate([
-            { $project: { _id: 0, name: 1, location: 1 } },
+            { $project: { _id: 0 } },
             { $match:   { name: { $in: names } } }
         ]).toArray();
         

@@ -24,28 +24,29 @@ function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
 
 const Page = (props: {
   refs: React.Ref<HTMLElement>,
-  userData: user | undefined,
-  newLocations?: Array<location>,
+  user: user | undefined,
+  new: Array<location> | undefined,
+  started: Array<location> | undefined,
   reset: () => void
 }) => {
   const reference = React.useRef<HTMLDivElement>(null);
-  const [filteredLocations, setFilteredLocations] = React.useState<Array<location>>(props.newLocations || []);
+  const [filteredLocations, setFilteredLocations] = React.useState<Array<location>>(props.new || []);
   const [filterOpen,        setFilterOpen       ] = React.useState(true);
   const [followerActivity,  setFollowerActivity ] = React.useState<Array<accomplishment>>([]);  
 
   React.useEffect(() => {
-    if (!props.userData) return;
+    if (!props.user) return;
 
-    getActivities(props.userData)
+    getActivities(props.user)
       .then((activities) =>
         setFollowerActivity(activities)
       );
-  }, [props.userData]);
+  }, [props.user]);
   
   React.useEffect(() => {
-    if (!props.newLocations) return;
-    setFilteredLocations(props.newLocations);
-  }, [props.newLocations]);
+    if (!props.new) return;
+    setFilteredLocations(props.new);
+  }, [props.new]);
   
   const changeView = () => {
     if (!reference.current) return;
@@ -55,7 +56,7 @@ const Page = (props: {
     setFilterOpen(state);
   }
 
-  if (!props.userData || !props.newLocations)
+  if (!props.user || !props.new)
     return (
       <main ref={ props.refs }>
         <Image src='/icons/loading.svg' alt='Loading' width={ 64 } height={ 64 }
@@ -70,17 +71,17 @@ const Page = (props: {
     );
 
   const findCloseLocations = (event: React.FormEvent<HTMLInputElement>) => {
-    if(!props.newLocations || !event.currentTarget) return;
+    if(!props.new || !event.currentTarget) return;
 
     const inputValue = parseInt(event.currentTarget.value);
 
-    if(isNaN(inputValue) || inputValue <= 0) return setFilteredLocations(props.newLocations);
+    if(isNaN(inputValue) || inputValue <= 0) return setFilteredLocations(props.new);
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        if(!props.newLocations) return alert('An unknown exception has occured.');
+        if(!props.new) return alert('An unknown exception has occured.');
         setFilteredLocations(
-          props.newLocations.filter((location: location) =>
+          props.new.filter((location: location) =>
             haversineDistance(
               location.location.lat,
               location.location.lng,
@@ -98,12 +99,12 @@ const Page = (props: {
     <main ref={ props.refs } className={ style.Home }>
       <h2>Started adventures:</h2>
       { 
-        props.userData.started.length === 0
+        !props.started || props.started.length === 0
         ? <p>No adventures started.</p>
         : <div className={ style.HorizontalCarousel }><div>
           {
-            props.userData.started.map((name: string, index: number) =>
-              <Minicard key={ index } name={ name } reset={ props.reset } />
+            props.started.map((location: location, index: number) =>
+              <Minicard key={ index } location={ location } reset={ props.reset } />
             )
           }
           </div></div>
@@ -123,7 +124,7 @@ const Page = (props: {
         : filteredLocations.map((
             location: location,
             index: number
-          ) => <Mapcard key={ index } name={ location.name } reset={ props.reset } />)
+          ) => <Mapcard key={ index } location={ location } reset={ props.reset } />)
       }
       
       {

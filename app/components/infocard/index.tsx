@@ -2,6 +2,7 @@ import style from './infocard.module.css';
 import React from 'react';
 import Image from 'next/image';
 import buttons from './buttonTypes';
+import type { location  } from '@logic/types';
 
 export enum cardType {
     Untrack,
@@ -12,25 +13,13 @@ export enum cardType {
 const InfoCard = (
     props: {
         setter: React.Dispatch<React.SetStateAction<boolean>>
-        name: string,
         type: cardType,
-        reset: () => void
+        reset: () => void,
+        location: location
     }
 ) => {
     const reference = React.useRef<HTMLDivElement>(null);
-    const paraRef = React.useRef<HTMLParagraphElement>(null);
     const Button = buttons[props.type];
-
-    React.useEffect(() => {
-        fetch(`${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/info/${ props.name }.txt`, {
-            cache: 'force-cache', next: { revalidate: 60 * 60 * 24 * 30 }
-        })
-            .then((res) => res.status === 200 ? res.text() : undefined)
-            .then((text) => {
-                if (paraRef.current && text)
-                    paraRef.current.innerText = text;
-            });
-    }, []);
 
     const close = () => {
         if(!reference.current) return;
@@ -50,7 +39,7 @@ const InfoCard = (
                     className={ style.InfocardHeader }
                     style={ {
                         backgroundImage: `
-                            url('${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/bg/${ props.name }.png'),
+                            url('${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/bg/${ props.location.name }.png'),
                             url('/default_assets/background.png')
                         `
                     } }
@@ -61,11 +50,12 @@ const InfoCard = (
                             width={ 32 } height={ 32 }
                         />
                     </button>
+                    <p>{ props.location.xp }</p>
                 </div>
                 <div className={ style.InfocardData }>
-                    <h3>{ props.name }</h3>
-                    <p ref={ paraRef } />
-                    <Button name={ props.name } reset={ props.reset } close={ close } />
+                    <h3>{ props.location.name }</h3>
+                    <p>{ props.location.description }</p>
+                    <Button name={ props.location.name } reset={ props.reset } close={ close } />
                 </div>
             </div>
         </div>

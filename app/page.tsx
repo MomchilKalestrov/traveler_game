@@ -7,7 +7,17 @@ import Header from '@components/header';
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import type { location, user } from '@logic/types';
-import { getCookie } from './logic/cookies';
+import { getCookie } from '@logic/cookies';
+
+const toLocation = (data: any): location => ({
+    name: data.name,
+    location: {
+        lat: parseFloat(data.location.lat['$numberDecimal']),
+        lng: parseFloat(data.location.lng['$numberDecimal'])
+    },
+    description: data.description,
+    xp: data.xp
+})
 
 const Page = () => {
     const router                            = useRouter();
@@ -42,49 +52,38 @@ const Page = () => {
 
         const getData = async () => {
             try {
-                const started = await (
+                const started: any = await (
                     await fetch('/api/started', {
                         signal: abortControllerRef.current?.signal
                     })
                 ).json();
                 if(started.error || !started) throw Error('Error user started data.');
 
-                const finished = await (
+                const finished: any = await (
                     await fetch(`/api/finished?username=${ encodeURIComponent('CURRENT_USER') }`, {
                         signal: abortControllerRef.current?.signal
                     })
                 ).json();
                 if(finished.error || !finished) throw Error('Error user finished data.');
                 
-                const all = await (
+                const all: any = await (
                     await fetch('/api/locations', {
                         signal: abortControllerRef.current?.signal,
+                        cache: 'force-cache',
                         next : { revalidate: 604800 } // revalidate every 7 days
                     })
                 ).json();
+
                 if(all.error || !all) throw Error('Error locations data.');
                 let locArr: Array<location> = [];
+                
                 for(let i: number = 0; i < all.length; i++)
                     if (
                         !started.some((loc: location) => loc.name === all[i].name) &&
-                        !finished.some((loc: any) => loc.location === all[i].name)
-                    )
-                        locArr.push({
-                            name: all[i].name,
-                            location: {
-                                lat: parseFloat(all[i].location.lat['$numberDecimal']),
-                                lng: parseFloat(all[i].location.lng['$numberDecimal'])
-                            }
-                        });
-                setStarted(started.map((data: any) => {
-                    return {
-                        name: data.name,
-                        location: {
-                            lat: parseFloat(data.location.lat['$numberDecimal']),
-                            lng: parseFloat(data.location.lng['$numberDecimal'])
-                        }
-                    }
-                }));
+                        !finished.some((loc: location) => loc.location === all[i].name)
+                    ) locArr.push(toLocation(all[i]));
+
+                setStarted(started.map((data: any) => toLocation(data)));
                 setNew(locArr);
                 document.getElementById('loading')?.remove();
             } catch (error) {
@@ -107,18 +106,19 @@ const Page = () => {
             <Header />
             <Home
                 refs={ refs[0] }
-                userData={ userData }
-                newLocations={ newLocations }
+                user={ userData }
+                new={ newLocations }
+                started={ startedLocations }
                 reset={ resetRender }
             />
             <Map 
                 refs={ refs[1] }
-                startedLocations={ startedLocations }
+                started={ startedLocations }
                 reset={ resetRender }
             />
             <Profile 
                 refs={ refs[2] }
-                userData={ userData }
+                user={ userData }
             />
             <Navbar refs={ refs } />
         </>

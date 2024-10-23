@@ -6,7 +6,8 @@ type user = {
     }>,
     started: string[],
     followers: string[],
-    following: string[]
+    following: string[],
+    xp: number
 }
 
 type location = {
@@ -14,7 +15,9 @@ type location = {
   location: {
     lat: number,
     lng: number
-  }
+  },
+  description: string,
+  xp: number
 };
 
 type accomplishment = {
