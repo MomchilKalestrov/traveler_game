@@ -3,11 +3,12 @@ import React from 'react';
 import style from './profile.module.css';
 import Image from 'next/image';
 import getColors from '@logic/profileColor';
+import { user } from '@logic/types';
 
 const Page = (
   props: {
     refs: React.Ref<HTMLElement>
-    user?: any
+    user?: user | undefined
   }
 ) => {
   if (!props.user)
@@ -29,15 +30,19 @@ const Page = (
     );
 
   const [ color, r_color ] = getColors(props.user.username.slice(0, 3));
+  const percentage = props.user.xp - 100 * Math.round(props.user.xp / 100);
 
   return (
     <main ref={ props.refs } style={ { display: 'none' } }>
       <div className={ style.ProfileContainer }>
         <div className={ `${ style.ProfileCard } ${ style.ProfileInfo }` }>
-            <p
-              className={ style.ProfilePhoto }
-              style={ { backgroundColor: color, color: r_color } }
-            >{ props.user.username[0] }</p>
+            <div className={ style.ProfilePhoto }>
+              <p
+                style={ { backgroundColor: color, color: r_color } }
+              >{ props.user.username[0] }</p>
+              <div style={ { '--percentage': percentage + '%' } as React.CSSProperties } />
+              <p>{ Math.round(props.user.xp / 100) + 1 }</p>
+            </div>
             <h2>{ props.user.username }</h2>
             <div>
               <p><b>{ props.user.followers.length }</b> followers</p>

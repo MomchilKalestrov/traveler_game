@@ -17,11 +17,11 @@ enum status {
 const Page = (
     props: {
         loading: status,
-        userData?: user | null | undefined,
+        user?: user | null | undefined,
         reset: (resetting?: boolean) => void
     }
 ) => {
-    if (!props.userData)
+    if (!props.user)
         return (
             <div className={ `${ style.UserSearch } ${ style.UserSearchCentered }` }>
                 <Image src='/icons/nouser.svg' alt='no user' width={ 48 } height={ 48 } />
@@ -34,18 +34,18 @@ const Page = (
     let type: string = 'Follow';
     let action: () => void = () => {
         loading();
-        fetch(`/api/auth/follow?username=${ props.userData?.username }`, { method: 'POST' })
+        fetch(`/api/auth/follow?username=${ props.user?.username }`, { method: 'POST' })
             .then(response => {
                 if (!response.ok)
                     alert('An error occurred while trying to follow the user.');
                 props.reset(true);
             });
     }
-    if (props.userData.followers.includes(currentUser)) {
+    if (props.user.followers.includes(currentUser)) {
         type = 'Unfollow';
         action = () => {
             loading();
-            fetch(`/api/auth/unfollow?username=${ props.userData?.username }`, { method: 'POST' })
+            fetch(`/api/auth/unfollow?username=${ props.user?.username }`, { method: 'POST' })
                 .then(response => {
                     if (!response.ok)
                         alert('An error occurred while trying to unfollow the user.');
@@ -63,7 +63,7 @@ const Page = (
         case status.nouser: return (
             <div className={ `${ style.UserSearch } ${ style.UserSearchCentered }` }>
                 <Image src='/icons/nouser.svg' alt='no user' width={ 48 } height={ 48 } />
-                <p>No user with the name { `"${ props.userData.username }"` } found.</p>
+                <p>No user with the name { `"${ props.user.username }"` } found.</p>
             </div>
         );
         case status.error: return (
@@ -73,31 +73,35 @@ const Page = (
             </div>
         );
         case status.founduser:
-            const [ color, r_color ] = getColors(props.userData.username.slice(0, 3));
+            const [ color, r_color ] = getColors(props.user.username.slice(0, 3));
+            const percentage = props.user.xp - 100 * Math.round(props.user.xp / 100);
             
             return (
                 <div className={ style.UserSearch }>
                     <div className={ userStyle.ProfileContainer }>
                         <div className={ `${ userStyle.ProfileCard } ${ userStyle.ProfileInfo }` }>
-                            <p
-                            className={ userStyle.ProfilePhoto }
-                            style={ { backgroundColor: color, color: r_color } }
-                            >{ props.userData.username[0] }</p>
-                            <h2>{ props.userData.username }</h2>
+                            <div className={ userStyle.ProfilePhoto }>
+                                <p
+                                    style={ { backgroundColor: color, color: r_color } }
+                                >{ props.user.username[0] }</p>
+                                <div style={ { '--percentage': percentage + '%' } as React.CSSProperties } />
+                                <p>{ Math.round(props.user.xp / 100) + 1 }</p>
+                            </div>
+                            <h2>{ props.user.username }</h2>
                             <button onClick={ action }>{ type }</button>
                             <div>
-                                <p><b>{ props.userData.followers.length }</b> followers</p>
-                                <p><b>{ props.userData.following.length }</b> following</p>
+                                <p><b>{ props.user.followers.length }</b> followers</p>
+                                <p><b>{ props.user.following.length }</b> following</p>
                             </div>
                         </div>
                         {
-                            props.userData.finished.length > 0 &&
+                            props.user.finished.length > 0 &&
                             <div className={ `${ userStyle.ProfileCard }` }>
                                 <h2>Badges</h2>
                                 <div className={ userStyle.ProfileDivider } />
                                 <div className={ userStyle.ProfileBadges }>
                                     {
-                                        props.userData.finished.map((data: { location: string, time: number }, key: number) =>
+                                        props.user.finished.map((data: { location: string, time: number }, key: number) =>
                                         <Image
                                             src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ data.location }.svg` }
                                             alt={ data.location } key={ key } width={ 48 } height={ 48 }

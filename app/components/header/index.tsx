@@ -146,7 +146,7 @@ const Header = () => {
     return (
         <>
             { settings && <Settings setter={ setSettings } /> }
-            { userLookup && <UserSearch loading={ userLoading } userData={ userData } reset={ startSearch } /> }
+            { userLookup && <UserSearch loading={ userLoading } user={ userData } reset={ startSearch } /> }
             <div className={ style.HeaderSearchBG } ref={ headerBGReference } />
             <header className={ style.Header } ref={ headerReference }>
                 <div>

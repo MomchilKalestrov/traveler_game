@@ -87,15 +87,51 @@
 }
 
 .ProfilePhoto {
-    grid-area: photo;
-    border-radius: 50%;
+    position: relative;
     width: 4rem;
     height: 4rem;
-    overflow: hidden;
+    grid-area: photo;
+}
+
+.ProfilePhoto p:first-of-type {
+    position: absolute;
+    width: 4rem;
+    height: 4rem;
     display: flex;
     justify-content: center;
     align-items: center;
     font-family: 'Product Sans';
     font-weight: bold;
     font-size: 2rem;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.ProfilePhoto div {
+    position: absolute;
+    top: -0.25rem;
+    left: -0.25rem;
+    width: calc(100% + 0.5rem);
+    height: calc(100% + 0.5rem);
+    z-index: 0;
+    border-radius: 50%;
+    background: conic-gradient(var(--color-primary) var(--percentage), var(--color-secondary) 0);
+    transform: rotateX(180deg) rotateY(180deg);
+    /* instead of doing more BS on the actual conic gradient */
+    /* just rotate the element :) */
+}
+
+.ProfilePhoto p:last-of-type {
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    bottom: 0px;
+    transform: translate(-50%, 50%);
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+    font-size: 1rem;
+    line-height: 1rem;
+    font-weight: bold;
+    padding: 0.25rem;
+    border-radius: 1rem;
 }

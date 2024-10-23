@@ -8,7 +8,6 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import type { location, user } from '@logic/types';
 import { getCookie } from '@logic/cookies';
-import { useContext } from 'react';
 
 const toLocation = (data: any): location => ({
     name: data.name,

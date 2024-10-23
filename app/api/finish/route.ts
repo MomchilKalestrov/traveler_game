@@ -72,10 +72,15 @@ const POST = async (request: NextRequest) => {
         // Add to finished
         await userCollection.updateOne(
             { username: cookie.get('username')?.value },
-            { $push: { finished: {
-                location: args.name,
-                time: Date.now(),
-            } as any } }
+            {
+                $push: {
+                    finished: {
+                        location: args.name,
+                        time: Date.now(),
+                    } as any
+                },
+                $inc: { xp: location.xp }
+            }
         );
         await client.close(true);
         // it should stay like this!!!!
