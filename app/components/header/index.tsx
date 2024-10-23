@@ -12,7 +12,8 @@ const emptyUser: user = {
     finished: [],
     started: [],
     followers: [],
-    following: []
+    following: [],
+    xp: 0
 };
 
 const Header = () => {
