@@ -21,8 +21,9 @@ const HookComponent = () => {
     const map: L.Map = useMap();
 
     React.useEffect(() => {
-        if (map)
+        if (map) {
             map.invalidateSize();
+        }
     });
 
     return null;
