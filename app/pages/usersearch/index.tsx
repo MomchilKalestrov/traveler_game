@@ -7,19 +7,6 @@ import { loading } from '@app/components/loading';
 import type { user } from '@logic/types';
 import getColors from '@logic/profileColor';
 
-/*
-    Like the crack of the whip, I Snap! attack
-    Front to back, in this thing called rap
-    Dig it like a shovel, rhyme devil on a heavenly level
-    Bang the bass, turn up the treble
-    Radical mind, day and night all the time
-    7:14, wise, divine
-    Maniac brainiac, winnin' the game
-    I'm the lyrical Jesse James
-    
-    - Snap! - The Power
-*/
-
 enum status {
     loading,
     nouser,
@@ -66,10 +53,7 @@ const Page = (
                 });
         }
     }
-
-
-
-
+    
     switch (props.loading) {
         case status.loading: return (
             <div className={ `${ style.UserSearch } ${ style.UserSearchCentered }` }>

@@ -8,6 +8,7 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import type { location, user } from '@logic/types';
 import { getCookie } from '@logic/cookies';
+import { useContext } from 'react';
 
 const toLocation = (data: any): location => ({
     name: data.name,
@@ -22,10 +23,10 @@ const toLocation = (data: any): location => ({
 const Page = () => {
     const router                            = useRouter();
     const abortControllerRef                = React.useRef<AbortController | null>(null);
-    const [userData,          setUserData]  = React.useState<user | undefined>(undefined);
-    const [startedLocations,  setStarted ]  = React.useState<Array<location> | undefined>(undefined);
-    const [newLocations,      setNew     ]  = React.useState<Array<location> | undefined>(undefined);
-    const [reset,             setReset   ]  = React.useState<number>(0);
+    const [ userData,          setUserData ]  = React.useState<user | undefined>(undefined);
+    const [ startedLocations,  setStarted  ]  = React.useState<Array<location> | undefined>(undefined);
+    const [ newLocations,      setNew      ]  = React.useState<Array<location> | undefined>(undefined);
+    const [ reset,             setReset    ]  = React.useState<number>(0);
 
     const resetRender = () => setReset(reset + 1);
 
