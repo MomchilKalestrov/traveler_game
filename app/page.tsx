@@ -3,6 +3,7 @@ import Navbar from '@components/navbar';
 import Home from '@pages/home';
 import Map from '@pages/map';
 import Profile from '@pages/profile';
+import LeaderBoard from '@pages/leaderboard';
 import Header from '@components/header';
 import React from 'react';
 import { useRouter } from 'next/navigation';
@@ -98,6 +99,7 @@ const Page = () => {
     let refs: Array<React.RefObject<HTMLElement>> = [
         React.createRef<HTMLElement>(),
         React.createRef<HTMLElement>(),
+        React.createRef<HTMLElement>(),
         React.createRef<HTMLElement>()
     ];
 
@@ -120,6 +122,7 @@ const Page = () => {
                 refs={ refs[2] }
                 user={ userData }
             />
+            <LeaderBoard refs={ refs[3] } />
             <Navbar refs={ refs } />
         </>
     )

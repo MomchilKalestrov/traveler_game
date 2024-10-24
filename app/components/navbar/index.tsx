@@ -23,11 +23,11 @@ const NavbarEntry = (
     );
 }
 const Navbar = (props: { refs: Array<React.RefObject<HTMLElement>> }) => {
-    const posibilities: Array<string> = [ 'Home', 'Map', 'Profile' ];
+    const posibilities: Array<string> = [ 'Home', 'Map', 'Profile', 'Leaderboard' ];
     const [active, setActive] = React.useState<Array<boolean>>([ true, false, false ]);
 
     const pageSwap = (id: number) => {
-        for(let i: number = 0; i < 3; ++i) {
+        for(let i: number = 0; i < 4; ++i) {
             const context = props.refs[i]?.current;
             if (!context) continue;
             context.style.display = i === id ? 'block' : 'none';

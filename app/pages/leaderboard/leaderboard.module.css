@@ -1,0 +1,11 @@
+.Top100Container {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.Top100Container h1 {
+    text-align: center;
+    margin: 0px;
+    width: 100%;
+}
