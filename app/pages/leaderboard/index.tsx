@@ -11,7 +11,6 @@ const Player = (props: { user: user, currentuser: boolean }) => {
   const percentage = props.user.xp - 100 * Math.round(props.user.xp / 100);
   const user = React.useContext(UserLookupCTX);
   const lookup = user?.lookup;
-  console.log(lookup);
 
   return (
     <div className={ `${ userStyle.ProfileCard } ${ userStyle.ProfileInfo }` }>
