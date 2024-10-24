@@ -3,11 +3,6 @@ import type { user, location } from '@logic/types';
 
 const CurrentUserCTX = React.createContext<user | undefined>(undefined);
 
-const UserLookupCTX = React.createContext<{
-    lookup: ((username: string) => void) | undefined,
-    setLookup: React.Dispatch<React.SetStateAction<((username: string) => void) | undefined>>
-} | undefined>(undefined);
-
 const SettingsVisibleCTX = React.createContext<{
     visible: boolean,
     setVisible: React.Dispatch<React.SetStateAction<boolean>>
@@ -25,4 +20,6 @@ const NewLocationsCTX = React.createContext<{
 
 const ResetFetchCTX = React.createContext<(() => void) | undefined>(undefined);
 
-export { CurrentUserCTX, UserLookupCTX, SettingsVisibleCTX, StartedLocationsCTX, ResetFetchCTX, NewLocationsCTX };
+
+
+export { CurrentUserCTX, SettingsVisibleCTX, StartedLocationsCTX, ResetFetchCTX, NewLocationsCTX };

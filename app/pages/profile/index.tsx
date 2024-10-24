@@ -28,7 +28,7 @@ const Page = (props: { refs: React.Ref<HTMLElement> }) => {
     );
 
   const [ color, r_color ] = getColors(user.username.slice(0, 3));
-  const percentage = user.xp - 100 * Math.round(user.xp / 100);
+  const percentage = user.xp - 100 * Math.floor(user.xp / 100);
 
   return (
     <main ref={ props.refs } style={ { display: 'none' } }>
@@ -39,7 +39,7 @@ const Page = (props: { refs: React.Ref<HTMLElement> }) => {
                 style={ { backgroundColor: color, color: r_color } }
               >{ user.username[0] }</p>
               <div style={ { '--percentage': percentage + '%' } as React.CSSProperties } />
-              <p>{ Math.round(user.xp / 100) + 1 }</p>
+              <p>{ Math.floor(user.xp / 100) }</p>
             </div>
             <h2>{ user.username }</h2>
             <div>

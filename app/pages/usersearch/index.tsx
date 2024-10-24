@@ -74,7 +74,7 @@ const Page = (
         );
         case status.founduser:
             const [ color, r_color ] = getColors(props.user.username.slice(0, 3));
-            const percentage = props.user.xp - 100 * Math.round(props.user.xp / 100);
+            const percentage = props.user.xp - 100 * Math.floor(props.user.xp / 100);
             
             return (
                 <div className={ style.UserSearch }>
@@ -85,7 +85,7 @@ const Page = (
                                     style={ { backgroundColor: color, color: r_color } }
                                 >{ props.user.username[0] }</p>
                                 <div style={ { '--percentage': percentage + '%' } as React.CSSProperties } />
-                                <p>{ Math.round(props.user.xp / 100) + 1 }</p>
+                                <p>{ Math.floor(props.user.xp / 100) }</p>
                             </div>
                             <h2>{ props.user.username }</h2>
                             <button onClick={ action }>{ type }</button>

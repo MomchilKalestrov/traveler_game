@@ -4,14 +4,11 @@ import { user } from '@logic/types';
 import getColors from '@logic/profileColor';
 import userStyle from '@pages/profile/profile.module.css';
 import style from './leaderboard.module.css';
-import { CurrentUserCTX, UserLookupCTX } from '@logic/context';
+import { CurrentUserCTX } from '@logic/context';
 
 const Player = (props: { user: user, currentuser: boolean }) => {
   const [ color, r_color ] = getColors(props.user.username.slice(0, 3));
-  const percentage = props.user.xp - 100 * Math.round(props.user.xp / 100);
-  const user = React.useContext(UserLookupCTX);
-  const lookup = user?.lookup;
-  console.log(lookup);
+  const percentage = props.user.xp - 100 * Math.floor (props.user.xp / 100);
 
   return (
     <div className={ `${ userStyle.ProfileCard } ${ userStyle.ProfileInfo }` }>
@@ -20,17 +17,13 @@ const Player = (props: { user: user, currentuser: boolean }) => {
             style={ { backgroundColor: color, color: r_color } }
           >{ props.user.username[0] }</p>
           <div style={ { '--percentage': percentage + '%' } as React.CSSProperties } />
-          <p>{ Math.round(props.user.xp / 100) + 1 }</p>
+          <p>{ Math.floor(props.user.xp / 100) }</p>
         </div>
         <h2>{ props.user.username }</h2>
         <div>
           <p><b>{ props.user.followers.length }</b> followers</p>
           <p><b>{ props.user.following.length }</b> following</p>
         </div>
-        {
-          !props.currentuser &&
-          <button onClick={ () => lookup ? lookup(props.user.username) : console.log('lookup context not set') }>View Profile</button>
-        }
     </div>
   );
 }

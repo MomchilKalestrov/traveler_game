@@ -23,8 +23,6 @@ const Page = () => {
         reference.current.style.transform = visible ? 'translateX(0)' : 'translateX(100%)';
     }, [visible]);
 
-    console.log('Settings page rendered.', visible);
-
     return (
         <div ref={ reference } className={ style.Settings }>
             <div className={ style.SettingsHeader }>

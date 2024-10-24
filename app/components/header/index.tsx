@@ -5,7 +5,7 @@ import type { user } from '@logic/types';
 import Image from 'next/image';
 import { getCookie } from '@logic/cookies';
 import { stopLoading } from '@components/loading';
-import { SettingsVisibleCTX, UserLookupCTX } from '@logic/context';
+import { SettingsVisibleCTX } from '@logic/context';
 
 const emptyUser: user = {
     username: '',
@@ -17,9 +17,10 @@ const emptyUser: user = {
 };
 
 const Header = () => {
-    const [userData,    setUserData] = React.useState<user | undefined>(emptyUser);
-    const [userLookup,  setLookup  ] = React.useState<boolean>(false);
-    const [userLoading, setLoading ] = React.useState<status>(status.loading);
+    const [ userData,    setUserData ] = React.useState<user | null>(emptyUser);
+    const [ userLookup,  setLookup   ] = React.useState<boolean>(false);
+    const [ userLoading, setLoading  ] = React.useState<status>(status.loading);
+
     const abortControllerRef = React.useRef<AbortController | null>(null);
     const headerBGReference  = React.useRef<HTMLDivElement>(null);
     const headerReference    = React.useRef<HTMLElement>(null);
@@ -28,24 +29,18 @@ const Header = () => {
 
     const settingsCTX = React.useContext(SettingsVisibleCTX);
     const setSettings = settingsCTX?.setVisible;
-    const userLookupCTX = React.useContext(UserLookupCTX);
+    
+    const viewUser = React.useCallback((username: string) => {
+        if (!inputReference.current) return;
+        showSearch();
+        inputReference.current.value = username;
+        startSearch(true);
+    }, []);
 
     React.useEffect(() => {
         abortControllerRef.current = new AbortController();
         return () => abortControllerRef.current?.abort();
     }, []);
-
-    const viewUser = (username: string) => {
-        if (!inputReference.current) return;
-        showSearch();
-        inputReference.current.value = username;
-        startSearch(true);
-    }
-
-    React.useEffect(() => {
-        if (!userLookupCTX?.setLookup) return;
-        userLookupCTX?.setLookup(viewUser);
-    }, [userLookupCTX]);
 
     const clearSearch = () => {
         const input = inputReference.current;
@@ -127,7 +122,7 @@ const Header = () => {
             .then(response => response.json())
             .then(data => {
                 if (data.error || data.error === 'User not found.') {
-                    setUserData(undefined)
+                    setUserData(null)
                     return setLoading(status.nouser);
                 }
                 else if (data.error) {

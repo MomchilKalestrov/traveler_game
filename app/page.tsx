@@ -10,8 +10,7 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import type { location, user } from '@logic/types';
 import { getCookie } from '@logic/cookies';
-import { CurrentUserCTX, UserLookupCTX, SettingsVisibleCTX, StartedLocationsCTX, ResetFetchCTX, NewLocationsCTX } from '@logic/context';
-import { lookup } from 'dns';
+import { CurrentUserCTX, SettingsVisibleCTX, StartedLocationsCTX, ResetFetchCTX, NewLocationsCTX } from '@logic/context';
 
 const toLocation = (data: any): location => ({
     name: data.name,
@@ -110,7 +109,6 @@ const Page = () => {
 
     return (
         <CurrentUserCTX.Provider value={ userData }>
-        <UserLookupCTX.Provider value={ { lookup: userLookup, setLookup: setUserLookup } }>
         <SettingsVisibleCTX.Provider value={ { visible: settingsVisible, setVisible: setSettingsVisible } }>
         <StartedLocationsCTX.Provider value={ { locations: startedLocations, setLocations: setStarted } }>
         <NewLocationsCTX.Provider value={ { locations: newLocations, setLocations: setNew } }>
@@ -126,7 +124,6 @@ const Page = () => {
         </NewLocationsCTX.Provider>
         </StartedLocationsCTX.Provider>
         </SettingsVisibleCTX.Provider>
-        </UserLookupCTX.Provider>
         </CurrentUserCTX.Provider>
     )
 };
