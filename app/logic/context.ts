@@ -4,8 +4,8 @@ import type { user, location } from '@logic/types';
 const CurrentUserCTX = React.createContext<user | undefined>(undefined);
 
 const UserLookupCTX = React.createContext<{
-    visible: user | boolean,
-    setVisible: React.Dispatch<React.SetStateAction<boolean | user>>
+    lookup: ((username: string) => void) | undefined,
+    setLookup: React.Dispatch<React.SetStateAction<((username: string) => void) | undefined>>
 } | undefined>(undefined);
 
 const SettingsVisibleCTX = React.createContext<{

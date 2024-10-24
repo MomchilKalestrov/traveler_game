@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import type { location, user } from '@logic/types';
 import { getCookie } from '@logic/cookies';
 import { CurrentUserCTX, UserLookupCTX, SettingsVisibleCTX, StartedLocationsCTX, ResetFetchCTX, NewLocationsCTX } from '@logic/context';
+import { lookup } from 'dns';
 
 const toLocation = (data: any): location => ({
     name: data.name,
@@ -26,7 +27,7 @@ const Page = () => {
     const router             = useRouter();
     const abortControllerRef = React.useRef<AbortController | null>(null);
     const [ userData,         setUserData        ] = React.useState<user | undefined>(undefined);
-    const [ userLookup,       setUserLookup      ] = React.useState<boolean | user>(false);
+    const [ userLookup,       setUserLookup      ] = React.useState<((username: string) => void) | undefined>(undefined);
     const [ settingsVisible,  setSettingsVisible ] = React.useState<boolean>(false);
     const [ startedLocations, setStarted         ] = React.useState<Array<location> | undefined>(undefined);
     const [ newLocations,     setNew             ] = React.useState<Array<location> | undefined>(undefined);
@@ -109,7 +110,7 @@ const Page = () => {
 
     return (
         <CurrentUserCTX.Provider value={ userData }>
-        <UserLookupCTX.Provider value={ { visible: userLookup, setVisible: setUserLookup } }>
+        <UserLookupCTX.Provider value={ { lookup: userLookup, setLookup: setUserLookup } }>
         <SettingsVisibleCTX.Provider value={ { visible: settingsVisible, setVisible: setSettingsVisible } }>
         <StartedLocationsCTX.Provider value={ { locations: startedLocations, setLocations: setStarted } }>
         <NewLocationsCTX.Provider value={ { locations: newLocations, setLocations: setNew } }>

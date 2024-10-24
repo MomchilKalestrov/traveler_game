@@ -4,10 +4,14 @@ import { user } from '@logic/types';
 import getColors from '@logic/profileColor';
 import userStyle from '@pages/profile/profile.module.css';
 import style from './leaderboard.module.css';
+import { CurrentUserCTX, UserLookupCTX } from '@logic/context';
 
-const Player = (props: { user: user }) => {
+const Player = (props: { user: user, currentuser: boolean }) => {
   const [ color, r_color ] = getColors(props.user.username.slice(0, 3));
   const percentage = props.user.xp - 100 * Math.round(props.user.xp / 100);
+  const user = React.useContext(UserLookupCTX);
+  const lookup = user?.lookup;
+  console.log(lookup);
 
   return (
     <div className={ `${ userStyle.ProfileCard } ${ userStyle.ProfileInfo }` }>
@@ -23,6 +27,10 @@ const Player = (props: { user: user }) => {
           <p><b>{ props.user.followers.length }</b> followers</p>
           <p><b>{ props.user.following.length }</b> following</p>
         </div>
+        {
+          !props.currentuser &&
+          <button onClick={ () => lookup ? lookup(props.user.username) : console.log('lookup context not set') }>View Profile</button>
+        }
     </div>
   );
 }
@@ -33,6 +41,8 @@ const LeaderBoard = (
     }
 ) => {
   const [ players, setPlayers ] = React.useState<Array<user> | undefined>(undefined);
+  const currentUser = React.useContext(CurrentUserCTX);
+  const username = currentUser?.username;
 
   React.useEffect(() => {
     fetch('/api/top100')
@@ -63,7 +73,7 @@ const LeaderBoard = (
         <h1>Top { players.length }</h1>
         {
           players.map((player, index) =>
-            <Player user={ player } key={ index } />
+            <Player user={ player } key={ index } currentuser={ player.username == username } />
           )
         }
       </div>
