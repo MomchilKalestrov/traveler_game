@@ -58,7 +58,7 @@ const LeaderBoard = (
     );
 
   return (
-    <main ref={ props.refs }>
+    <main ref={ props.refs } style={ { display: 'none' } }>
       <div className={ style.Top100Container }>
         <h1>Top { players.length }</h1>
         {

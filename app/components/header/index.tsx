@@ -1,11 +1,11 @@
 import style from './header.module.css';
-import Settings from '@pages/settings';
 import React from 'react';
 import UserSearch, { status } from '@pages/usersearch';
 import type { user } from '@logic/types';
 import Image from 'next/image';
 import { getCookie } from '@logic/cookies';
 import { stopLoading } from '@components/loading';
+import { SettingsVisibleCTX } from '@logic/context';
 
 const emptyUser: user = {
     username: '',
@@ -17,15 +17,17 @@ const emptyUser: user = {
 };
 
 const Header = () => {
-    const [settings,    setSettings] = React.useState<boolean>(false);
+    const [userData,    setUserData] = React.useState<user | null>(emptyUser);
     const [userLookup,  setLookup  ] = React.useState<boolean>(false);
     const [userLoading, setLoading ] = React.useState<status>(status.loading);
-    const [userData,    setUserData] = React.useState<user | null>(emptyUser);
-    const imgReference               = React.useRef<HTMLImageElement>(null);
-    const inputReference             = React.useRef<HTMLInputElement>(null);
-    const abortControllerRef         = React.useRef<AbortController | null>(null);
-    const headerReference            = React.useRef<HTMLElement>(null);
-    const headerBGReference          = React.useRef<HTMLDivElement>(null);
+    const abortControllerRef = React.useRef<AbortController | null>(null);
+    const headerBGReference  = React.useRef<HTMLDivElement>(null);
+    const headerReference    = React.useRef<HTMLElement>(null);
+    const inputReference     = React.useRef<HTMLInputElement>(null);
+    const imgReference       = React.useRef<HTMLImageElement>(null);
+
+    const settingsCTX = React.useContext(SettingsVisibleCTX);
+    const setSettings = settingsCTX?.setVisible;
 
     React.useEffect(() => {
         abortControllerRef.current = new AbortController();
@@ -145,7 +147,6 @@ const Header = () => {
 
     return (
         <>
-            { settings && <Settings setter={ setSettings } /> }
             { userLookup && <UserSearch loading={ userLoading } user={ userData } reset={ startSearch } /> }
             <div className={ style.HeaderSearchBG } ref={ headerBGReference } />
             <header className={ style.Header } ref={ headerReference }>
@@ -153,7 +154,7 @@ const Header = () => {
                     <button onClick={ closeLookup } aria-label='back from search' style={ { zIndex: 1, display: 'none' } }>
                         <Image alt='back' src='/icons/back.svg' width={ 24 } height={ 24 } />
                     </button>
-                    <button onClick={ () => setSettings(true) } aria-label='settings'>
+                    <button onClick={ () => setSettings ? setSettings(true) : console.log('context not loaded') } aria-label='settings'>
                         <Image alt='settings' src='/icons/settings.svg' width={ 24 } height={ 24 } />
                     </button>
                 </div>

@@ -5,12 +5,7 @@ import InfoCard, { cardType } from '@components/infocard';
 import Image from 'next/image';
 import { location } from '@logic/types';
 
-const Mapcard = (
-    props: {
-        location: location,
-        reset: () => void
-    }
-) => {
+const Mapcard = (props: { location: location }) => {
     const [viewing, setViewing] = React.useState<boolean>(false);
 
     return (
@@ -49,7 +44,6 @@ const Mapcard = (
                     type={ cardType.Track }
                     setter={ setViewing }
                     location={ props.location }
-                    reset={ props.reset }
                 />
             }
         </>

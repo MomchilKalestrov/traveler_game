@@ -3,6 +3,7 @@ import React from 'react';
 import Image from 'next/image';
 import buttons from './buttonTypes';
 import type { location  } from '@logic/types';
+import { ResetFetchCTX } from '@logic/context';
 
 export enum cardType {
     Untrack,
@@ -10,15 +11,15 @@ export enum cardType {
     Finish
 };
 
-const InfoCard = (
-    props: {
-        setter: React.Dispatch<React.SetStateAction<boolean>>
-        type: cardType,
-        reset: () => void,
-        location: location
-    }
-) => {
+export type InfoCardProps = {
+    setter: React.Dispatch<React.SetStateAction<boolean>>
+    type: cardType,
+    location: location
+};
+
+const InfoCard = (props: InfoCardProps) => {
     const reference = React.useRef<HTMLDivElement>(null);
+    const resetCTX = React.useContext(ResetFetchCTX) || (() => void 0);
     const Button = buttons[props.type];
 
     const close = () => {
@@ -55,7 +56,7 @@ const InfoCard = (
                 <div className={ style.InfocardData }>
                     <h3>{ props.location.name }</h3>
                     <p>{ props.location.description }</p>
-                    <Button name={ props.location.name } reset={ props.reset } close={ close } />
+                    <Button name={ props.location.name } reset={ resetCTX } close={ close } />
                 </div>
             </div>
         </div>

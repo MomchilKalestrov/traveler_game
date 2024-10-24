@@ -8,6 +8,7 @@ import MaterialInput from '@components/input';
 import Accomplishment from '@components/accomplishment';
 import type { location, user, accomplishment } from '@logic/types';
 import getActivities from '@logic/followerActivity';
+import { CurrentUserCTX, NewLocationsCTX, StartedLocationsCTX } from '@logic/context';
 
 function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
   const toRadians = (degree: number) => degree * (Math.PI / 180);
@@ -22,31 +23,29 @@ function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
   return R * c;
 }
 
-const Page = (props: {
-  refs: React.Ref<HTMLElement>,
-  user: user | undefined,
-  new: Array<location> | undefined,
-  started: Array<location> | undefined,
-  reset: () => void
-}) => {
+const Page = (props: { refs: React.Ref<HTMLElement> }) => {
+  const user = React.useContext(CurrentUserCTX);
+  const started = React.useContext(StartedLocationsCTX)?.locations;
+  const new_ = React.useContext(NewLocationsCTX)?.locations;
   const reference = React.useRef<HTMLDivElement>(null);
-  const [filteredLocations, setFilteredLocations] = React.useState<Array<location>>(props.new || []);
+  const [filteredLocations, setFilteredLocations] = React.useState<Array<location>>(new_ || []);
   const [filterOpen,        setFilterOpen       ] = React.useState(true);
-  const [followerActivity,  setFollowerActivity ] = React.useState<Array<accomplishment>>([]);  
+  const [followerActivity,  setFollowerActivity ] = React.useState<Array<accomplishment>>([]);
+
 
   React.useEffect(() => {
-    if (!props.user) return;
+    if (!user) return;
 
-    getActivities(props.user)
+    getActivities(user)
       .then((activities) =>
         setFollowerActivity(activities)
       );
-  }, [props.user]);
+  }, [user]);
   
   React.useEffect(() => {
-    if (!props.new) return;
-    setFilteredLocations(props.new);
-  }, [props.new]);
+    if (!new_) return;
+    setFilteredLocations(new_);
+  }, [new_]);
   
   const changeView = () => {
     if (!reference.current) return;
@@ -56,7 +55,7 @@ const Page = (props: {
     setFilterOpen(state);
   }
 
-  if (!props.user || !props.new)
+  if (!user || !new_)
     return (
       <main ref={ props.refs }>
         <Image src='/icons/loading.svg' alt='Loading' width={ 64 } height={ 64 }
@@ -71,17 +70,17 @@ const Page = (props: {
     );
 
   const findCloseLocations = (event: React.FormEvent<HTMLInputElement>) => {
-    if(!props.new || !event.currentTarget) return;
+    if(!new_ || !event.currentTarget) return;
 
     const inputValue = parseInt(event.currentTarget.value);
 
-    if(isNaN(inputValue) || inputValue <= 0) return setFilteredLocations(props.new);
+    if(isNaN(inputValue) || inputValue <= 0) return setFilteredLocations(new_);
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        if(!props.new) return alert('An unknown exception has occured.');
+        if(!new_) return alert('An unknown exception has occured.');
         setFilteredLocations(
-          props.new.filter((location: location) =>
+          new_.filter((location: location) =>
             haversineDistance(
               location.location.lat,
               location.location.lng,
@@ -99,12 +98,12 @@ const Page = (props: {
     <main ref={ props.refs } className={ style.Home }>
       <h2>Started adventures:</h2>
       { 
-        !props.started || props.started.length === 0
+        !started || started.length === 0
         ? <p>No adventures started.</p>
         : <div className={ style.HorizontalCarousel }><div>
           {
-            props.started.map((location: location, index: number) =>
-              <Minicard key={ index } location={ location } reset={ props.reset } />
+            started.map((location: location, index: number) =>
+              <Minicard key={ index } location={ location } />
             )
           }
           </div></div>
@@ -124,7 +123,7 @@ const Page = (props: {
         : filteredLocations.map((
             location: location,
             index: number
-          ) => <Mapcard key={ index } location={ location } reset={ props.reset } />)
+          ) => <Mapcard key={ index } location={ location } />)
       }
       
       {

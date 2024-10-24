@@ -5,12 +5,7 @@ import InfoCard, { cardType } from '@components/infocard';
 import Image from 'next/image';
 import { location } from '@logic/types';
 
-const Minicard = (
-    props: {
-        location: location,
-        reset: () => void
-    }
-) => {
+const Minicard = (props: { location: location }) => {
     const [viewing, setViewing] = React.useState<boolean>(false);
 
     return (
@@ -28,7 +23,6 @@ const Minicard = (
                     type={ cardType.Untrack }
                     setter={ setViewing }
                     location={ props.location }
-                    reset={ props.reset }
                 />
             }
         </>

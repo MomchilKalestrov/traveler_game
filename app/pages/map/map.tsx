@@ -33,8 +33,7 @@ const Map = (
     props: {
         zoom?: number,
         userLocation?: { lat: number, lng: number } | undefined,
-        locations?: Array<location>,
-        reset: () => void
+        locations?: Array<location>
     }
 ) => {
     const [ visible,  setVisible  ] = React.useState<boolean>(false);
@@ -51,7 +50,6 @@ const Map = (
                     setter={ setVisible }
                     location={ location || { name: 'N/A', location: { lat: 0, lng: 0 }, description: 'You shouldn\'t be able to read this >:(', xp: 0 } }
                     type={ cardType.Finish }
-                    reset={ props.reset }
                 />
             }
             <MapContainer

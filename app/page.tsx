@@ -3,12 +3,14 @@ import Navbar from '@components/navbar';
 import Home from '@pages/home';
 import Map from '@pages/map';
 import Profile from '@pages/profile';
+import Settings from '@pages/settings';
 import LeaderBoard from '@pages/leaderboard';
 import Header from '@components/header';
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import type { location, user } from '@logic/types';
 import { getCookie } from '@logic/cookies';
+import { CurrentUserCTX, UserLookupCTX, SettingsVisibleCTX, StartedLocationsCTX, ResetFetchCTX, NewLocationsCTX } from '@logic/context';
 
 const toLocation = (data: any): location => ({
     name: data.name,
@@ -21,12 +23,14 @@ const toLocation = (data: any): location => ({
 })
 
 const Page = () => {
-    const router                            = useRouter();
-    const abortControllerRef                = React.useRef<AbortController | null>(null);
-    const [ userData,          setUserData ]  = React.useState<user | undefined>(undefined);
-    const [ startedLocations,  setStarted  ]  = React.useState<Array<location> | undefined>(undefined);
-    const [ newLocations,      setNew      ]  = React.useState<Array<location> | undefined>(undefined);
-    const [ reset,             setReset    ]  = React.useState<number>(0);
+    const router             = useRouter();
+    const abortControllerRef = React.useRef<AbortController | null>(null);
+    const [ userData,         setUserData        ] = React.useState<user | undefined>(undefined);
+    const [ userLookup,       setUserLookup      ] = React.useState<boolean | user>(false);
+    const [ settingsVisible,  setSettingsVisible ] = React.useState<boolean>(false);
+    const [ startedLocations, setStarted         ] = React.useState<Array<location> | undefined>(undefined);
+    const [ newLocations,     setNew             ] = React.useState<Array<location> | undefined>(undefined);
+    const [ reset,            setReset           ] = React.useState<number>(0);
 
     const resetRender = () => setReset(reset + 1);
 
@@ -104,27 +108,25 @@ const Page = () => {
     ];
 
     return (
-        <>
+        <CurrentUserCTX.Provider value={ userData }>
+        <UserLookupCTX.Provider value={ { visible: userLookup, setVisible: setUserLookup } }>
+        <SettingsVisibleCTX.Provider value={ { visible: settingsVisible, setVisible: setSettingsVisible } }>
+        <StartedLocationsCTX.Provider value={ { locations: startedLocations, setLocations: setStarted } }>
+        <NewLocationsCTX.Provider value={ { locations: newLocations, setLocations: setNew } }>
+        <ResetFetchCTX.Provider value={ resetRender }>
             <Header />
-            <Home
-                refs={ refs[0] }
-                user={ userData }
-                new={ newLocations }
-                started={ startedLocations }
-                reset={ resetRender }
-            />
-            <Map 
-                refs={ refs[1] }
-                started={ startedLocations }
-                reset={ resetRender }
-            />
-            <Profile 
-                refs={ refs[2] }
-                user={ userData }
-            />
+            <Home refs={ refs[0] } />
+            <Map refs={ refs[1] } />
+            <Profile refs={ refs[2] } />
             <LeaderBoard refs={ refs[3] } />
+            <Settings />
             <Navbar refs={ refs } />
-        </>
+        </ResetFetchCTX.Provider>
+        </NewLocationsCTX.Provider>
+        </StartedLocationsCTX.Provider>
+        </SettingsVisibleCTX.Provider>
+        </UserLookupCTX.Provider>
+        </CurrentUserCTX.Provider>
     )
 };
 

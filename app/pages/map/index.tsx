@@ -4,16 +4,13 @@ import Image from 'next/image';
 import type { location } from '@logic/types';
 import dynamic from "next/dynamic";
 import { useMemo } from "react";
+import { StartedLocationsCTX } from '@logic/context';
 
-const Page = (
-  props: {
-    refs: React.Ref<HTMLElement>,
-    started?: Array<location> | undefined,
-    reset: () => void
-  }
-) => {
+const Page = (props: { refs: React.Ref<HTMLElement> }) => {
   const [watcherID,    setWatcherID   ] = React.useState<number>();
   const [userLocation, setUserLocation] = React.useState<{ lat: number, lng: number } | undefined>(undefined);
+  const startedLocationsCTX = React.useContext(StartedLocationsCTX);
+  const started = startedLocationsCTX?.locations;
 
   const Map = useMemo(() => dynamic(
     () => import('./map'), {
@@ -40,7 +37,7 @@ const Page = (
     };
   }, []);
 
-  if (!props.started)
+  if (!started)
     return (
       <main ref={ props.refs } style={ { display: 'none' } }>
         <Image
@@ -66,7 +63,7 @@ const Page = (
         height: 'calc(100vh - 5rem)',
         display: 'none'
       } }
-    ><Map userLocation={ userLocation } reset={ props.reset } locations={ props.started } /></main>
+    ><Map userLocation={ userLocation } locations={ started } /></main>
   );
 };
 

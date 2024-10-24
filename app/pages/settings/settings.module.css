@@ -9,7 +9,7 @@
     height: calc(100vh - var(--padding) * 2);
     z-index: calc(var(--z) + 3);
     background-color: var(--color-bg);
-    animation: slideIn ease-in-out 0.5s forwards;
+    transform: translateX(100%);
     padding: var(--padding) var(--horizontal);
 }
 
@@ -41,24 +41,6 @@
     width: 100%;
     height: 100%;
     filter: var(--icon-filter-primary);
-}
-
-@keyframes slideIn {
-    from {
-        transform: translateX(100%);
-    }
-    to {
-        transform: translateX(0%);
-    }
-}
-
-@keyframes slideOut {
-    from {
-        transform: translateX(0%);
-    }
-    to {
-        transform: translateX(100%);
-    }
 }
 
 .Option {
