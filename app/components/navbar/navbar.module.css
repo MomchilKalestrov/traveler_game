@@ -4,6 +4,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 0.5rem;
     background-color: var(--color-secondary);
     position: fixed;
     bottom: 0px;
@@ -11,11 +12,12 @@
 }
 
 .NavbarEntry {
-    width: 8rem;
+    width: 6rem;
+    height: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: center;
+    align-content: center;
     gap: 0.25rem;
     text-decoration: none;
     color: var(--color-primary);
@@ -26,17 +28,17 @@
 }
 
 .NavbarEntry div {
-    height: 1.25rem;
-    width: 4rem;
-    padding: calc((2rem - 1.25rem) / 2);
-    border-radius: 1rem;
+    height: 1.5rem;
+    width: 3.5rem;
+    padding: 0.25rem;
+    border-radius: 2rem;
     pointer-events: none;
 }
 
 .NavbarEntry div img {
     aspect-ratio: 1;
     height: 100%;
-    filter: var(--icon-filter-primary);
+    filter: var(--icon-filter-primary) opacity(66%);
 }
 
 .NavbarEntry p {
@@ -52,6 +54,10 @@
 
 .NavbarEntrySelected div {
     background-color: var(--color-tertiary);
+}
+
+.NavbarEntrySelected div img {
+    filter: var(--icon-filter-primary);
 }
 
 .NavbarEntrySelected p {

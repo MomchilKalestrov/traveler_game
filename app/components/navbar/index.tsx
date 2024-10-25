@@ -17,7 +17,7 @@ const NavbarEntry = (
             className={ styles.NavbarEntry + ' ' + (props.active ? styles.NavbarEntrySelected : '') }
             onClick={ () => props.onClick(props.id) }
         >
-            <div><Image src={ `/icons/${props.name}.svg` } alt={ props.name } width={ 20 } height={ 20 } /></div>
+            <div><Image src={ `/icons/${props.name}.svg` } alt={ props.name } width={ 24 } height={ 24 } /></div>
             <p>{ props.name }</p>
         </button>
     );
