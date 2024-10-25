@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
 const GET = async (request: NextRequest) => {
-    const cookie = cookies();
+    const cookie = await cookies();
     const client = new MongoClient(process.env.MONGODB_URI as string);
     const args = new URL(request.url).searchParams;
     if(!args.get('username'))

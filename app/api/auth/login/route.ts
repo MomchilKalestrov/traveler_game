@@ -25,7 +25,7 @@ const POST = async (request: NextRequest) => {
             return NextResponse.json({ error: 'Incorrect credentials.' }, { status: 401 });
         }
         // Set the cookies
-        const user = cookies();
+        const user = await cookies();
         user.set('username', args.get('username') || '', {
             maxAge: Date.now() + 365 * 24 * 60 * 60 * 1000
         });

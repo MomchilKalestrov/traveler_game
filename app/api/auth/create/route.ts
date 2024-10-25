@@ -36,7 +36,7 @@ const POST = async (request: NextRequest) => {
             xp: 0
         });
         // Set the cookies
-        const user = cookies();
+        const user = await cookies();
         user.set('username', args.get('username') || '');
         user.set('password', md5(args.get('password') || ''));
         

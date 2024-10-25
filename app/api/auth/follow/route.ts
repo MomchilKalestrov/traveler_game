@@ -5,7 +5,7 @@ import { MongoClient } from 'mongodb';
 
 const POST = async (request: NextRequest) => {
     const args = new URL(request.url).searchParams;
-    const cookie = cookies();
+    const cookie = await cookies();
     const client = new MongoClient(process.env.MONGODB_URI as string);
 
     if (!args.get('username'))
@@ -14,7 +14,7 @@ const POST = async (request: NextRequest) => {
     if (args.get('username') === cookie.get('username')?.value)
         return NextResponse.json({ error: 'You cannot follow yourself.' }, { status: 400 });
 
-    if (!await userCheck(cookie.get('username')?.value || '', cookie.get('password')?.value || ''))
+    if (!(await userCheck(cookie.get('username')?.value || '', cookie.get('password')?.value || '')))
         return NextResponse.json({ error: 'Invalid credentials.' }, { status: 401 });
 
     try {

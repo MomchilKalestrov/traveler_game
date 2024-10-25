@@ -21,11 +21,11 @@ const POST = async (request: NextRequest) => {
     if (!args.name || !args.location.lat || !args.location.lng)
         return NextResponse.json({ error: 'Missing parameters.' }, { status: 412 });
     const client = new MongoClient(process.env.MONGODB_URI as string);
-    const cookie = cookies();
+    const cookie = await cookies();
     let location: any = {};
     let user: any = {};
 
-    if(!await userCheck(cookie.get('username')?.value || '', cookie.get('password')?.value || ''))
+    if(!(await userCheck(cookie.get('username')?.value || '', cookie.get('password')?.value || '')))
         return NextResponse.json({ error: 'Invalid credentials.' }, { status: 401 });
 
     try {

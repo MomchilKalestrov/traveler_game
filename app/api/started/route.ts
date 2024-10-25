@@ -5,11 +5,11 @@ import userCheck from '@logic/usercheck';
 
 const GET = async () => {
     const client = new MongoClient(process.env.MONGODB_URI as string);
-    const cookie = cookies();
+    const cookie = await cookies();
     let names: any = {};
     let locations: any = {};
 
-    if(!await userCheck(cookie.get('username')?.value || '', cookie.get('password')?.value || ''))
+    if(!(await userCheck(cookie.get('username')?.value || '', cookie.get('password')?.value || '')))
         return NextResponse.json({ error: 'Invalid credentials.' }, { status: 401 });
 
     try {

@@ -8,10 +8,10 @@ const POST = async (request: NextRequest) => {
     if (!args.name)
         return NextResponse.json({ error: 'Missing parameters.' });
     const client = new MongoClient(process.env.MONGODB_URI as string);
-    const cookie = cookies();
+    const cookie = await cookies();
     let names: any = {};
 
-    if(!await userCheck(cookie.get('username')?.value || '', cookie.get('password')?.value || ''))
+    if(!(await userCheck(cookie.get('username')?.value || '', cookie.get('password')?.value || '')))
         return NextResponse.json({ error: 'Invalid credentials.' }, { status: 401 });
 
     try {
