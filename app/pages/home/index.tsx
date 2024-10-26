@@ -102,8 +102,8 @@ const Page = (props: { refs: React.Ref<HTMLElement> }) => {
         ? <p>No adventures started.</p>
         : <div className={ style.HorizontalCarousel }><div>
           {
-            started.map((location: location, index: number) =>
-              <Minicard key={ index } location={ location } />
+            started.map((location: location, key: number) =>
+              <Minicard key={ key } location={ location } />
             )
           }
           </div></div>

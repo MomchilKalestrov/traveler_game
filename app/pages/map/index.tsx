@@ -27,7 +27,7 @@ const Page = (props: { refs: React.Ref<HTMLElement> }) => {
             lat: position.coords.latitude,
             lng: position.coords.longitude
           }),
-          (error) => console.error('Error getting user location: \n', error),
+          (error) => console.log('Error getting user location: \n', error),
           { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
         );
         setWatcherID(id);

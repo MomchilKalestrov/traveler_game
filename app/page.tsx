@@ -26,7 +26,6 @@ const Page = () => {
     const router             = useRouter();
     const abortControllerRef = React.useRef<AbortController | null>(null);
     const [ userData,         setUserData        ] = React.useState<user | undefined>(undefined);
-    const [ userLookup,       setUserLookup      ] = React.useState<((username: string) => void) | undefined>(undefined);
     const [ settingsVisible,  setSettingsVisible ] = React.useState<boolean>(false);
     const [ startedLocations, setStarted         ] = React.useState<Array<location> | undefined>(undefined);
     const [ newLocations,     setNew             ] = React.useState<Array<location> | undefined>(undefined);

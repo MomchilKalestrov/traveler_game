@@ -36,6 +36,7 @@ const Map = (
         locations?: Array<location>
     }
 ) => {
+    console.log(props);
     const [ visible,  setVisible  ] = React.useState<boolean>(false);
     const [ location, setLocation ] = React.useState<location | undefined>(undefined);
     const center: LatLngExpression = props.userLocation
@@ -58,7 +59,7 @@ const Map = (
                 zoom={ 19 }
                 scrollWheelZoom={ true }
                 style={ { height: '100%', width: '100%' } }
-            >
+            >             
                 <HookComponent />
                 
                 <TileLayer
