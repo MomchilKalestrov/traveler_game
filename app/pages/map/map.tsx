@@ -3,9 +3,16 @@
 import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
 import L, { LatLngExpression, } from 'leaflet';
 import InfoCard, { cardType } from '@app/components/infocard';
-import React from 'react';
-import { location } from '@app/logic/types';
+import React, { useRef } from 'react';
+import type { location } from '@app/logic/types';
 import 'leaflet/dist/leaflet.css';
+
+const emptyLocation: location = {
+    name: 'N/A',
+    location: { lat: 0, lng: 0 },
+    description: 'You shouldn\'t be able to read this >:(',
+    xp: 0
+};
 
 const playerPin = new L.Icon({
     iconUrl: '/icons/userpin.svg',
@@ -16,15 +23,18 @@ const poiPin = new L.Icon({
     iconUrl: '/icons/poipin.svg',
     iconSize: [ 26, 37 ],
 });
+const Hook = () => {
+    const map = useMap();
 
-const HookComponent = () => {
-    const map: L.Map = useMap();
+    const revalidate = () => {
+        if (((map as any)._container as HTMLDivElement).style.display !== 'none')
+            map.invalidateSize();
+        setTimeout(revalidate, 500);
+    }
 
     React.useEffect(() => {
-        if (map) {
-            map.invalidateSize();
-        }
-    });
+        revalidate();
+    }, [ map ]);
 
     return null;
 }
@@ -36,9 +46,9 @@ const Map = (
         locations?: Array<location>
     }
 ) => {
-    console.log(props);
     const [ visible,  setVisible  ] = React.useState<boolean>(false);
-    const [ location, setLocation ] = React.useState<location | undefined>(undefined);
+    const [ location, setLocation ] = React.useState<location>(emptyLocation);
+
     const center: LatLngExpression = props.userLocation
         ? [ props.userLocation.lat, props.userLocation.lng ]
         : [ 42.143013705260884, 24.749279022216797 ]; // Center of Plovdiv
@@ -49,7 +59,7 @@ const Map = (
                 visible &&
                 <InfoCard
                     setter={ setVisible }
-                    location={ location || { name: 'N/A', location: { lat: 0, lng: 0 }, description: 'You shouldn\'t be able to read this >:(', xp: 0 } }
+                    location={ location }
                     type={ cardType.Finish }
                 />
             }
@@ -59,9 +69,8 @@ const Map = (
                 zoom={ 19 }
                 scrollWheelZoom={ true }
                 style={ { height: '100%', width: '100%' } }
-            >             
-                <HookComponent />
-                
+            >
+                <Hook />
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -81,8 +90,8 @@ const Map = (
                             icon={ poiPin }
                             eventHandlers={ {
                                 click: () => {
-                                    setVisible(true);
                                     setLocation(location);
+                                    setVisible(true);
                                 }
                             } }                            
                         ></Marker>
@@ -102,7 +111,7 @@ const Map = (
                 `}
             </style>
         </>
-    )
-}
+    );
+};
 
 export default Map;

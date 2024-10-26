@@ -9,8 +9,33 @@ import Header from '@components/header';
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import type { location, user } from '@logic/types';
-import { getCookie } from '@logic/cookies';
 import { CurrentUserCTX, SettingsVisibleCTX, StartedLocationsCTX, ResetFetchCTX, NewLocationsCTX } from '@logic/context';
+
+const fetchStarted = async (signal: AbortSignal): Promise<any> => 
+    await (await fetch('/api/started', { signal: signal })).json();
+
+const fetchFinished = async (signal: AbortSignal): Promise<any> => 
+    await (await fetch(`/api/finished?username=CURRENT_USER`, { signal: signal })).json();
+
+const fetchAll = async (signal: AbortSignal): Promise<any> =>
+    await (
+        await fetch('/api/locations', {
+            signal: signal,
+            cache: 'force-cache',
+            next : { revalidate: 604800 } // revalidate every 7 days
+        })
+    ).json();
+
+const filterNew = (started: Array<location>, finished: Array<location>, all: Array<location>): Array<location> => 
+    all.filter((loc: location) =>
+        !finished.some((l: location) => l.name === loc.name) &&
+        !started.some((l: location) => l.name === loc.name)
+    );
+
+const fetchProfile = async (): Promise<user | boolean> => {
+    const data = await (await fetch(`/api/auth/get?username=CURRENT_USER`)).json();
+    return data.error ? false : data;
+}
 
 const toLocation = (data: any): location => ({
     name: data.name,
@@ -37,17 +62,14 @@ const Page = () => {
         const abortController = new AbortController();
         abortControllerRef.current = abortController;
             
-        const verifyLogin = async () => {
+        const verifyProfile = async () => {
             try {
-                const data = await (await fetch(`/api/auth/get?username=${ encodeURIComponent('CURRENT_USER') }`)).json();
-                const username = getCookie('username')?.value;
-                const password = getCookie('password')?.value;
-                if (!username || !password || data.error) {
-                    if (abortControllerRef.current)
-                        abortControllerRef.current.abort();
+                const data: user | boolean = await fetchProfile();
+                if (!data) {
+                    abortControllerRef.current?.abort();
                     return router.replace('/login');
                 }
-                setUserData(data);
+                setUserData(data as user);
             }
             catch (error) {
                 alert('Error fetching user data: \n' + error);
@@ -55,47 +77,27 @@ const Page = () => {
         }
 
         const getData = async () => {
+            if (!abortControllerRef.current) return;
             try {
-                const started: any = await (
-                    await fetch('/api/started', {
-                        signal: abortControllerRef.current?.signal
-                    })
-                ).json();
+                const started: any = await fetchStarted(abortControllerRef.current.signal);
                 if(started.error || !started) throw Error('Error user started data.');
 
-                const finished: any = await (
-                    await fetch(`/api/finished?username=${ encodeURIComponent('CURRENT_USER') }`, {
-                        signal: abortControllerRef.current?.signal
-                    })
-                ).json();
+                const finished: any = await fetchFinished(abortControllerRef.current.signal);
                 if(finished.error || !finished) throw Error('Error user finished data.');
                 
-                const all: any = await (
-                    await fetch('/api/locations', {
-                        signal: abortControllerRef.current?.signal,
-                        cache: 'force-cache',
-                        next : { revalidate: 604800 } // revalidate every 7 days
-                    })
-                ).json();
-
+                const all: any = await fetchAll(abortControllerRef.current.signal);
                 if(all.error || !all) throw Error('Error locations data.');
-                let locArr: Array<location> = [];
                 
-                for(let i: number = 0; i < all.length; i++)
-                    if (
-                        !started.some((loc: location) => loc.name === all[i].name) &&
-                        !finished.some((loc: location) => loc.location === all[i].name)
-                    ) locArr.push(toLocation(all[i]));
+                setStarted(started.map(toLocation));
+                setNew(filterNew(started, finished, all));
 
-                setStarted(started.map((data: any) => toLocation(data)));
-                setNew(locArr);
                 document.getElementById('loading')?.remove();
             } catch (error) {
                 console.log('Error fetching data: \n' + error);
             };
         };
         
-        verifyLogin();
+        verifyProfile();
         getData();
     }, [reset]);
 
