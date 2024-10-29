@@ -4,9 +4,8 @@ import { user } from '@logic/types';
 import getColors from '@logic/profileColor';
 import userStyle from '@pages/profile/profile.module.css';
 import style from './leaderboard.module.css';
-import { CurrentUserCTX } from '@logic/context';
 
-const Player = (props: { user: user, currentuser: boolean }) => {
+const Player = (props: { user: user, position: number }) => {
   const [ color, r_color ] = getColors(props.user.username.slice(0, 3));
   const percentage = props.user.xp - 100 * Math.floor (props.user.xp / 100);
 
@@ -20,6 +19,15 @@ const Player = (props: { user: user, currentuser: boolean }) => {
           <p>{ Math.floor(props.user.xp / 100) }</p>
         </div>
         <h2>{ props.user.username }</h2>
+        {
+          props.position < 3
+          ? <Image
+              src={ `/icons/crowns/crown${ props.position }.svg` }
+              alt='Crown' width={ 48 } height={ 48 }
+              className={ style.Top100Position }
+            />
+          : <h3 className={ style.Top100Position }># { props.position + 1 }</h3>
+        }
         <div>
           <p><b>{ props.user.followers.length }</b> followers</p>
           <p><b>{ props.user.following.length }</b> following</p>
@@ -34,8 +42,6 @@ const LeaderBoard = (
     }
 ) => {
   const [ players, setPlayers ] = React.useState<Array<user> | undefined>(undefined);
-  const currentUser = React.useContext(CurrentUserCTX);
-  const username = currentUser?.username;
 
   React.useEffect(() => {
     fetch('/api/top100')
@@ -66,7 +72,7 @@ const LeaderBoard = (
         <h1>Top { players.length }</h1>
         {
           players.map((player, index) =>
-            <Player user={ player } key={ index } currentuser={ player.username == username } />
+            <Player user={ player } key={ index } position={ index } />
           )
         }
       </div>

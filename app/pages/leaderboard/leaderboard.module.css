@@ -9,3 +9,16 @@
     margin: 0px;
     width: 100%;
 }
+
+img.Top100Position {
+    width: 3rem;
+    height: 3rem;
+    grid-area: follow;
+    align-self: center;
+}
+
+h3.Top100Position {
+    grid-area: follow;
+    align-self: center;
+    text-align: center;
+}

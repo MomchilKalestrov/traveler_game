@@ -1,4 +1,4 @@
-const cacheName = 'offlineCacheV5';
+const cacheName = 'offlineCacheV6';
 
 const offlinePages = [
     '/offline/offline.html',
@@ -17,17 +17,23 @@ const offlinePages = [
     '/fonts/Product_Sans_Italic.ttf',
     '/fonts/Product_Sans_Bold_Italic.ttf',
 
+    '/icons/crowns/crown0.svg',
+    '/icons/crowns/crown1.svg',
+    '/icons/crowns/crown2.svg',
+
+    '/icons/navigation/Home.svg',
+    '/icons/navigation/Map.svg',
+    '/icons/navigation/Profile.svg',
+    '/icons/navigation/Leaderboard.svg',
+
     '/icons/back.svg',
     '/icons/close.svg',
     '/icons/error.svg',
     '/icons/filter.svg',
-    '/icons/Home.svg',
     '/icons/loading.svg',
     '/icons/login.svg',
-    '/icons/Map.svg',
     '/icons/nouser.svg',
     '/icons/poipin.svg',
-    '/icons/Profile.svg',
     '/icons/settings.svg',
     '/icons/userpin.svg',
 
