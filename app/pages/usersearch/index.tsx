@@ -3,9 +3,10 @@ import userStyle from '@pages/profile/profile.module.css';
 import Image from 'next/image';
 import React from 'react';
 import { getCookie } from '@logic/cookies';
-import { loading } from '@app/components/loading';
-import type { user } from '@logic/types';
+import { loading } from '@components/loading';
+import type { accomplishment, user } from '@logic/types';
 import getColors from '@logic/profileColor';
+import Accomplishment from '@components/accomplishment';
 
 enum status {
     loading,
@@ -96,7 +97,7 @@ const Page = (
                         </div>
                         {
                             props.user.finished.length > 0 &&
-                            <div className={ `${ userStyle.ProfileCard }` }>
+                            <div className={ userStyle.ProfileCard }>
                                 <h2>Badges</h2>
                                 <div className={ userStyle.ProfileDivider } />
                                 <div className={ userStyle.ProfileBadges }>
@@ -111,6 +112,25 @@ const Page = (
                                 </div>
                             </div>
                         }
+                        <div className={ userStyle.ProfileCard + ' ' + style.UserSearchHistory }>
+                            <h2>History</h2>
+                            <div className={ userStyle.ProfileDivider } />
+                            {
+                                props
+                                    .user
+                                    .finished
+                                    .slice(0, 6)
+                                    .map((data: { location: string, time: number }, key: number) =>
+                                        <Accomplishment
+                                            accomplishment={ {
+                                                ... data,
+                                                user: (props.user as user).username
+                                            } as accomplishment }
+                                            key={ key }
+                                        />
+                                )
+                            }
+                        </div>
                     </div>
                 </div>
             );

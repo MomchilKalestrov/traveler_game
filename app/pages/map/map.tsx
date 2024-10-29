@@ -27,8 +27,8 @@ const Hook = () => {
     const map = useMap();
 
     const revalidate = () => {
-        if (((map as any)._container as HTMLDivElement).style.display !== 'none')
-            map.invalidateSize();
+        if (((map as any)._container as HTMLDivElement).parentElement?.style.display !== 'none')
+            return map.invalidateSize();
         setTimeout(revalidate, 500);
     }
 
@@ -100,7 +100,7 @@ const Map = (
             </MapContainer>
             <style>
                 { /*
-                    there will be absolutely no support for either side of any wars in this app.
+                    there will be absolutely no support for either side of any war in this app.
                 */ }
                 {`
                     .leaflet-attribution-flag {

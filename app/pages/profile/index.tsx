@@ -49,7 +49,7 @@ const Page = (props: { refs: React.Ref<HTMLElement> }) => {
         </div>
         {
           user.finished.length > 0 &&
-          <div className={ `${ style.ProfileCard }` }>
+          <div className={ style.ProfileCard }>
             <h2>Badges</h2>
             <div className={ style.ProfileDivider } />
             <div className={ style.ProfileBadges }>

@@ -1,7 +1,6 @@
 'use client'
 import React from 'react';
 import Image from 'next/image';
-import type { location } from '@logic/types';
 import dynamic from "next/dynamic";
 import { useMemo } from "react";
 import { StartedLocationsCTX } from '@logic/context';

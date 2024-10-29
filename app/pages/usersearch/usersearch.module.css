@@ -30,3 +30,11 @@
 .UserSearchCentered img {
     filter: var(--icon-filter-primary);
 }
+
+.UserSearchHistory *:not(:first-of-type) {
+    background-color: var(--color-tertiary);
+}
+
+.UserSearchHistory *:not(:first-of-type):not(:last-of-type) {
+    margin-bottom: var(--padding);
+}
