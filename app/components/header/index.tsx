@@ -20,6 +20,7 @@ const Header = () => {
     const [ userData,    setUserData ] = React.useState<user | null>(emptyUser);
     const [ userLookup,  setLookup   ] = React.useState<boolean>(false);
     const [ userLoading, setLoading  ] = React.useState<status>(status.loading);
+    const [ timeoutId,   setId       ] = React.useState<NodeJS.Timeout | null>(null);
 
     const abortControllerRef = React.useRef<AbortController | null>(null);
     const headerBGReference  = React.useRef<HTMLDivElement>(null);
@@ -29,13 +30,6 @@ const Header = () => {
 
     const settingsCTX = React.useContext(SettingsVisibleCTX);
     const setSettings = settingsCTX?.setVisible;
-    
-    const viewUser = React.useCallback((username: string) => {
-        if (!inputReference.current) return;
-        showSearch();
-        inputReference.current.value = username;
-        startSearch(true);
-    }, []);
 
     React.useEffect(() => {
         abortControllerRef.current = new AbortController();
@@ -150,7 +144,11 @@ const Header = () => {
         else
             imgReference.current.style.display = 'none';
 
-        startSearch();
+        if (timeoutId)
+            clearTimeout(timeoutId);
+        setId(setTimeout(() => {
+            startSearch();
+        }, 250));
     }
 
     return (
