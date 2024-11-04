@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb';
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { user } from '@app/logic/types';
+import { user } from '@logic/types';
 
 const GET = async (request: NextRequest) => {
     const cookie = await cookies();
