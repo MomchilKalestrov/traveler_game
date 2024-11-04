@@ -1,9 +1,8 @@
-const bannedWords: Array<string> = [
+const bannedWords: string[] = [
     'fuck', 'dick', 'faggot', 'nigga', 'nigger', 'schizo', 'nazi',
     'gay', 'ass', 'pussy', 'whore', 'hag', 'cock', 'wank', 'slut',
     'retard', 'degenerate', 'rightoid', 'fag', 'libtard', 'incel',
-    'kraut', 'negro', 'beaner', 'spic',
-    
+    'kraut', 'negro', 'beaner', 'spic', 'cracker'
 ];
 
 const validateName = (name: string): boolean => {

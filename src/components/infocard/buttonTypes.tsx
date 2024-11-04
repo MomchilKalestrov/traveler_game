@@ -1,7 +1,7 @@
 import { CSSProperties } from 'react';
 import { track, untrack, finish } from './logic';
 
-enum buttonType {
+export enum buttonType {
     Untrack,
     Track,
     Finish

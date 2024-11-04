@@ -1,6 +1,6 @@
 'use client';
-import { toLocation } from "./types";
-import type { location, user } from "@logic/types";
+import { toLocation } from './types';
+import type { location, user } from '@logic/types';
 
 const fetchStarted = async (): Promise<any> => 
     await (await fetch('/api/started')).json();
@@ -17,9 +17,9 @@ const fetchAll = async (): Promise<any> =>
     ).json();
 
 const filterNew = (started: location[], finished: location[], all: location[]): location[] => 
-    all.filter((loc: location) =>
-        !finished.some((l: location) => l.name === loc.name) &&
-        !started.some((l: location) => l.name === loc.name)
+    all.filter((la: location) =>
+        !finished.some((lf: location) => lf.name === la.name) &&
+        !started.some((ls: location) => ls.name === la.name)
     );
 
 const fetchProfile = async (): Promise<user | boolean> => {
@@ -33,9 +33,7 @@ const save = (key: string, value: any, isArray?: boolean) =>
 const get = (key: string): any => 
     JSON.parse(sessionStorage.getItem(key) || 'null');
 
-const initialSave = async () => {
-    console.log('Saving for the first time');
-    
+const initialSave = async () => {    
     const fetches = await Promise.all([
         fetchStarted(),
         fetchFinished(),
@@ -50,16 +48,16 @@ const initialSave = async () => {
     save('initialSave', true);
     
     return fetches;
-}
+};
 
-const saveData = async () => {
-    if (!get('initialSave')) return await initialSave();
-    return [
-        get('started'),
-        get('finished'),
-        get('all'),
-        get('user')
-    ];
-}
+const saveData = async () =>
+    !get('initialSave')
+        ? await initialSave()
+        : [
+            get('started'),
+            get('finished'),
+            get('all'),
+            get('user')
+        ];
 
 export { fetchStarted, fetchFinished, fetchAll, filterNew, fetchProfile, saveData };

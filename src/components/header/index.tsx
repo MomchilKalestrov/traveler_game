@@ -21,7 +21,7 @@ const emptyUser: user = {
 };
 
 const Header = () => {
-    const [ userData,    setUserData ] = React.useState<user | null>(emptyUser);
+    const [ userData,    setUserData ] = React.useState<user | undefined>(undefined);
     const [ userLookup,  setLookup   ] = React.useState<boolean>(false);
     const [ settings,    setSettings ] = React.useState<boolean>(false);
     const [ userLoading, setLoading  ] = React.useState<status>(status.loading);
@@ -51,7 +51,7 @@ const Header = () => {
         
         if (abortControllerRef.current)
             abortControllerRef.current.abort();
-    }
+    };
 
     const showSearch = () => {
         const bg = headerBGReference.current;
@@ -67,7 +67,7 @@ const Header = () => {
         backButton.style.display = 'block';
         setLookup(true);
         setLoading(status.loading);
-    }
+    };
 
     const closeLookup = () => {
         const bg = headerBGReference.current;
@@ -87,7 +87,7 @@ const Header = () => {
         
         if (abortControllerRef.current)
             abortControllerRef.current.abort();
-    }
+    };
 
     const startSearch = (resetting?: boolean) => {
         if (!inputReference.current) return;
@@ -107,7 +107,7 @@ const Header = () => {
             setLoading(status.loading);
             setUserData(emptyUser);
             return;
-        }
+        };
 
         setLookup(true);
         setLoading(status.loading);
@@ -118,7 +118,7 @@ const Header = () => {
             .then(response => response.json())
             .then(data => {
                 if (data.error || data.error === 'User not found.') {
-                    setUserData(null)
+                    setUserData(undefined)
                     return setLoading(status.nouser);
                 }
                 else if (data.error) {
@@ -135,7 +135,7 @@ const Header = () => {
                 if (error.toString().includes('AbortError')) return;
                 console.error(error);
             });
-    }
+    };
 
     const onEdit = (event: React.FormEvent<HTMLInputElement>) => {
         if (!event.currentTarget) return;
@@ -149,7 +149,7 @@ const Header = () => {
         if (timeoutId)
             clearTimeout(timeoutId);
         setId(setTimeout(startSearch, 250));
-    }
+    };
 
     return (
         <>
@@ -189,6 +189,6 @@ const Header = () => {
             </header>
         </>
     );
-}
+};
 
 export default Header;

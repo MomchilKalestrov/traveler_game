@@ -1,19 +1,20 @@
-'use client';
+import React from 'react';
 import style from './toggle.module.css';
 
-const ToggleButton = (
-    props: {
-        onClick?: () => void,
-        ref?: React.RefObject<HTMLInputElement>,
-        disabled?: boolean
-    }
-) => (
-    <div>
-        <div className={ style.Toggle }>
-            <input type='checkbox' ref={ props.ref } onClick={ props.onClick } disabled={ props.disabled } />
-            <div />
+type ToggleButtonProps = {
+    onClick?: () => void,
+    disabled?: boolean
+}
+
+const ToggleButton = React.forwardRef<HTMLInputElement, ToggleButtonProps>(
+    ({ onClick, disabled }, ref) => (
+        <div>
+            <div className={ style.Toggle }>
+                <input type='checkbox' ref={ ref } onClick={ onClick } disabled={ disabled } />
+                <div />
+            </div>
         </div>
-    </div>
+    )
 );
 
 export default ToggleButton;

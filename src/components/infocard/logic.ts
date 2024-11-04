@@ -1,8 +1,8 @@
 import { loading, stopLoading } from '@components/loading';
 
 type ButtonProps = {
-    name: string,
-    close: () => void
+    name: string;
+    close: () => void;
 };
 
 const getUserLocation = (): Promise<{ lat: number, lng: number } | undefined> => {
@@ -24,14 +24,14 @@ const getUserLocation = (): Promise<{ lat: number, lng: number } | undefined> =>
         } else {
             alert('Geolocation is not supported by this browser.');
             reject(undefined);
-        }
+        };
     });
 };
 
 const reset = () => {
     sessionStorage.removeItem('initialSave');
     window.location.reload();
-}
+};
 
 const untrack = ({ name, close }: ButtonProps) => {
     loading();

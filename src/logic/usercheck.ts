@@ -1,3 +1,4 @@
+'use server';
 import { MongoClient } from 'mongodb';
 
 const userCheck = async (username: string, password: string): Promise<boolean> => {
@@ -21,7 +22,7 @@ const userCheck = async (username: string, password: string): Promise<boolean> =
         console.log(error);
         await client.close(true);
         return false;
-    }
-}
+    };
+};
 
 export default userCheck;

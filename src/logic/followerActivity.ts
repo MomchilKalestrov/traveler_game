@@ -1,8 +1,8 @@
 import { accomplishment, user } from '@logic/types';
 
 type follower = {
-    username: string,
-    finished: Array<accomplishment>
+    username: string;
+    finished: Array<accomplishment>;
 };
 
 const fetchFollower = async (username: string): Promise<follower> => (
@@ -11,11 +11,11 @@ const fetchFollower = async (username: string): Promise<follower> => (
     ).json()
 ) as follower;
 
-const getActivities = async (userData: user): Promise<Array<accomplishment>> => {
+const getActivities = async (user: user): Promise<Array<accomplishment>> => {
     let activities: Array<accomplishment> = [];
     
-    for (const user of userData.following) {
-        const data: follower = await fetchFollower(user);
+    for (const follower of user.following) {
+        const data: follower = await fetchFollower(follower);
         
         if (data.finished.length > 0)
             activities = activities.concat(

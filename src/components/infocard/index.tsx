@@ -1,19 +1,16 @@
-import style from './infocard.module.css';
 import React from 'react';
 import Image from 'next/image';
-import buttons from './buttonTypes';
-import type { location  } from '@logic/types';
 
-export enum cardType {
-    Untrack,
-    Track,
-    Finish
-};
+import style                   from './infocard.module.css';
+import type { location  }      from '@logic/types';
+import buttons, { buttonType } from './buttonTypes';
+
+export { buttonType as cardType };
 
 export type InfoCardProps = {
-    setter: React.Dispatch<React.SetStateAction<boolean>>
-    type: cardType,
-    location: location
+    setter: React.Dispatch<React.SetStateAction<boolean>>;
+    type: buttonType;
+    location: location;
 };
 
 const InfoCard: React.FC<InfoCardProps> = ({ setter, type, location }) => {
@@ -59,6 +56,6 @@ const InfoCard: React.FC<InfoCardProps> = ({ setter, type, location }) => {
             </div>
         </div>
     );
-}
+};
 
 export default InfoCard;

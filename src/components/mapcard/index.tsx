@@ -1,11 +1,17 @@
-'use client'
+'use client';
 import React from 'react';
-import style from './mapcard.module.css';
-import InfoCard, { cardType } from '@components/infocard';
 import Image from 'next/image';
-import { location } from '@logic/types';
 
-const Mapcard = (props: { location: location }) => {
+import { location }           from '@logic/types';
+import InfoCard, { cardType } from '@components/infocard';
+
+import style from './mapcard.module.css';
+
+type MapcardProps = {
+    location: location;
+};
+
+const Mapcard: React.FC<MapcardProps> = ({ location }) => {
     const [viewing, setViewing] = React.useState<boolean>(false);
 
     return (
@@ -15,24 +21,24 @@ const Mapcard = (props: { location: location }) => {
                     className={ style.MapcardLocation }
                     style={ {
                         backgroundImage: `
-                            url('${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/bg/${ props.location.name }.png'),
+                            url('${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/bg/${ location.name }.png'),
                             url('/default_assets/background.png')
                         `
                     } }
                 >
                     <div>
                         <Image
-                            alt={ props.location.name }
-                            src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ props.location.name }.svg` }
+                            alt={ location.name }
+                            src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ location.name }.svg` }
                             width={ 40 }
                             height={ 40 }
                         />
                     </div>
                 </div>
                 <div className={ style.MapcardMore }>
-                    <h3 style={ { margin: 0 } }>{ props.location.name }</h3>
+                    <h3 style={ { margin: 0 } }>{ location.name }</h3>
                     <button
-                        aria-label={ `View new ${ props.location.name }` }
+                        aria-label={ `View new ${ location.name }` }
                         className={ style.Button }
                         onClick={ () => setViewing(true) }
                     >View</button>
@@ -43,11 +49,11 @@ const Mapcard = (props: { location: location }) => {
                 <InfoCard
                     type={ cardType.Track }
                     setter={ setViewing }
-                    location={ props.location }
+                    location={ location }
                 />
             }
         </>
-    )
-}
+    );
+};
 
 export default Mapcard;

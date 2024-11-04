@@ -1,10 +1,21 @@
 'use client';
-import styles from './navbar.module.css';
+import Link  from 'next/link';
 import Image from 'next/image';
-import Link from 'next/link';
+
 import { usePathname } from 'next/navigation';
 
-const NavbarEntry = ({ name, active }: { name: string, active: boolean }) => {
+import styles from './navbar.module.css';
+
+type NavbarEntryProps = {
+    name: string;
+    active: boolean;
+};
+
+type NavbarProps = {
+    pages: string[];
+};
+
+const NavbarEntry = ({ name, active }: NavbarEntryProps) => {
     return (
         <Link
             href={ `/${ name.toLowerCase() }` }
@@ -15,7 +26,8 @@ const NavbarEntry = ({ name, active }: { name: string, active: boolean }) => {
         </Link>
     );
 }
-const Navbar = ({ pages }: { pages: string[] }) => {
+
+const Navbar = ({ pages }: NavbarProps) => {
     const pathname = usePathname();
     
     if (pathname === '/login')
@@ -35,6 +47,6 @@ const Navbar = ({ pages }: { pages: string[] }) => {
             }
         </nav>
     );
-}
+};
 
 export default Navbar;

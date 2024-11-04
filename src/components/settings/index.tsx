@@ -7,7 +7,11 @@ import { deleteCookie } from '@logic/cookies';
 
 import style from './settings.module.css';
 
-const Settings = ({ close }: { close: () => void }) => {
+type SettingsProps = {
+    close: () => void;
+};
+
+const Settings = ({ close }: SettingsProps) => {
     const router = useRouter();
     const reference = React.useRef<HTMLDivElement>(null);
 
@@ -15,7 +19,7 @@ const Settings = ({ close }: { close: () => void }) => {
         if (reference.current)
             reference.current.style.animation = `${ style.SlideOut } 0.5s forwards`;
         setTimeout(close, 500);
-    }
+    };
 
     React.useEffect(() => {
         if (!reference.current) return;
@@ -48,6 +52,6 @@ const Settings = ({ close }: { close: () => void }) => {
             </div>
         </div>
     );
-}
+};
 
 export default Settings;

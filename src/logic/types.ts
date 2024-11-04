@@ -1,29 +1,29 @@
 type user = {
-    username: string,
+    username: string;
     finished: Array<{
-        location: string
-        time: number
-    }>,
-    started: string[],
-    followers: string[],
-    following: string[],
-    xp: number
-}
+        location: string;
+        time: number;
+    }>;
+    started: string[];
+    followers: string[];
+    following: string[];
+    xp: number;
+};
 
 type location = {
-  name: string,
+  name: string;
   location: {
-    lat: number,
-    lng: number
-  },
-  description: string,
-  xp: number
+    lat: number;
+    lng: number;
+  };
+  description: string;
+  xp: number;
 };
 
 type accomplishment = {
-  location: string,
-  user: string,
-  time: number
+  location: string;
+  user: string;
+  time: number;
 };
 
 const toLocation = (data: any): location => ({

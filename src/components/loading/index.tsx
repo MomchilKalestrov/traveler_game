@@ -1,5 +1,5 @@
-import style from './loading.module.css';
 import Image from 'next/image';
+import style from './loading.module.css';
 
 const LoadingPlaceholder = () => (
     <main>
@@ -28,7 +28,7 @@ const loading = () => {
     loading.appendChild(icon);
     loading.id = 'loading';
     document.body.appendChild(loading);
-}
+};
 
 const stopLoading = () => document.getElementById('loading')?.remove();
 
