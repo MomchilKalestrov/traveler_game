@@ -9,14 +9,17 @@ import MaterialInput      from '@components/input';
 import Accomplishment     from '@components/accomplishment';
 import LoadingPlaceholder from '@components/loading';
 
-import { getCookie }                           from '@logic/cookies';
-import getActivities                           from '@logic/followerActivity';
-import { filterNew, saveData }                 from '@logic/fetches';
-import type { location, accomplishment, user } from '@logic/types';
+import { getCookie } from '@logic/cookies';
+import getActivities from '@logic/followerActivity';
+import type {
+  location,
+  accomplishment,
+  user
+} from '@logic/types';
 
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '@logic/redux/store';
-import { update } from '@logic/redux/userSlice';
+import { useDispatch, useSelector }  from 'react-redux';
+import { AppDispatch, RootState }    from '@logic/redux/store';
+import { preloadFromSessionStorage } from '@logic/redux/sessionStorage';
 
 import style from './home.module.css';
 
@@ -34,18 +37,19 @@ function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
 }
 
 const Page = () => {
+  const dispatch: AppDispatch = useDispatch();
+  const userSlice    = useSelector((state: RootState) => state.user.value);
+  const newSlice     = useSelector((state: RootState) => state.new.value);
+  const startedSlice = useSelector((state: RootState) => state.started.value);
 
-  const userSlice = useSelector((state: RootState) => state.user.value);
-  const dispatch  = useDispatch();
+  console.log('userSlice:', userSlice);
+  console.log('startedSlice:', startedSlice);
+  console.log('newSlice:', newSlice);
 
   const reference = React.useRef<HTMLDivElement>(null);
   const router    = useRouter();
 
-  const [ user,     setUser     ] = React.useState<user | boolean>(false);
-  const [ started,  setStarted  ] = React.useState<location[] | undefined>(undefined);
-  const [ new_,     setNew      ] = React.useState<location[] | undefined>(undefined);
-  const [ filtered, setFiltered ] = React.useState<location[]>(new_ || []);
-
+  const [ filtered, setFiltered ] = React.useState<location[]>(newSlice || []);
   const [ filterOpen, setFilterOpen ] = React.useState(true);
 
   const [ followerActivity, setFollowerActivity ] = React.useState<accomplishment[]>([]);
@@ -54,28 +58,22 @@ const Page = () => {
     if (!getCookie('username')?.value || !getCookie('password')?.value)
       return router.replace('/login');
     
-    (async () => {
-      const [ s, f, a, u ] = await saveData();
-      setStarted(s);
-      setNew(filterNew(s, f, a));
-      setUser(u);
-      dispatch(update(u));
-    }).call(null);
+    preloadFromSessionStorage(dispatch);
   }, []);
 
   React.useEffect(() => {
-    if (!user) return;
+    if (!userSlice) return;
 
-    getActivities(user as user)
+    getActivities(userSlice as user)
       .then((activities) =>
         setFollowerActivity(activities)
       );
-  }, [user]);
+  }, [userSlice]);
   
   React.useEffect(() => {
-    if (!new_) return;
-    setFiltered(new_);
-  }, [new_]);
+    if (!newSlice) return;
+    setFiltered(newSlice);
+  }, [newSlice]);
   
   const changeView = () => {
     if (!reference.current) return;
@@ -85,21 +83,21 @@ const Page = () => {
     setFilterOpen(state);
   }
 
-  if (!user || !new_)
+  if (!userSlice || !newSlice)
     return (<LoadingPlaceholder />);
 
   const findCloseLocations = (event: React.FormEvent<HTMLInputElement>) => {
-    if(!new_ || !event.currentTarget) return;
+    if(!newSlice || !event.currentTarget) return;
 
     const inputValue = parseInt(event.currentTarget.value);
 
-    if(isNaN(inputValue) || inputValue <= 0) return setFiltered(new_);
+    if(isNaN(inputValue) || inputValue <= 0) return setFiltered(newSlice);
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        if(!new_) return alert('An unknown exception has occured.');
+        if(!newSlice) return alert('An unknown exception has occured.');
         setFiltered(
-          new_.filter((location: location) =>
+          newSlice.filter((location: location) =>
             haversineDistance(
               location.location.lat,
               location.location.lng,
@@ -117,11 +115,11 @@ const Page = () => {
     <main className={ style.Home }>
       <h2>Started adventures:</h2>
       { 
-        !started || started.length === 0
+        !startedSlice || startedSlice.length === 0
         ? <p>No adventures started.</p>
         : <div className={ style.HorizontalCarousel }><div>
           {
-            started.map((location: location, key: number) =>
+            startedSlice.map((location: location, key: number) =>
               <Minicard key={ key } location={ location } />
             )
           }

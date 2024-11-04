@@ -3,13 +3,13 @@ import { user } from '@logic/types';
 
 export const userSlice = createSlice({
   name: 'user',
-  initialState: { value: {} },
+  initialState: { value: undefined as user | undefined},
   reducers: {
-    update: (state, action: PayloadAction<user>) => {
+    updateUser: (state, action: PayloadAction<user>) => {
       state.value = action.payload;
     }
   }
 });
 
-export const { update } = userSlice.actions;
+export const { updateUser } = userSlice.actions;
 export default userSlice.reducer;

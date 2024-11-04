@@ -1,23 +1,22 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
+import { useDispatch, useSelector } from 'react-redux';
 
-import getColors    from '@logic/profileColor';
-import { user }     from '@logic/types';
-import { saveData } from '@logic/fetches';
+import getColors from '@logic/profileColor';
+import { preloadFromSessionStorage } from '@logic/redux/sessionStorage';
+import { RootState } from '@logic/redux/store';
 
 import LoadingPlaceholder from '@components/loading';
 
 import style from './profile.module.css';
 
 const Page = () => {
-  const [ user, setUser ] = React.useState<user | undefined>();
+  const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.user.value);
 
   React.useEffect(() => {
-    (async () => {
-      const [,,, u ] = await saveData();
-      setUser(u);
-    }).call(null);
+    preloadFromSessionStorage(dispatch);
   }, []);
 
   if (!user)

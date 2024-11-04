@@ -1,29 +1,29 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { location } from '@logic/types';
 
-export const startedSlice = createSlice({
-  name: 'started',
+export const newSlice = createSlice({
+  name: 'new',
   initialState: { value: undefined as location[] | undefined },
   reducers: {
-    addStarted: (state, action: PayloadAction<location>) => {
+    addNew: (state, action: PayloadAction<location>) => {
       if (!state.value) state.value = [];
       state.value.push(action.payload);
     },
-    removeStarted: (state, action: PayloadAction<string>) => {
+    removeNew: (state, action: PayloadAction<string>) => {
       if (!state.value) {
         state.value = [];
         return;
       }
       state.value = state.value.filter((location) => location.name !== action.payload);
     },
-    clearStarted: (state) => {
+    clearNew: (state) => {
       state.value = [];
     },
-    updateStarted: (state, action: PayloadAction<location[]>) => {
+    updateNew: (state, action: PayloadAction<location[]>) => {
       state.value = action.payload;
     }
   }
 });
 
-export const { addStarted, removeStarted, clearStarted, updateStarted } = startedSlice.actions;
-export default startedSlice.reducer;
+export const { addNew, removeNew, clearNew, updateNew } = newSlice.actions;
+export default newSlice.reducer;

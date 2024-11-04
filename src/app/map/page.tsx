@@ -1,19 +1,20 @@
 'use client'
 import React from 'react';
-import { useMemo } from "react";
-import dynamic from "next/dynamic";
+import dynamic from 'next/dynamic';
 
-import { saveData } from '@logic/fetches';
-import { location } from '@logic/types';
+import { useDispatch, useSelector }  from 'react-redux';
+import { RootState }                 from '@logic/redux/store';
+import { preloadFromSessionStorage } from '@logic/redux/sessionStorage';
 
 import LoadingPlaceholder from '@components/loading';
 
 const Page = () => {
+  const dispatch = useDispatch();
   const [ watcherID,    setWatcherID    ] = React.useState<number>();
   const [ userLocation, setUserLocation ] = React.useState<{ lat: number, lng: number } | undefined>(undefined);
-  const [ started,      setStarted      ] = React.useState<location[] | undefined>(undefined);
+  const started = useSelector((state: RootState) => state.started.value);
 
-  const Map = useMemo(() => dynamic(
+  const Map = React.useMemo(() => dynamic(
     () => import('./map'), {
       loading: () => <LoadingPlaceholder />,
       ssr: false
@@ -37,11 +38,7 @@ const Page = () => {
       alert('Geolocation is not supported by this browser.')
     };
 
-    saveData()
-      .then((data) => {
-        const [ s, f,  ] = data;
-        setStarted(s);
-      });
+    preloadFromSessionStorage(dispatch);
   }, []);
 
   return (

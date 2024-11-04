@@ -52,6 +52,7 @@ const Player = ({ user, position }: { user: user, position: number }) => {
 const Page = () => {
   const [ players, setPlayers ] = React.useState<Array<user> | undefined>(undefined);
 
+  // top 100 players are used only here, so it's not necessary to store them in the redux store
   React.useEffect(() => {
     if (sessionStorage.getItem('top100'))
       return setPlayers(JSON.parse(sessionStorage.getItem('top100') as string));

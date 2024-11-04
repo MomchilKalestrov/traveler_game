@@ -69,7 +69,7 @@ const Map = (
                     ></Marker>
                 }
                 {
-
+                    locations &&
                     locations.map((location, index) => (
                         <Marker
                             key={ index }
