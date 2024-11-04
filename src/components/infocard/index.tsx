@@ -16,10 +16,9 @@ export type InfoCardProps = {
     location: location
 };
 
-const InfoCard = (props: InfoCardProps) => {
+const InfoCard: React.FC<InfoCardProps> = ({ setter, type, location }) => {
     const reference = React.useRef<HTMLDivElement>(null);
-    const Button = buttons[props.type];
-    const resetCTX = () => { console.log('reset context'); }
+    const Button = buttons[type];
 
     const close = () => {
         if(!reference.current) return;
@@ -29,7 +28,7 @@ const InfoCard = (props: InfoCardProps) => {
         reference.current.style.animation = `${ style.slideOut } 0.5s ease-in-out forwards`;
         parent.style.animation            = `${ style.blurOut  } 0.5s ease-in-out forwards`;
 
-        setTimeout(() => props.setter(false), 500);
+        setTimeout(() => setter(false), 500);
     }
 
     return (
@@ -39,7 +38,7 @@ const InfoCard = (props: InfoCardProps) => {
                     className={ style.InfocardHeader }
                     style={ {
                         backgroundImage: `
-                            url('${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/bg/${ props.location.name }.png'),
+                            url('${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/bg/${ location.name }.png'),
                             url('/default_assets/background.png')
                         `
                     } }
@@ -50,12 +49,12 @@ const InfoCard = (props: InfoCardProps) => {
                             width={ 32 } height={ 32 }
                         />
                     </button>
-                    <p>{ props.location.xp }</p>
+                    <p>{ location.xp }</p>
                 </div>
                 <div className={ style.InfocardData }>
-                    <h3>{ props.location.name }</h3>
-                    <p>{ props.location.description }</p>
-                    <Button name={ props.location.name } reset={ resetCTX } close={ close } />
+                    <h3>{ location.name }</h3>
+                    <p>{ location.description }</p>
+                    <Button name={ location.name } close={ close } />
                 </div>
             </div>
         </div>

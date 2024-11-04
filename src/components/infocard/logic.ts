@@ -1,5 +1,9 @@
 import { loading, stopLoading } from '@components/loading';
-import JSConfetti from 'js-confetti';
+
+type ButtonProps = {
+    name: string,
+    close: () => void
+};
 
 const getUserLocation = (): Promise<{ lat: number, lng: number } | undefined> => {
     return new Promise((resolve, reject) => {
@@ -24,11 +28,12 @@ const getUserLocation = (): Promise<{ lat: number, lng: number } | undefined> =>
     });
 };
 
-const untrack = (
-    name: string,
-    reset: () => void,
-    close: () => void
-) => {
+const reset = () => {
+    sessionStorage.removeItem('initialSave');
+    window.location.reload();
+}
+
+const untrack = ({ name, close }: ButtonProps) => {
     loading();
     fetch(`/api/untrack`, {
         method: 'POST',
@@ -43,13 +48,9 @@ const untrack = (
             close();
             reset();
         });
-}
+};
 
-const track = (
-    name: string,
-    reset: () => void,
-    close: () => void
-) => {
+const track = ({ name, close }: ButtonProps) => {
     loading();
     fetch(`/api/track`, {
         method: 'POST',
@@ -64,14 +65,9 @@ const track = (
             close();
             reset();
         });
-}
+};
 
-const finish = (
-    name: string,
-    reset: () => void,
-    close: () => void
-
-) => {
+const finish = ({ name, close }: ButtonProps) => {
     getUserLocation().then(location => {
         if(!location) return;
         
@@ -98,9 +94,8 @@ const finish = (
                 }
                 close();
                 reset();
-                new JSConfetti().addConfetti();
             });
     });
-}
+};
 
 export { untrack, track, finish };

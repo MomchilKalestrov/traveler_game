@@ -14,48 +14,35 @@ const buttonStyle: CSSProperties = {
     border: '1px solid var(--color-primary)',
     color: 'var(--color-primary)',
     backgroundColor: 'transparent'
-}
+};
+
+type ButtonProps = {
+    name: string,
+    close: () => void
+};
 
 const buttons = {
-    [buttonType.Track]: (
-        props: {
-            name: string,
-            reset: () => void,
-            close: () => void
-        }
-    ) => (
-        <button
-            aria-label='Start tracking'
-            style={ buttonStyle }
-            onClick={ () => track(props.name, props.reset, props.close) }
-        >Start tracking</button>
-    ),
-    [buttonType.Untrack]: (
-        props: {
-            name: string,
-            reset: () => void,
-            close: () => void
-        }
-    ) => (
-        <button
-            aria-label='Stop tracking'
-            style={ buttonStyle }
-            onClick={ () => untrack(props.name, props.reset, props.close) }
-        >Stop tracking</button>
-    ),
-    [buttonType.Finish]: (
-        props: {
-            name: string,
-            reset: () => void,
-            close: () => void
-        }
-    ) => (
-        <button
-            aria-label='Finish'
-            style={ buttonStyle }
-            onClick={ () => finish(props.name, props.reset, props.close) }
-        >Finish</button>
-    )
+    [ buttonType.Track ]:
+        ({ name, close }: ButtonProps) => (
+            <button
+                aria-label='Start tracking' style={ buttonStyle }
+                onClick={ () => track({ name, close }) }
+            >Start tracking</button>
+        ),
+    [ buttonType.Untrack ]:
+        ({ name, close }: ButtonProps) => (
+            <button
+                aria-label='Stop tracking' style={ buttonStyle }
+                onClick={ () => untrack({ name, close }) }
+            >Stop tracking</button>
+        ),
+    [ buttonType.Finish ]: 
+        ({ name, close }: ButtonProps) => (
+            <button
+                aria-label='Finish' style={ buttonStyle }
+                onClick={ () => finish({ name, close }  ) }
+            >Finish</button>
+        )
 };
 
 export default buttons;
