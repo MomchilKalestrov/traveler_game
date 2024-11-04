@@ -7,14 +7,14 @@ const getCookie = (key: string): cookie | undefined => {
   const decodedCookie: string = decodeURIComponent(document.cookie);
   const cookiePairs: Array<string> = decodedCookie.split(';');
 
-  cookiePairs.forEach((pair: string) => {
+  for (let pair of cookiePairs) {
     while (pair.charAt(0) == ' ')
       pair = pair.substring(1);
       
     const [ k, v ] = pair.split('=');
-      if (k === key)
-        return { k, v };
-  });
+    if (k === key)
+      return { key: k, value: v };
+  };
 
   return undefined;
 };
