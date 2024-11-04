@@ -2,14 +2,15 @@
 import React from 'react';
 import Image from 'next/image';
 
-import UserSearch, { status } from '@components/usersearch';
-import { stopLoading }        from '@components/loading';
 import Settings               from '@components/settings';
+import { stopLoading }        from '@components/loading';
+import UserSearch, { status } from '@components/usersearch';
 
 import type { user } from '@logic/types';
 import { getCookie } from '@logic/cookies';
 
 import style from './header.module.css';
+import { usePathname } from 'next/navigation';
 
 const emptyUser: user = {
     username: '',
@@ -21,6 +22,8 @@ const emptyUser: user = {
 };
 
 const Header = () => {
+    const pathname = usePathname();
+
     const [ userData,    setUserData ] = React.useState<user | undefined>(undefined);
     const [ userLookup,  setLookup   ] = React.useState<boolean>(false);
     const [ settings,    setSettings ] = React.useState<boolean>(false);
@@ -37,6 +40,9 @@ const Header = () => {
         abortControllerRef.current = new AbortController();
         return () => abortControllerRef.current?.abort();
     }, []);
+
+    if (pathname === '/login')
+        return (<></>);
 
     const clearSearch = () => {
         const input = inputReference.current;
