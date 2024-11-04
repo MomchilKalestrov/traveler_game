@@ -65,15 +65,21 @@ self.addEventListener('activate', (e) => {
 
 self.addEventListener('fetch', (e) => {
     e.respondWith(
-        fetch(e.request).catch(() =>
-            caches.match(e.request).then((response) => {
-                if (response) {
-                    return response;
-                } else if (e.request.headers.get('accept').includes('text/html')) {
-                    // If the request is for an HTML page, return the offline page
+        caches.match(e.request).then((response) => {
+            if (response)
+                return response;
+            return fetch(e.request).then((networkResponse) => {
+                // Optionally, cache the new network response
+                return caches.open(cacheName).then((cache) => {
+                    cache.put(e.request, networkResponse.clone());
+                    return networkResponse;
+                });
+            }).catch(() => {
+                // If the request is for an HTML page, return the offline page
+                if (e.request.headers.get('accept').includes('text/html')) {
                     return caches.match('/offline/offline.html');
                 }
-            })
-        )
+            });
+        })
     );
 });

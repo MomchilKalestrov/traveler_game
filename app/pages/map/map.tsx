@@ -28,7 +28,7 @@ const Hook = () => {
 
     const revalidate = () => {
         if (((map as any)._container as HTMLDivElement).parentElement?.style.display !== 'none')
-            return map.invalidateSize();
+            map.invalidateSize();
         setTimeout(revalidate, 500);
     }
 

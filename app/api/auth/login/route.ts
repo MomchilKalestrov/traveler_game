@@ -5,11 +5,11 @@ import { md5 } from 'js-md5';
 
 const POST = async (request: NextRequest) => {
     const args: URLSearchParams = new URL(request.url).searchParams;
+    const cookie = await cookies();
+    const client = new MongoClient(process.env.MONGODB_URI as string);
     
     if(!args.get('password') || !args.get('username'))
         return NextResponse.json({ error: 'Missing parameters.' }, { status: 412 });
-    
-    const client = new MongoClient(process.env.MONGODB_URI as string);
     
     try {
         // Connect to the MongoDB
@@ -22,14 +22,13 @@ const POST = async (request: NextRequest) => {
         });
         if(!dataExists) {
             await client.close(true);
-            return NextResponse.json({ error: 'Incorrect credentials.' }, { status: 401 });
+            return NextResponse.json({ error: 'Incorrect credentials.' }, { status: 403 });
         }
         // Set the cookies
-        const user = await cookies();
-        user.set('username', args.get('username') || '', {
+        cookie.set('username', args.get('username') || '', {
             maxAge: Date.now() + 365 * 24 * 60 * 60 * 1000
         });
-        user.set('password', md5(args.get('password') || ''), {
+        cookie.set('password', md5(args.get('password') || ''), {
             maxAge: Date.now() + 365 * 24 * 60 * 60 * 1000
         });
         await client.close(true);
