@@ -1,11 +1,14 @@
+import React         from 'react';
+import { Metadata }  from 'next';
+import { Analytics } from '@vercel/analytics/react';
+
+import Navbar         from '@components/navbar';
+import Header         from '@components/header';
+import OfflineHandler from '@components/offlineHandler';
+import Providers      from '@components/provider';
+
 import { Roboto } from 'next/font/google';
 import './design.css';
-import { Metadata } from 'next';
-import OfflineHandler from '@components/offlineHandler';
-import { Analytics } from '@vercel/analytics/react';
-import React from 'react';
-import Header from '@components/header';
-import Navbar from '@components/navbar';
 
 const roboto = Roboto({
   weight: [ '400', '500', '700', '900' ],
@@ -30,14 +33,11 @@ const RootLayout = ({
     <body className={ roboto.className }>
       <Analytics />
       <OfflineHandler />
-      <Header />
-      { children }
-      <Navbar pages={ [
-        "Home",
-        "Map",
-        "Profile",
-        "Leaderboard",
-      ] } />
+      <Providers>
+        <Header />
+        { children }
+        <Navbar pages={ [ "Home", "Map", "Profile", "Leaderboard" ] } />
+      </Providers>
     </body>
   </html>
 );

@@ -14,6 +14,10 @@ import getActivities                           from '@logic/followerActivity';
 import { filterNew, saveData }                 from '@logic/fetches';
 import type { location, accomplishment, user } from '@logic/types';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '@logic/redux/store';
+import { update } from '@logic/redux/userSlice';
+
 import style from './home.module.css';
 
 function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
@@ -30,6 +34,10 @@ function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
 }
 
 const Page = () => {
+
+  const userSlice = useSelector((state: RootState) => state.user.value);
+  const dispatch  = useDispatch();
+
   const reference = React.useRef<HTMLDivElement>(null);
   const router    = useRouter();
 
@@ -51,6 +59,7 @@ const Page = () => {
       setStarted(s);
       setNew(filterNew(s, f, a));
       setUser(u);
+      dispatch(update(u));
     }).call(null);
   }, []);
 
