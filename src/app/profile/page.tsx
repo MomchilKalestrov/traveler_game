@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import getColors from '@logic/profileColor';
 import { preloadFromSessionStorage } from '@logic/redux/sessionStorage';
@@ -12,11 +12,10 @@ import LoadingPlaceholder from '@components/loading';
 import style from './profile.module.css';
 
 const Page = () => {
-  const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user.value);
 
   React.useEffect(() => {
-    preloadFromSessionStorage(dispatch);
+    preloadFromSessionStorage();
   }, []);
 
   if (!user)
