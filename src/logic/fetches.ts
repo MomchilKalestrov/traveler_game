@@ -27,37 +27,4 @@ const fetchProfile = async (): Promise<user | boolean> => {
     return data.error ? false : data;
 };
 
-const save = (key: string, value: any, isArray?: boolean) =>
-    sessionStorage.setItem(key, JSON.stringify(!isArray ? value : value.map(toLocation)));
-
-const get = (key: string): any => 
-    JSON.parse(sessionStorage.getItem(key) || 'null');
-
-const initialSave = async () => {    
-    const fetches = await Promise.all([
-        fetchStarted(),
-        fetchFinished(),
-        fetchAll(),
-        fetchProfile()
-    ]);
-
-    save('started', fetches[0], true);
-    save('finished', fetches[1], true);
-    save('all', fetches[2], true);
-    save('user', fetches[3]);
-    save('initialSave', true);
-    
-    return fetches;
-};
-
-const saveData = async () =>
-    !get('initialSave')
-        ? await initialSave()
-        : [
-            get('started'),
-            get('finished'),
-            get('all'),
-            get('user')
-        ];
-
-export { fetchStarted, fetchFinished, fetchAll, filterNew, fetchProfile, saveData };
+export { fetchStarted, fetchFinished, fetchAll, filterNew, fetchProfile };

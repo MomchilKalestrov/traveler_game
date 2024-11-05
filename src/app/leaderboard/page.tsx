@@ -11,6 +11,7 @@ import getColors     from '@logic/profileColor';
 
 import userStyle from '@app/profile/profile.module.css';
 import style     from './leaderboard.module.css';
+import { preloadFromSessionStorage } from '@src/logic/redux/sessionStorage';
 
 const Player = ({ user, position }: { user: user, position: number }) => {
   const router = useRouter();
@@ -50,12 +51,18 @@ const Player = ({ user, position }: { user: user, position: number }) => {
 }
 
 const Page = () => {
+  const router = useRouter();
   const [ players, setPlayers ] = React.useState<Array<user> | undefined>(undefined);
 
   // top 100 players are used only here, so it's not necessary to store them in the redux store
   React.useEffect(() => {
+    if (!getCookie('username')?.value || !getCookie('password')?.value)
+      return router.replace('/login');
+
     if (sessionStorage.getItem('top100'))
       return setPlayers(JSON.parse(sessionStorage.getItem('top100') as string));
+
+    preloadFromSessionStorage();
 
     fetch('/api/top100')
       .then(res => res.ok ? res.json() : undefined)

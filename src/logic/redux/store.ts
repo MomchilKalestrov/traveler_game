@@ -3,7 +3,6 @@ import userReducer from './userSlice';
 import startedReducer from './startedSlice';
 import newReducter from './newSlice';
 import { saveToSessionStorage } from './sessionStorage';
-import { user } from '../types';
 
 const store = configureStore({
   reducer: {

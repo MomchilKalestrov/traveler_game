@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -17,8 +17,8 @@ import type {
   user
 } from '@logic/types';
 
-import { useDispatch, useSelector }  from 'react-redux';
-import { AppDispatch, RootState }    from '@logic/redux/store';
+import { useSelector } from 'react-redux';
+import { RootState }   from '@logic/redux/store';
 import { preloadFromSessionStorage } from '@logic/redux/sessionStorage';
 
 import style from './home.module.css';
@@ -29,26 +29,22 @@ function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
   const dLat = toRadians(lat2 - lat1);
   const dLon = toRadians(lon2 - lon1);
   const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
-      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      Math.sin(dLat / 2) ** 2 +
+      Math.cos(toRadians(lat1)) *
+      Math.cos(toRadians(lat2)) *
+      Math.sin(dLon / 2) ** 2;
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c;
-}
+};
 
 const Page = () => {
-  const dispatch: AppDispatch = useDispatch();
+  const router = useRouter();
+  const reference = React.useRef<HTMLDivElement>(null);
+ 
   const userSlice    = useSelector((state: RootState) => state.user.value);
   const newSlice     = useSelector((state: RootState) => state.new.value);
   const startedSlice = useSelector((state: RootState) => state.started.value);
-
-  console.log('userSlice:', userSlice);
-  console.log('startedSlice:', startedSlice);
-  console.log('newSlice:', newSlice);
-
-  const reference = React.useRef<HTMLDivElement>(null);
-  const router    = useRouter();
-
+  
   const [ filtered, setFiltered ] = React.useState<location[]>(newSlice || []);
   const [ filterOpen, setFilterOpen ] = React.useState(true);
 
@@ -58,7 +54,7 @@ const Page = () => {
     if (!getCookie('username')?.value || !getCookie('password')?.value)
       return router.replace('/login');
     
-    preloadFromSessionStorage(dispatch);
+    preloadFromSessionStorage();
   }, []);
 
   React.useEffect(() => {

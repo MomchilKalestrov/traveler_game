@@ -1,11 +1,13 @@
 import React from 'react';
 import Image from 'next/image';
+import { useSelector } from 'react-redux';
 
-import { loading }    from '@components/loading';
-import Accomplishment from '@components/accomplishment';
+import { loading, stopLoading } from '@components/loading';
+import Accomplishment           from '@components/accomplishment';
 
+import store                         from '@logic/redux/store';
 import getColors                     from '@logic/profileColor';
-import { getCookie }                 from '@logic/cookies';
+import { RootState }                 from '@logic/redux/store';
 import type { accomplishment, user } from '@logic/types';
 
 import userStyle from '@app/profile/profile.module.css';
@@ -20,43 +22,25 @@ enum status {
 
 type UserSearchProps = {
     state: status,
-    user?: user | undefined,
+    user: user,
     reset: (resetting?: boolean) => void
 };
 
 const UserSearch: React.FC<UserSearchProps> = ({ state, user, reset }) => {
-    if (!user)
-        return (
-            <div className={ `${ style.UserSearch } ${ style.UserSearchCentered }` }>
-                <Image src='/icons/nouser.svg' alt='no user' width={ 48 } height={ 48 } />
-                <p>No user has found.</p>
-            </div>
-        );
+    const currentUser = useSelector((state: RootState) => state.user.value);
 
-    const currentUser: string = getCookie('username')?.value || '';
-    // we assume that the user is not followed
-    let type: string = 'Follow';
-    let action: () => void = () => {
+    let type: string = !currentUser?.following.includes(user.username) ? 'Follow' : 'Unfollow';
+    let action = () => {
         loading();
-        fetch(`/api/auth/follow?username=${ user?.username }`, { method: 'POST' })
+        fetch(`/api/auth/${ type.toLowerCase() }?username=${ user.username }`, { method: 'POST' })
             .then(response => {
-                if (!response.ok)
-                    alert('An error occurred while trying to follow the user.');
+                if (!response.ok) {
+                    alert(`An error occurred while trying to ${ type.toLowerCase() } the user.`);
+                    stopLoading();
+                }
+                store.dispatch({ type: `user/${ type.toLowerCase() }`, payload: user.username });
                 reset(true);
             });
-    };
-
-    if (user.followers.includes(currentUser)) {
-        type = 'Unfollow';
-        action = () => {
-            loading();
-            fetch(`/api/auth/unfollow?username=${ user?.username }`, { method: 'POST' })
-                .then(response => {
-                    if (!response.ok)
-                        alert('An error occurred while trying to unfollow the user.');
-                    reset(true);
-                });
-        };
     };
     
     switch (state) {

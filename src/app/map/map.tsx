@@ -33,6 +33,7 @@ const Map = (
         locations?: location[] | undefined
     }
 ) => {
+    console.log("aaa",locations)
     const [ visible,  setVisible  ] = React.useState<boolean>(false);
     const [ location, setLocation ] = React.useState<location>(emptyLocation);
 

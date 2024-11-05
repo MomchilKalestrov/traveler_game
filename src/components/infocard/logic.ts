@@ -1,4 +1,5 @@
 import { loading, stopLoading } from '@components/loading';
+import { preloadFromSessionStorage } from '@src/logic/redux/sessionStorage';
 
 type ButtonProps = {
     name: string;
@@ -30,7 +31,7 @@ const getUserLocation = (): Promise<{ lat: number, lng: number } | undefined> =>
 
 const reset = () => {
     sessionStorage.removeItem('initialSave');
-    window.location.reload();
+    preloadFromSessionStorage().then(stopLoading);
 };
 
 const untrack = ({ name, close }: ButtonProps) => {

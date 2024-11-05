@@ -2,17 +2,11 @@ import { accomplishment, user } from '@logic/types';
 
 type follower = {
     username: string;
-    finished: Array<accomplishment>;
+    finished: accomplishment[];
 };
 
-const fetchFollower = async (username: string): Promise<follower> => (
-    await (
-        await fetch(`/api/auth/get?username=${ encodeURIComponent(username) }`)
-    ).json()
-) as follower;
-
-const getActivities = async (user: user): Promise<Array<accomplishment>> => {
-    let activities: Array<accomplishment> = [];
+const initialGet = async (user: user): Promise<accomplishment[]> => {
+    let activities: accomplishment[] = [];
     
     for (const follower of user.following) {
         const data: follower = await fetchFollower(follower);
@@ -28,7 +22,19 @@ const getActivities = async (user: user): Promise<Array<accomplishment>> => {
     }
     // the bigger the number, the more recent the activity
     activities.sort((a, b) => b.time - a.time);
+    sessionStorage.setItem('activities', JSON.stringify(activities));
     return activities.slice(0, Math.min(activities.length, 6));
+}
+
+const fetchFollower = async (username: string): Promise<follower> => (
+    await (
+        await fetch(`/api/auth/get?username=${ encodeURIComponent(username) }`)
+    ).json()
+) as follower;
+
+const getActivities = async (user: user): Promise<accomplishment[]> => {
+    const activities = sessionStorage.getItem('activities');
+    return activities ? JSON.parse(activities) : await initialGet(user);
 };
 
 export default getActivities;

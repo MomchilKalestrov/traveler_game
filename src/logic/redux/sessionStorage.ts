@@ -1,6 +1,4 @@
 'use client';
-import { Dispatch } from 'redux';
-
 import {
     fetchAll,
     fetchFinished,
@@ -10,13 +8,9 @@ import {
 } from '@logic/fetches';
 import { toLocation }          from '@logic/types';
 import type { location, user } from '@logic/types';
+import store                   from './store';
 
-import { updateNew }        from '@logic/redux/newSlice';
-import { updateUser }       from '@logic/redux/userSlice';
-import { updateStarted }    from '@logic/redux/startedSlice';
-import type { AppDispatch } from '@logic/redux/store';
-
-type fetchType = [ location[], location[], location[], user ]
+type fetchType = [ location[], location[], location[], user ];
 
 const save = (key: string, value: any) =>
     sessionStorage.setItem(key, JSON.stringify(value));
@@ -28,11 +22,10 @@ const cast = (object: any): location[] =>
     Array.isArray(object) ? object.map(toLocation) : [];
 
 const initialSave = async (): Promise<fetchType> => {    
-    const started = cast(await fetchStarted());
+    const started  = cast(await fetchStarted());
     const finished = cast(await fetchFinished());
-    const all = cast(await fetchAll());
-    const user = await fetchProfile();
-    console.log(user);
+    const all      = cast(await fetchAll());
+    const user     = await fetchProfile();
 
     save('started',     started);
     save('finished',    finished);
@@ -45,7 +38,7 @@ const initialSave = async (): Promise<fetchType> => {
 
 const saveToSessionStorage = (state: any) => {
     for (const key in state)
-        save(key, state[key]);
+        save(key, state[key].value);
 };
 
 const getFromSessionStorage = async (): Promise<fetchType> => {
@@ -60,18 +53,18 @@ const getFromSessionStorage = async (): Promise<fetchType> => {
         ];
 };
 
-const preloadFromSessionStorage = async (dispatch: AppDispatch): Promise<void> => {
+const preloadFromSessionStorage = async (): Promise<void> => {
     const [ s, f, a, u ] = await getFromSessionStorage();
-    dispatch({
-        type: 'started/updateStarted',
+    store.dispatch({
+        type: 'started/update',
         payload: s
     });
-    dispatch({
-        type: 'new/updateNew',
+    store.dispatch({
+        type: 'new/update',
         payload: filterNew(s, f, a)
     });
-    dispatch({
-        type: 'user/updateUser',
+    store.dispatch({
+        type: 'user/update',
         payload: u
     });
 }

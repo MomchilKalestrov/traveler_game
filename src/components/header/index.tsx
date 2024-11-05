@@ -24,7 +24,7 @@ const emptyUser: user = {
 const Header = () => {
     const pathname = usePathname();
 
-    const [ userData,    setUserData ] = React.useState<user | undefined>(undefined);
+    const [ userData,    setUserData ] = React.useState<user>(emptyUser);
     const [ userLookup,  setLookup   ] = React.useState<boolean>(false);
     const [ settings,    setSettings ] = React.useState<boolean>(false);
     const [ userLoading, setLoading  ] = React.useState<status>(status.loading);
@@ -124,7 +124,7 @@ const Header = () => {
             .then(response => response.json())
             .then(data => {
                 if (data.error || data.error === 'User not found.') {
-                    setUserData(undefined)
+                    setUserData(emptyUser)
                     return setLoading(status.nouser);
                 }
                 else if (data.error) {
