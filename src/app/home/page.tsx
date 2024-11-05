@@ -45,7 +45,7 @@ const haversineDistance = (
   return R * c;
 };
 
-const Page: NextPage<void> = () => {
+const Page: NextPage = () => {
   const router = useRouter();
   const reference = React.useRef<HTMLDivElement>(null);
  

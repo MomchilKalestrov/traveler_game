@@ -7,7 +7,7 @@ import SignUp from './signup';
 
 import './bg.css';
 
-const Page: NextPage<void> = () => {
+const Page: NextPage = () => {
   const [authType, setAuthType] = React.useState<boolean>(true);
 
   return (

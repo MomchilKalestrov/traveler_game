@@ -1,7 +1,8 @@
 'use client'
-import React from 'react';
+import React   from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
+import { NextPage }  from 'next';
 
 import { useDispatch, useSelector }  from 'react-redux';
 import { preloadFromSessionStorage } from '@logic/redux/sessionStorage';
@@ -10,7 +11,7 @@ import { getCookie }                 from '@logic/cookies';
 
 import LoadingPlaceholder from '@components/loading';
 
-const Page = () => {
+const Page: NextPage = () => {
   const router   = useRouter();
   const started  = useSelector((state: RootState) => state.started.value);
 

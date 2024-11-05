@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
+import { NextPage }    from 'next';
 import { useRouter }   from 'next/navigation';
 import { useSelector } from 'react-redux';
 
@@ -13,7 +14,7 @@ import LoadingPlaceholder from '@components/loading';
 
 import style from './profile.module.css';
 
-const Page = () => {
+const Page: NextPage = () => {
   const router = useRouter();
   const user = useSelector((state: RootState) => state.user.value);
 

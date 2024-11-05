@@ -56,7 +56,7 @@ const Player: React.FC<PlayerProps> = ({ user, position }) => {
   );
 };
 
-const Page: NextPage<void> = () => {
+const Page: NextPage = () => {
   const router = useRouter();
   const [ players, setPlayers ] = React.useState<Array<user> | undefined>(undefined);
 
