@@ -24,13 +24,20 @@ const poiPin = new L.Icon({
     iconSize: [ 26, 37 ],
 });
 
-const Map = ({ locations = [] }: { locations?: location[] | undefined }) => {
+type MapProps = {
+    locations?: location[] | undefined,
+    hasGPSAccess: boolean
+}
+
+const Map: React.FC<MapProps> = ({ locations = [] }) => {
     const [ visible,  setVisible  ] = React.useState<boolean>(false);
     const [ location, setLocation ] = React.useState<location>(emptyLocation);
 
     const [ userLocation, setUserLocation ] = React.useState<{ lat: number, lng: number } | undefined>(undefined);
 
     React.useEffect(() => {
+        if (!userLocation) return;
+        
         try {
             if (navigator.geolocation) {
                 const id = navigator.geolocation.watchPosition((position) =>
@@ -45,7 +52,7 @@ const Map = ({ locations = [] }: { locations?: location[] | undefined }) => {
         } catch {
             alert('Geolocation is not supported by this browser.');
         };
-    }, []);
+    }, [userLocation]);
 
     const center: LatLngExpression = userLocation
         ? [ userLocation.lat, userLocation.lng ]
