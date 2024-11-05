@@ -1,12 +1,13 @@
 'use client';
-import React from 'react';
-import LogIn from './login';
+import React       from 'react';
+import { NextPage } from 'next';
+
+import LogIn  from './login';
 import SignUp from './signup';
+
 import './bg.css';
 
-const Page = () => {
-  // true  = login
-  // false = register
+const Page: NextPage<void> = () => {
   const [authType, setAuthType] = React.useState<boolean>(true);
 
   return (
@@ -14,6 +15,6 @@ const Page = () => {
     ? <LogIn  setter={ setAuthType } />
     : <SignUp setter={ setAuthType } />
   );
-}
+};
 
 export default Page;

@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
+import { NextPage }  from 'next';
 import { useRouter } from 'next/navigation';
 
 import Mapcard            from '@components/mapcard';
@@ -23,8 +24,14 @@ import { preloadFromSessionStorage } from '@logic/redux/sessionStorage';
 
 import style from './home.module.css';
 
-function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+const haversineDistance = (
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+): number => {
   const toRadians = (degree: number) => degree * (Math.PI / 180);
+
   const R = 6371;
   const dLat = toRadians(lat2 - lat1);
   const dLon = toRadians(lon2 - lon1);
@@ -33,11 +40,12 @@ function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
       Math.cos(toRadians(lat1)) *
       Math.cos(toRadians(lat2)) *
       Math.sin(dLon / 2) ** 2;
+
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c;
 };
 
-const Page = () => {
+const Page: NextPage<void> = () => {
   const router = useRouter();
   const reference = React.useRef<HTMLDivElement>(null);
  
@@ -60,10 +68,7 @@ const Page = () => {
   React.useEffect(() => {
     if (!userSlice) return;
 
-    getActivities(userSlice as user)
-      .then((activities) =>
-        setFollowerActivity(activities)
-      );
+    getActivities(userSlice as user).then(setFollowerActivity);
   }, [userSlice]);
   
   React.useEffect(() => {
@@ -77,10 +82,9 @@ const Page = () => {
     reference.current.style.paddingTop = state ? '0' : 'var(--padding)';
     reference.current.style.height  = state ? '0' : 'calc(3rem + 1px)';
     setFilterOpen(state);
-  }
+  };
 
-  if (!userSlice || !newSlice)
-    return (<LoadingPlaceholder />);
+  if (!userSlice || !newSlice) return (<LoadingPlaceholder />);
 
   const findCloseLocations = (event: React.FormEvent<HTMLInputElement>) => {
     if(!newSlice || !event.currentTarget) return;
@@ -105,7 +109,7 @@ const Page = () => {
       (error) => alert('Error getting user location: \n' + error.message),
       { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
     );
-  }
+  };
 
   return (
     <main className={ style.Home }>
@@ -138,7 +142,6 @@ const Page = () => {
             index: number
           ) => <Mapcard key={ index } location={ location } />)
       }
-      
       {
         followerActivity.length > 0 && [
           <h2>Followers&apos; activity:</h2>,
@@ -149,6 +152,6 @@ const Page = () => {
       }
     </main>
   );
-}
+};
 
 export default Page;

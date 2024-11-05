@@ -21,7 +21,7 @@ const NavbarEntry = ({ name, active }: NavbarEntryProps) => {
             href={ `/${ name.toLowerCase() }` }
             className={ styles.NavbarEntry + ' ' + (active ? styles.NavbarEntrySelected : '') }
         >
-            <div><Image src={ `/icons/navigation/${name}.svg` } alt={ name } width={ 24 } height={ 24 } /></div>
+            <div><Image src={ `/icons/navigation/${name}.svg` } alt={ `${ name } page` } width={ 24 } height={ 24 } /></div>
             <p>{ name }</p>
         </Link>
     );

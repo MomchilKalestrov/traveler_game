@@ -1,25 +1,29 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
+import { useRouter }   from 'next/navigation';
 import { useSelector } from 'react-redux';
 
-import getColors from '@logic/profileColor';
-import { preloadFromSessionStorage } from '@logic/redux/sessionStorage';
+import getColors     from '@logic/profileColor';
+import { getCookie } from '@logic/cookies';
 import { RootState } from '@logic/redux/store';
+import { preloadFromSessionStorage } from '@logic/redux/sessionStorage';
 
 import LoadingPlaceholder from '@components/loading';
 
 import style from './profile.module.css';
 
 const Page = () => {
+  const router = useRouter();
   const user = useSelector((state: RootState) => state.user.value);
 
   React.useEffect(() => {
+    if (!getCookie('username')?.value || !getCookie('password')?.value)
+      return router.replace('/login');
     preloadFromSessionStorage();
   }, []);
 
-  if (!user)
-    return (<LoadingPlaceholder />);
+  if (!user) return (<LoadingPlaceholder />);
 
   const [ color, r_color ] = getColors(user.username.slice(0, 3));
   const percentage = user.xp - 100 * Math.floor(user.xp / 100);

@@ -1,31 +1,42 @@
 'use client';
-
 import React from 'react';
-import style from './profile.module.css';
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { setCookie } from '@logic/cookies';
-import { md5 } from 'js-md5';
+import { useRouter } from 'next/navigation';
 
-const LogIn = ({ setter }: { setter: React.Dispatch<React.SetStateAction<boolean>> }) => {
+import loading, { stopLoading } from '@components/loading';
+
+import { setCookie } from '@logic/cookies';
+import { md5 }       from 'js-md5';
+
+import style from './profile.module.css';
+
+type LogInProps = {
+    setter: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const LogIn: React.FC<LogInProps> = ({ setter }) => {
     const router = useRouter();
 
     const logIn = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data: FormData = new FormData(event.currentTarget);
-
+        
+        loading();
         fetch(`/api/auth/login?username=${data.get('username')}&password=${data.get('password')}`, {
             method: 'POST'
-        }).then(async (res) => {
+        }).then((res) => {
+            stopLoading();
             if (res.ok) {
-                // Set the cookies
-                setCookie('username', data.get('username') as string);
+                setCookie('username', data.get('username')     as string);
                 setCookie('password', md5(data.get('password') as string));
                 router.replace('/home');
-            }
-            else return alert('Failed to sign up.');
+                stopLoading();
+                return;
+            };
+            alert('Failed to log in.');
+            stopLoading();
         });
-    }
+    };
 
     return (
         <form className={ style.ProfileForm } onSubmit={ logIn }>
@@ -48,7 +59,7 @@ const LogIn = ({ setter }: { setter: React.Dispatch<React.SetStateAction<boolean
                 className={ style.FormInput + ' ' + style.StyleOutline }
             >Create profile</button>
         </form>
-    )
-}
+    );
+};
 
 export default LogIn;

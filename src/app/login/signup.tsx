@@ -1,13 +1,21 @@
 'use client';
 import React from 'react';
-import style from './profile.module.css';
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import validateName from '@logic/validateName';
-import { setCookie } from '@logic/cookies';
-import { md5 } from 'js-md5';
+import { useRouter } from 'next/navigation';
 
-const SignUp = ({ setter }: { setter: React.Dispatch<React.SetStateAction<boolean>> }) => {
+import loading, { stopLoading } from '@components/loading';
+
+import validateName  from '@logic/validateName';
+import { setCookie } from '@logic/cookies';
+import { md5 }       from 'js-md5';
+
+import style from './profile.module.css';
+
+type SignUpProps = {
+    setter: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const SignUp: React.FC<SignUpProps> = ({ setter }) => {
     const router = useRouter();
 
     const createProfile = (event: React.FormEvent<HTMLFormElement>) => {
@@ -20,7 +28,8 @@ const SignUp = ({ setter }: { setter: React.Dispatch<React.SetStateAction<boolea
             return alert('Password must be atleast 8 symbols long.');
         if (!validateName(data.get('username') as string))
             return alert('Invalid username.');
-
+        
+        loading();
         fetch(`/api/auth/create?username=${data.get('username')}&password=${data.get('password')}`, {
             method: 'POST'
         }).then((res) => {
@@ -28,9 +37,12 @@ const SignUp = ({ setter }: { setter: React.Dispatch<React.SetStateAction<boolea
                 // Set the cookies
                 setCookie('username', data.get('username') as string);
                 setCookie('password', md5(data.get('password') as string));
+                stopLoading();
                 router.replace('/home');
+                return
             }
-            else return alert('Failed to sign up.');
+            alert('Failed to sign up.');
+            stopLoading();
         });
     }
 

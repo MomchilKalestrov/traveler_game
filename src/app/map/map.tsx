@@ -24,18 +24,28 @@ const poiPin = new L.Icon({
     iconSize: [ 26, 37 ],
 });
 
-const Map = (
-    { 
-        userLocation,
-        locations = []
-    }: {
-        userLocation?: { lat: number, lng: number } | undefined,
-        locations?: location[] | undefined
-    }
-) => {
-    console.log("aaa",locations)
+const Map = ({ locations = [] }: { locations?: location[] | undefined }) => {
     const [ visible,  setVisible  ] = React.useState<boolean>(false);
     const [ location, setLocation ] = React.useState<location>(emptyLocation);
+
+    const [ userLocation, setUserLocation ] = React.useState<{ lat: number, lng: number } | undefined>(undefined);
+
+    React.useEffect(() => {
+        try {
+            if (navigator.geolocation) {
+                const id = navigator.geolocation.watchPosition((position) =>
+                    setUserLocation({
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    }),
+                    (error) => console.log('Error getting user location: \n', error),
+                    { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
+                );
+            } else alert('Geolocation is not supported by this browser.');
+        } catch {
+            alert('Geolocation is not supported by this browser.');
+        };
+    }, []);
 
     const center: LatLngExpression = userLocation
         ? [ userLocation.lat, userLocation.lng ]

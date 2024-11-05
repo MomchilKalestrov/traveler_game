@@ -1,6 +1,7 @@
 'use client';
-import React         from 'react';
-import Image         from 'next/image';
+import React from 'react';
+import Image from 'next/image';
+import { NextPage }  from 'next';
 import { useRouter } from 'next/navigation';
 
 import LoadingPlaceholder from '@components/loading';
@@ -8,12 +9,17 @@ import LoadingPlaceholder from '@components/loading';
 import { getCookie } from '@logic/cookies';
 import type { user } from '@logic/types';
 import getColors     from '@logic/profileColor';
+import { preloadFromSessionStorage } from '@logic/redux/sessionStorage';
 
 import userStyle from '@app/profile/profile.module.css';
 import style     from './leaderboard.module.css';
-import { preloadFromSessionStorage } from '@src/logic/redux/sessionStorage';
 
-const Player = ({ user, position }: { user: user, position: number }) => {
+type PlayerProps = {
+  user: user;
+  position: number;
+};
+
+const Player: React.FC<PlayerProps> = ({ user, position }) => {
   const router = useRouter();
   const [ color, r_color ] = getColors(user.username.slice(0, 3));
   const percentage = user.xp - 100 * Math.floor (user.xp / 100);
@@ -48,9 +54,9 @@ const Player = ({ user, position }: { user: user, position: number }) => {
         </div>
     </div>
   );
-}
+};
 
-const Page = () => {
+const Page: NextPage<void> = () => {
   const router = useRouter();
   const [ players, setPlayers ] = React.useState<Array<user> | undefined>(undefined);
 
@@ -58,21 +64,22 @@ const Page = () => {
   React.useEffect(() => {
     if (!getCookie('username')?.value || !getCookie('password')?.value)
       return router.replace('/login');
-
+    
     if (sessionStorage.getItem('top100'))
       return setPlayers(JSON.parse(sessionStorage.getItem('top100') as string));
+    
+    
+    fetch('/api/top100')
+    .then(res => res.ok ? res.json() : undefined)
+    .then(data => {
+      if(data) {
+        sessionStorage.setItem('top100', JSON.stringify(data));
+        setPlayers(data);
+      }
+      else console.error('An error has occured.');
+    });
 
     preloadFromSessionStorage();
-
-    fetch('/api/top100')
-      .then(res => res.ok ? res.json() : undefined)
-      .then(data => {
-        if(data) {
-          sessionStorage.setItem('top100', JSON.stringify(data));
-          setPlayers(data);
-        }
-        else console.error('An error has occured.');
-      });
   }, []);
 
   if (!players) return (<LoadingPlaceholder />);
@@ -88,7 +95,7 @@ const Page = () => {
         }
       </div>
     </main>
-  )
-}
+  );
+};
 
 export default Page;

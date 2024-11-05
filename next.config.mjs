@@ -6,6 +6,13 @@ const nextConfig = {
             protocol: 'https',
             hostname: 'gsplsf3le8pssi3n.public.blob.vercel-storage.com',
         } ]
+    },
+    async redirects() {
+        return [ {
+            source: '/',
+            destination: '/home',
+            permanent: true
+        } ];
     }
 };
 
