@@ -1,4 +1,4 @@
-import type { MetadataRoute } from 'next'
+import type { MetadataRoute } from 'next';
  
 const manifest = (): MetadataRoute.Manifest => ({
   name: 'Venture',
@@ -23,7 +23,7 @@ const manifest = (): MetadataRoute.Manifest => ({
       sizes: '256x256 128x128',
       type: 'image/x-icon'
     }
-  ],
-})
+  ]
+});
 
 export default manifest;
