@@ -15,7 +15,7 @@ import LocationRequest from '@src/components/locationRequest';
 const Page: NextPage = () => {
   const router   = useRouter();
   const started  = useSelector((state: RootState) => state.started.value);
-  const [ allowGPS, setPermission ] = React.useState<boolean>(false);
+  const [ allowGPS, setPermission ] = React.useState<boolean>(true);
   const [ request,  setRequest    ] = React.useState<boolean>(false);
 
   const Map = React.useMemo(() => dynamic(
@@ -28,7 +28,7 @@ const Page: NextPage = () => {
   React.useEffect(() => {
     if (!getCookie('username')?.value || !getCookie('password')?.value)
       return router.replace('/login');
-    preloadFromSessionStorage();
+    preloadFromSessionStorage()
 
     navigator.permissions.query({ name: 'geolocation' })
       .then((permission) =>

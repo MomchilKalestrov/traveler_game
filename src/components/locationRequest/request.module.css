@@ -14,7 +14,7 @@
 .Infocard > div {
     --margin: 0.5rem;
     --padding: 1rem;
-    --height: min(calc(100vh - var(--margin) * 2), 8rem);
+    --height: min(calc(100vh - var(--margin) * 2), 9rem);
     --width:  min(calc(100vw - var(--margin) * 2), 20rem);
     
     position: fixed;
@@ -28,6 +28,7 @@
     border-radius: 0.75rem;
     overflow: hidden;
     padding: var(--padding);
+    box-sizing: border-box;
 
     display: flex;
     gap: calc(var(--padding) / 2);
@@ -48,7 +49,7 @@
     height: 2.5rem;
     padding: 0.5rem 1rem;
     border-radius: 1.25rem;
-    border: none;
+    border: white 1px solid;
     color: var(--color-primary);
     background-color: transparent;
 }

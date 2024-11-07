@@ -29,34 +29,46 @@ type MapProps = {
     hasGPSAccess: boolean
 }
 
-const Map: React.FC<MapProps> = ({ locations = [] }) => {
-    const [ visible,  setVisible  ] = React.useState<boolean>(false);
-    const [ location, setLocation ] = React.useState<location>(emptyLocation);
+const Hook: React.FC = () => {
+    const map = useMap();
 
-    const [ userLocation, setUserLocation ] = React.useState<{ lat: number, lng: number } | undefined>(undefined);
+    const setCenter = (position: GeolocationPosition) => {
+        map.setView([
+            position.coords.latitude,
+            position.coords.longitude
+        ], 19);
+        
+    };
 
     React.useEffect(() => {
-        if (!userLocation) return;
-        
-        try {
-            if (navigator.geolocation) {
-                const id = navigator.geolocation.watchPosition((position) =>
-                    setUserLocation({
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    }),
-                    (error) => console.log('Error getting user location: \n', error),
-                    { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
-                );
-            } else alert('Geolocation is not supported by this browser.');
-        } catch {
-            alert('Geolocation is not supported by this browser.');
-        };
-    }, [userLocation]);
+        navigator.geolocation.getCurrentPosition(
+            setCenter,
+            (error) => console.log('Error getting user location: \n', error),
+            { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
+        );
+    }, []);
 
-    const center: LatLngExpression = userLocation
-        ? [ userLocation.lat, userLocation.lng ]
-        : [ 42.143013705260884, 24.749279022216797 ]; // Center of Plovdiv
+    return null;
+}
+
+const Map: React.FC<MapProps> = ({ locations = [], hasGPSAccess }) => {
+    const [ visible,  setVisible  ] = React.useState<boolean>(false);
+    const [ location, setLocation ] = React.useState<location>(emptyLocation);
+    
+    const [ userLocation, setUserLocation ] = React.useState<GeolocationPosition | undefined>(undefined);
+
+    React.useEffect(() => {
+        if (!hasGPSAccess) return;
+        if (!navigator.geolocation) return alert('Geolocation is not supported by this browser.');
+        
+        const id = navigator.geolocation.watchPosition(
+            setUserLocation,
+            (error) => console.log('Error getting user location: \n', error),
+            { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
+        );
+
+        return () => navigator.geolocation.clearWatch(id);
+    }, []);
 
     return (
         <>
@@ -70,11 +82,12 @@ const Map: React.FC<MapProps> = ({ locations = [] }) => {
             }
             <MapContainer
                 zoomControl={ false }
-                center={ center }
-                zoom={ 19 }
+                center={ [ 42.143013705260884, 24.749279022216797 ] }
+                zoom={ 10 }
                 scrollWheelZoom={ true }
                 style={ { height: '100%', width: '100%' } }
             >
+                <Hook />
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -82,9 +95,12 @@ const Map: React.FC<MapProps> = ({ locations = [] }) => {
                 {
                     userLocation &&
                     <Marker
-                        position={ [ userLocation.lat, userLocation.lng ] }
+                        position={ [
+                            userLocation.coords.latitude,
+                            userLocation.coords.longitude
+                        ] }
                         icon={ playerPin }
-                    ></Marker>
+                    />
                 }
                 {
                     locations &&
@@ -99,7 +115,7 @@ const Map: React.FC<MapProps> = ({ locations = [] }) => {
                                     setVisible(true);
                                 }
                             } }                            
-                        ></Marker>
+                        />
                     ))
                 }
             </MapContainer>

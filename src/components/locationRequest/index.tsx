@@ -24,8 +24,8 @@ const LocationRequest: React.FC<RequestProps> = ({ setPermission }) => {
         <div className={ style.Infocard }>
             <div ref={ reference }>
                 <h3>Location</h3>
-                <p>You will need to allow location access to claim badges.</p>
-                <button onClick={ () => close(true) }>Allow</button>
+                <p>You will need to allow geolocation to claim badges.</p>
+                <button onClick={ () => close(true)  }>Allow</button>
                 <button onClick={ () => close(false) }>Deny</button>
             </div>
         </div>
