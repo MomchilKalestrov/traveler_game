@@ -66,8 +66,8 @@
 }
 
 .ProfileBadges {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(4.5rem, auto));
     gap: var(--padding);
 }
 
@@ -77,6 +77,7 @@
     padding: 0.75rem;
     background-color: var(--color-tertiary);
     border-radius: 0.75rem;
+    justify-self: center;
 }
 
 .ProfileDivider {

@@ -32,13 +32,11 @@ type MapProps = {
 const Hook: React.FC = () => {
     const map = useMap();
 
-    const setCenter = (position: GeolocationPosition) => {
+    const setCenter = (position: GeolocationPosition) =>
         map.setView([
             position.coords.latitude,
             position.coords.longitude
         ], 19);
-        
-    };
 
     React.useEffect(() => {
         navigator.geolocation.getCurrentPosition(
