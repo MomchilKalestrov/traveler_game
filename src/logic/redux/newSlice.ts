@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { location } from '@logic/types';
+import { Location } from '@logic/types';
 
 export const newSlice = createSlice({
   name: 'new',
-  initialState: { value: undefined as location[] | undefined },
+  initialState: { value: undefined as Location[] | undefined },
   reducers: {
-    add: (state, action: PayloadAction<location>) => {
+    add: (state, action: PayloadAction<Location>) => {
       if (!state.value) state.value = [];
       state.value.push(action.payload);
     },
@@ -19,7 +19,7 @@ export const newSlice = createSlice({
     clear: (state) => {
       state.value = [];
     },
-    update: (state, action: PayloadAction<location[]>) => {
+    update: (state, action: PayloadAction<Location[]>) => {
       state.value = action.payload;
     }
   }

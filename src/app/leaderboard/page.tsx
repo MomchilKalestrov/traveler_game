@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import LoadingPlaceholder from '@components/loading';
 
 import { getCookie } from '@logic/cookies';
-import type { user } from '@logic/types';
+import { User }      from '@logic/types';
 import getColors     from '@logic/profileColor';
 import { preloadFromSessionStorage } from '@logic/redux/sessionStorage';
 
@@ -15,7 +15,7 @@ import userStyle from '@app/profile/profile.module.css';
 import style     from './leaderboard.module.css';
 
 type PlayerProps = {
-  user: user;
+  user: User;
   position: number;
 };
 
@@ -58,7 +58,7 @@ const Player: React.FC<PlayerProps> = ({ user, position }) => {
 
 const Page: NextPage = () => {
   const router = useRouter();
-  const [ players, setPlayers ] = React.useState<Array<user> | undefined>(undefined);
+  const [ players, setPlayers ] = React.useState<User[] | undefined>(undefined);
 
   // top 100 players are used only here, so it's not necessary to store them in the redux store
   React.useEffect(() => {

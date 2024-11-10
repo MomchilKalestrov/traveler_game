@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb';
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { user } from '@logic/types';
+import { User } from '@logic/types';
 
 const GET = async (request: NextRequest) => {
     const cookie = await cookies();
@@ -9,7 +9,7 @@ const GET = async (request: NextRequest) => {
     const args = new URL(request.url).searchParams;
     if(!args.get('username'))
         return NextResponse.json({ error: 'Missing parameters.' }, { status: 412 });
-    let user: user;
+    let user: User;
     let locations: Array<any>;
 
     const username = args.get('username')?.toUpperCase() === 'CURRENT_USER' ? cookie.get('username')?.value : args.get('username');
@@ -24,7 +24,7 @@ const GET = async (request: NextRequest) => {
             await userCollection.aggregate([{
                 $match: { username: username }
             }]).toArray()
-        )[0] as user;
+        )[0] as User;
         
         locations = await locationCollection.aggregate([
             { $project: { _id: 0 } },

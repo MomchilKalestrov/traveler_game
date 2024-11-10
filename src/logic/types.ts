@@ -1,4 +1,4 @@
-type user = {
+interface User {
     username: string;
     finished: Array<{
         location: string;
@@ -10,7 +10,7 @@ type user = {
     xp: number;
 };
 
-type location = {
+interface Location {
   name: string;
   location: {
     lat: number;
@@ -20,13 +20,13 @@ type location = {
   xp: number;
 };
 
-type accomplishment = {
+interface Accomplishment {
   location: string;
   user: string;
   time: number;
 };
 
-const toLocation = (data: any): location => ({
+const toLocation = (data: any): Location => ({
     name: data.name,
     location: {
         lat: parseFloat(data.location.lat['$numberDecimal']),
@@ -36,5 +36,5 @@ const toLocation = (data: any): location => ({
     xp: data.xp
 });
 
-export type { user, location, accomplishment };
+export type { User, Location, Accomplishment };
 export { toLocation };

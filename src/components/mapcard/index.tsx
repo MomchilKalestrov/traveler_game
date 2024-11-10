@@ -2,13 +2,13 @@
 import React from 'react';
 import Image from 'next/image';
 
-import { location }           from '@logic/types';
+import { Location }           from '@logic/types';
 import InfoCard, { cardType } from '@components/infocard';
 
 import style from './mapcard.module.css';
 
 type MapcardProps = {
-    location: location;
+    location: Location;
 };
 
 const Mapcard: React.FC<MapcardProps> = ({ location }) => {

@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 
 import style                   from './infocard.module.css';
-import type { location  }      from '@logic/types';
+import { Location  }           from '@logic/types';
 import buttons, { buttonType } from './buttonTypes';
 
 export { buttonType as cardType };
@@ -10,7 +10,7 @@ export { buttonType as cardType };
 export type InfoCardProps = {
     setter: React.Dispatch<React.SetStateAction<boolean>>;
     type: buttonType;
-    location: location;
+    location: Location;
 };
 
 const InfoCard: React.FC<InfoCardProps> = ({ setter, type, location }) => {

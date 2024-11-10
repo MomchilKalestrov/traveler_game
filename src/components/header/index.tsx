@@ -6,13 +6,13 @@ import Settings               from '@components/settings';
 import { stopLoading }        from '@components/loading';
 import UserSearch, { status } from '@components/usersearch';
 
-import type { user } from '@logic/types';
+import { User }      from '@logic/types';
 import { getCookie } from '@logic/cookies';
 
 import style from './header.module.css';
 import { usePathname } from 'next/navigation';
 
-const emptyUser: user = {
+const emptyUser: User = {
     username: '',
     finished: [],
     started: [],
@@ -24,7 +24,7 @@ const emptyUser: user = {
 const Header = () => {
     const pathname = usePathname();
 
-    const [ userData,    setUserData ] = React.useState<user>(emptyUser);
+    const [ userData,    setUserData ] = React.useState<User>(emptyUser);
     const [ userLookup,  setLookup   ] = React.useState<boolean>(false);
     const [ settings,    setSettings ] = React.useState<boolean>(false);
     const [ userLoading, setLoading  ] = React.useState<status>(status.loading);
@@ -132,7 +132,7 @@ const Header = () => {
                     return setLoading(status.error);
                 }
 
-                setUserData(data as user);
+                setUserData(data as User);
                 setLoading(status.founduser);
                 if (resetting)
                     stopLoading();

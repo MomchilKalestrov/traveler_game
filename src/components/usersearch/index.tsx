@@ -3,12 +3,12 @@ import Image from 'next/image';
 import { useSelector } from 'react-redux';
 
 import { loading, stopLoading } from '@components/loading';
-import Accomplishment           from '@components/accomplishment';
+import AccomplishmentTag        from '@components/accomplishment';
 
-import store                         from '@logic/redux/store';
-import getColors                     from '@logic/profileColor';
-import { RootState }                 from '@logic/redux/store';
-import type { accomplishment, user } from '@logic/types';
+import store                    from '@logic/redux/store';
+import getColors                from '@logic/profileColor';
+import { RootState }            from '@logic/redux/store';
+import { Accomplishment, User } from '@logic/types';
 
 import userStyle from '@app/profile/profile.module.css';
 import style     from './usersearch.module.css';
@@ -22,7 +22,7 @@ enum status {
 
 type UserSearchProps = {
     state: status,
-    user: user,
+    user: User,
     reset: (resetting?: boolean) => void
 };
 
@@ -108,11 +108,11 @@ const UserSearch: React.FC<UserSearchProps> = ({ state, user, reset }) => {
                                     .finished
                                     .slice(0, 6)
                                     .map((data: { location: string, time: number }, key: number) =>
-                                        <Accomplishment
+                                        <AccomplishmentTag
                                             accomplishment={ {
                                                 ... data,
-                                                user: (user as user).username
-                                            } as accomplishment }
+                                                user: (user as User).username
+                                            } as Accomplishment }
                                             key={ key }
                                         />
                                 )

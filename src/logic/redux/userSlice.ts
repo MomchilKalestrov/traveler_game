@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { user } from '@logic/types';
+import { User } from '@logic/types';
 
 export const userSlice = createSlice({
   name: 'user',
-  initialState: { value: undefined as user | undefined},
+  initialState: { value: undefined as User | undefined},
   reducers: {
-    update: (state, action: PayloadAction<user>) => {
+    update: (state, action: PayloadAction<User>) => {
       state.value = action.payload;
     },
     follow: (state, action: PayloadAction<string>) => {

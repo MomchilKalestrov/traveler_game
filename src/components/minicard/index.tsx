@@ -2,13 +2,13 @@
 import React from 'react';
 import Image from 'next/image';
 
-import { location }           from '@logic/types';
+import { Location }           from '@logic/types';
 import InfoCard, { cardType } from '@components/infocard';
 
 import style from './minicard.module.css';
 
 type MinicardProps = {
-    location: location;
+    location: Location;
 };
 
 const Minicard: React.FC<MinicardProps> = ({ location }) => {

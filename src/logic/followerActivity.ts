@@ -1,12 +1,12 @@
-import { accomplishment, user } from '@logic/types';
+import { Accomplishment, User } from '@logic/types';
 
 type follower = {
     username: string;
-    finished: accomplishment[];
+    finished: Accomplishment[];
 };
 
-const initialGet = async (user: user): Promise<accomplishment[]> => {
-    let activities: accomplishment[] = [];
+const initialGet = async (user: User): Promise<Accomplishment[]> => {
+    let activities: Accomplishment[] = [];
     
     for (const follower of user.following) {
         const data: follower = await fetchFollower(follower);
@@ -32,7 +32,7 @@ const fetchFollower = async (username: string): Promise<follower> => (
     ).json()
 ) as follower;
 
-const getActivities = async (user: user): Promise<accomplishment[]> => {
+const getActivities = async (user: User): Promise<Accomplishment[]> => {
     const activities = sessionStorage.getItem('activities');
     return activities ? JSON.parse(activities) : await initialGet(user);
 };

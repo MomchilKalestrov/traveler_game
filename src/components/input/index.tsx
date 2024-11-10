@@ -4,7 +4,7 @@ import style from './input.module.css';
 type MaterialInputProps = {
     name: string;
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    type: 'text' | 'password' | 'email' | 'number';
+    type: 'text' | 'password' | 'email' | 'number' | 'url';
 };
 
 const MaterialInput = React.forwardRef<HTMLInputElement, MaterialInputProps>(

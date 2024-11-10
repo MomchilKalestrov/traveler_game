@@ -1,19 +1,19 @@
 import { MongoClient } from 'mongodb';
-import { NextResponse, NextRequest } from 'next/server';
-import { cookies } from 'next/headers';
+import { NextResponse } from 'next/server';
 
 const GET = async () => {
     const client = new MongoClient(process.env.MONGODB_URI as string);
-    let names: Array<any> = [];
+    let locations: Array<any> = [];
 
     try {
         await client.connect();
         const locationCollection = client.db('TestDB').collection('LocationCollection');
-        names = await locationCollection.aggregate([
+        locations = await locationCollection.aggregate([
             { $project: { _id: 0 } }
         ]).toArray();
+        console.log('Locations:', locations);
         await client.close(true);
-        return NextResponse.json(names, { status: 200 });
+        return NextResponse.json(locations, { status: 200 });
     } catch(error) {
         console.log('An exception has occured:\n', error);
         await client.close(true);

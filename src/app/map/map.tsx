@@ -1,16 +1,17 @@
 'use client';
-
-import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
-import L, { LatLngExpression, } from 'leaflet';
-import InfoCard, { cardType } from '@components/infocard';
 import React from 'react';
-import type { location } from '@logic/types';
+import L     from 'leaflet';
+import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
+
+import InfoCard, { cardType } from '@components/infocard';
+import { Location }           from '@logic/types';
+
 import 'leaflet/dist/leaflet.css';
 
-const emptyLocation: location = {
-    name: 'N/A',
+const emptyLocation: Location = {
+    name: '',
     location: { lat: 0, lng: 0 },
-    description: 'You shouldn\'t be able to read this >:(',
+    description: '',
     xp: 0
 };
 
@@ -25,7 +26,7 @@ const poiPin = new L.Icon({
 });
 
 type MapProps = {
-    locations?: location[] | undefined,
+    locations?: Location[] | undefined,
     hasGPSAccess: boolean
 }
 
@@ -51,7 +52,7 @@ const Hook: React.FC = () => {
 
 const Map: React.FC<MapProps> = ({ locations = [], hasGPSAccess }) => {
     const [ visible,  setVisible  ] = React.useState<boolean>(false);
-    const [ location, setLocation ] = React.useState<location>(emptyLocation);
+    const [ location, setLocation ] = React.useState<Location>(emptyLocation);
     
     const [ userLocation, setUserLocation ] = React.useState<GeolocationPosition | undefined>(undefined);
 

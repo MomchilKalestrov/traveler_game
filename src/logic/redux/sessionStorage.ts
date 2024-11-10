@@ -6,11 +6,11 @@ import {
     fetchStarted,
     filterNew
 } from '@logic/fetches';
-import { toLocation }          from '@logic/types';
-import type { location, user } from '@logic/types';
-import store                   from './store';
+import { toLocation }     from '@logic/types';
+import { Location, User } from '@logic/types';
+import store              from './store';
 
-type fetchType = [ location[], location[], location[], user ];
+type fetchType = [ Location[], Location[], Location[], User ];
 
 const save = (key: string, value: any) =>
     sessionStorage.setItem(key, JSON.stringify(value));
@@ -18,7 +18,7 @@ const save = (key: string, value: any) =>
 const get = (key: string): any => 
     JSON.parse(sessionStorage.getItem(key) || 'null');
 
-const cast = (object: any): location[] => 
+const cast = (object: any): Location[] => 
     Array.isArray(object) ? object.map(toLocation) : [];
 
 const initialSave = async (): Promise<fetchType> => {    
@@ -33,7 +33,7 @@ const initialSave = async (): Promise<fetchType> => {
     save('user',        user);
     save('initialSave', true);
     
-    return [ started, finished, all, (user ? user : {}) as user ];
+    return [ started, finished, all, (user ? user : {}) as User ];
 }
 
 const saveToSessionStorage = (state: any) => {

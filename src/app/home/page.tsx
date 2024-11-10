@@ -7,15 +7,15 @@ import { useRouter } from 'next/navigation';
 import Mapcard            from '@components/mapcard';
 import Minicard           from '@components/minicard';
 import MaterialInput      from '@components/input';
-import Accomplishment     from '@components/accomplishment';
+import AccomplishmentTag  from '@components/accomplishment';
 import LoadingPlaceholder from '@components/loading';
 
 import { getCookie } from '@logic/cookies';
 import getActivities from '@logic/followerActivity';
-import type {
-  location,
-  accomplishment,
-  user
+import {
+  Location,
+  Accomplishment,
+  User
 } from '@logic/types';
 
 import { useSelector } from 'react-redux';
@@ -53,10 +53,10 @@ const Page: NextPage = () => {
   const newSlice     = useSelector((state: RootState) => state.new.value);
   const startedSlice = useSelector((state: RootState) => state.started.value);
   
-  const [ filtered, setFiltered ] = React.useState<location[]>(newSlice || []);
+  const [ filtered, setFiltered ] = React.useState<Location[]>(newSlice || []);
   const [ filterOpen, setFilterOpen ] = React.useState(true);
 
-  const [ followerActivity, setFollowerActivity ] = React.useState<accomplishment[]>([]);
+  const [ followerActivity, setFollowerActivity ] = React.useState<Accomplishment[]>([]);
 
   React.useEffect(() => {
     if (!getCookie('username')?.value || !getCookie('password')?.value)
@@ -68,7 +68,7 @@ const Page: NextPage = () => {
   React.useEffect(() => {
     if (!userSlice) return;
 
-    getActivities(userSlice as user).then(setFollowerActivity);
+    getActivities(userSlice as User).then(setFollowerActivity);
   }, [userSlice]);
   
   React.useEffect(() => {
@@ -97,7 +97,7 @@ const Page: NextPage = () => {
       (position) => {
         if(!newSlice) return alert('An unknown exception has occured.');
         setFiltered(
-          newSlice.filter((location: location) =>
+          newSlice.filter((location: Location) =>
             haversineDistance(
               location.location.lat,
               location.location.lng,
@@ -119,7 +119,7 @@ const Page: NextPage = () => {
         ? <p>No adventures started.</p>
         : <div className={ style.HorizontalCarousel }><div>
           {
-            startedSlice.map((location: location, key: number) =>
+            startedSlice.map((location: Location, key: number) =>
               <Minicard key={ key } location={ location } />
             )
           }
@@ -138,15 +138,15 @@ const Page: NextPage = () => {
         filtered.length === 0
         ? <p>No new adventures to start. Check again later.</p>
         : filtered.map((
-            location: location,
+            location: Location,
             index: number
           ) => <Mapcard key={ index } location={ location } />)
       }
       {
         followerActivity.length > 0 && [
           <h2>Followers&apos; activity:</h2>,
-          followerActivity.map((accomplishment: accomplishment, key: number) => 
-            <Accomplishment key={ key } accomplishment={ accomplishment } />
+          followerActivity.map((accomplishment: Accomplishment, key: number) => 
+            <AccomplishmentTag key={ key } accomplishment={ accomplishment } />
           )
         ]
       }

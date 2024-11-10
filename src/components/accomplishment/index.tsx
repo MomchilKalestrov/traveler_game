@@ -1,12 +1,12 @@
-import type { accomplishment } from '@logic/types';
-import style from './accomplishment.module.css';
 import Image from 'next/image';
+import { Accomplishment } from '@logic/types';
+import style from './accomplishment.module.css';
 
-type AccomplishmentProps = {
-    accomplishment: accomplishment;
+type AccomplishmentTagProps = {
+    accomplishment: Accomplishment;
 };
 
-const Accomplishment: React.FC<AccomplishmentProps> = ({ accomplishment }) => (
+const AccomplishmentTag: React.FC<AccomplishmentTagProps> = ({ accomplishment }) => (
     <div className={ style.Accomplishment }>
         <Image
             alt={ accomplishment.location } width={ 40 } height={ 40 }
@@ -25,4 +25,4 @@ const Accomplishment: React.FC<AccomplishmentProps> = ({ accomplishment }) => (
     </div>
 );
 
-export default Accomplishment;
+export default AccomplishmentTag;
