@@ -1,37 +1,46 @@
-import { MongoClient } from 'mongodb';
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
-import userCheck from '@logic/usercheck';
+import mongoose    from 'mongoose';
 
-const GET = async () => {
-    const client = new MongoClient(process.env.MONGODB_URI as string);
+import users     from '@logic/mongoose/user';
+import locations from '@logic/mongoose/locations';
+
+const GET = async (request: NextRequest) => {
+    const args = new URL(request.url).searchParams;
+    const requestedUsername = args.get('username');
+
     const cookie = await cookies();
-    let names: any = {};
-    let locations: any = {};
+    const currentUsername = cookie.get('username')?.value;
 
-    console.log(cookie.get('username'))
+    if(!requestedUsername)
+        return NextResponse.json({ error: 'Missing parameters.' }, { status: 412 });
 
-    if(!(await userCheck(cookie.get('username')?.value || '', cookie.get('password')?.value || '')))
-        return NextResponse.json({ error: 'Invalid credentials.' }, { status: 401 });
+    const username = requestedUsername === 'CURRENT_USER' ? currentUsername : requestedUsername;
+    // This is when the body value was `CURRENT_USER` but the cookie was undefined
+    if(!username)
+        return NextResponse.json({ error: 'Missing parameters.' }, { status: 412 });
 
     try {
-        await client.connect();
-        const userCollection = client.db('TestDB').collection('UserCollection');
-        names = (await userCollection.aggregate([{
-            $match: { username: cookie.get('username')?.value }
-        }]).toArray())[0].started;
-
-        const locationCollection = client.db('TestDB').collection('LocationCollection');
-        locations = await locationCollection.aggregate([
+        // Connect to the database
+        await mongoose.connect(process.env.MONGODB_URI as string);
+        // Check if the user exists
+        const user = await users.findOne({ username: username });
+        if(!user) {
+            await mongoose.connection.close();
+            return NextResponse.json({ error: 'User not found.' }, { status: 404 });
+        };
+        // Get the started locations
+        const started = await locations.aggregate([
             { $project: { _id: 0 } },
-            { $match:   { name: { $in: names } } }
-        ]).toArray();
-        
-        await client.close(true);
-        return NextResponse.json(locations, { status: 200 });
+            { $match:   { name: { $in: user.started } } }
+        ]);
+        console.log(started);
+        // Close the connection
+        await mongoose.connection.close();
+        return NextResponse.json(started, { status: 200 });
     } catch(error) {
+        await mongoose.connection.close();
         console.log('An exception has occured:\n', error);
-        await client.close(true);
         return NextResponse.json({ error: 'An error has occured.' }, { status: 500 });
     }
 };

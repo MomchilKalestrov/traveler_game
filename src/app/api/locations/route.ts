@@ -1,22 +1,22 @@
-import { MongoClient } from 'mongodb';
 import { NextResponse } from 'next/server';
+import mongoose from 'mongoose';
+
+import locations from '@logic/mongoose/locations';
 
 const GET = async () => {
-    const client = new MongoClient(process.env.MONGODB_URI as string);
-    let locations: Array<any> = [];
-
     try {
-        await client.connect();
-        const locationCollection = client.db('TestDB').collection('LocationCollection');
-        locations = await locationCollection.aggregate([
+        // Connect to the database
+        await mongoose.connect(process.env.MONGODB_URI as string);
+        // Get all locations
+        const all = await locations.aggregate([
             { $project: { _id: 0 } }
-        ]).toArray();
-        console.log('Locations:', locations);
-        await client.close(true);
-        return NextResponse.json(locations, { status: 200 });
+        ]);
+        // Close the connection
+        await mongoose.connection.close();
+        return NextResponse.json(all, { status: 200 });
     } catch(error) {
+        await mongoose.connection.close();
         console.log('An exception has occured:\n', error);
-        await client.close(true);
         return NextResponse.json({ error: 'An error has occured.' }, { status: 500 });
     };
 };

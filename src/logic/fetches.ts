@@ -2,7 +2,7 @@
 import { Location, User } from '@logic/types';
 
 const fetchStarted = async (): Promise<any> => 
-    await (await fetch('/api/started')).json();
+    await (await fetch('/api/started?username=CURRENT_USER')).json();
 
 const fetchFinished = async (): Promise<any> => 
     await (await fetch(`/api/finished?username=CURRENT_USER`)).json();

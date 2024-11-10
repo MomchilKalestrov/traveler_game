@@ -1,6 +1,9 @@
-import { MongoClient } from 'mongodb';
 import { NextResponse, NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
+import mongoose from 'mongoose';
+
+import users     from '@logic/mongoose/user';
+import locations from '@logic/mongoose/locations';
 import userCheck from '@logic/usercheck';
 
 function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
@@ -17,77 +20,68 @@ function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
 }
 
 const POST = async (request: NextRequest) => {
-    const args = await request.json();
-    if (!args.name || !args.location.lat || !args.location.lng)
+    const { name, lat, lng } = await request.json();
+    if (!name|| !lat || !lng)
         return NextResponse.json({ error: 'Missing parameters.' }, { status: 412 });
-    const client = new MongoClient(process.env.MONGODB_URI as string);
+    
     const cookie = await cookies();
-    let location: any = {};
-    let user: any = {};
+    const username = cookie.get('username')?.value;
+    const password = cookie.get('password')?.value;
 
-    if(!(await userCheck(cookie.get('username')?.value || '', cookie.get('password')?.value || '')))
+    if(!(await userCheck(username, password)))
         return NextResponse.json({ error: 'Invalid credentials.' }, { status: 401 });
 
     try {
         // Connect to the database
-        await client.connect();
-        const userCollection = client.db('TestDB').collection('UserCollection');
-        const locationCollection = client.db('TestDB').collection('LocationCollection');
-        // Get the user
-        user = await userCollection.aggregate([{
-            $match: { username: cookie.get('username')?.value }
-        }]).toArray();
-        // Get the tracked locations
-        let started = user[0].started;
-        if (!started.includes(args.name)) {
-            await client.close(true);
+        await mongoose.connect(process.env.MONGODB_URI as string);
+        // Get the started locations
+        const started: string[] = (await users.findOne({ username: username })).started;
+        if (!started.includes(name)) {
+            await mongoose.connection.close();
             return NextResponse.json({ error: 'User isn\'t tracking this location.' }, { status: 412 });
         }
         // Get the location
-        location = (await locationCollection.aggregate([{
-            $match: { name: args.name }
-        }]).toArray())[0];
+        const location = await locations.findOne({ name: name });
         if(!location) {
-            await client.close(true);
+            await mongoose.connection.close();
             return NextResponse.json({ error: 'Location not found.' }, { status: 404 });
         }
         // Calculate the distance
-        // If the user is within 100 meters of the location, remove it from the tracked
+        // If the user is within 100 meters of the location, claim the badge
         const distance = haversineDistance(
-            args.location.lat,
-            args.location.lng,
+            lat, lng,
             parseFloat(location.location.lat.toString()),
             parseFloat(location.location.lng.toString())
         );
         
         if(distance > 100) {
-            await client.close(true);
+            await mongoose.connection.close();
             return NextResponse.json({ error: 'User is not within 100 meters of the location.' }, { status: 400 });
         }
-        // Remove the location from the tracked
-        await userCollection.updateOne(
-            { username: cookie.get('username')?.value },
-            { $set: { started: started.filter((name: string) => name !== args.name) } }
-        );
-        // Add to finished
-        await userCollection.updateOne(
+        // Claim the badge
+        await users.updateOne(
             { username: cookie.get('username')?.value },
             {
+                $set: { started: started.filter((started: string) => started !== name) },
                 $push: {
                     finished: {
-                        location: args.name,
+                        location: name,
                         time: Date.now(),
                     } as any
                 },
                 $inc: { xp: location.xp }
             }
         );
-        await client.close(true);
+        await mongoose.connection.close();
         // it should stay like this!!!!
+        // someone remind me to fix this later :)
+
+        // if I haven't fixed it by the end of the competition,
+        // sorry, but I'm a lazy person.
         return NextResponse.json({ success: true }, { status: 200 });
     } catch(error) {
+        await mongoose.connection.close();
         console.log('An exception has occured:\n', error);
-        await client.close(true);
         return NextResponse.json({ error: 'An error has occured.' }, { status: 500 });
     };
 };

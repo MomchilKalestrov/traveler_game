@@ -1,7 +1,7 @@
 'use server';
 import { MongoClient } from 'mongodb';
 
-const userCheck = async (username: string, password: string): Promise<boolean> => {
+const userCheck = async (username?: string | undefined, password?: string | undefined): Promise<boolean> => {
     const client = new MongoClient(process.env.MONGODB_URI as string);
 
     if(!username || !password)

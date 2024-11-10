@@ -5,10 +5,10 @@ import { useSelector } from 'react-redux';
 import { loading, stopLoading } from '@components/loading';
 import AccomplishmentTag        from '@components/accomplishment';
 
-import store                    from '@logic/redux/store';
-import getColors                from '@logic/profileColor';
-import { RootState }            from '@logic/redux/store';
-import { Accomplishment, User } from '@logic/types';
+import getColors     from '@logic/profileColor';
+import { RootState } from '@logic/redux/store';
+import { Accomplishment, User }      from '@logic/types';
+import { preloadFromSessionStorage } from '@logic/redux/sessionStorage';
 
 import userStyle from '@app/profile/profile.module.css';
 import style     from './usersearch.module.css';
@@ -38,8 +38,8 @@ const UserSearch: React.FC<UserSearchProps> = ({ state, user, reset }) => {
                     alert(`An error occurred while trying to ${ type.toLowerCase() } the user.`);
                     stopLoading();
                 }
-                store.dispatch({ type: `user/${ type.toLowerCase() }`, payload: user.username });
-                reset(true);
+                sessionStorage.removeItem('initialSave');
+                preloadFromSessionStorage().then(() => reset(true));
             });
     };
     

@@ -1,20 +1,22 @@
 import mongoose from 'mongoose';
 import { User } from '@logic/types';
 
-const UserSchema: mongoose.Schema = new mongoose.Schema({
-    username: String,
-    finished: [ {
+const userSchema: mongoose.Schema = new mongoose.Schema({
+    username: { type: String, unique: true, required: true },
+    password: { type: String, required: false },
+    finished: { type: [ {
         location: String,
         time: Number
-    } ],
-    started: [ String ],
-    followers: [ String ],
-    following: [ String ],
-    xp: Number
+    } ], default: [] },
+    started: { type: [ String ], default: [] },
+    followers: { type: [ String ], default: [] },
+    following: { type: [ String ], default: [] },
+    xp: { type: Number, default: 0 },
 });
 
 interface UserDocument extends User, mongoose.Document { };
 
-const UserModel = mongoose.models.User || mongoose.model<UserDocument>('User', UserSchema, 'UserCollection');
+const db = mongoose.connection.useDb('TestDB');
+const users = db.models.User || db.model<UserDocument>('User', userSchema, 'UserCollection');
 
-export default UserModel;
+export default users;
