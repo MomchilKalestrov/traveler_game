@@ -13,6 +13,6 @@ const locationSchema: mongoose.Schema = new mongoose.Schema({
 
 interface LocationDocument extends Location, mongoose.Document { };
 
-const LocationModel = mongoose.model<LocationDocument>('Location', locationSchema);
+const LocationModel = mongoose.models.Location || mongoose.model<LocationDocument>('Location', locationSchema, 'LocationCollection');
 
 export default LocationModel;

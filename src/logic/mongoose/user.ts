@@ -15,6 +15,6 @@ const UserSchema: mongoose.Schema = new mongoose.Schema({
 
 interface UserDocument extends User, mongoose.Document { };
 
-const UserModel = mongoose.model<UserDocument>('Location', UserSchema);
+const UserModel = mongoose.models.User || mongoose.model<UserDocument>('User', UserSchema, 'UserCollection');
 
 export default UserModel;
