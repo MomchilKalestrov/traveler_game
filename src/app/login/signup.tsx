@@ -6,8 +6,6 @@ import { useRouter } from 'next/navigation';
 import loading, { stopLoading } from '@components/loading';
 
 import validateName  from '@logic/validateName';
-import { setCookie } from '@logic/cookies';
-import { md5 }       from 'js-md5';
 
 import style from './profile.module.css';
 
@@ -34,9 +32,6 @@ const SignUp: React.FC<SignUpProps> = ({ setter }) => {
             method: 'POST'
         }).then((res) => {
             if (res.ok) {
-                // Set the cookies
-                setCookie('username', data.get('username') as string);
-                setCookie('password', md5(data.get('password') as string));
                 stopLoading();
                 router.replace('/home');
                 return

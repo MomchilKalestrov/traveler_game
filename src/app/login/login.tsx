@@ -27,10 +27,8 @@ const LogIn: React.FC<LogInProps> = ({ setter }) => {
         }).then((res) => {
             stopLoading();
             if (res.ok) {
-                setCookie('username', data.get('username')     as string);
-                setCookie('password', md5(data.get('password') as string));
-                router.replace('/home');
                 stopLoading();
+                router.replace('/home');
                 return;
             };
             alert('Failed to log in.');

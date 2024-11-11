@@ -4,11 +4,13 @@ import { md5 }  from 'js-md5';
 
 import users        from '@logic/mongoose/user';
 import validateName from '@logic/validateName';
+import { cookies } from 'next/headers';
 
 const POST = async (request: NextRequest) => {
     const args: URLSearchParams = new URL(request.url).searchParams;
     const username = args.get('username');
     const password = args.get('password');
+    const cookie = await cookies();
 
     if (!username || !password)
         return NextResponse.json({ error: 'Missing parameters.' }, { status: 412 });
@@ -19,6 +21,7 @@ const POST = async (request: NextRequest) => {
 
     try {
         // Connect to the DB
+        console.log("login");
         await mongoose.connect(process.env.MONGODB_URI as string);
         // Check if a user with the same username already exists
         const userExists = await users.findOne({ username: username });
@@ -30,7 +33,9 @@ const POST = async (request: NextRequest) => {
         await users.create({
             username: username,
             password: md5(password),
-        })
+        });
+        cookie.set('username', username);
+        cookie.set('password', md5(password));
         // Close the connection
         await mongoose.connection.close(true);
         return new NextResponse(null, { status: 201 });
