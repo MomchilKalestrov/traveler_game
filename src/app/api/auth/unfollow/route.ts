@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import mongoose from 'mongoose';
 
 import users     from '@logic/mongoose/user';
 import userCheck from '@logic/usercheck';
+import connect   from '@logic/mongoose/mongoose';
 
 const POST = async (request: NextRequest) => {
     const args = new URL(request.url).searchParams;
@@ -22,19 +22,15 @@ const POST = async (request: NextRequest) => {
 
     try {
         // Connect to the DB
-        await mongoose.connect(process.env.MONGODB_URI as string);
+        await connect();
         // Check if the user exists
         const currentUser   = await users.findOne({ username: currentUsername   });
         const requestedUser = await users.findOne({ username: requestedUsername });
-        if (!requestedUser || !currentUser) {
-            await mongoose.connection.close();
+        if (!requestedUser || !currentUser)
             return NextResponse.json({ error: 'User not found.' }, { status: 404 });
-        }
         // Check if the user is following the requested user
-        if (!currentUser.following.includes(requestedUsername)) {
-            await mongoose.connection.close();
+        if (!currentUser.following.includes(requestedUsername))
             return NextResponse.json({ error: 'User is not following this user.' }, { status: 400 });
-        }
         // Unfollow the user
         await users.updateOne(
             { username: cookie.get('username')?.value },
@@ -49,11 +45,9 @@ const POST = async (request: NextRequest) => {
             } }
         );
         // Close the connection
-        await mongoose.connection.close();
         return new NextResponse(null, { status: 204 });
     }
     catch (error) {
-        await mongoose.connection.close();
         console.log('An exception has occured:\n', error);
         return NextResponse.json({ error: 'An error has occured.' }, { status: 500 });
     }

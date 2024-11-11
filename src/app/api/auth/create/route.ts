@@ -1,10 +1,10 @@
 import { NextResponse, NextRequest } from 'next/server';
-import mongoose from 'mongoose';
+import { cookies } from 'next/headers';
 import { md5 }  from 'js-md5';
 
 import users        from '@logic/mongoose/user';
 import validateName from '@logic/validateName';
-import { cookies } from 'next/headers';
+import connect      from '@logic/mongoose/mongoose';
 
 const POST = async (request: NextRequest) => {
     const args: URLSearchParams = new URL(request.url).searchParams;
@@ -21,14 +21,11 @@ const POST = async (request: NextRequest) => {
 
     try {
         // Connect to the DB
-        console.log("login");
-        await mongoose.connect(process.env.MONGODB_URI as string);
+        await connect();
         // Check if a user with the same username already exists
         const userExists = await users.findOne({ username: username });
-        if(userExists) {
-            await mongoose.connection.close(true);
+        if(userExists) 
             return NextResponse.json({ error: 'User with the same username already exists.' }, { status: 400 });
-        }
         // Create a new user
         await users.create({
             username: username,
@@ -37,10 +34,8 @@ const POST = async (request: NextRequest) => {
         cookie.set('username', username);
         cookie.set('password', md5(password));
         // Close the connection
-        await mongoose.connection.close(true);
         return new NextResponse(null, { status: 201 });
     } catch(error) {
-        await mongoose.connection.close(true);
         console.log('An exception has occured:\n', error);
         return NextResponse.json({ error: 'An error occurred.' }, { status: 500 });
     };

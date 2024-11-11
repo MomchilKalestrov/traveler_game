@@ -3,8 +3,8 @@ import { cookies } from 'next/headers';
 import mongoose from 'mongoose';
 
 import users     from '@logic/mongoose/user';
-import locations from '@logic/mongoose/locations';
 import userCheck from '@logic/usercheck';
+import connect   from '@logic/mongoose/mongoose';
 
 const POST = async (request: NextRequest) => {
     const { name } = await request.json();
@@ -21,19 +21,15 @@ const POST = async (request: NextRequest) => {
         await mongoose.connect(process.env.MONGODB_URI as string);
         // Get the user
         const user = await users.findOne({ username: username });
-        if (!user.started.includes(name)) {
-            await mongoose.connection.close();
+        if (!user.started.includes(name))
             return NextResponse.json({ error: 'User isn\'t tracking this location.' }, { status: 400 });
-        }
         // Remove the location from the tracked
         await users.updateOne(
             { username: username },
             { $set: { started: user.started.filter((l: string) => l !== name) } }
         );
-        await mongoose.connection.close();
         return new NextResponse(null, { status: 204 });
     } catch(error) {
-        await mongoose.connection.close();
         console.log('An exception has occured:\n', error);
         return NextResponse.json({ error: 'An error has occured.' }, { status: 500 });
     };

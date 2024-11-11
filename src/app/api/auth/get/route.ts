@@ -1,8 +1,8 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
-import mongoose    from 'mongoose';
 
 import users from '@logic/mongoose/user';
+import connect from '@logic/mongoose/mongoose';
 
 const GET = async (request: NextRequest) => {
     const args = new URL(request.url).searchParams;
@@ -21,16 +21,14 @@ const GET = async (request: NextRequest) => {
 
     try {
         // Connect to the DB
-        await mongoose.connect(process.env.MONGODB_URI as string);
+        await connect();
         // Check if the user exists
         const userInfo = await users.findOne({ username: username }, { password: 0, _id: 0, __v: 0 });
         if (!userInfo)
             return NextResponse.json({ error: 'User not found.' }, { status: 404 });
         // Close the connection
-        await mongoose.connection.close();
         return NextResponse.json(userInfo, { status: 200 });
     } catch(error) {
-        await mongoose.connection.close();
         console.log('An exception has occured:\n', error);
         return NextResponse.json({ error: 'An error has occured.' }, { status: 500 });
     };

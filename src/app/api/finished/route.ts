@@ -4,6 +4,7 @@ import mongoose    from 'mongoose';
 
 import users     from '@logic/mongoose/user';
 import locations from '@logic/mongoose/locations';
+import connect   from '@logic/mongoose/mongoose';
 
 const GET = async (request: NextRequest) => {
     const args = new URL(request.url).searchParams;
@@ -22,7 +23,7 @@ const GET = async (request: NextRequest) => {
 
     try {
         // Connect to the database
-        await mongoose.connect(process.env.MONGODB_URI as string);
+        await connect();
         // Check if the user exists
         const user = await users.findOne({ username: username });
         if(!user) {

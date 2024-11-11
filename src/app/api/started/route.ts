@@ -1,9 +1,9 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
-import mongoose    from 'mongoose';
 
 import users     from '@logic/mongoose/user';
 import locations from '@logic/mongoose/locations';
+import connect   from '@logic/mongoose/mongoose';
 
 const GET = async (request: NextRequest) => {
     const args = new URL(request.url).searchParams;
@@ -22,23 +22,19 @@ const GET = async (request: NextRequest) => {
 
     try {
         // Connect to the database
-        await mongoose.connect(process.env.MONGODB_URI as string);
+        await connect();
         // Check if the user exists
         const user = await users.findOne({ username: username });
-        if(!user) {
-            await mongoose.connection.close();
+        if(!user)
             return NextResponse.json({ error: 'User not found.' }, { status: 404 });
-        };
         // Get the started locations
         const started = await locations.aggregate([
             { $project: { _id: 0, __v: 0 } },
             { $match:   { name: { $in: user.started } } }
         ]);
         // Close the connection
-        await mongoose.connection.close();
         return NextResponse.json(started, { status: 200 });
     } catch(error) {
-        await mongoose.connection.close();
         console.log('An exception has occured:\n', error);
         return NextResponse.json({ error: 'An error has occured.' }, { status: 500 });
     }

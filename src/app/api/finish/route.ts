@@ -1,10 +1,10 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
-import mongoose from 'mongoose';
 
 import users     from '@logic/mongoose/user';
 import locations from '@logic/mongoose/locations';
 import userCheck from '@logic/usercheck';
+import connect   from '@logic/mongoose/mongoose';
 
 function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
     const toRadians = (degree: number) => degree * (Math.PI / 180);
@@ -33,19 +33,15 @@ const POST = async (request: NextRequest) => {
 
     try {
         // Connect to the database
-        await mongoose.connect(process.env.MONGODB_URI as string);
+        await connect();
         // Get the started locations
         const started: string[] = (await users.findOne({ username: username })).started;
-        if (!started.includes(name)) {
-            await mongoose.connection.close();
+        if (!started.includes(name))
             return NextResponse.json({ error: 'User isn\'t tracking this location.' }, { status: 412 });
-        }
         // Get the location
         const location = await locations.findOne({ name: name });
-        if(!location) {
-            await mongoose.connection.close();
+        if(!location)
             return NextResponse.json({ error: 'Location not found.' }, { status: 404 });
-        }
         // Calculate the distance
         // If the user is within 100 meters of the location, claim the badge
         const distance = haversineDistance(
@@ -54,10 +50,9 @@ const POST = async (request: NextRequest) => {
             parseFloat(location.location.lng.toString())
         );
         
-        if(distance > 100) {
-            await mongoose.connection.close();
+        if(distance > 100)
             return NextResponse.json({ error: 'User is not within 100 meters of the location.' }, { status: 400 });
-        }
+
         // Claim the badge
         await users.updateOne(
             { username: cookie.get('username')?.value },
@@ -72,15 +67,15 @@ const POST = async (request: NextRequest) => {
                 $inc: { xp: location.xp }
             }
         );
-        await mongoose.connection.close();
         // it should stay like this!!!!
         // someone remind me to fix this later :)
 
         // if I haven't fixed it by the end of the competition,
         // sorry, but I'm a lazy person.
-        return NextResponse.json({ success: true }, { status: 200 });
+
+        // I think it is fixed now
+        return NextResponse.json(null, { status: 200 });
     } catch(error) {
-        await mongoose.connection.close();
         console.log('An exception has occured:\n', error);
         return NextResponse.json({ error: 'An error has occured.' }, { status: 500 });
     };
