@@ -1,6 +1,5 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
-import mongoose    from 'mongoose';
 
 import users     from '@logic/mongoose/user';
 import locations from '@logic/mongoose/locations';
@@ -26,17 +25,14 @@ const GET = async (request: NextRequest) => {
         await connect();
         // Check if the user exists
         const user = await users.findOne({ username: username });
-        if(!user) {
-            await mongoose.connection.close();
+        if(!user)
             return NextResponse.json({ error: 'User not found.' }, { status: 404 });
-        };
         // Get the finished locations
         const finished = await locations.aggregate([
             { $project: { _id: 0, __v: 0 } },
             { $match:   { name: { $in: user.finished.map((l: any) => l.location) } } }
         ]);
         // Close the connection
-        await mongoose.connection.close();
         return NextResponse.json(finished, { status: 200 });
     } catch(error) {
         console.log('An exception has occured:\n', error);

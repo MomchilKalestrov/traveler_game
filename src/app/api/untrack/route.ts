@@ -1,6 +1,5 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
-import mongoose from 'mongoose';
 
 import users     from '@logic/mongoose/user';
 import userCheck from '@logic/usercheck';
@@ -18,7 +17,7 @@ const POST = async (request: NextRequest) => {
         return NextResponse.json({ error: 'Invalid credentials.' }, { status: 401 });
     try {
         // Connect to the database
-        await mongoose.connect(process.env.MONGODB_URI as string);
+        await connect();
         // Get the user
         const user = await users.findOne({ username: username });
         if (!user.started.includes(name))
@@ -28,6 +27,7 @@ const POST = async (request: NextRequest) => {
             { username: username },
             { $set: { started: user.started.filter((l: string) => l !== name) } }
         );
+        // Close the connection
         return new NextResponse(null, { status: 204 });
     } catch(error) {
         console.log('An exception has occured:\n', error);

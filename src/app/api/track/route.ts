@@ -1,6 +1,5 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
-import mongoose from 'mongoose';
 
 import users     from '@logic/mongoose/user';
 import userCheck from '@logic/usercheck';
