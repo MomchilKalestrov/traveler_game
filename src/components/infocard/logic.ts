@@ -1,5 +1,5 @@
 import { loading, stopLoading } from '@components/loading';
-import { preloadFromSessionStorage } from '@src/logic/redux/sessionStorage';
+import store from '@logic/redux/store';
 
 type ButtonProps = {
     name: string;
@@ -29,74 +29,95 @@ const getUserLocation = (): Promise<{ lat: number, lng: number } | undefined> =>
     });
 };
 
-const reset = () => {
-    sessionStorage.removeItem('initialSave');
-    preloadFromSessionStorage().then(stopLoading);
-};
-
-const untrack = ({ name, close }: ButtonProps) => {
+const untrack = async ({ name, close }: ButtonProps) => {
     loading();
-    fetch(`/api/untrack`, {
+
+    const res = await fetch(`/api/untrack`, {
         method: 'POST',
         headers: {
             "content-type": "application/json"
         },
         body: JSON.stringify({ name: name })
-    })
-        .then(response => {
-            if (!response.ok)
-                return alert('An error has occured.');
-            close();
-            reset();
-        });
-};
-
-const track = ({ name, close }: ButtonProps) => {
-    loading();
-    fetch(`/api/track`, {
-        method: 'POST',
-        headers: {
-            "content-type": "application/json"
-        },
-        body: JSON.stringify({ name: name })
-    })
-        .then(response => {
-            if (!response.ok)
-                return alert('An error has occured.');
-            close();
-            reset();
-        });
-};
-
-const finish = ({ name, close }: ButtonProps) => {
-    getUserLocation().then(location => {
-        if(!location) return;
-        
-        loading();
-        fetch(`/api/finish`, {
-            method: 'POST',
-            headers: {
-                "content-type": "application/json"
-            },
-            body: JSON.stringify({
-                name: name,
-                location: location
-            })
-        })
-            .then(response => response.json())
-            .then(data => {
-                if(data.error === 'User is not within 100 meters of the location.') {
-                    alert('You are not within 100 meters of the location.');
-                    return stopLoading();
-                }
-                else if(data.error) {
-                    alert('An error has occured:\n' + data.error);
-                    return stopLoading();
-                }
-                close();
-                reset();
-            });
     });
+    if (!res.ok) {
+        alert('An error has occured.');
+        return stopLoading();
+    };
+
+    const location = await fetch(`/api/location?name=${ name }`);
+    if (!location.ok) {
+        alert('An error has occured.');
+        return stopLoading();
+    };
+    
+    store.dispatch({ type: 'started/remove', payload: name });
+    store.dispatch({ type: 'new/add',        payload: await location.json() });
+    store.dispatch({ type: 'user/untrack',   payload: name });
+    stopLoading();
+    close();
+};
+
+const track = async ({ name, close }: ButtonProps) => {
+    loading();
+
+    const res = await fetch(`/api/track`, {
+        method: 'POST',
+        headers: {
+            "content-type": "application/json"
+        },
+        body: JSON.stringify({ name: name })
+    })
+    if (!res.ok) {
+        alert('An error has occured.');
+        return stopLoading();
+    };
+
+    const location = await fetch(`/api/location?name=${ name }`);
+    if (!location.ok) {
+        alert('An error has occured.');
+        return stopLoading();
+    };
+    
+    store.dispatch({ type: 'started/add', payload: await location.json() });
+    store.dispatch({ type: 'new/remove',  payload: name });
+    store.dispatch({ type: 'user/track',  payload: name });
+    stopLoading();
+    close();
+};
+
+const finish = async ({ name, close }: ButtonProps) => {
+    const userLocation = await getUserLocation()
+    if(!userLocation) return;
+        
+    loading();
+
+    const res = await fetch(`/api/finish`, {
+        method: 'POST',
+        headers: {
+            "content-type": "application/json"
+        },
+        body: JSON.stringify({
+            name: name,
+            lat: userLocation.lat,
+            lng: userLocation.lng
+        })
+    });
+    if (!res.ok) {
+        const data = res.headers.get('Content-Type')?.includes('application/json') && await res.json();
+        if(data.error === 'User is not within 100 meters of the location.') {
+            alert('You are not within 100 meters of the location.');
+            return stopLoading();
+        }
+        alert('An error has occured.');
+        return stopLoading();
+    }
+
+    store.dispatch({ type: 'new/remove',     payload: name });
+    store.dispatch({ type: 'finished/add',   payload: name });
+    store.dispatch({ type: 'started/remove', payload: name });
+    store.dispatch({ type: 'user/finish',    payload: name });
+    stopLoading();
+    close();
 };
 
 export { untrack, track, finish };

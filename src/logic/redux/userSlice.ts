@@ -17,9 +17,21 @@ export const userSlice = createSlice({
       sessionStorage.removeItem('activities');
       if (!state.value) return;
       state.value.following = state.value.following.filter(username => username !== action.payload);
+    },
+    track: (state, action: PayloadAction<string>) => {
+      if (!state.value) return;
+      state.value.started.push(action.payload);
+    },
+    untrack: (state, action: PayloadAction<string>) => {
+      if (!state.value) return;
+      state.value.started = state.value.started.filter(name => name !== action.payload);
+    },
+    finish: (state, action: PayloadAction<string>) => {
+      if (!state.value) return;
+      state.value.started = state.value.started.filter(name => name !== action.payload);
+      state.value.finished.push({ location: action.payload, time: Date.now() });
     }
   }
 });
 
-export const { update } = userSlice.actions;
 export default userSlice.reducer;

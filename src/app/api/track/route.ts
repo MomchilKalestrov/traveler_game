@@ -3,7 +3,6 @@ import { cookies } from 'next/headers';
 import mongoose from 'mongoose';
 
 import users     from '@logic/mongoose/user';
-import locations from '@logic/mongoose/locations';
 import userCheck from '@logic/usercheck';
 
 const POST = async (request: NextRequest) => {
