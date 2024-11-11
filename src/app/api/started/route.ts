@@ -31,7 +31,7 @@ const GET = async (request: NextRequest) => {
         };
         // Get the started locations
         const started = await locations.aggregate([
-            { $project: { _id: 0 } },
+            { $project: { _id: 0, __v: 0 } },
             { $match:   { name: { $in: user.started } } }
         ]);
         // Close the connection

@@ -1,14 +1,13 @@
 import React from 'react';
 import Image from 'next/image';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { loading, stopLoading } from '@components/loading';
 import AccomplishmentTag        from '@components/accomplishment';
 
 import getColors     from '@logic/profileColor';
 import { RootState } from '@logic/redux/store';
-import { Accomplishment, User }      from '@logic/types';
-import { preloadFromSessionStorage } from '@logic/redux/sessionStorage';
+import { Accomplishment, User } from '@logic/types';
 
 import userStyle from '@app/profile/profile.module.css';
 import style     from './usersearch.module.css';
@@ -28,6 +27,7 @@ type UserSearchProps = {
 
 const UserSearch: React.FC<UserSearchProps> = ({ state, user, reset }) => {
     const currentUser = useSelector((state: RootState) => state.user.value);
+    const dispatch    = useDispatch();
 
     let type: string = !currentUser?.following.includes(user.username) ? 'Follow' : 'Unfollow';
     let action = () => {
@@ -37,9 +37,13 @@ const UserSearch: React.FC<UserSearchProps> = ({ state, user, reset }) => {
                 if (!response.ok) {
                     alert(`An error occurred while trying to ${ type.toLowerCase() } the user.`);
                     stopLoading();
+                    return;
                 }
-                sessionStorage.removeItem('initialSave');
-                preloadFromSessionStorage().then(() => reset(true));
+                dispatch({
+                    type: `user/${ type.toLowerCase() }`,
+                    payload: user.username
+                });
+                stopLoading();
             });
     };
     

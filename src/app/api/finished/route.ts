@@ -31,7 +31,7 @@ const GET = async (request: NextRequest) => {
         };
         // Get the finished locations
         const finished = await locations.aggregate([
-            { $project: { _id: 0 } },
+            { $project: { _id: 0, __v: 0 } },
             { $match:   { name: { $in: user.finished.map((l: any) => l.location) } } }
         ]);
         // Close the connection

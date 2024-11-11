@@ -7,6 +7,16 @@ export const userSlice = createSlice({
   reducers: {
     update: (state, action: PayloadAction<User>) => {
       state.value = action.payload;
+    },
+    follow: (state, action: PayloadAction<string>) => {
+      sessionStorage.removeItem('activities');
+      if (!state.value) return;
+      state.value.following.push(action.payload);
+    },
+    unfollow: (state, action: PayloadAction<string>) => {
+      sessionStorage.removeItem('activities');
+      if (!state.value) return;
+      state.value.following = state.value.following.filter(username => username !== action.payload);
     }
   }
 });

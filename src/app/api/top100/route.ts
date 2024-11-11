@@ -9,7 +9,7 @@ const GET = async () => {
         await mongoose.connect(process.env.MONGODB_URI as string);
         // Get the top 100 users by XP
         const top100 = await users.aggregate([
-            { $project: { _id: 0, password: 0 } },
+            { $project: { _id: 0, password: 0, __v: 0 } },
             { $sort: { xp: -1 } },
             { $limit: 100 }
         ]);

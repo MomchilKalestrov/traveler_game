@@ -9,7 +9,7 @@ const GET = async () => {
         await mongoose.connect(process.env.MONGODB_URI as string);
         // Get all locations
         const all = await locations.aggregate([
-            { $project: { _id: 0 } }
+            { $project: { _id: 0, __v: 0 } }
         ]);
         // Close the connection
         await mongoose.connection.close();
