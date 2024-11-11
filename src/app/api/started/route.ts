@@ -34,7 +34,6 @@ const GET = async (request: NextRequest) => {
             { $project: { _id: 0 } },
             { $match:   { name: { $in: user.started } } }
         ]);
-        console.log(started);
         // Close the connection
         await mongoose.connection.close();
         return NextResponse.json(started, { status: 200 });
