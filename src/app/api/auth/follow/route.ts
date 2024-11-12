@@ -38,7 +38,7 @@ const POST = async (request: NextRequest) => {
         );
         await users.updateOne(
             { username: requestedUsername },
-            { $push: { following: currentUsername } }
+            { $push: { followers: currentUsername } }
         );
         // Close the connection
         return new NextResponse(null, { status: 204 });

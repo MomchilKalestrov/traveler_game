@@ -34,15 +34,11 @@ const POST = async (request: NextRequest) => {
         // Unfollow the user
         await users.updateOne(
             { username: cookie.get('username')?.value },
-            { $set: {
-                following: currentUser.following.filter((username: string) => username !== requestedUsername)
-            } }
+            { $pull: { following: requestedUsername } }
         );
         await users.updateOne(
             { username: args.get('username') },
-            { $set: {
-                followers: requestedUser.following.filter((username: string) => username !== currentUsername)
-            } }
+            { $pull: { followers: currentUsername } }
         );
         // Close the connection
         return new NextResponse(null, { status: 204 });

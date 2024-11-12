@@ -57,7 +57,7 @@ const POST = async (request: NextRequest) => {
         await users.updateOne(
             { username: cookie.get('username')?.value },
             {
-                $set: { started: started.filter((started: string) => started !== name) },
+                $pull: { started: name },
                 $push: {
                     finished: {
                         location: name,
@@ -67,13 +67,6 @@ const POST = async (request: NextRequest) => {
                 $inc: { xp: location.xp }
             }
         );
-        // it should stay like this!!!!
-        // someone remind me to fix this later :)
-
-        // if I haven't fixed it by the end of the competition,
-        // sorry, but I'm a lazy person.
-
-        // I think it is fixed now
         return NextResponse.json(null, { status: 200 });
     } catch(error) {
         console.log('An exception has occured:\n', error);

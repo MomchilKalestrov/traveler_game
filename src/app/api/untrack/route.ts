@@ -25,7 +25,7 @@ const POST = async (request: NextRequest) => {
         // Remove the location from the tracked
         await users.updateOne(
             { username: username },
-            { $set: { started: user.started.filter((l: string) => l !== name) } }
+            { $pull: { started: name } }
         );
         // Close the connection
         return new NextResponse(null, { status: 204 });
