@@ -3,7 +3,7 @@ import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-import loading, { stopLoading } from '@components/loading';
+import { loading, stopLoading } from '@components/loading';
 
 import validateName  from '@logic/validateName';
 
@@ -31,13 +31,10 @@ const SignUp: React.FC<SignUpProps> = ({ setter }) => {
         fetch(`/api/auth/create?username=${data.get('username')}&password=${data.get('password')}`, {
             method: 'POST'
         }).then((res) => {
-            if (res.ok) {
-                stopLoading();
-                router.replace('/home');
-                return
-            }
-            alert('Failed to sign up.');
             stopLoading();
+            if (res.ok) 
+                return alert('Failed to sign up.');
+            router.replace('/home');
         });
     }
 

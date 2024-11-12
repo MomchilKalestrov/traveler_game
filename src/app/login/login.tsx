@@ -3,10 +3,7 @@ import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-import loading, { stopLoading } from '@components/loading';
-
-import { setCookie } from '@logic/cookies';
-import { md5 }       from 'js-md5';
+import { loading, stopLoading } from '@components/loading';
 
 import style from './profile.module.css';
 
@@ -22,17 +19,13 @@ const LogIn: React.FC<LogInProps> = ({ setter }) => {
         const data: FormData = new FormData(event.currentTarget);
         
         loading();
-        fetch(`/api/auth/login?username=${data.get('username')}&password=${data.get('password')}`, {
+        fetch(`/api/auth/login?username=${ data.get('username') }&password=${ data.get('password') }`, {
             method: 'POST'
         }).then((res) => {
             stopLoading();
-            if (res.ok) {
-                stopLoading();
-                router.replace('/home');
-                return;
-            };
-            alert('Failed to log in.');
-            stopLoading();
+            if (!res.ok)
+                return alert('Failed to log in.');
+            router.replace('/home');
         });
     };
 
