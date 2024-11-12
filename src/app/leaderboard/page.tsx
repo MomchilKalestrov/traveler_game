@@ -72,11 +72,10 @@ const Page: NextPage = () => {
     fetch('/api/top100')
     .then(res => res.ok ? res.json() : undefined)
     .then(data => {
-      if(data) {
-        sessionStorage.setItem('top100', JSON.stringify(data));
-        setPlayers(data);
-      }
-      else console.error('An error has occured.');
+      if(!data)
+        return console.error('An error has occured.');
+      sessionStorage.setItem('top100', JSON.stringify(data));
+      setPlayers(data);
     });
 
     preloadFromSessionStorage();
