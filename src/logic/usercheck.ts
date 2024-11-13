@@ -1,26 +1,17 @@
 'use server';
-import { MongoClient } from 'mongodb';
+import connect from '@logic/mongoose/mongoose';
+import users   from '@logic/mongoose/user';
 
 const userCheck = async (username?: string | undefined, password?: string | undefined): Promise<boolean> => {
-    const client = new MongoClient(process.env.MONGODB_URI as string);
-
     if(!username || !password)
         return false;
 
     try {
-        await client.connect();
-        const userCollection = client.db('TestDB').collection('UserCollection');
-
-        const user = (await userCollection.aggregate([{
-            $match: { username: username }
-        }]).toArray())[0];
-
-        await client.close(true);
-        return (user && user.password === password);
-    }
-    catch (error) {
+        await connect();
+        const user = await users.findOne({ username: username, password: password })
+        return user ? true : false;
+    } catch (error) {
         console.log(error);
-        await client.close(true);
         return false;
     };
 };
