@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { md5 } from 'js-md5';
 
 import users   from '@logic/mongoose/user';
 import connect from '@src/logic/mongoose/mongoose';
@@ -21,15 +20,15 @@ const POST = async (request: NextRequest) => {
         // Check if the data already exists
         const dataExists = await users.findOne({
             username: username,
-            password: md5(password)
+            password: password
         });
         if(!dataExists) 
             return NextResponse.json({ error: 'Incorrect credentials.' }, { status: 403 });
         // Set the user's credentials
-        cookie.set('username', username);
-        cookie.set('password', md5(password));
+        cookie.set('username', username, { maxAge: 60 * 60 * 24 * 365 * 10 });
+        cookie.set('password', password, { maxAge: 60 * 60 * 24 * 365 * 10 });
         // Close the connection
-        return new NextResponse(null, { status: 204 });
+        return new NextResponse(null, { status: 201 });
     } catch(error) {
         console.log('An exception has occured:\n', error);
         return NextResponse.json({ error: 'An error occurred.' }, { status: 500 });

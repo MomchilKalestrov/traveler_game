@@ -1,10 +1,19 @@
+body:has(.ProfileForm) {
+    background:
+        url('/backgrounds/bg.svg') repeat-x center bottom,
+        url('/backgrounds/rbg.svg') repeat-x center top,
+        var(--color-bg)
+        !important;
+}
+
 .ProfileForm {
     display: flex;
     justify-content: center;
     align-content: center;
     flex-wrap: wrap;
     height: calc(100% - 1rem);
-    width: calc(100% - 1rem);
+    width: min(100%, 20rem);
+    margin: 0px auto;
     gap: 1rem;
     padding: 0.5rem;
 }
@@ -24,53 +33,6 @@ div.FormInput {
     background-color: var(--color-secondary);
     border-bottom: 1px solid var(--color-disabled);
     position: relative;
-}
-
-div.FormInput label {
-    position: absolute;
-    font-size: 1rem;
-    line-height: 1rem;
-    margin: 0;
-    color: var(--color-disabled);
-    pointer-events: none;
-    z-index: calc(var(--z) + 2);
-    top: calc(2px + 1rem);
-    transition: all 0.25s;
-}
-
-div.FormInput input {
-    position: absolute;
-    font-size: 1rem;
-    line-height: 1rem;
-    border: none;
-    outline: none;
-    z-index: calc(var(--z) + 1);
-    padding: 1rem;
-    margin: 0px;
-    transition: all 0.25s;
-    background-color: #00000000;
-    top: 0px;
-    left: 0px;
-    width: calc(100% - 2rem);
-    height: calc(100% - 2rem);
-}
-
-div.FormInput:focus-within {
-    border-bottom: 2px solid var(--color-primary);
-}
-
-div.FormInput input:not(:placeholder-shown),
-div.FormInput input:focus {
-    padding-top: 1.5rem;
-    padding-bottom: 0.5rem;
-    height: calc(100% - 2rem);
-}
-
-div.FormInput:focus-within label,
-div.FormInput input:not(:placeholder-shown) + label,
-div.FormInput input:focus + label {
-    font-size: 0.75rem;
-    transform: translateY(-0.75rem);
 }
 
 button.FormInput, a.FormInput {

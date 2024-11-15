@@ -68,17 +68,10 @@ self.addEventListener('fetch', (e) => {
         caches.match(e.request).then((response) => {
             if (response)
                 return response;
-            return fetch(e.request).then((networkResponse) => {
-                // Optionally, cache the new network response
-                return caches.open(cacheName).then((cache) => {
-                    cache.put(e.request, networkResponse.clone());
-                    return networkResponse;
-                });
-            }).catch(() => {
+            return fetch(e.request).catch(() => {
                 // If the request is for an HTML page, return the offline page
-                if (e.request.headers.get('accept').includes('text/html')) {
+                if (e.request.headers.get('accept').includes('text/html'))
                     return caches.match('/offline/offline.html');
-                }
             });
         })
     );

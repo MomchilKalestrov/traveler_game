@@ -1,21 +1,15 @@
-import React from 'react';
+import React, { InputHTMLAttributes } from 'react';
 import style from './input.module.css';
 
-type MaterialInputProps = {
-    name: string;
-    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+type MaterialInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'style' | 'type' | 'placeholder'> & {
     type: 'text' | 'password' | 'email' | 'number' | 'url';
-};
+}; 
 
 const MaterialInput = React.forwardRef<HTMLInputElement, MaterialInputProps>(
-    ({ name, onChange, type}, ref) => (
+    (props, ref) => (
         <div className={ style.FormInput }>
-            <input
-                ref={ ref } name={ name }
-                placeholder={ name }
-                type={ type } onChange={ onChange }
-            />
-            <label>{ name }</label>
+            <input { ...props } ref={ ref } placeholder=' ' />
+            <label>{ props.name }</label>
         </div>
     )
 );

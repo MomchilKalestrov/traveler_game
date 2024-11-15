@@ -21,7 +21,7 @@ const get = (key: string): any =>
 const cast = (object: any): Location[] => 
     Array.isArray(object) ? object.map(toLocation) : [];
 
-const initialSave = async (): Promise<fetchType> => {    
+const initialSave = async (): Promise<fetchType> => {
     const started  = cast(await fetchStarted());
     const finished = cast(await fetchFinished());
     const all      = cast(await fetchAll());

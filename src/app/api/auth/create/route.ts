@@ -1,6 +1,5 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
-import { md5 }  from 'js-md5';
 
 import users        from '@logic/mongoose/user';
 import validateName from '@logic/validateName';
@@ -29,10 +28,10 @@ const POST = async (request: NextRequest) => {
         // Create a new user
         await users.create({
             username: username,
-            password: md5(password),
+            password: password,
         });
-        cookie.set('username', username);
-        cookie.set('password', md5(password));
+        cookie.set('username', username, { maxAge: 60 * 60 * 24 * 365 * 10 });
+        cookie.set('password', password, { maxAge: 60 * 60 * 24 * 365 * 10 });
         // Close the connection
         return new NextResponse(null, { status: 201 });
     } catch(error) {

@@ -1,7 +1,0 @@
-body {
-    background-image: none !important;
-}
-
-form {
-    background: url('/backgrounds/bg.svg') repeat-x center bottom, url('/backgrounds/rbg.svg') repeat-x center top;
-}
