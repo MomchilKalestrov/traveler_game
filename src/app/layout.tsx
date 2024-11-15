@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   title: 'Venture',
   description: 'A game to help you discover locations.',
   icons: [
-    '/favicon.png'
+    '/favicon.ico'
   ],
 };
 
