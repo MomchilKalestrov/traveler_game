@@ -5,6 +5,10 @@
     --color-bg: #e9ebe1;
     --color-danger: var(--color-primary);
     --color-disabled: #666666;
+
+    --color-error-bg: #d6b1af;
+    --color-error: #874542;
+
     --icon-filter-primary: brightness(0%) invert(27%) sepia(11%) saturate(604%) hue-rotate(32deg) brightness(97%) contrast(93%);
     --icon-filter-bg: brightness(0%) invert(93%) sepia(13%) saturate(102%) hue-rotate(32deg) brightness(99%) contrast(92%);
     --z: 1000;
@@ -50,6 +54,10 @@
         --color-bg: #36392C;
         --color-danger: var(--color-primary);
         --color-disabled: #949494;
+
+        --color-error-bg: #7F4F4C;
+        --color-error: #6d3936;
+
         --icon-filter-primary: brightness(0%) invert(93%) sepia(13%) saturate(102%) hue-rotate(32deg) brightness(99%) contrast(92%);
         --icon-filter-bg: brightness(0%) invert(19%) sepia(35%) saturate(238%) hue-rotate(33deg) brightness(96%) contrast(95%);
     }

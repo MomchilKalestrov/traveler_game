@@ -6,6 +6,12 @@ div.FormInput {
     background-color: var(--color-secondary);
     border-bottom: 1px solid var(--color-disabled);
     position: relative;
+    transition: background-color 0.25s, border-bottom 0.25s;
+}
+
+div.FormInput:has(input:user-invalid) {
+    background-color: var(--color-error-bg);
+    border-bottom: 2px solid var(--color-error) !important;
 }
 
 div.FormInput label {
@@ -25,12 +31,12 @@ div.FormInput input {
     z-index: calc(var(--z) + 1);
     padding: 1rem;
     margin: 0px;
-    transition: all 0.25s;
     background-color: #00000000;
     top: 0px;
     left: 0px;
     width: calc(100% - 2rem);
     height: calc(100% - 2rem);
+    transition: padding 0.25s, height 0.25s;
 }
 
 div.FormInput input::placeholder {
