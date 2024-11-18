@@ -48,10 +48,6 @@ const Player: React.FC<PlayerProps> = ({ user, position }) => {
             />
           : <h3 className={ style.Top100Position }># { position + 1 }</h3>
         }
-        <div>
-          <p><b>{ user.followers.length }</b> followers</p>
-          <p><b>{ user.following.length }</b> following</p>
-        </div>
     </div>
   );
 };

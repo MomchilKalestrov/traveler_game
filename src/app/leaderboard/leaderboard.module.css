@@ -4,6 +4,15 @@
     flex-wrap: wrap;
 }
 
+.Top100Container div {
+    display: grid;
+    grid-template-areas: "photo name follow";
+}
+
+.Top100Container h2 {
+    align-self: center;
+}
+
 .Top100Container h1 {
     text-align: center;
     margin: 0px;
