@@ -17,8 +17,8 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: 'Venture',
-  description: 'A game to help you discover locations.',
+  title: 'Adventur-o',
+  description: 'A game where you earn rewards by visiting the sights of Bulgaria.',
   icons: [
     '/favicon.ico'
   ],

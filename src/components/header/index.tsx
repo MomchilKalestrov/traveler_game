@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 
 import Settings               from '@components/settings';
 import { stopLoading }        from '@components/loading';
@@ -10,7 +11,6 @@ import { User }      from '@logic/types';
 import { getCookie } from '@logic/cookies';
 
 import style from './header.module.css';
-import { usePathname } from 'next/navigation';
 
 const emptyUser: User = {
     username: '',
