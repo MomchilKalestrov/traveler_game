@@ -46,7 +46,7 @@ const Player: React.FC<PlayerProps> = ({ user, position }) => {
               alt='Crown' width={ 48 } height={ 48 }
               className={ style.Top100Position }
             />
-          : <h3 className={ style.Top100Position }># { position + 1 }</h3>
+          : <h3 className={ style.Top100Position }>{ position + 1 }</h3>
         }
     </div>
   );
@@ -61,16 +61,16 @@ const Page: NextPage = () => {
     if (!getCookie('username')?.value || !getCookie('password')?.value)
       return router.replace('/login');
     
-    if (sessionStorage.getItem('top100'))
-      return setPlayers(JSON.parse(sessionStorage.getItem('top100') as string));
+    if (sessionStorage.getItem('top'))
+      return setPlayers(JSON.parse(sessionStorage.getItem('top') as string));
     
     
-    fetch('/api/top100')
+    fetch('/api/top')
     .then(res => res.ok ? res.json() : undefined)
     .then(data => {
       if(!data)
         return console.error('An error has occured.');
-      sessionStorage.setItem('top100', JSON.stringify(data));
+      sessionStorage.setItem('top', JSON.stringify(data));
       setPlayers(data);
     });
 

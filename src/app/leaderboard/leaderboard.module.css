@@ -4,19 +4,19 @@
     flex-wrap: wrap;
 }
 
-.Top100Container div {
+.Top100Container > div {
     display: grid;
     grid-template-areas: "photo name follow";
-}
-
-.Top100Container h2 {
-    align-self: center;
 }
 
 .Top100Container h1 {
     text-align: center;
     margin: 0px;
     width: 100%;
+}
+
+.Top100Container h2 {
+    align-self: center !important;
 }
 
 img.Top100Position {
@@ -30,4 +30,10 @@ h3.Top100Position {
     grid-area: follow;
     align-self: center;
     text-align: center;
+    height: 3rem;
+    width: 3rem;
+    border-radius: 50%;
+    background-color: var(--color-tertiary);
+    padding: calc((3rem - 1.25rem) / 2) 0;
+    box-sizing: border-box;
 }
