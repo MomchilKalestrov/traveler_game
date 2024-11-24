@@ -11,7 +11,7 @@ const GET = async () => {
         const top100 = await users.aggregate([
             { $project: { _id: 0, password: 0, __v: 0 } },
             { $sort: { xp: -1 } },
-            { $limit: 100 }
+            { $limit: 20 }
         ]);
         // Close the connection
         return NextResponse.json(top100, { status: 200 });
