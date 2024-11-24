@@ -1,8 +1,8 @@
 import type { MetadataRoute } from 'next';
  
 const manifest = (): MetadataRoute.Manifest => ({
-  name: 'Adventur-o',
-  short_name: 'Adventur-o',
+  name: 'Venturo',
+  short_name: 'Venturo',
   description: 'A game to help you discover locations.',
   id: '/',
   start_url: '/',
