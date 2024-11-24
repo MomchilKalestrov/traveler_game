@@ -37,7 +37,7 @@ const Hook: React.FC = () => {
         map.setView([
             position.coords.latitude,
             position.coords.longitude
-        ], 19);
+        ], 15);
 
     React.useEffect(() => {
         navigator.geolocation.getCurrentPosition(
@@ -68,7 +68,7 @@ const Map: React.FC<MapProps> = ({ locations = [], hasGPSAccess }) => {
 
         return () => navigator.geolocation.clearWatch(id);
     }, []);
-
+    
     return (
         <>
             {
@@ -86,13 +86,12 @@ const Map: React.FC<MapProps> = ({ locations = [], hasGPSAccess }) => {
                 scrollWheelZoom={ true }
                 style={ { height: '100%', width: '100%' } }
             >
-                <Hook />
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
                 {
-                    userLocation &&
+                    (userLocation && userLocation.coords) &&
                     <Marker
                         position={ [
                             userLocation.coords.latitude,
@@ -102,25 +101,26 @@ const Map: React.FC<MapProps> = ({ locations = [], hasGPSAccess }) => {
                     />
                 }
                 {
-                    locations &&
-                    locations.map((location, index) => (
+                    locations.map((poi, index) => (
                         <Marker
                             key={ index }
-                            position={ [ location.location.lat, location.location.lng ] }
+                            position={ [ poi.location.lat, poi.location.lng ] }
                             icon={ poiPin }
                             eventHandlers={ {
                                 click: () => {
-                                    setLocation(location);
+                                    setLocation(poi);
                                     setVisible(true);
                                 }
-                            } }                            
+                            } }
                         />
                     ))
                 }
+                <Hook />
             </MapContainer>
             <style>
                 { /*
                     there will be absolutely no support for either side of any war in this app.
+                    I checked, and the ukranian flag is not required by the license.
                 */ }
                 {`
                     .leaflet-attribution-flag {
