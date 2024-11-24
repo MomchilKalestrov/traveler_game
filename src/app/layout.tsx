@@ -17,11 +17,9 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: 'Adventur-o',
+  title: 'Venturo',
   description: 'A game where you earn rewards by visiting the sights of Bulgaria.',
-  icons: [
-    '/favicon.ico'
-  ],
+  icons: [ '/favicon.ico', '/favicon.png' ],
 };
 
 const RootLayout = ({
