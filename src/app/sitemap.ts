@@ -1,34 +1,36 @@
 import type { MetadataRoute } from 'next';
 
-const sitemap: MetadataRoute.Sitemap = ([
+const baseURL = 'https://traveler-game.vercel.app';
+
+const sitemap = (): MetadataRoute.Sitemap => ([
     {
-        url: '/',
-        lastModified: new Date('01-11-2024'),
+        url: baseURL + '/',
+        lastModified: '01-11-2024',
         changeFrequency: 'never'
     },
     {
-        url: 'leaderboard',
-        lastModified: new Date('01-11-2024'),
+        url: baseURL + '/leaderboard',
+        lastModified: '01-11-2024',
         changeFrequency: 'monthly'
     },
     {
-        url: 'profile',
-        lastModified: new Date('01-11-2024'),
+        url: baseURL + '/profile',
+        lastModified: '01-11-2024',
         changeFrequency: 'weekly'
     },
     {
-        url: 'map',
-        lastModified: new Date('01-11-2024'),
+        url: baseURL + '/map',
+        lastModified: '01-11-2024',
         changeFrequency: 'weekly'
     },
     {
-        url: 'home',
-        lastModified: new Date('01-11-2024'),
+        url: baseURL + '/home',
+        lastModified: '01-11-2024',
         changeFrequency: 'weekly'
     },
     {
-        url: 'login',
-        lastModified: new Date('01-11-2024'),
+        url: baseURL + '/login',
+        lastModified: '01-11-2024',
         changeFrequency: 'monthly'
     }
 ]);

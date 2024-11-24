@@ -2,25 +2,20 @@
 import React from 'react';
 import Image from 'next/image';
 import { NextPage }    from 'next';
-import { useRouter }   from 'next/navigation';
 import { useSelector } from 'react-redux';
 
+import LoadingPlaceholder from '@components/loading';
+
 import getColors     from '@logic/profileColor';
-import { getCookie } from '@logic/cookies';
 import { RootState } from '@logic/redux/store';
 import { preloadFromSessionStorage } from '@logic/redux/sessionStorage';
-
-import LoadingPlaceholder from '@components/loading';
 
 import style from './profile.module.css';
 
 const Page: NextPage = () => {
-  const router = useRouter();
   const user = useSelector((state: RootState) => state.user.value);
 
   React.useEffect(() => {
-    if (!getCookie('username')?.value || !getCookie('password')?.value)
-      return router.replace('/login');
     preloadFromSessionStorage();
   }, []);
 

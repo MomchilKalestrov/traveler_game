@@ -2,11 +2,9 @@
 import React from 'react';
 import Image from 'next/image';
 import { NextPage }  from 'next';
-import { useRouter } from 'next/navigation';
 
 import LoadingPlaceholder from '@components/loading';
 
-import { getCookie } from '@logic/cookies';
 import { User }      from '@logic/types';
 import getColors     from '@logic/profileColor';
 import { preloadFromSessionStorage } from '@logic/redux/sessionStorage';
@@ -20,14 +18,8 @@ type PlayerProps = {
 };
 
 const Player: React.FC<PlayerProps> = ({ user, position }) => {
-  const router = useRouter();
   const [ color, r_color ] = getColors(user.username.slice(0, 3));
   const percentage = user.xp - 100 * Math.floor (user.xp / 100);
-
-  React.useEffect(() => {
-    if (!getCookie('username')?.value || !getCookie('password')?.value)
-      router.replace('/login');
-  }, []);
 
   return (
     <div className={ `${ userStyle.ProfileCard } ${ userStyle.ProfileInfo }` }>
@@ -53,17 +45,14 @@ const Player: React.FC<PlayerProps> = ({ user, position }) => {
 };
 
 const Page: NextPage = () => {
-  const router = useRouter();
   const [ players, setPlayers ] = React.useState<User[] | undefined>(undefined);
 
   // top 100 players are used only here, so it's not necessary to store them in the redux store
   React.useEffect(() => {
-    if (!getCookie('username')?.value || !getCookie('password')?.value)
-      return router.replace('/login');
-    
+    preloadFromSessionStorage();
+
     if (sessionStorage.getItem('top'))
       return setPlayers(JSON.parse(sessionStorage.getItem('top') as string));
-    
     
     fetch('/api/top')
     .then(res => res.ok ? res.json() : undefined)
@@ -73,8 +62,6 @@ const Page: NextPage = () => {
       sessionStorage.setItem('top', JSON.stringify(data));
       setPlayers(data);
     });
-
-    preloadFromSessionStorage();
   }, []);
 
   if (!players) return (<LoadingPlaceholder />);

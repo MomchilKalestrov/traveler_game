@@ -1,8 +1,8 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
-import { NextPage }  from 'next';
-import { useRouter } from 'next/navigation';
+import { NextPage }    from 'next';
+import { useSelector } from 'react-redux';
 
 import Mapcard            from '@components/mapcard';
 import Minicard           from '@components/minicard';
@@ -10,7 +10,6 @@ import MaterialInput      from '@components/input';
 import AccomplishmentTag  from '@components/accomplishment';
 import LoadingPlaceholder from '@components/loading';
 
-import { getCookie } from '@logic/cookies';
 import getActivities from '@logic/followerActivity';
 import {
   Location,
@@ -18,7 +17,6 @@ import {
   User
 } from '@logic/types';
 
-import { useSelector } from 'react-redux';
 import { RootState }   from '@logic/redux/store';
 import { preloadFromSessionStorage } from '@logic/redux/sessionStorage';
 
@@ -46,7 +44,6 @@ const haversineDistance = (
 };
 
 const Page: NextPage = () => {
-  const router = useRouter();
   const reference = React.useRef<HTMLDivElement>(null);
  
   const userSlice    = useSelector((state: RootState) => state.user.value);
@@ -58,10 +55,7 @@ const Page: NextPage = () => {
 
   const [ followerActivity, setFollowerActivity ] = React.useState<Accomplishment[]>([]);
 
-  React.useEffect(() => {
-    if (!getCookie('username')?.value || !getCookie('password')?.value)
-      return router.replace('/login');
-    
+  React.useEffect(() => {    
     preloadFromSessionStorage();
   }, []);
 

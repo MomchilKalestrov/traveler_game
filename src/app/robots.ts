@@ -1,6 +1,8 @@
 import type { MetadataRoute } from 'next';
 
-const robots: MetadataRoute.Robots = ({
+const baseURL = 'https://traveler-game.vercel.app';
+
+const robots = (): MetadataRoute.Robots =>  ({
     rules: [
         {
             userAgent: '*',
@@ -26,7 +28,8 @@ const robots: MetadataRoute.Robots = ({
             userAgent: 'OAI-SearchBot',
             disallow: '/'
         }
-    ]
+    ],
+    sitemap: baseURL + '/sitemap.xml'
 });
 
 export default robots;
