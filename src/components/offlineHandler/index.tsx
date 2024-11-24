@@ -16,13 +16,13 @@ const style: CSSProperties = {
 };
 
 const OfflineHandler: React.FC = () => {
-    
-    const [ isOffline, setConnection ] = React.useState<boolean>(navigator ? !navigator.onLine : false);
+    const [ isOffline, setConnection ] = React.useState<boolean>(false);
 
     const offline = () => setConnection(true);
     const online  = () => setConnection(false);
 
     React.useEffect(() => {
+        setConnection(!navigator.onLine);
         window.addEventListener('offline', offline);
         window.addEventListener('online', online);
         if (!navigator) return;
