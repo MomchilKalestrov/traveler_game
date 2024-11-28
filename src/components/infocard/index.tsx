@@ -51,7 +51,7 @@ const InfoCard: React.FC<InfoCardProps> = ({ setter, type, location }) => {
                 <div className={ style.InfocardData }>
                     <h3>{ location.name }</h3>
                     <p>{ location.description }</p>
-                    <Button name={ location.name } close={ close } />
+                    <Button location={ location } close={ close } />
                 </div>
             </div>
         </div>
