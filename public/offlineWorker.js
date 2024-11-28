@@ -1,4 +1,4 @@
-const cacheName = 'offlineCacheV6';
+const cacheName = 'offlineCacheV7';
 
 const offlinePages = [
     '/offline/offline.html',
@@ -39,6 +39,9 @@ const offlinePages = [
 
     '/favicon.ico',
     '/favicon.png',
+
+    '/languages/en.json',
+    '/languages/bg.json',
 ];
 
 self.addEventListener('install', (e) => {

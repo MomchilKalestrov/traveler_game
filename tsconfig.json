@@ -24,7 +24,7 @@
         "paths": {
             "@*": ["./*"],
             "@components/*": ["./src/components/*"],
-            "@app/*": ["./src/app/*"],
+            "@app/*": ["./src/app/[lang]/*"],
             "@logic/*": ["./src/logic/*"]
         },
         "target": "ES2017"

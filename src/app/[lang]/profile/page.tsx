@@ -2,24 +2,33 @@
 import React from 'react';
 import Image from 'next/image';
 import { NextPage }    from 'next';
+import { useParams }   from 'next/navigation';
 import { useSelector } from 'react-redux';
 
 import LoadingPlaceholder from '@components/loading';
 
 import getColors     from '@logic/profileColor';
+import { Language }  from '@logic/types';
 import { RootState } from '@logic/redux/store';
 import { preloadFromSessionStorage } from '@logic/redux/sessionStorage';
 
 import style from './profile.module.css';
 
 const Page: NextPage = () => {
+  const params = useParams();
+  const [ language, setLanguage ] = React.useState<Language | undefined>(undefined);
+
   const user = useSelector((state: RootState) => state.user.value);
 
   React.useEffect(() => {
     preloadFromSessionStorage();
+
+    fetch(`/languages/${ params.lang }.json`)
+      .then(res => res.json())
+      .then(setLanguage);
   }, []);
 
-  if (!user) return (<LoadingPlaceholder />);
+  if (!user || !language) return (<LoadingPlaceholder />);
 
   const [ color, r_color ] = getColors(user.username.slice(0, 3));
   const percentage = user.xp - 100 * Math.floor(user.xp / 100);
@@ -37,14 +46,14 @@ const Page: NextPage = () => {
             </div>
             <h2>{ user.username }</h2>
             <div>
-              <p><b>{ user.followers.length }</b> followers</p>
-              <p><b>{ user.following.length }</b> following</p>
+              <p><b>{ user.followers.length }</b> { language.profile.followers }</p>
+              <p><b>{ user.following.length }</b> { language.profile.following }</p>
             </div>
         </div>
         {
           user.finished.length > 0 &&
           <div className={ style.ProfileCard }>
-            <h2>Badges</h2>
+            <h2>{ language.profile.badges }</h2>
             <div className={ style.ProfileDivider } />
             <div className={ style.ProfileBadges }>
               {

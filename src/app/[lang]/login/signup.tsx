@@ -2,14 +2,18 @@
 import React   from 'react';
 import Image   from 'next/image';
 import { md5 } from 'js-md5';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 
-import MaterialInput            from '@components/input';
-import { loading, stopLoading } from '@components/loading';
+import MaterialInput from '@components/input';
+import
+    LoadingPlaceholder,
+    { loading, stopLoading }
+from '@components/loading';
 
-import validateName  from '@logic/validateName';
+import { Language } from '@logic/types';
+import validateName from '@logic/validateName';
 
-import style from './profile.module.css';
+import style from './login.module.css';
 
 type SignUpProps = {
     setter: React.Dispatch<React.SetStateAction<boolean>>;
@@ -41,14 +45,18 @@ const validateForm = (
 
 const SignUp: React.FC<SignUpProps> = ({ setter }) => {
     const router = useRouter();
+    const params = useParams();
+
+    const [ language, setLanguage ] = React.useState<Language | undefined>(undefined);
 
     const createProfile = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        if (!language) return;
         const data: FormData = new FormData(event.currentTarget);
 
-        const username = data.get('Username') as string | undefined;
-        const password = data.get('Password') as string | undefined;
-        const verify = data.get('Verify password') as string | undefined;
+        const username = data.get(language.auth.inputs.username) as string;
+        const password = data.get(language.auth.inputs.password) as string;
+        const verify   = data.get(language.auth.inputs.verify)   as string;
         
         if (!validateForm(username, password, verify)) return;
         
@@ -57,27 +65,35 @@ const SignUp: React.FC<SignUpProps> = ({ setter }) => {
             method: 'POST'
         }).then((res) => {
             stopLoading();
-            if (!res.ok) 
-                return alert('Failed to sign up.');
-            router.replace('/home');
+            if (!res.ok) return alert('Failed to sign up.');
+            router.replace(`/${ params.lang }/home`);
         });
-    }
+    };
+
+    React.useEffect(() => {
+        fetch(`/languages/${ params.lang }.json`)
+            .then(res => res.json())
+            .then(setLanguage);
+    }, []);
+
+    if (!language)
+        return (<LoadingPlaceholder />);
 
     return (
         <form className={ style.ProfileForm } onSubmit={ createProfile }>
-            <h1>Sign up</h1>
-            <MaterialInput name='Username'        type='text'     required={ true } />
-            <MaterialInput name='Password'        type='password' required={ true } />
-            <MaterialInput name='Verify password' type='password' required={ true } />
+            <h1>{ language.auth.signup.title }</h1>
+            <MaterialInput name={ language.auth.inputs.username } type='text'     required={ true } />
+            <MaterialInput name={ language.auth.inputs.password } type='password' required={ true } />
+            <MaterialInput name={ language.auth.inputs.verify   } type='password' required={ true } />
             <button className={ style.FormInput }>
             <Image src='/icons/login.svg' alt='signup' width={ 24 } height={ 24 } />
-                <p className={ style.I_FUCKIN_HATE_CSS }>Create profile</p>
+                <p className={ style.I_FUCKIN_HATE_CSS }>{ language.auth.signup.button }</p>
             </button>
             <button
                 type='button'
                 onClick={ () => setter(true) }
                 className={ style.FormInput + ' ' + style.StyleOutline }
-            >Log in</button>
+            >{ language.auth.login.button }</button>
         </form>
     )
 }

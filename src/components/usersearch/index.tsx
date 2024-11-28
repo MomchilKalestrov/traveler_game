@@ -21,11 +21,10 @@ enum status {
 
 type UserSearchProps = {
     state: status,
-    user: User,
-    reset: (resetting?: boolean) => void
+    user: User
 };
 
-const UserSearch: React.FC<UserSearchProps> = ({ state, user, reset }) => {
+const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
     const currentUser = useSelector((state: RootState) => state.user.value);
     const dispatch    = useDispatch();
 

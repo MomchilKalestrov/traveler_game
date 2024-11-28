@@ -1,8 +1,9 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
-import { NextPage }    from 'next';
 import { useSelector } from 'react-redux';
+import { NextPage }    from 'next';
+import { useParams }   from 'next/navigation';
 
 import Mapcard            from '@components/mapcard';
 import Minicard           from '@components/minicard';
@@ -14,7 +15,8 @@ import getActivities from '@logic/followerActivity';
 import {
   Location,
   Accomplishment,
-  User
+  User,
+  Language
 } from '@logic/types';
 
 import { RootState }   from '@logic/redux/store';
@@ -43,20 +45,27 @@ const haversineDistance = (
   return R * c;
 };
 
+
 const Page: NextPage = () => {
+  const params = useParams();
+
   const reference = React.useRef<HTMLDivElement>(null);
  
   const userSlice    = useSelector((state: RootState) => state.user.value);
   const newSlice     = useSelector((state: RootState) => state.new.value);
   const startedSlice = useSelector((state: RootState) => state.started.value);
   
-  const [ filtered, setFiltered ] = React.useState<Location[]>(newSlice || []);
+  const [ filtered,   setFiltered   ] = React.useState<Location[]>(newSlice || []);
   const [ filterOpen, setFilterOpen ] = React.useState(true);
+  const [ language,   setLanguage   ] = React.useState<Language | undefined>(undefined);
 
   const [ followerActivity, setFollowerActivity ] = React.useState<Accomplishment[]>([]);
 
   React.useEffect(() => {    
     preloadFromSessionStorage();
+    fetch(`/languages/${ params.lang }.json`)
+      .then(res => res.json())
+      .then(setLanguage);
   }, []);
 
   React.useEffect(() => {
@@ -78,7 +87,7 @@ const Page: NextPage = () => {
     setFilterOpen(state);
   };
 
-  if (!userSlice || !newSlice) return (<LoadingPlaceholder />);
+  if (!userSlice || !newSlice || !language) return (<LoadingPlaceholder />);
 
   const findCloseLocations = (event: React.FormEvent<HTMLInputElement>) => {
     if(!newSlice || !event.currentTarget) return;
@@ -107,10 +116,10 @@ const Page: NextPage = () => {
 
   return (
     <main className={ style.Home }>
-      <h2>Started adventures:</h2>
+      <h2>{ language.home.titles.started }</h2>
       { 
         !startedSlice || startedSlice.length === 0
-        ? <p>No adventures started. Select ones to begin from the section bellow.</p>
+        ? <p>{ language.home.alts.started }</p>
         : <div className={ style.HorizontalCarousel }><div>
           {
             startedSlice.map((location: Location, key: number) =>
@@ -120,7 +129,7 @@ const Page: NextPage = () => {
           </div></div>
       }
       <div className={ style.TitleWithSort }>
-        <h2>New adventures:</h2>
+        <h2>{ language.home.titles.new }</h2>
         <button aria-label='toggle filter menu' onClick={ changeView }>
           <Image alt='filter' src='/icons/filter.svg' width={ 32 } height={ 32 } />
         </button>
@@ -130,7 +139,7 @@ const Page: NextPage = () => {
       </div>
       { 
         filtered.length === 0
-        ? <p>No new adventures to start. Check again later.</p>
+        ? <p>{ language.home.alts.new }</p>
         : filtered.map((
             location: Location,
             index: number
@@ -138,7 +147,7 @@ const Page: NextPage = () => {
       }
       {
         followerActivity.length > 0 && [
-          <h2>Followers&apos; activity:</h2>,
+          <h2>{ language.home.titles.activity }</h2>,
           followerActivity.map((accomplishment: Accomplishment, key: number) => 
             <AccomplishmentTag key={ key } accomplishment={ accomplishment } />
           )

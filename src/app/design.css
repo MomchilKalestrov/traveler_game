@@ -68,13 +68,12 @@
     color: var(--color-primary);
     scrollbar-width: none;
     font-size: 1rem;
-    line-height: 1rem;
+    line-height: 1.25rem;
 }
 
 h1, h2, h3, h4, h5, h6 {
     font-size: var(--font-size);
     line-height: var(--font-size);
-    font-family: 'Product Sans';
 }
 
 h1 { --font-size: 2rem; }

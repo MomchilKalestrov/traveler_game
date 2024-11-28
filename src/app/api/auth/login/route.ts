@@ -9,6 +9,9 @@ const POST = async (request: NextRequest) => {
     const username = args.get('username');
     const password = args.get('password');
 
+    console.log('Username:', username);
+    console.log('Password:', password);
+
     const cookie = await cookies();
     
     if(!username || !password)

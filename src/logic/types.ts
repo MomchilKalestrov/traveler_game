@@ -26,6 +26,77 @@ interface Accomplishment {
   time: number;
 };
 
+interface Language {
+    home: {
+        titles: {
+            started:  string;
+            new:      string;
+            activity: string;
+        };
+        alts: {
+            started: string;
+            new:     string;
+        };
+    };
+
+    profile: {
+        following: string;
+        followers: string;
+        badges:    string;
+        activity:  string;
+    };
+
+    leaderboard: {
+        top: string;
+    };
+
+    auth: {
+        login: {
+            title:  string;
+            button: string;
+        },
+        signup: {
+            title:  string;
+            button: string;
+        }
+        inputs: {
+            username: string;
+            password: string;
+            verify:   string;
+        }
+    }
+
+    misc: {
+        lookup: {
+            title:   string;
+            nouser:  string;
+            error:   string;
+        };
+        settings: {
+            title: string;
+            logout: {
+                title: string;
+                description: string;
+            };
+        };
+        accomplishment: {
+            title: string;
+        };
+        infocards: {
+            start:  string;
+            stop:   string;
+            finish: string;
+            view:   string;
+        };
+        navbar: {
+            home:        string;
+            map:         string;
+            profile:     string;
+            leaderboard: string;
+        };
+    };
+};
+
 const toLocation = (data: any): Location => ({
     name: data.name,
     location: {
@@ -36,5 +107,5 @@ const toLocation = (data: any): Location => ({
     xp: data.xp
 });
 
-export type { User, Location, Accomplishment };
+export type { User, Location, Accomplishment, Language };
 export { toLocation };

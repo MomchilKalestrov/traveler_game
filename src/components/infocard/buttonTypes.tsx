@@ -28,7 +28,7 @@ const buttons = {
             <button
                 aria-label='Start tracking' style={ buttonStyle }
                 onClick={ () => track({ location, close }) }
-            >Start tracking</button>
+            >Track location</button>
         ),
     [ buttonType.Untrack ]:
         ({ location, close }: ButtonProps) => (
