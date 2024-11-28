@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { User } from '@logic/types';
+import { User, Location } from '@logic/types';
 
 export const userSlice = createSlice({
   name: 'user',
-  initialState: { value: undefined as User | undefined},
+  initialState: { value: undefined as User | undefined },
   reducers: {
     update: (state, action: PayloadAction<User>) => {
       state.value = action.payload;
@@ -26,10 +26,11 @@ export const userSlice = createSlice({
       if (!state.value) return;
       state.value.started = state.value.started.filter(name => name !== action.payload);
     },
-    finish: (state, action: PayloadAction<string>) => {
+    finish: (state, action: PayloadAction<Location>) => {
       if (!state.value) return;
-      state.value.started = state.value.started.filter(name => name !== action.payload);
-      state.value.finished.push({ location: action.payload, time: Date.now() });
+      state.value.started = state.value.started.filter(name => name !== action.payload.name);
+      state.value.finished.push({ location: action.payload.name, time: Date.now() });
+      state.value.xp += action.payload.xp;
     }
   }
 });

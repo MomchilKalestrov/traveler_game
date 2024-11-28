@@ -1,8 +1,9 @@
 import { loading, stopLoading } from '@components/loading';
-import store from '@logic/redux/store';
+import { Location } from '@logic/types';
+import store        from '@logic/redux/store';
 
 type ButtonProps = {
-    name: string;
+    location: Location;
     close: () => void;
 };
 
@@ -29,7 +30,7 @@ const getUserLocation = (): Promise<{ lat: number, lng: number } | undefined> =>
     });
 };
 
-const untrack = async ({ name, close }: ButtonProps) => {
+const untrack = async ({ location, close }: ButtonProps) => {
     loading();
 
     const res = await fetch(`/api/untrack`, {
@@ -37,27 +38,21 @@ const untrack = async ({ name, close }: ButtonProps) => {
         headers: {
             "content-type": "application/json"
         },
-        body: JSON.stringify({ name: name })
+        body: JSON.stringify({ name: location.name })
     });
     if (!res.ok) {
         alert('An error has occured.');
         return stopLoading();
     };
-
-    const location = await fetch(`/api/location?name=${ name }`);
-    if (!location.ok) {
-        alert('An error has occured.');
-        return stopLoading();
-    };
     
-    store.dispatch({ type: 'started/remove', payload: name });
-    store.dispatch({ type: 'new/add',        payload: await location.json() });
-    store.dispatch({ type: 'user/untrack',   payload: name });
+    store.dispatch({ type: 'started/remove', payload: location.name });
+    store.dispatch({ type: 'new/add',        payload: location });
+    store.dispatch({ type: 'user/untrack',   payload: location.name });
     stopLoading();
     close();
 };
 
-const track = async ({ name, close }: ButtonProps) => {
+const track = async ({ location, close }: ButtonProps) => {
     loading();
 
     const res = await fetch(`/api/track`, {
@@ -71,21 +66,15 @@ const track = async ({ name, close }: ButtonProps) => {
         alert('An error has occured.');
         return stopLoading();
     };
-
-    const location = await fetch(`/api/location?name=${ name }`);
-    if (!location.ok) {
-        alert('An error has occured.');
-        return stopLoading();
-    };
     
-    store.dispatch({ type: 'started/add', payload: await location.json() });
-    store.dispatch({ type: 'new/remove',  payload: name });
-    store.dispatch({ type: 'user/track',  payload: name });
+    store.dispatch({ type: 'started/add', payload: location });
+    store.dispatch({ type: 'new/remove',  payload: location.name });
+    store.dispatch({ type: 'user/track',  payload: location.name });
     stopLoading();
     close();
 };
 
-const finish = async ({ name, close }: ButtonProps) => {
+const finish = async ({ location, close }: ButtonProps) => {
     const userLocation = await getUserLocation()
     if(!userLocation) return;
         
@@ -97,7 +86,7 @@ const finish = async ({ name, close }: ButtonProps) => {
             "content-type": "application/json"
         },
         body: JSON.stringify({
-            name: name,
+            name: location.name,
             lat: userLocation.lat,
             lng: userLocation.lng
         })
@@ -112,10 +101,11 @@ const finish = async ({ name, close }: ButtonProps) => {
         return stopLoading();
     }
 
-    store.dispatch({ type: 'new/remove',     payload: name });
-    store.dispatch({ type: 'finished/add',   payload: name });
-    store.dispatch({ type: 'started/remove', payload: name });
-    store.dispatch({ type: 'user/finish',    payload: name });
+
+    store.dispatch({ type: 'new/remove',     payload: location.name });
+    store.dispatch({ type: 'finished/add',   payload: location.name });
+    store.dispatch({ type: 'started/remove', payload: location.name });
+    store.dispatch({ type: 'user/finish',    payload: location });
     stopLoading();
     close();
 };
