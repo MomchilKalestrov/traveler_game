@@ -43,10 +43,11 @@ const Settings = ({ close }: SettingsProps) => {
                 </div>
                 <button
                     onClick={ () => {
-                        deleteCookie('username');
-                        deleteCookie('password');
-                        router.replace('/login');
-                    }
+                            sessionStorage.removeItem("initialSave");
+                            deleteCookie('username');
+                            deleteCookie('password');
+                            router.replace('/login');
+                        }
                     }
                 >Log out</button>
             </div>

@@ -110,7 +110,7 @@ const Page: NextPage = () => {
       <h2>Started adventures:</h2>
       { 
         !startedSlice || startedSlice.length === 0
-        ? <p>No adventures started.</p>
+        ? <p>No adventures started. Select ones to begin from the section bellow.</p>
         : <div className={ style.HorizontalCarousel }><div>
           {
             startedSlice.map((location: Location, key: number) =>
