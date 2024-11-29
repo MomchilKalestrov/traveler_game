@@ -1,8 +1,8 @@
 'use client';
 import React from 'react';
 import { Provider }  from 'react-redux';
-import store from '@logic/redux/store';
 import { useParams } from 'next/navigation';
+import store from '@logic/redux/store';
 import LanguageCTX from '@logic/contexts/languageCTX';
 import { Language } from '@logic/types';
 
@@ -15,7 +15,8 @@ const Providers: React.FC<ProvidersProps> = ({ children }) => {
     const [ language, setLanguage ] = React.useState<Language | undefined>(undefined);
 
     React.useEffect(() => {
-        fetch(`/languages/${ params.lang }.json`)
+        const language = localStorage.getItem('lang') || params.lang ;
+        fetch(`/languages/${ language }.json`)
             .then(res => res.json())
             .then(setLanguage);
     }, [ params ]);

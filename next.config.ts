@@ -21,6 +21,31 @@ const nextConfig: NextConfig = {
                 permanent: true
             },
             {
+                source: '/login',
+                destination: '/en/login',
+                permanent: true
+            },
+            {
+                source: '/home',
+                destination: '/en/home',
+                permanent: true
+            },
+            {
+                source: '/map',
+                destination: '/en/map',
+                permanent: true
+            },
+            {
+                source: '/profile',
+                destination: '/en/profile',
+                permanent: true
+            },
+            {
+                source: '/leaderboard',
+                destination: '/en/leaderboard',
+                permanent: true
+            },
+            {
                 source: '/',
                 destination: '/bg/home',
                 permanent: true
