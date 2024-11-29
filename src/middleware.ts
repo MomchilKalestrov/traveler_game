@@ -7,7 +7,11 @@ export const middleware = (request: NextRequest) => {
 
     const slug = request.nextUrl.pathname.split('/')[1];
     
-    if (username && password) return NextResponse.next();
+    if (
+        username && password ||
+        request.nextUrl.pathname.includes('login') ||
+        slug.length != 2
+    ) return NextResponse.next();
     
     return NextResponse.redirect(new URL(`/${ slug }/login`, request.url));
 }

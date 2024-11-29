@@ -129,7 +129,7 @@ const Page: NextPage = () => {
           <Image alt='filter' src='/icons/filter.svg' width={ 32 } height={ 32 } />
         </button>
         <div ref={ reference }>
-          <MaterialInput type='number' name='Distance (km)' onChange={ findCloseLocations } />
+          <MaterialInput type='number' name='km' onChange={ findCloseLocations } />
         </div>
       </div>
       { 

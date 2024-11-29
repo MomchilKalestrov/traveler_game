@@ -158,7 +158,7 @@ const Header = () => {
         setId(setTimeout(startSearch, 250));
     };
 
-    if (!language) return (<></>);
+    if (!language || pathname.includes('login')) return (<></>);
 
     return (
         <>
