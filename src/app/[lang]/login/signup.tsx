@@ -12,6 +12,7 @@ from '@components/loading';
 
 import { Language } from '@logic/types';
 import validateName from '@logic/validateName';
+import LanguageCTX  from '@logic/contexts/languageCTX';
 
 import style from './login.module.css';
 
@@ -47,7 +48,7 @@ const SignUp: React.FC<SignUpProps> = ({ setter }) => {
     const router = useRouter();
     const params = useParams();
 
-    const [ language, setLanguage ] = React.useState<Language | undefined>(undefined);
+    const language: Language | undefined = React.useContext(LanguageCTX);
 
     const createProfile = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -69,12 +70,6 @@ const SignUp: React.FC<SignUpProps> = ({ setter }) => {
             router.replace(`/${ params.lang }/home`);
         });
     };
-
-    React.useEffect(() => {
-        fetch(`/languages/${ params.lang }.json`)
-            .then(res => res.json())
-            .then(setLanguage);
-    }, []);
 
     if (!language)
         return (<LoadingPlaceholder />);

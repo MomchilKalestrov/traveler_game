@@ -5,6 +5,7 @@ import React from 'react';
 import { useParams, usePathname } from 'next/navigation';
 
 import { Language } from '@logic/types';
+import LanguageCTX  from '@logic/contexts/languageCTX';
 
 import styles from './navbar.module.css';
 
@@ -32,14 +33,7 @@ const NavbarEntry = ({ page, name, active, language }: NavbarEntryProps) => (
 const Navbar: React.FC<NavbarProps> = ({ pages }) => {
     const params   = useParams();
     const pathname = usePathname();
-
-    const [ language, setLanguage ] = React.useState<Language | undefined>(undefined);
-    
-    React.useEffect(() => {
-        fetch(`/languages/${ params.lang }.json`)
-            .then(res => res.json())
-            .then(setLanguage);
-    }, []);
+    const language: Language | undefined = React.useContext(LanguageCTX);
 
     if (pathname.includes('login') || !language) return (<></>);
 
@@ -50,7 +44,7 @@ const Navbar: React.FC<NavbarProps> = ({ pages }) => {
                     <NavbarEntry
                         aria-label={ `Navigate to ${ name }` }
                         key={ key }
-                        name={ (language?.misc.navbar as any)[name.toLowerCase()] }
+                        name={ (language.misc.navbar as any)[name.toLowerCase()] }
                         page={ name }
                         language={ params.lang as string }
                         active={ pathname.includes(name.toLowerCase()) }

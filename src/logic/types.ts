@@ -94,6 +94,12 @@ interface Language {
             profile:     string;
             leaderboard: string;
         };
+        GPSaccess: {
+            title: string;
+            description: string;
+            accept: string;
+            decline: string;
+        }
     };
 };
 

@@ -1,6 +1,6 @@
 import { CSSProperties } from 'react';
+import { Language, Location } from '@logic/types';
 import { track, untrack, finish } from './logic';
-import { Location } from '@logic/types';
 
 export enum buttonType {
     Untrack,
@@ -19,30 +19,31 @@ const buttonStyle: CSSProperties = {
 
 type ButtonProps = {
     location: Location,
-    close: () => void
+    close: () => void,
+    language: Language
 };
 
 const buttons = {
     [ buttonType.Track ]:
-        ({ location, close }: ButtonProps) => (
+        ({ location, close, language }: ButtonProps) => (
             <button
                 aria-label='Start tracking' style={ buttonStyle }
                 onClick={ () => track({ location, close }) }
-            >Track location</button>
+            >{ language.misc.infocards.start }</button>
         ),
     [ buttonType.Untrack ]:
-        ({ location, close }: ButtonProps) => (
+        ({ location, close,language }: ButtonProps) => (
             <button
                 aria-label='Stop tracking' style={ buttonStyle }
                 onClick={ () => untrack({ location, close }) }
-            >Stop tracking</button>
+            >{ language.misc.infocards.stop }</button>
         ),
     [ buttonType.Finish ]: 
-        ({ location, close }: ButtonProps) => (
+        ({ location, close, language }: ButtonProps) => (
             <button
                 aria-label='Finish' style={ buttonStyle }
                 onClick={ () => finish({ location, close }  ) }
-            >Finish</button>
+            >{ language.misc.infocards.finish }</button>
         )
 };
 

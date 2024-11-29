@@ -11,6 +11,7 @@ import
 from '@components/loading';
 
 import { Language } from '@logic/types';
+import LanguageCTX  from '@logic/contexts/languageCTX';
 
 import style from './login.module.css';
 
@@ -21,8 +22,8 @@ type LogInProps = {
 const LogIn: React.FC<LogInProps> = ({ setter }) => {
     const router = useRouter();
     const params = useParams();
-
-    const [ language, setLanguage ] = React.useState<Language | undefined>(undefined);
+    
+    const language: Language | undefined = React.useContext(LanguageCTX);
 
     const logIn = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -42,12 +43,6 @@ const LogIn: React.FC<LogInProps> = ({ setter }) => {
             router.replace(`/${ params.lang }/home`);
         });
     };
-
-    React.useEffect(() => {
-        fetch(`/languages/${ params.lang }.json`)
-            .then(res => res.json())
-            .then(setLanguage);
-    }, []);
 
     if (!language)
         return (<LoadingPlaceholder />);

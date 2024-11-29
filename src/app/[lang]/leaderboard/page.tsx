@@ -2,12 +2,12 @@
 import React from 'react';
 import Image from 'next/image';
 import { NextPage }  from 'next';
-import { useParams } from 'next/navigation';
 
 import LoadingPlaceholder from '@components/loading';
 
-import getColors from '@logic/profileColor';
-import { User, Language }            from '@logic/types';
+import getColors   from '@logic/profileColor';
+import LanguageCTX from '@logic/contexts/languageCTX';
+import { Language, User }            from '@logic/types';
 import { preloadFromSessionStorage } from '@logic/redux/sessionStorage';
 
 import userStyle from '@app/profile/profile.module.css';
@@ -46,18 +46,13 @@ const Player: React.FC<PlayerProps> = ({ user, position }) => {
 };
 
 const Page: NextPage = () => {
-  const params = useParams();
+  const language: Language | undefined = React.useContext(LanguageCTX);
 
-  const [ players,  setPlayers  ] = React.useState<User[] | undefined>(undefined);
-  const [ language, setLanguage ] = React.useState<Language | undefined>(undefined);
+  const [ players, setPlayers ] = React.useState<User[] | undefined>(undefined);
 
   // top players are used only here, so it's not necessary to store them in the redux store
   React.useEffect(() => {
     preloadFromSessionStorage();
-
-    fetch(`/languages/${ params.lang }.json`)
-      .then(res => res.json())
-      .then(setLanguage)
 
     if (sessionStorage.getItem('top'))
       return setPlayers(JSON.parse(sessionStorage.getItem('top') as string));

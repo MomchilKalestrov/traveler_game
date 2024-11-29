@@ -17,6 +17,9 @@ div.FormInput:has(input:user-invalid) {
 div.FormInput label {
     position: absolute;
     margin: 0;
+    padding: 0;
+    line-height: 1rem;
+    font-size: 1rem;
     color: var(--color-disabled);
     pointer-events: none;
     z-index: calc(var(--z) + 2);

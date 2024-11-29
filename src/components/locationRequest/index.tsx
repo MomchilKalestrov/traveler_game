@@ -1,5 +1,9 @@
 'use client';
 import React from 'react';
+
+import LanguageCTX  from '@logic/contexts/languageCTX';
+import { Language } from '@logic/types';
+
 import style from './request.module.css';
 
 type RequestProps = {
@@ -7,6 +11,8 @@ type RequestProps = {
 };
 
 const LocationRequest: React.FC<RequestProps> = ({ setPermission }) => {
+    const language: Language | undefined = React.useContext(LanguageCTX);
+
     const reference = React.useRef<HTMLDivElement>(null);
 
     const close = () => {
@@ -29,13 +35,15 @@ const LocationRequest: React.FC<RequestProps> = ({ setPermission }) => {
         setTimeout(() => setPermission(false), 500);
     }
 
+    if(!language) return (<></>);
+
     return (
         <div className={ style.Infocard }>
             <div ref={ reference }>
-                <h3>Location</h3>
-                <p>You will need to allow geolocation to claim badges.</p>
-                <button onClick={ accept  }>Allow</button>
-                <button onClick={ decline }>Deny</button>
+                <h3>{ language.misc.GPSaccess.title }</h3>
+                <p>{ language.misc.GPSaccess.title }</p>
+                <button onClick={ accept  }>{ language.misc.GPSaccess.accept  }</button>
+                <button onClick={ decline }>{ language.misc.GPSaccess.decline }</button>
             </div>
         </div>
     );

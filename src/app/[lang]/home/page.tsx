@@ -3,7 +3,6 @@ import React from 'react';
 import Image from 'next/image';
 import { useSelector } from 'react-redux';
 import { NextPage }    from 'next';
-import { useParams }   from 'next/navigation';
 
 import Mapcard            from '@components/mapcard';
 import Minicard           from '@components/minicard';
@@ -12,6 +11,7 @@ import AccomplishmentTag  from '@components/accomplishment';
 import LoadingPlaceholder from '@components/loading';
 
 import getActivities from '@logic/followerActivity';
+import LanguageCTX   from '@logic/contexts/languageCTX';
 import {
   Location,
   Accomplishment,
@@ -47,7 +47,7 @@ const haversineDistance = (
 
 
 const Page: NextPage = () => {
-  const params = useParams();
+  const language: Language | undefined = React.useContext(LanguageCTX);
 
   const reference = React.useRef<HTMLDivElement>(null);
  
@@ -57,15 +57,10 @@ const Page: NextPage = () => {
   
   const [ filtered,   setFiltered   ] = React.useState<Location[]>(newSlice || []);
   const [ filterOpen, setFilterOpen ] = React.useState(true);
-  const [ language,   setLanguage   ] = React.useState<Language | undefined>(undefined);
-
   const [ followerActivity, setFollowerActivity ] = React.useState<Accomplishment[]>([]);
 
   React.useEffect(() => {    
     preloadFromSessionStorage();
-    fetch(`/languages/${ params.lang }.json`)
-      .then(res => res.json())
-      .then(setLanguage);
   }, []);
 
   React.useEffect(() => {

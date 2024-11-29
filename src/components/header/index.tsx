@@ -7,8 +7,9 @@ import Settings               from '@components/settings';
 import { stopLoading }        from '@components/loading';
 import UserSearch, { status } from '@components/usersearch';
 
-import { User }      from '@logic/types';
-import { getCookie } from '@logic/cookies';
+import { Language, User } from '@logic/types';
+import { getCookie }      from '@logic/cookies';
+import LanguageCTX        from '@logic/contexts/languageCTX';
 
 import style from './header.module.css';
 
@@ -22,6 +23,8 @@ const emptyUser: User = {
 };
 
 const Header = () => {
+    const language: Language | undefined = React.useContext(LanguageCTX);
+
     const pathname = usePathname();
 
     const [ userData,    setUserData ] = React.useState<User>(emptyUser);
@@ -147,15 +150,15 @@ const Header = () => {
         if (!event.currentTarget) return;
         if (!imgReference.current) return;
 
-        if (event.currentTarget.value !== '')
-            imgReference.current.style.display = 'unset';
-        else
-            imgReference.current.style.display = 'none';
+        const state: string = event.currentTarget.value !== '' ? 'unset' : 'none';
+        imgReference.current.style.display = state;
 
         if (timeoutId)
             clearTimeout(timeoutId);
         setId(setTimeout(startSearch, 250));
     };
+
+    if (!language) return (<></>);
 
     return (
         <>
@@ -164,24 +167,24 @@ const Header = () => {
             <div className={ style.HeaderSearchBG } ref={ headerBGReference } />
             <header className={ style.Header } ref={ headerReference }>
                 <div>
-                    <button onClick={ closeLookup } aria-label='back from search' style={ { zIndex: 1, display: 'none' } }>
+                    <button onClick={ closeLookup } aria-label='Close search' style={ { zIndex: 1, display: 'none' } }>
                         <Image alt='back' src='/icons/back.svg' width={ 24 } height={ 24 } />
                     </button>
-                    <button aria-label='settings' onClick={ () => setSettings(true) }>
+                    <button aria-label='Go to settings' onClick={ () => setSettings(true) }>
                         <Image alt='settings' src='/icons/settings.svg' width={ 24 } height={ 24 } />
                     </button>
                 </div>
                 <input
                     ref={ inputReference }
                     type='text'
-                    placeholder='Profile lookup ...'
+                    placeholder={ language.misc.lookup.title }
                     onInput={ onEdit }
                     onClick={ showSearch }
                 />
                 <button
                     className={ style.HeaderCloseSearch }
                     onClick={ clearSearch }
-                    aria-label='Close search'
+                    aria-label='Clear search input'
                 >
                     <Image
                         ref={ imgReference }

@@ -9,11 +9,23 @@ const nextConfig: NextConfig = {
         } ]
     },
     async redirects() {
-        return [ {
-            source: '/',
-            destination: '/home',
-            permanent: true
-        } ];
+        return [
+            {
+                source: '/bg',
+                destination: '/bg/home',
+                permanent: true
+            },
+            {
+                source: '/en',
+                destination: '/en/home',
+                permanent: true
+            },
+            {
+                source: '/',
+                destination: '/bg/home',
+                permanent: true
+            }
+        ];
     }
 };
 

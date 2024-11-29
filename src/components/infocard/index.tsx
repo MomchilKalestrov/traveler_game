@@ -1,9 +1,13 @@
+'use client';
 import React from 'react';
 import Image from 'next/image';
 
-import style                   from './infocard.module.css';
-import { Location  }           from '@logic/types';
+import { Language, Location  } from '@logic/types';
+import LanguageCTX from '@logic/contexts/languageCTX';
+
 import buttons, { buttonType } from './buttonTypes';
+
+import style from './infocard.module.css';
 
 export { buttonType as cardType };
 
@@ -15,6 +19,8 @@ export type InfoCardProps = {
 
 const InfoCard: React.FC<InfoCardProps> = ({ setter, type, location }) => {
     const reference = React.useRef<HTMLDivElement>(null);
+    const language: Language | undefined = React.useContext(LanguageCTX);
+    
     const Button = buttons[type];
 
     const close = () => {
@@ -27,6 +33,8 @@ const InfoCard: React.FC<InfoCardProps> = ({ setter, type, location }) => {
 
         setTimeout(() => setter(false), 500);
     }
+
+    if (!language) return (<></>);
 
     return (
         <div className={ style.Infocard }>
@@ -51,7 +59,7 @@ const InfoCard: React.FC<InfoCardProps> = ({ setter, type, location }) => {
                 <div className={ style.InfocardData }>
                     <h3>{ location.name }</h3>
                     <p>{ location.description }</p>
-                    <Button location={ location } close={ close } />
+                    <Button location={ location } close={ close } language={ language } />
                 </div>
             </div>
         </div>

@@ -8,7 +8,7 @@
     display: flex;
     align-items: stretch;
     position: fixed;
-    z-index: calc(var(--z) + 2);
+    z-index: calc(var(--z) + 4);
 }
 
 .Header div {
@@ -28,7 +28,7 @@
     width: calc(100% - 2.5rem);
     background-color: var(--color-secondary);
     outline: none;
-    font-family: 'Product Sans';
+    --font-family: 'Product Sans';
 }
 
 .Header button {
@@ -66,7 +66,7 @@
     display: flex;
     align-items: stretch;
     position: fixed;
-    z-index: calc(var(--z) + 1);
+    z-index: calc(var(--z) + 3);
     transition-property: margin, width, height, border-radius, border-bottom;
     transition-duration: 0.25s;
 }

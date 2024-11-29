@@ -10,22 +10,18 @@ import LoadingPlaceholder from '@components/loading';
 import getColors     from '@logic/profileColor';
 import { Language }  from '@logic/types';
 import { RootState } from '@logic/redux/store';
+import LanguageCTX   from '@logic/contexts/languageCTX';
 import { preloadFromSessionStorage } from '@logic/redux/sessionStorage';
 
 import style from './profile.module.css';
 
 const Page: NextPage = () => {
-  const params = useParams();
-  const [ language, setLanguage ] = React.useState<Language | undefined>(undefined);
+  const language: Language | undefined = React.useContext(LanguageCTX);
 
   const user = useSelector((state: RootState) => state.user.value);
 
   React.useEffect(() => {
     preloadFromSessionStorage();
-
-    fetch(`/languages/${ params.lang }.json`)
-      .then(res => res.json())
-      .then(setLanguage);
   }, []);
 
   if (!user || !language) return (<LoadingPlaceholder />);

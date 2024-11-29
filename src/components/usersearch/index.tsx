@@ -6,8 +6,9 @@ import { loading, stopLoading } from '@components/loading';
 import AccomplishmentTag        from '@components/accomplishment';
 
 import getColors     from '@logic/profileColor';
+import LanguageCTX   from '@logic/contexts/languageCTX';
 import { RootState } from '@logic/redux/store';
-import { Accomplishment, User } from '@logic/types';
+import { Accomplishment, Language, User } from '@logic/types';
 
 import userStyle from '@app/profile/profile.module.css';
 import style     from './usersearch.module.css';
@@ -26,7 +27,8 @@ type UserSearchProps = {
 
 const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
     const currentUser = useSelector((state: RootState) => state.user.value);
-    const dispatch    = useDispatch();
+    const language: Language | undefined = React.useContext(LanguageCTX);
+    const dispatch = useDispatch();
 
     let type: string = !currentUser?.following.includes(user.username) ? 'Follow' : 'Unfollow';
     let action = () => {
@@ -46,6 +48,8 @@ const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
             });
     };
     
+    if (!language) return (<></>);
+
     switch (state) {
         case status.loading: return (
             <div className={ `${ style.UserSearch } ${ style.UserSearchCentered }` }>
@@ -55,13 +59,13 @@ const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
         case status.nouser: return (
             <div className={ `${ style.UserSearch } ${ style.UserSearchCentered }` }>
                 <Image src='/icons/nouser.svg' alt='no user' width={ 48 } height={ 48 } />
-                <p>No user with the name { `"${ user.username }"` } found.</p>
+                <p>{ language.misc.lookup.nouser }</p>
             </div>
         );
         case status.error: return (
             <div className={ `${ style.UserSearch } ${ style.UserSearchCentered }` }>
                 <Image src='/icons/error.svg' alt='error' width={ 48 } height={ 48 } />
-                <p>An error occurred while looking up the user.</p>
+                <p>{ language.misc.lookup.error }</p>
             </div>
         );
         case status.founduser:
@@ -82,14 +86,14 @@ const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
                             <h2>{ user.username }</h2>
                             <button onClick={ action }>{ type }</button>
                             <div>
-                                <p><b>{ user.followers.length }</b> followers</p>
-                                <p><b>{ user.following.length }</b> following</p>
+                                <p><b>{ user.followers.length }</b> { language.profile.followers }</p>
+                                <p><b>{ user.following.length }</b> { language.profile.followers }</p>
                             </div>
                         </div>
                         {
                             user.finished.length > 0 &&
                             <div className={ userStyle.ProfileCard }>
-                                <h2>Badges</h2>
+                                <h2>{ language.profile.badges }</h2>
                                 <div className={ userStyle.ProfileDivider } />
                                 <div className={ userStyle.ProfileBadges }>
                                     {
@@ -104,7 +108,7 @@ const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
                             </div>
                         }
                         <div className={ userStyle.ProfileCard + ' ' + style.UserSearchHistory }>
-                            <h2>History</h2>
+                            <h2>{ language.profile.activity }</h2>
                             <div className={ userStyle.ProfileDivider } />
                             {
                                 user

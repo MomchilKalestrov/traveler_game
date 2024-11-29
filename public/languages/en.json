@@ -61,6 +61,12 @@
         "map": "Map",
         "profile": "Profile",
         "leaderboard": "Leaderboard"
+      },
+      "GPSaccess": {
+        "title": "Location access",
+        "description": "This application requires access to your location in order to function properly. Please give location permissions to continue.",
+        "accept": "Accept",
+        "decline": "Deny"
       }
     }
   }

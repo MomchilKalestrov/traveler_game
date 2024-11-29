@@ -4,6 +4,8 @@ import { useRouter } from 'next/navigation';
 import Image         from 'next/image';
 
 import { deleteCookie } from '@logic/cookies';
+import { Language }     from '@logic/types';
+import LanguageCTX      from '@logic/contexts/languageCTX';
 
 import style from './settings.module.css';
 
@@ -13,6 +15,7 @@ type SettingsProps = {
 
 const Settings = ({ close }: SettingsProps) => {
     const router = useRouter();
+    const language: Language | undefined = React.useContext(LanguageCTX);
     const reference = React.useRef<HTMLDivElement>(null);
 
     const handleClick = () => {
@@ -25,6 +28,8 @@ const Settings = ({ close }: SettingsProps) => {
         if (!reference.current) return;
     }, []);
 
+    if (!language) return (<></>);
+
     return (
         <div ref={ reference } className={ style.Settings }>
             <div className={ style.SettingsHeader }>
@@ -33,13 +38,13 @@ const Settings = ({ close }: SettingsProps) => {
                     onClick={ handleClick }
                     className={ style.SettingsBack }
                 ><Image src='/icons/back.svg' alt='go back' width={ 24 } height={ 24 } /></button>
-                <h2>Settings</h2>
+                <h2>{ language.misc.settings.title }</h2>
                 <div style={ { width: '2.5rem', height: '2.5rem' } } />
             </div>
             <div className={ style.Option }>
                 <div>
-                    <h3>Log out</h3>
-                    <p>Log out of your profile.</p>
+                    <h3>{ language.misc.settings.logout.title }</h3>
+                    <p>{ language.misc.settings.logout.description }</p>
                 </div>
                 <button
                     onClick={ () => {
@@ -49,7 +54,7 @@ const Settings = ({ close }: SettingsProps) => {
                             router.replace('/login');
                         }
                     }
-                >Log out</button>
+                >{ language.misc.settings.logout.title }</button>
             </div>
         </div>
     );

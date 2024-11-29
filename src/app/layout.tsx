@@ -5,7 +5,7 @@ import { Analytics } from '@vercel/analytics/react';
 import Navbar         from '@components/navbar';
 import Header         from '@components/header';
 import OfflineHandler from '@components/offlineHandler';
-import Providers      from '@components/provider';
+import Providers      from '@components/providers';
 
 import { Roboto } from 'next/font/google';
 import './design.css';

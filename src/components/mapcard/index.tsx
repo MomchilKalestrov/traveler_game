@@ -2,7 +2,9 @@
 import React from 'react';
 import Image from 'next/image';
 
-import { Location }           from '@logic/types';
+import { Location, Language } from '@logic/types';
+import LanguageCTX from '@logic/contexts/languageCTX';
+
 import InfoCard, { cardType } from '@components/infocard';
 
 import style from './mapcard.module.css';
@@ -12,7 +14,10 @@ type MapcardProps = {
 };
 
 const Mapcard: React.FC<MapcardProps> = ({ location }) => {
-    const [viewing, setViewing] = React.useState<boolean>(false);
+    const language: Language | undefined = React.useContext(LanguageCTX);
+    const [ viewing, setViewing ] = React.useState<boolean>(false);
+
+    if (!language) return (<></>);
 
     return (
         <>
@@ -41,7 +46,7 @@ const Mapcard: React.FC<MapcardProps> = ({ location }) => {
                         aria-label={ `View new ${ location.name }` }
                         className={ style.Button }
                         onClick={ () => setViewing(true) }
-                    >View</button>
+                    >{ language.misc.infocards.view }</button>
                 </div>
             </div>
             {
