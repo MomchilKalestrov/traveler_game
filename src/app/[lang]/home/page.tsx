@@ -48,15 +48,11 @@ const haversineDistance = (
 
 const Page: NextPage = () => {
   const language: Language | undefined = React.useContext(LanguageCTX);
-
-  const reference = React.useRef<HTMLDivElement>(null);
  
   const userSlice    = useSelector((state: RootState) => state.user.value);
   const newSlice     = useSelector((state: RootState) => state.new.value);
   const startedSlice = useSelector((state: RootState) => state.started.value);
   
-  const [ filtered,   setFiltered   ] = React.useState<Location[]>(newSlice || []);
-  const [ filterOpen, setFilterOpen ] = React.useState(true);
   const [ followerActivity, setFollowerActivity ] = React.useState<Accomplishment[]>([]);
 
   React.useEffect(() => {    
@@ -65,49 +61,10 @@ const Page: NextPage = () => {
 
   React.useEffect(() => {
     if (!userSlice) return;
-
     getActivities(userSlice as User).then(setFollowerActivity);
   }, [userSlice]);
-  
-  React.useEffect(() => {
-    if (!newSlice) return;
-    setFiltered(newSlice);
-  }, [newSlice]);
-  
-  const changeView = () => {
-    if (!reference.current) return;
-    const state = !filterOpen;
-    reference.current.style.paddingTop = state ? '0' : 'var(--padding)';
-    reference.current.style.height  = state ? '0' : 'calc(3rem + 1px)';
-    setFilterOpen(state);
-  };
 
-  if (!userSlice || !newSlice || !language) return (<LoadingPlaceholder />);
-
-  const findCloseLocations = (event: React.FormEvent<HTMLInputElement>) => {
-    if(!newSlice || !event.currentTarget) return;
-
-    const inputValue = parseInt(event.currentTarget.value);
-
-    if(isNaN(inputValue) || inputValue <= 0) return setFiltered(newSlice);
-
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        if(!newSlice) return alert('An unknown exception has occured.');
-        setFiltered(
-          newSlice.filter((location: Location) =>
-            haversineDistance(
-              location.location.lat,
-              location.location.lng,
-              position.coords.latitude,
-              position.coords.longitude
-            ) <= inputValue
-        ));
-      },
-      (error) => alert('Error getting user location: \n' + error.message),
-      { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
-    );
-  };
+  if (!userSlice || !newSlice || !startedSlice || !language) return (<LoadingPlaceholder />);
 
   return (
     <main className={ style.Home }>
@@ -123,19 +80,11 @@ const Page: NextPage = () => {
           }
           </div></div>
       }
-      <div className={ style.TitleWithSort }>
-        <h2>{ language.home.titles.new }</h2>
-        <button aria-label='toggle filter menu' onClick={ changeView }>
-          <Image alt='filter' src='/icons/filter.svg' width={ 32 } height={ 32 } />
-        </button>
-        <div ref={ reference }>
-          <MaterialInput type='number' name='km' onChange={ findCloseLocations } />
-        </div>
-      </div>
+      <h2>{ language.home.titles.new }</h2>
       { 
-        filtered.length === 0
+        newSlice.length === 0
         ? <p>{ language.home.alts.new }</p>
-        : filtered.map((
+        : (newSlice.slice(0, 6 - startedSlice.length)).map((
             location: Location,
             index: number
           ) => <Mapcard key={ index } location={ location } />)
