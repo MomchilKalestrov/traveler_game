@@ -23,27 +23,7 @@ import { preloadFromSessionStorage } from '@logic/redux/sessionStorage';
 
 import style from './home.module.css';
 
-const haversineDistance = (
-  lat1: number,
-  lon1: number,
-  lat2: number,
-  lon2: number
-): number => {
-  const toRadians = (degree: number) => degree * (Math.PI / 180);
-
-  const R = 6371;
-  const dLat = toRadians(lat2 - lat1);
-  const dLon = toRadians(lon2 - lon1);
-  const a =
-      Math.sin(dLat / 2) ** 2 +
-      Math.cos(toRadians(lat1)) *
-      Math.cos(toRadians(lat2)) *
-      Math.sin(dLon / 2) ** 2;
-
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c;
-};
-
+const MAX_PAGES = Number(process.env.NEXT_PUBLIC_MAX_LOCATIONS || 6);
 
 const Page: NextPage = () => {
   const language: Language | undefined = React.useContext(LanguageCTX);
@@ -83,7 +63,7 @@ const Page: NextPage = () => {
       { 
         newSlice.length === 0
         ? <p>{ language.home.alts.new }</p>
-        : (newSlice.slice(0, 6 - startedSlice.length)).map((
+        : (newSlice.slice(0, MAX_PAGES - startedSlice.length)).map((
             location: Location,
             index: number
           ) => <Mapcard key={ index } location={ location } />)
