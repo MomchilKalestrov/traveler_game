@@ -41,7 +41,7 @@ const LocationRequest: React.FC<RequestProps> = ({ setPermission }) => {
         <div className={ style.Infocard }>
             <div ref={ reference }>
                 <h3>{ language.misc.GPSaccess.title }</h3>
-                <p>{ language.misc.GPSaccess.title }</p>
+                <p>{ language.misc.GPSaccess.description }</p>
                 <button onClick={ accept  }>{ language.misc.GPSaccess.accept  }</button>
                 <button onClick={ decline }>{ language.misc.GPSaccess.decline }</button>
             </div>
