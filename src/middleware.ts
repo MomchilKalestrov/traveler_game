@@ -13,7 +13,7 @@ export const middleware = (request: NextRequest) => {
     
     if (
 	username && password ||
-	!languages.includes(slug)
+	!languages.includes(slug) ||
         url.includes('login')
     )
         return NextResponse.next();
