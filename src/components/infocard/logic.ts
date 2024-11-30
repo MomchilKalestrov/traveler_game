@@ -60,7 +60,7 @@ const track = async ({ location, close }: ButtonProps) => {
         headers: {
             "content-type": "application/json"
         },
-        body: JSON.stringify({ name: name })
+        body: JSON.stringify({ name: location.name })
     })
     if (!res.ok) {
         alert('An error has occured.');
