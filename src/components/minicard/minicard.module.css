@@ -13,7 +13,8 @@
 }
 
 .Minicard h2 {
-    margin: 1.75rem 1.75rem 1.75rem 0px;
+    margin: 0px;
+    margin-right: 1.75rem;
     color: var(--color-primary);
 }
 

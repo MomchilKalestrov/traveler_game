@@ -6,7 +6,6 @@ import { NextPage }    from 'next';
 
 import Mapcard            from '@components/mapcard';
 import Minicard           from '@components/minicard';
-import MaterialInput      from '@components/input';
 import AccomplishmentTag  from '@components/accomplishment';
 import LoadingPlaceholder from '@components/loading';
 
