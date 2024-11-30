@@ -1,10 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 
 import locations from '@logic/mongoose/locations';
 import connect   from '@logic/mongoose/mongoose';
+import userCheck from '@logic/usercheck';
+import localeSelector from '@logic/mongoose/DBLanguageSelector';
 
 const GET = async (request: NextRequest) => {
-    const args = new URL(request.url).searchParams;
+    const cookie = await cookies();
+    const username = cookie.get('username')?.value;
+    const password = cookie.get('password')?.value;
+
+    if(!(await userCheck(username, password)))
+        return NextResponse.json({ error: 'Invalid credentials.' }, { status: 401 });
+    
+    const args: URLSearchParams = new URL(request.url).searchParams;
+    const locale = args.get('locale') || 'en';
     const name = args.get('name');
 
     if (!name)
@@ -14,10 +25,12 @@ const GET = async (request: NextRequest) => {
         // Connect to the database
         await connect();
         // Get the location
-        const location = await locations.findOne({ name: name }, { _id: 0, __v: 0 });
-        if (!location) {
+        const location = (await locations.aggregate([
+            { $match: { name: name } },
+            ...localeSelector(locale)
+        ]))[0];
+        if (!location)
             return NextResponse.json({ error: 'Location not found.' }, { status: 404 });
-        }
         // Close the connection
         return NextResponse.json(location, { status: 200 });
     } catch(error) {

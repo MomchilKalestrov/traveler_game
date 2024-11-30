@@ -4,33 +4,29 @@ import { cookies } from 'next/headers';
 import users     from '@logic/mongoose/user';
 import locations from '@logic/mongoose/locations';
 import connect   from '@logic/mongoose/mongoose';
+import userCheck from '@logic/usercheck';
+import localeSelector from '@src/logic/mongoose/DBLanguageSelector';
 
 const GET = async (request: NextRequest) => {
-    const args = new URL(request.url).searchParams;
-    const requestedUsername = args.get('username');
-
     const cookie = await cookies();
-    const currentUsername = cookie.get('username')?.value;
+    const username = cookie.get('username')?.value;
+    const password = cookie.get('password')?.value;
 
-    if(!requestedUsername)
-        return NextResponse.json({ error: 'Missing parameters.' }, { status: 412 });
-
-    const username = requestedUsername === 'CURRENT_USER' ? currentUsername : requestedUsername;
-    // This is when the body value was `CURRENT_USER` but the cookie was undefined
-    if(!username)
-        return NextResponse.json({ error: 'Missing parameters.' }, { status: 412 });
+    if(!(await userCheck(username, password)))
+        return NextResponse.json({ error: 'Invalid credentials.' }, { status: 401 });
+    
+    const args: URLSearchParams = new URL(request.url).searchParams;
+    const locale = args.get('locale') || 'en';
 
     try {
         // Connect to the database
         await connect();
         // Check if the user exists
         const user = await users.findOne({ username: username });
-        if(!user)
-            return NextResponse.json({ error: 'User not found.' }, { status: 404 });
         // Get the finished locations
         const finished = await locations.aggregate([
-            { $project: { _id: 0, __v: 0 } },
-            { $match:   { name: { $in: user.finished.map((l: any) => l.location) } } }
+            { $match:   { name: { $in: user.finished.map((l: any) => l.location) } } },
+            ...localeSelector(locale)
         ]);
         // Close the connection
         return NextResponse.json(finished, { status: 200 });

@@ -5,6 +5,7 @@ import users   from '@src/logic/mongoose/user';
 import connect from '@logic/mongoose/mongoose';
 import userCheck from '@logic/usercheck';
 import locations from '@logic/mongoose/locations';
+import localeSelector from '@logic/mongoose/DBLanguageSelector';
 
 const MAX_PAGES = Number(process.env.NEXT_PUBLIC_MAX_LOCATIONS || 6);
 
@@ -26,30 +27,8 @@ const GET = async (request: NextRequest) => {
         const user = await users.findOne({ username: username });
         const level = Math.floor(user.xp / 100);
         const all = await locations.aggregate([
-            { $addFields: { localesType: { $type: '$locales' } } },
-            { $match: {
-                localesType: 'array',
-                minlevel: { $lte: level }
-            } },
-            { $project: {
-                locales: {
-                    $filter: {
-                        input: '$locales',
-                        as: 'locale',
-                        cond: { $eq: ['$$locale.language', locale] }
-                    }
-                },
-                location: 1,
-                xp: 1,
-                minlevel: 1
-            } },
-            { $project: {
-                name: { $arrayElemAt: ['$locales.name', 0] },
-                description: { $arrayElemAt: ['$locales.description', 0] },
-                location: 1,
-                xp: 1,
-                minlevel: 1
-            } },
+            { $match: { minlevel: { $lte: level } } },
+            ...localeSelector(locale),
             { $limit: MAX_PAGES }
         ]);
         // Close the connection
