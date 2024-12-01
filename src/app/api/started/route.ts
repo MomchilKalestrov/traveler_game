@@ -27,7 +27,7 @@ const GET = async (request: NextRequest) => {
             return NextResponse.json({ error: 'User not found.' }, { status: 404 });
         // Get the started locations
         const started = await locations.aggregate([
-            { $match: { name: { $in: user.started } } },
+            { $match: { dbname: { $in: user.started } } },
             ...localeSelector(locale)
         ]);
         // Close the connection

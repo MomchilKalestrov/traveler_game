@@ -25,7 +25,7 @@ const GET = async (request: NextRequest) => {
         const user = await users.findOne({ username: username });
         // Get the finished locations
         const finished = await locations.aggregate([
-            { $match:   { name: { $in: user.finished.map((l: any) => l.location) } } },
+            { $match:   { dbname: { $in: user.finished.map((l: any) => l.location) } } },
             ...localeSelector(locale)
         ]);
         // Close the connection

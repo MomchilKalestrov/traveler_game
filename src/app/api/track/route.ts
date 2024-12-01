@@ -24,7 +24,7 @@ const POST = async (request: NextRequest) => {
         const user = await users.findOne({ username: username });
         if (user.started.includes(name)) 
             return NextResponse.json({ error: 'User is already tracking this location.' }, { status: 400 });
-        const location = await locations.findOne({ name: name });
+        const location = await locations.findOne({ dbname: name });
         if (!location)
             return NextResponse.json({ error: 'Location not found.' }, { status: 404 });
         // Start tracking the location
