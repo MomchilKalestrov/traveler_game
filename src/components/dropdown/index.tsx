@@ -13,9 +13,7 @@ type DropdownProps = {
     onClick?: (event: React.MouseEvent<HTMLDivElement>, value: string) => void;
 };
 
-const Dropdown: React.FC<DropdownProps> = ({ entries, name, selected, width, onClick }) => {
-    console.log(selected);
-    return(
+const Dropdown: React.FC<DropdownProps> = ({ entries, name, selected, width, onClick }) => (
     <div className={ style.Dropdown } style={ { width: width } }>
         <div className={ style.DropdownHead }>
             <p>{ name }</p>
@@ -46,6 +44,6 @@ const Dropdown: React.FC<DropdownProps> = ({ entries, name, selected, width, onC
             }
         </div>
     </div>
-)};
+);
 
 export default Dropdown;
