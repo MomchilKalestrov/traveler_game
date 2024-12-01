@@ -104,6 +104,7 @@ interface Language {
             decline: string;
         }
     };
+    [key: string]: any;
 };
 
 const toLocation = (data: any): Location => ({

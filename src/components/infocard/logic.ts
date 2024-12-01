@@ -38,7 +38,7 @@ const untrack = async ({ location, close }: ButtonProps) => {
         headers: {
             "content-type": "application/json"
         },
-        body: JSON.stringify({ name: location.name })
+        body: JSON.stringify({ name: location.dbname })
     });
     if (!res.ok) {
         alert('An error has occured.');
@@ -60,7 +60,7 @@ const track = async ({ location, close }: ButtonProps) => {
         headers: {
             "content-type": "application/json"
         },
-        body: JSON.stringify({ name: location.name })
+        body: JSON.stringify({ name: location.dbname })
     })
     if (!res.ok) {
         alert('An error has occured.');
@@ -86,7 +86,7 @@ const finish = async ({ location, close }: ButtonProps) => {
             "content-type": "application/json"
         },
         body: JSON.stringify({
-            name: location.name,
+            name: location.dbname,
             lat: userLocation.lat,
             lng: userLocation.lng
         })

@@ -22,7 +22,6 @@ const GET = async (request: NextRequest) => {
         await connect();
         // Get all locations
         const all = await locations.aggregate([ ...localeSelector(locale) ]);
-        console.log(all);
         // Close the connection
         return NextResponse.json(all, { status: 200 });
     } catch(error) {

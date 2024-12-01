@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 import users     from '@logic/mongoose/user';
 import userCheck from '@logic/usercheck';
 import connect   from '@logic/mongoose/mongoose';
+import locations from '@logic/mongoose/locations';
 
 const POST = async (request: NextRequest) => {
     const { name } = await request.json();
@@ -22,7 +23,10 @@ const POST = async (request: NextRequest) => {
         // Get the user
         const user = await users.findOne({ username: username });
         if (user.started.includes(name)) 
-            return NextResponse.json({ error: 'User is already tracking this location.' }, { status: 404 });
+            return NextResponse.json({ error: 'User is already tracking this location.' }, { status: 400 });
+        const location = await locations.findOne({ name: name });
+        if (!location)
+            return NextResponse.json({ error: 'Location not found.' }, { status: 404 });
         // Start tracking the location
         await users.updateOne(
             { username: username },
