@@ -8,7 +8,7 @@ import AccomplishmentTag        from '@components/accomplishment';
 import getColors     from '@logic/profileColor';
 import LanguageCTX   from '@logic/contexts/languageCTX';
 import { RootState } from '@logic/redux/store';
-import { Accomplishment, Language, User } from '@logic/types';
+import { Accomplishment, Language, Location, User } from '@logic/types';
 
 import userStyle from '@app/profile/profile.module.css';
 import style     from './usersearch.module.css';
@@ -27,8 +27,18 @@ type UserSearchProps = {
 
 const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
     const currentUser = useSelector((state: RootState) => state.user.value);
+    const all = useSelector((state: RootState) => state.all.value);
+    const [ locationMap, setLocationMap ] = React.useState<Map<string, string>>(new Map());
     const language: Language | undefined = React.useContext(LanguageCTX);
     const dispatch = useDispatch();
+
+    React.useEffect(() => {
+        if (!all) return;
+
+        const map = new Map<string, string>();
+        all.forEach((data: Location) => map.set(data.dbname, data.name));
+        setLocationMap(map);
+    }, [ state, all ]);
 
     let type: string = !currentUser?.following.includes(user.username) ? 'Follow' : 'Unfollow';
     let action = () => {
@@ -114,12 +124,14 @@ const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
                                 user
                                     .finished
                                     .slice(0, 6)
-                                    .map((data: { location: string, time: number }, key: number) =>
+                                    .map((data, key: number) =>
                                         <AccomplishmentTag
                                             accomplishment={ {
-                                                ... data,
-                                                user: (user as User).username
-                                            } as Accomplishment }
+                                                location: locationMap.get(data.location) || data.location,
+                                                time: data.time,
+                                                dbname: data.location,
+                                                user: user.username
+                                            } }
                                             key={ key }
                                         />
                                 )

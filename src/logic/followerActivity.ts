@@ -16,7 +16,6 @@ const initialGet = async (user: User, all: Location[]): Promise<Accomplishment[]
         const data: follower = await fetchFollower(follower);
         
         if (data.finished.length > 0){
-            console.log(data.finished[0].location);
             activities = activities.concat(
                 data.finished.map((info: { location: string, time: number }) => ({
                     dbname: info.location,
