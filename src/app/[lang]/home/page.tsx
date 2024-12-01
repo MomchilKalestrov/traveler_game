@@ -34,7 +34,7 @@ const Page: NextPage = () => {
   
   const [ followerActivity, setFollowerActivity ] = React.useState<Accomplishment[]>([]);
 
-  React.useEffect(() => {    
+  React.useEffect(() => {
     preloadFromSessionStorage();
   }, []);
 

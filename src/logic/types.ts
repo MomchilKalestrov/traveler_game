@@ -27,6 +27,7 @@ interface Accomplishment {
 };
 
 interface Language {
+    locale: string;
     home: {
         titles: {
             started:  string;

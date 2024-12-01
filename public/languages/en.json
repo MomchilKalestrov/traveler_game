@@ -1,73 +1,73 @@
 {
-    "home": {
-      "titles": {
-        "started": "Sights you want to visit:",
-        "new": "New landmarks:",
-        "activity": "Followers' activity:"
-      },
-      "alts": {
-        "started": "No adventures started. Select ones to begin from the section bellow.",
-        "new": "No new adventures to start. Check again later."
+  "locale": "en",
+  "home": {
+    "titles": {
+      "started": "Sights you want to visit:",
+      "new": "New landmarks:",
+      "activity": "Followers' activity:"
+    },
+    "alts": {
+      "started": "No adventures started. Select ones to begin from the section bellow.",
+      "new": "No new adventures to start. Check again later."
+    }
+  },
+  "profile": {
+    "followers": "followers",
+    "following": "following",
+    "badges": "Badges",
+    "activity": "Activity"
+  },
+  "leaderboard": {
+    "top": "Top {COUNT}"
+  },
+  "auth": {
+    "login": {
+      "title": "Log in",
+      "button": "Log in"
+    },
+    "signup": {
+      "title": "Sign up",
+      "button": "Sign up"
+    },
+    "inputs": {
+      "username": "Username",
+      "password": "Password",
+      "verify": "Verify password"
+    }
+  },
+  "misc": {
+    "lookup": {
+      "title": "User lookup...",
+      "nouser": "No user with such a name has been found.",
+      "error": "An error has occurred whilst looking up the user. Please try again."
+    },
+    "settings": {
+      "title": "Settings",
+      "logout": {
+        "title": "Log out",
+        "description": "Sign out of your current profile."
       }
     },
-    "profile": {
-      "followers": "followers",
-      "following": "following",
-      "badges": "Badges",
-      "activity": "Activity"
+    "accomplishment": {
+      "title": "{NAME} has earned the badge for {LOCATION}!"
     },
-    "leaderboard": {
-      "top": "Top {COUNT}"
+    "infocards": {
+      "start": "Mark for visitation",
+      "stop": "Remove from visitation",
+      "finish": "Mark as visited",
+      "view": "View"
     },
-    "auth": {
-      "login": {
-        "title": "Log in",
-        "button": "Log in"
-      },
-      "signup": {
-        "title": "Sign up",
-        "button": "Sign up"
-      },
-      "inputs": {
-        "username": "Username",
-        "password": "Password",
-        "verify": "Verify password"
-      }
+    "navbar": {
+      "home": "Home",
+      "map": "Map",
+      "profile": "Profile",
+      "leaderboard": "Leaderboard"
     },
-    "misc": {
-      "lookup": {
-        "title": "User lookup...",
-        "nouser": "No user with such a name has been found.",
-        "error": "An error has occurred whilst looking up the user. Please try again."
-      },
-      "settings": {
-        "title": "Settings",
-        "logout": {
-          "title": "Log out",
-          "description": "Sign out of your current profile."
-        }
-      },
-      "accomplishment": {
-        "title": "{NAME} has earned the badge for {LOCATION}!"
-      },
-      "infocards": {
-        "start": "Mark for visitation",
-        "stop": "Remove from visitation",
-        "finish": "Mark as visited",
-        "view": "View"
-      },
-      "navbar": {
-        "home": "Home",
-        "map": "Map",
-        "profile": "Profile",
-        "leaderboard": "Leaderboard"
-      },
-      "GPSaccess": {
-        "title": "Location access",
-        "description": "This application requires access to your location in order to function properly. Please give location permissions to continue.",
-        "accept": "Accept",
-        "decline": "Deny"
-      }
+    "GPSaccess": {
+      "title": "Location access",
+      "description": "This application requires access to your location in order to function properly. Please give location permissions to continue.",
+      "accept": "Accept",
+      "decline": "Deny"
     }
   }
-  
+}

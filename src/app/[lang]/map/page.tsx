@@ -6,12 +6,17 @@ import { useSelector } from 'react-redux';
 
 import { preloadFromSessionStorage } from '@logic/redux/sessionStorage';
 import { RootState } from '@logic/redux/store';
+import { Language }  from '@logic/types';
+import LanguageCTX   from '@logic/contexts/languageCTX';
 
 import LoadingPlaceholder from '@components/loading';
 import LocationRequest    from '@components/locationRequest';
 
 const Page: NextPage = () => {
+  const language: Language | undefined = React.useContext(LanguageCTX);
+
   const started  = useSelector((state: RootState) => state.started.value);
+
   const [ allowGPS, setPermission ] = React.useState<boolean>(true);
   const [ request,  setRequest    ] = React.useState<boolean>(false);
 
@@ -23,8 +28,10 @@ const Page: NextPage = () => {
   ), [])
 
   React.useEffect(() => {
-    preloadFromSessionStorage()
+    preloadFromSessionStorage();
+  }, []);
 
+  React.useEffect(() => {
     navigator.permissions.query({ name: 'geolocation' })
       .then((permission) =>
         setRequest(permission.state !== 'granted')

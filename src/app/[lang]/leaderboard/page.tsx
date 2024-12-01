@@ -50,10 +50,12 @@ const Page: NextPage = () => {
 
   const [ players, setPlayers ] = React.useState<User[] | undefined>(undefined);
 
-  // top players are used only here, so it's not necessary to store them in the redux store
   React.useEffect(() => {
     preloadFromSessionStorage();
+  }, []);
 
+  // top players are used only here, so it's not necessary to store them in the redux store
+  React.useEffect(() => {
     if (sessionStorage.getItem('top'))
       return setPlayers(JSON.parse(sessionStorage.getItem('top') as string));
     
