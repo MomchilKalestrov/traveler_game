@@ -21,11 +21,11 @@ const get = (key: string): any =>
 const cast = (object: any): Location[] => 
     Array.isArray(object) ? object.map(toLocation) : [];
 
-const initialSave = async (locale: string): Promise<fetchType> => {
-    const started  = cast(await fetchStarted(locale));
-    const finished = cast(await fetchFinished(locale));
-    const all      = cast(await fetchAll(locale));
-    const user     = await fetchProfile(locale);
+const initialSave = async (): Promise<fetchType> => {
+    const started  = cast(await fetchStarted());
+    const finished = cast(await fetchFinished());
+    const all      = cast(await fetchAll());
+    const user     = await fetchProfile();
 
     save('started',     started);
     save('finished',    finished);
@@ -41,9 +41,9 @@ const saveToSessionStorage = (state: any) => {
         save(key, state[key].value);
 };
 
-const getFromSessionStorage = async (locale: string): Promise<fetchType> => {
+const getFromSessionStorage = async (): Promise<fetchType> => {
     if (!get('initialSave'))
-        return await initialSave(locale);
+        return await initialSave();
     else return [
         get('started'),
         get('finished'),
@@ -53,8 +53,7 @@ const getFromSessionStorage = async (locale: string): Promise<fetchType> => {
 };
 
 const preloadFromSessionStorage = async (): Promise<void> => {
-    const locale = window.location.pathname.split('/')[1];
-    const [ started, finished, all, user ] = await getFromSessionStorage(locale);
+    const [ started, finished, all, user ] = await getFromSessionStorage();
     store.dispatch({
         type: 'started/update',
         payload: started

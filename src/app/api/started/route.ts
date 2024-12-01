@@ -7,16 +7,14 @@ import locations from '@logic/mongoose/locations';
 import userCheck from '@logic/usercheck';
 import localeSelector from '@logic/mongoose/DBLanguageSelector';
 
-const GET = async (request: NextRequest) => {
+const GET = async () => {
     const cookie = await cookies();
     const username = cookie.get('username')?.value;
     const password = cookie.get('password')?.value;
+    const locale   = cookie.get('locale')?.value || 'en';
 
     if(!(await userCheck(username, password)))
         return NextResponse.json({ error: 'Invalid credentials.' }, { status: 401 });
-    
-    const args: URLSearchParams = new URL(request.url).searchParams;
-    const locale = args.get('locale') || 'en';
 
     try {
         // Connect to the database
