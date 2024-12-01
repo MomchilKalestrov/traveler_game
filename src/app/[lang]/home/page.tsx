@@ -23,13 +23,12 @@ import { preloadFromSessionStorage } from '@logic/redux/sessionStorage';
 
 import style from './home.module.css';
 
-const MAX_PAGES = Number(process.env.NEXT_PUBLIC_MAX_LOCATIONS || 6);
-
 const Page: NextPage = () => {
   const language: Language | undefined = React.useContext(LanguageCTX);
  
-  const userSlice    = useSelector((state: RootState) => state.user.value);
   const newSlice     = useSelector((state: RootState) => state.new.value);
+  const allSlice     = useSelector((state: RootState) => state.all.value);
+  const userSlice    = useSelector((state: RootState) => state.user.value);
   const startedSlice = useSelector((state: RootState) => state.started.value);
   
   const [ followerActivity, setFollowerActivity ] = React.useState<Accomplishment[]>([]);
@@ -40,7 +39,7 @@ const Page: NextPage = () => {
 
   React.useEffect(() => {
     if (!userSlice) return;
-    getActivities(userSlice as User).then(setFollowerActivity);
+    getActivities(userSlice as User, allSlice as Location[]).then(setFollowerActivity);
   }, [userSlice]);
 
   if (!userSlice || !newSlice || !startedSlice || !language) return (<LoadingPlaceholder />);
@@ -63,7 +62,10 @@ const Page: NextPage = () => {
       { 
         newSlice.length === 0
         ? <p>{ language.home.alts.new }</p>
-        : (newSlice.slice(0, MAX_PAGES - startedSlice.length)).map((
+        // synthetically cap the maximum so that the home page doesn't look too cluttered
+        // this is temporary until I implement different sections like
+        // "mountains", "beaches", "cities" and so on
+        : (newSlice.slice(0, 6 - startedSlice.length)).map((
             location: Location,
             index: number
           ) => <Mapcard key={ index } location={ location } />)

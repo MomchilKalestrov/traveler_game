@@ -15,14 +15,16 @@ const localeSelector = (locale: string): PipelineStage[] => [
         },
         location: 1,
         xp: 1,
-        minlevel: 1
+        minlevel: 1,
+        dbname: 1
     } },
     { $project: {
         name: { $arrayElemAt: ['$locales.name', 0] },
         description: { $arrayElemAt: ['$locales.description', 0] },
         location: 1,
         xp: 1,
-        minlevel: 1
+        minlevel: 1,
+        dbname: 1
     } }
 ];
 

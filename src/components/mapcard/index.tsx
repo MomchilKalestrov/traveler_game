@@ -26,7 +26,7 @@ const Mapcard: React.FC<MapcardProps> = ({ location }) => {
                     className={ style.MapcardLocation }
                     style={ {
                         backgroundImage: `
-                            url('${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/bg/${ location.name }.png'),
+                            url('${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/bg/${ location.dbname }.png'),
                             url('/default_assets/background.png')
                         `
                     } }
@@ -34,7 +34,7 @@ const Mapcard: React.FC<MapcardProps> = ({ location }) => {
                     <div>
                         <Image
                             alt={ location.name }
-                            src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ location.name }.svg` }
+                            src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ location.dbname }.svg` }
                             width={ 40 }
                             height={ 40 }
                         />

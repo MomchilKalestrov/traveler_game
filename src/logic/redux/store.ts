@@ -1,14 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit';
-import userReducer from './userSlice';
-import startedReducer from './startedSlice';
-import newReducter from './newSlice';
 import { saveToSessionStorage } from './sessionStorage';
+import startedReducer from './startedSlice';
+import userReducer    from './userSlice';
+import newReducter    from './newSlice';
+import allReducer     from  './allSlice';
 
 const store = configureStore({
   reducer: {
     user:    userReducer,
     started: startedReducer,
-    new:     newReducter
+    new:     newReducter,
+    all:     allReducer,
   }
 });
 

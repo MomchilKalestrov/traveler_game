@@ -1,29 +1,39 @@
 import { Accomplishment, User } from '@logic/types';
+import { Location } from '@logic/types';
 
 type follower = {
     username: string;
     finished: Accomplishment[];
 };
 
-const initialGet = async (user: User): Promise<Accomplishment[]> => {
+const initialGet = async (user: User, all: Location[]): Promise<Accomplishment[]> => {
     let activities: Accomplishment[] = [];
+
+    const locationMap: { [key: string]: string } = {};
+    all.forEach((loc) => locationMap[loc.dbname] = loc.name);
     
     for (const follower of user.following) {
         const data: follower = await fetchFollower(follower);
         
-        if (data.finished.length > 0)
+        if (data.finished.length > 0){
+            console.log(data.finished[0].location);
             activities = activities.concat(
                 data.finished.map((info: { location: string, time: number }) => ({
-                    ...info,
+                    dbname: info.location,
+                    location: locationMap[info.location] || info.location,
+                    time: info.time,
                     user: data.username
                 }))
-            );
+            );}
         if (activities.length > 6) break;
     }
-    // the bigger the number, the more recent the activity
-    activities.sort((a, b) => b.time - a.time);
-    sessionStorage.setItem('activities', JSON.stringify(activities));
-    return activities.slice(0, Math.min(activities.length, 6));
+    
+    const final = activities
+        .sort((a, b) => b.time - a.time)
+        .slice(0, Math.min(activities.length, 6));
+    
+    sessionStorage.setItem('activities', JSON.stringify(final));
+    return final;
 }
 
 const fetchFollower = async (username: string): Promise<follower> => (
@@ -32,9 +42,9 @@ const fetchFollower = async (username: string): Promise<follower> => (
     ).json()
 ) as follower;
 
-const getActivities = async (user: User): Promise<Accomplishment[]> => {
+const getActivities = async (user: User, all: Location[]): Promise<Accomplishment[]> => {
     const activities = sessionStorage.getItem('activities');
-    return activities ? JSON.parse(activities) : await initialGet(user);
+    return activities ? JSON.parse(activities) : await initialGet(user, all);
 };
 
 export default getActivities;

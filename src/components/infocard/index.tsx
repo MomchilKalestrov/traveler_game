@@ -43,7 +43,7 @@ const InfoCard: React.FC<InfoCardProps> = ({ setter, type, location }) => {
                     className={ style.InfocardHeader }
                     style={ {
                         backgroundImage: `
-                            url('${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/bg/${ location.name }.png'),
+                            url('${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/bg/${ location.dbname }.png'),
                             url('/default_assets/background.png')
                         `
                     } }

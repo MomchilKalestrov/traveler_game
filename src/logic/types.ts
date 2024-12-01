@@ -12,18 +12,20 @@ interface User {
 
 interface Location {
   name: string;
+  description: string;
   location: {
     lat: number;
     lng: number;
   };
-  description: string;
   xp: number;
+  dbname: string;
 };
 
 interface Accomplishment {
-  location: string;
-  user: string;
-  time: number;
+    dbname: string;
+    location: string;
+    user: string;
+    time: number;
 };
 
 interface Language {
@@ -105,13 +107,11 @@ interface Language {
 };
 
 const toLocation = (data: any): Location => ({
-    name: data.name,
+    ...data,
     location: {
         lat: parseFloat(data.location.lat['$numberDecimal']),
         lng: parseFloat(data.location.lng['$numberDecimal'])
-    },
-    description: data.description,
-    xp: data.xp
+    }
 });
 
 export type { User, Location, Accomplishment, Language };

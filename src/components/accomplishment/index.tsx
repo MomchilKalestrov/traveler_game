@@ -14,7 +14,7 @@ const AccomplishmentTag: React.FC<AccomplishmentTagProps> = ({ accomplishment })
         <div className={ style.Accomplishment }>
             <Image
                 alt={ accomplishment.location } width={ 40 } height={ 40 }
-                src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ accomplishment.location  }.svg` }
+                src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ accomplishment.dbname  }.svg` }
             />
             <h3>
                 {
@@ -25,7 +25,7 @@ const AccomplishmentTag: React.FC<AccomplishmentTagProps> = ({ accomplishment })
             </h3>
             <p>
                 {
-                    new Date(accomplishment.time).toLocaleDateString('en-US', {
+                    new Date(accomplishment.time).toLocaleDateString('en-GB', {
                         day: '2-digit',
                         month: '2-digit',
                         year: 'numeric'

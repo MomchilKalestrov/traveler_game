@@ -12,7 +12,8 @@ const emptyLocation: Location = {
     name: '',
     location: { lat: 0, lng: 0 },
     description: '',
-    xp: 0
+    xp: 0,
+    dbname: ''
 };
 
 const playerPin = new L.Icon({

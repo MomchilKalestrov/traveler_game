@@ -67,6 +67,10 @@ const preloadFromSessionStorage = async (): Promise<void> => {
         type: 'user/update',
         payload: user
     });
+    store.dispatch({
+        type: 'all/update',
+        payload: all
+    });
 }
 
 export { saveToSessionStorage, preloadFromSessionStorage };

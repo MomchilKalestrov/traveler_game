@@ -23,7 +23,7 @@ const Minicard: React.FC<MinicardProps> = ({ location }) => {
             >
                 <Image
                     alt={ `${ location.name } icon` } width={ 32 } height={ 32 }
-                    src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ location.name }.svg` }
+                    src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ location.dbname }.svg` }
                 />
                 <h2>{ location.name }</h2>
             </button>
