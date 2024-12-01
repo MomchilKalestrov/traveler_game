@@ -22,7 +22,7 @@ const getCookie = (key: string): cookie | undefined => {
 const setCookie = (key: string, value: string): void => {
     const date: Date = new Date();
     date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000));
-    document.cookie = `${key}=${value}; expires=${ date.toUTCString() };`;
+    document.cookie = `${key}=${value}; expires=${ date.toUTCString() }; path=/`;
 };
 
 const deleteCookie = (key: string): void => {

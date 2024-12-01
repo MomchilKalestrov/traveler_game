@@ -3,11 +3,13 @@ import React         from 'react';
 import { useRouter } from 'next/navigation';
 import Image         from 'next/image';
 
-import { deleteCookie } from '@logic/cookies';
-import { Language }     from '@logic/types';
-import LanguageCTX      from '@logic/contexts/languageCTX';
+import { deleteCookie, getCookie, setCookie } from '@logic/cookies';
+import { Language } from '@logic/types';
+import LanguageCTX  from '@logic/contexts/languageCTX';
 
-import style from './settings.module.css';
+import Dropdown from '@components/dropdown';
+
+import style    from './settings.module.css';
 
 type SettingsProps = {
     close: () => void;
@@ -40,6 +42,22 @@ const Settings = ({ close }: SettingsProps) => {
                 ><Image src='/icons/back.svg' alt='go back' width={ 24 } height={ 24 } /></button>
                 <h2>{ language.misc.settings.title }</h2>
                 <div style={ { width: '2.5rem', height: '2.5rem' } } />
+            </div>
+            <div className={ style.Option }>
+                <div>
+                    <h3>{ language.misc.settings.language.title }</h3>
+                    <p>{ language.misc.settings.language.description }</p>
+                </div>
+                <Dropdown
+                    name={ language.misc.settings.language.title }
+                    width='8.5rem' selected={ language.locale }
+                    entries={ { 'English': 'en', 'Български': 'bg' } }
+                    onClick={ (_, value) => {
+                        setCookie('locale', value);
+                        sessionStorage.removeItem('initialSave');
+                        alert(language.misc.settings.language.alert);
+                    } }
+                />
             </div>
             <div className={ style.Option }>
                 <div>

@@ -81,6 +81,11 @@ interface Language {
                 title: string;
                 description: string;
             };
+            language: {
+                title: string;
+                description: string;
+                alert: string;
+            };
         };
         accomplishment: {
             title: string;

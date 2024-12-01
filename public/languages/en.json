@@ -46,6 +46,11 @@
       "logout": {
         "title": "Log out",
         "description": "Sign out of your current profile."
+      },
+      "language": {
+        "title": "Language",
+        "description": "Change the application's language.",
+        "alert": "Changes will take effect after restarting the application."
       }
     },
     "accomplishment": {

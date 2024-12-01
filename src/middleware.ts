@@ -1,19 +1,29 @@
 'use server';
 import { NextResponse, NextRequest } from 'next/server';
+import { use } from 'react';
 
 const languages = ['en', 'bg'];
  
 export const middleware = (request: NextRequest) => {
     const url = request.nextUrl.pathname!
     
-    const username = request.cookies.get('username');
-    const password = request.cookies.get('password');
+    const username = request.cookies.get('username')?.value;
+    const password = request.cookies.get('password')?.value;
+    const userlocale = request.cookies.get('locale')?.value;
 
-    const slug = url.split('/')[1];
+    const [ _, slug, page ] = url.split('/');
     
     if (
-	username && password ||
-	!languages.includes(slug) ||
+        userlocale !== slug &&
+        userlocale && page &&
+        languages.includes(slug) &&
+        languages.includes(userlocale)
+    )
+        return NextResponse.redirect(new URL(`/${ userlocale }/${ page }`, request.url));
+    
+    if (
+	    (username && password) ||
+	    !languages.includes(slug) ||
         url.includes('login')
     )
         return NextResponse.next();
@@ -21,4 +31,7 @@ export const middleware = (request: NextRequest) => {
     return NextResponse.redirect(new URL(`/${ slug }/login`, request.url));
 }
 
-export const config = { matcher: [ '/:lang*' ] };
+export const config = { matcher: [
+    '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
+    '/:lang*'
+] };
