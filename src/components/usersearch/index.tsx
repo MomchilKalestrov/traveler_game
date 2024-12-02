@@ -102,41 +102,43 @@ const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
                         </div>
                         {
                             user.finished.length > 0 &&
-                            <div className={ userStyle.ProfileCard }>
-                                <h2>{ language.profile.badges }</h2>
-                                <div className={ userStyle.ProfileDivider } />
-                                <div className={ userStyle.ProfileBadges }>
+                            <>
+                                <div className={ userStyle.ProfileCard }>
+                                    <h2>{ language.profile.badges }</h2>
+                                    <div className={ userStyle.ProfileDivider } />
+                                    <div className={ userStyle.ProfileBadges }>
+                                        {
+                                            user.finished.map((data: { location: string, time: number }, key: number) =>
+                                            <Image
+                                                src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ data.location }.svg` }
+                                                alt={ data.location } key={ key } width={ 48 } height={ 48 }
+                                            />
+                                            )
+                                        }
+                                    </div>
+                                </div>
+                                <div className={ userStyle.ProfileCard + ' ' + style.UserSearchHistory }>
+                                    <h2>{ language.profile.activity }</h2>
+                                    <div className={ userStyle.ProfileDivider } />
                                     {
-                                        user.finished.map((data: { location: string, time: number }, key: number) =>
-                                        <Image
-                                            src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ data.location }.svg` }
-                                            alt={ data.location } key={ key } width={ 48 } height={ 48 }
-                                        />
+                                        user
+                                            .finished
+                                            .slice(0, 6)
+                                            .map((data, key: number) =>
+                                                <AccomplishmentTag
+                                                    accomplishment={ {
+                                                        location: locationMap.get(data.location) || data.location,
+                                                        time: data.time,
+                                                        dbname: data.location,
+                                                        user: user.username
+                                                    } }
+                                                    key={ key }
+                                                />
                                         )
                                     }
                                 </div>
-                            </div>
+                            </>
                         }
-                        <div className={ userStyle.ProfileCard + ' ' + style.UserSearchHistory }>
-                            <h2>{ language.profile.activity }</h2>
-                            <div className={ userStyle.ProfileDivider } />
-                            {
-                                user
-                                    .finished
-                                    .slice(0, 6)
-                                    .map((data, key: number) =>
-                                        <AccomplishmentTag
-                                            accomplishment={ {
-                                                location: locationMap.get(data.location) || data.location,
-                                                time: data.time,
-                                                dbname: data.location,
-                                                user: user.username
-                                            } }
-                                            key={ key }
-                                        />
-                                )
-                            }
-                        </div>
                     </div>
                 </div>
             );
