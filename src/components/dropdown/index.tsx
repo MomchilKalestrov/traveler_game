@@ -27,7 +27,6 @@ const Dropdown: React.FC<DropdownProps> = ({ entries, name, selected, width, onC
                 width: width
             } as React.CSSProperties }
         >
-        <div className={ style.DropdownDivider } />
             {
                 Object.entries(entries).map(([key, value]) => (
                     <label key={ key } className={ style.DropdownLabel }>
