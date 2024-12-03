@@ -10,10 +10,12 @@
     margin-left: calc(var(--padding) * -1);
     margin-right: calc(var(--padding) * -1);
     position: relative;
+    overflow: visible;
 }
 
 .HorizontalCarousel > div {
-    padding: 0px var(--padding);
+    padding: 8px var(--padding);
+    margin: -8px 0px;
     overflow: scroll;
     display: flex;
     justify-content: left;
@@ -42,45 +44,6 @@
 .HorizontalCarousel::before {
     left: 0;
     background: linear-gradient(90deg, var(--color-bg), transparent);
-}
-
-.TitleWithSort {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    column-gap: var(--padding);
-}
-
-.TitleWithSort > * {
-    margin: 0px;
-}
-
-.TitleWithSort button {
-    padding: 0.5rem;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-    border: none;
-    background-color: var(--color-primary);
-}
-
-.TitleWithSort button img {
-    width: 100%;
-    height: 100%;
-    filter: var(--icon-filter-bg);
-}
-
-.TitleWithSort > div {
-    height: 0;
-    width: 100%;
-    padding: 0;
-    overflow: hidden;
-    transition: height 0.5s, padding 0.5s;
-    display: flex;
-    justify-content: stretch;
-    align-content: space-between;
-    flex-wrap: wrap;
 }
 
 @keyframes progress {
