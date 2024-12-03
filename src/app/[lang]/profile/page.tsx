@@ -2,7 +2,6 @@
 import React from 'react';
 import Image from 'next/image';
 import { NextPage }    from 'next';
-import { useParams }   from 'next/navigation';
 import { useSelector } from 'react-redux';
 
 import LoadingPlaceholder from '@components/loading';

@@ -49,14 +49,14 @@ const Mapcard: React.FC<MapcardProps> = ({ location }) => {
                     >{ language.misc.infocards.view }</button>
                 </div>
             </div>
-            {
-                viewing &&
-                <InfoCard
-                    type={ cardType.Track }
-                    setter={ setViewing }
-                    location={ location }
-                />
-            }
+        {
+            viewing &&
+            <InfoCard
+                type={ cardType.Track }
+                setter={ setViewing }
+                location={ location }
+            />
+        }
         </>
     );
 };

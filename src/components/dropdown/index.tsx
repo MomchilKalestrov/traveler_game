@@ -27,20 +27,20 @@ const Dropdown: React.FC<DropdownProps> = ({ entries, name, selected, width, onC
                 width: width
             } as React.CSSProperties }
         >
-            {
-                Object.entries(entries).map(([key, value]) => (
-                    <label key={ key } className={ style.DropdownLabel }>
-                        <input
-                            type='radio'
-                            name={ name }
-                            value={ value }
-                            defaultChecked={ value === selected }
-                            onClick={ (e) => onClick ? onClick(e, value) : null }
-                        />
-                        <p>{ key }</p>
-                    </label>
-                ))
-            }
+        {
+            Object.entries(entries).map(([key, value]) => (
+                <label key={ key } className={ style.DropdownLabel }>
+                    <input
+                        type='radio'
+                        name={ name }
+                        value={ value }
+                        defaultChecked={ value === selected }
+                        onClick={ (e) => onClick ? onClick(e, value) : null }
+                    />
+                    <p>{ key }</p>
+                </label>
+            ))
+        }
         </div>
     </div>
 );

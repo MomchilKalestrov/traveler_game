@@ -62,8 +62,8 @@ const Page: NextPage = () => {
     fetch('/api/top')
     .then(res => res.ok ? res.json() : undefined)
     .then(data => {
-      if(!data)
-        return console.error('An error has occured.');
+      if(!data) return console.error('An error has occured.');
+      
       sessionStorage.setItem('top', JSON.stringify(data));
       setPlayers(data);
     });
@@ -75,11 +75,11 @@ const Page: NextPage = () => {
     <main>
       <div className={ style.Top100Container }>
         <h1>{ language.leaderboard.top.replace('{COUNT}', players.length.toString()) }</h1>
-        {
-          players.map((player, index) =>
-            <Player user={ player } key={ index } position={ index } />
-          )
-        }
+      {
+        players.map((player, index) =>
+          <Player user={ player } key={ index } position={ index } />
+        )
+      }
       </div>
     </main>
   );

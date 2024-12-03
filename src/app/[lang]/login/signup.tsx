@@ -77,13 +77,16 @@ const SignUp: React.FC<SignUpProps> = ({ setter }) => {
     return (
         <form className={ style.ProfileForm } onSubmit={ createProfile }>
             <h1>{ language.auth.signup.title }</h1>
+            
             <MaterialInput name={ language.auth.inputs.username } type='text'     required={ true } />
             <MaterialInput name={ language.auth.inputs.password } type='password' required={ true } />
             <MaterialInput name={ language.auth.inputs.verify   } type='password' required={ true } />
+            
             <button className={ style.FormInput }>
-            <Image src='/icons/login.svg' alt='signup' width={ 24 } height={ 24 } />
+                <Image src='/icons/login.svg' alt='signup' width={ 24 } height={ 24 } />
                 <p className={ style.I_FUCKIN_HATE_CSS }>{ language.auth.signup.button }</p>
             </button>
+            
             <button
                 type='button'
                 onClick={ () => setter(true) }

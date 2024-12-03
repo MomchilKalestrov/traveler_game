@@ -72,14 +72,14 @@ const Map: React.FC<MapProps> = ({ locations = [], hasGPSAccess }) => {
     
     return (
         <>
-            {
-                visible &&
-                <InfoCard
-                    setter={ setVisible }
-                    location={ location }
-                    type={ cardType.Finish }
-                />
-            }
+        {
+            visible &&
+            <InfoCard
+                setter={ setVisible }
+                location={ location }
+                type={ cardType.Finish }
+            />
+        }
             <MapContainer
                 zoomControl={ false }
                 center={ [ 42.143013705260884, 24.749279022216797 ] }
@@ -91,45 +91,45 @@ const Map: React.FC<MapProps> = ({ locations = [], hasGPSAccess }) => {
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                {
-                    (userLocation && userLocation.coords) &&
+            {
+                (userLocation && userLocation.coords) &&
+                <Marker
+                    position={ [
+                        userLocation.coords.latitude,
+                        userLocation.coords.longitude
+                    ] }
+                    icon={ playerPin }
+                />
+            }
+            {
+                locations.map((poi, index) => (
                     <Marker
-                        position={ [
-                            userLocation.coords.latitude,
-                            userLocation.coords.longitude
-                        ] }
-                        icon={ playerPin }
+                        key={ index }
+                        position={ [ poi.location.lat, poi.location.lng ] }
+                        icon={ poiPin }
+                        eventHandlers={ {
+                            click: () => {
+                                setLocation(poi);
+                                setVisible(true);
+                            }
+                        } }
                     />
-                }
-                {
-                    locations.map((poi, index) => (
-                        <Marker
-                            key={ index }
-                            position={ [ poi.location.lat, poi.location.lng ] }
-                            icon={ poiPin }
-                            eventHandlers={ {
-                                click: () => {
-                                    setLocation(poi);
-                                    setVisible(true);
-                                }
-                            } }
-                        />
-                    ))
-                }
-                <Hook />
+                ))
+            }
+            <Hook />
             </MapContainer>
             <style>
-                { /*
-                    there will be absolutely no support for either side of any war in this app.
-                    I checked, and the ukranian flag is not required by the license.
-                */ }
-                {`
-                    .leaflet-attribution-flag {
-                        opacity: 0;
-                        width: 0;
-                        height: 0;  
-                    }
-                `}
+            { /*
+            there will be absolutely no support for either side of any war in this app.
+            I checked, and the ukranian flag is not required by the license.
+            */ }
+            { `
+                .leaflet-attribution-flag {
+                    opacity: 0;
+                    width: 0;
+                    height: 0;  
+                }
+            ` }
             </style>
         </>
     );

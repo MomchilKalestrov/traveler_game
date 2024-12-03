@@ -50,12 +50,15 @@ const LogIn: React.FC<LogInProps> = ({ setter }) => {
     return (
         <form className={ style.ProfileForm } onSubmit={ logIn }>
             <h1>{ language.auth.login.title }</h1>
+            
             <MaterialInput name={ language.auth.inputs.username } type='text'     required={ true } />
             <MaterialInput name={ language.auth.inputs.password } type='password' required={ true } />
+
             <button className={ style.FormInput }>
                 <Image src='/icons/login.svg' alt='login' width={ 24 } height={ 24 } />
                 <p className={ style.I_FUCKIN_HATE_CSS }>{ language.auth.login.button }</p>
             </button>
+            
             <button
                 type='button'
                 onClick={ () => setter(false) }

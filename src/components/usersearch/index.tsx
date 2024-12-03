@@ -8,7 +8,7 @@ import AccomplishmentTag        from '@components/accomplishment';
 import getColors     from '@logic/profileColor';
 import LanguageCTX   from '@logic/contexts/languageCTX';
 import { RootState } from '@logic/redux/store';
-import { Accomplishment, Language, Location, User } from '@logic/types';
+import { Language, Location, User } from '@logic/types';
 
 import userStyle from '@app/profile/profile.module.css';
 import style     from './usersearch.module.css';
@@ -27,10 +27,12 @@ type UserSearchProps = {
 
 const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
     const currentUser = useSelector((state: RootState) => state.user.value);
-    const all = useSelector((state: RootState) => state.all.value);
-    const [ locationMap, setLocationMap ] = React.useState<Map<string, string>>(new Map());
+    const all         = useSelector((state: RootState) => state.all.value);
+    const dispatch    = useDispatch();
+
     const language: Language | undefined = React.useContext(LanguageCTX);
-    const dispatch = useDispatch();
+
+    const [ locationMap, setLocationMap ] = React.useState<Map<string, string>>(new Map());
 
     React.useEffect(() => {
         if (!all) return;
@@ -107,14 +109,14 @@ const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
                                     <h2>{ language.profile.badges }</h2>
                                     <div className={ userStyle.ProfileDivider } />
                                     <div className={ userStyle.ProfileBadges }>
-                                        {
-                                            user.finished.map((data: { location: string, time: number }, key: number) =>
+                                    {
+                                        user.finished.map((data: { location: string, time: number }, key: number) =>
                                             <Image
                                                 src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ data.location }.svg` }
                                                 alt={ data.location } key={ key } width={ 48 } height={ 48 }
                                             />
-                                            )
-                                        }
+                                        )
+                                    }
                                     </div>
                                 </div>
                                 <div className={ userStyle.ProfileCard + ' ' + style.UserSearchHistory }>

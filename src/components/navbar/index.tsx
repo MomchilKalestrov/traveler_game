@@ -39,18 +39,18 @@ const Navbar: React.FC<NavbarProps> = ({ pages }) => {
 
     return (
         <nav className={ styles.Navbar }>
-            {
-                pages.map((name: string, key: number) => (
-                    <NavbarEntry
-                        aria-label={ `Navigate to ${ name }` }
-                        key={ key }
-                        name={ (language.misc.navbar as any)[name.toLowerCase()] }
-                        page={ name }
-                        language={ params.lang as string }
-                        active={ pathname.includes(name.toLowerCase()) }
-                    />
-                ))
-            }
+        {
+            pages.map((name: string, key: number) => (
+                <NavbarEntry
+                    aria-label={ `Navigate to ${ name }` }
+                    key={ key }
+                    name={ (language.misc.navbar as any)[name.toLowerCase()] }
+                    page={ name }
+                    language={ params.lang as string }
+                    active={ pathname.includes(name.toLowerCase()) }
+                />
+            ))
+        }
         </nav>
     );
 };

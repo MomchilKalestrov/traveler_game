@@ -16,6 +16,14 @@ const Minicard: React.FC<MinicardProps> = ({ location }) => {
 
     return (
         <>
+        {
+            viewing &&
+            <InfoCard
+                type={ cardType.Untrack }
+                setter={ setViewing }
+                location={ location }
+            />
+        }
             <button
                 aria-label={ `View started ${ location.name }` }
                 className={ style.Minicard }
@@ -27,14 +35,6 @@ const Minicard: React.FC<MinicardProps> = ({ location }) => {
                 />
                 <h2>{ location.name }</h2>
             </button>
-            {
-                viewing &&
-                <InfoCard
-                    type={ cardType.Untrack }
-                    setter={ setViewing }
-                    location={ location }
-                />
-            }
         </>
     )
 }

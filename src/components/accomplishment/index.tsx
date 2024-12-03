@@ -17,20 +17,20 @@ const AccomplishmentTag: React.FC<AccomplishmentTagProps> = ({ accomplishment })
                 src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ accomplishment.dbname  }.svg` }
             />
             <h3>
-                {
-                    language?.misc.accomplishment.title
-                        .replace('{NAME}', accomplishment.user)
-                        .replace('{LOCATION}', accomplishment.location)
-                }
+            {
+                language?.misc.accomplishment.title
+                    .replace('{NAME}', accomplishment.user)
+                    .replace('{LOCATION}', accomplishment.location)
+            }
             </h3>
             <p>
-                {
-                    new Date(accomplishment.time).toLocaleDateString('en-GB', {
-                        day: '2-digit',
-                        month: '2-digit',
-                        year: 'numeric'
-                    })
-                }
+            {
+                new Date(accomplishment.time).toLocaleDateString('en-GB', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                })
+            }
             </p>
         </div>
     );
