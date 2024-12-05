@@ -7,9 +7,9 @@ import { useSelector } from 'react-redux';
 import LoadingPlaceholder from '@components/loading';
 
 import getColors     from '@logic/profileColor';
-import { Language }  from '@logic/types';
-import { RootState } from '@logic/redux/store';
 import LanguageCTX   from '@logic/contexts/languageCTX';
+import { RootState } from '@logic/redux/store';
+import { Language, User } from '@logic/types';
 import { preloadFromSessionStorage } from '@logic/redux/sessionStorage';
 
 import style from './profile.module.css';
@@ -17,11 +17,46 @@ import style from './profile.module.css';
 const Page: NextPage = () => {
   const language: Language | undefined = React.useContext(LanguageCTX);
 
-  const user = useSelector((state: RootState) => state.user.value);
+  const user: User | undefined = useSelector((state: RootState) => state.user.value);
+  const [ profilePicture, setProfilePicture ] = React.useState<any | undefined>(undefined);
+
+  React.useEffect(() => { preloadFromSessionStorage(); }, []);
 
   React.useEffect(() => {
-    preloadFromSessionStorage();
-  }, []);
+    if (!user) return;
+    fetch(process.env.NEXT_PUBLIC_BLOB_STORAGE_URL + '/profile/' + user.username + '.png')
+      .then(response => response.blob())
+      .then(blob => setProfilePicture(URL.createObjectURL(blob)));
+  }, [ user ]);
+
+  const loadProfilePicture = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (!files) return;
+    const file = files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      if(!reader.result) return;
+      
+      const blob = new Blob([ reader.result ], { type: file.type });
+      
+      fetch('/api/auth/changepfp', {
+        method: 'POST',
+        body: blob,
+        headers: {
+          'Content-Type': file.type,
+          'Content-Disposition': `attachment; filename="${ file.name }"`
+        }
+      }).then(res => {
+        if(!res.ok) return console.error('Couldn\'t upload the image.');
+        setProfilePicture(URL.createObjectURL(blob));
+      })
+    };
+
+    reader.readAsArrayBuffer(file);
+  };
 
   if (!user || !language) return (<LoadingPlaceholder />);
 
@@ -33,9 +68,12 @@ const Page: NextPage = () => {
       <div className={ style.ProfileContainer }>
         <div className={ `${ style.ProfileCard } ${ style.ProfileInfo }` }>
             <div className={ style.ProfilePhoto }>
-              <p
-                style={ { backgroundColor: color, color: r_color } }
-              >{ user.username[0] }</p>
+              <input type='file' onChange={ loadProfilePicture } accept='.png' />
+            {
+              profilePicture
+              ? <Image alt={ user.username } src={ profilePicture } width={ 64 } height={ 64 } />
+              : <div style={ { backgroundColor: color, color: r_color } }>{ user.username[0] }</div>
+            }
               <div style={ { '--percentage': percentage + '%' } as React.CSSProperties } />
               <p>{ Math.floor(user.xp / 100) }</p>
             </div>
@@ -65,6 +103,6 @@ const Page: NextPage = () => {
       </div>
     </main>
   );
-}
+};
 
 export default Page;

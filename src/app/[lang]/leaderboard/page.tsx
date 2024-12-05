@@ -19,15 +19,26 @@ type PlayerProps = {
 };
 
 const Player: React.FC<PlayerProps> = ({ user, position }) => {
+  const [ profilePicture, setProfilePicture ] = React.useState<any | undefined>(undefined);
+
   const [ color, r_color ] = getColors(user.username.slice(0, 3));
   const percentage = user.xp - 100 * Math.floor (user.xp / 100);
+
+  React.useEffect(() => {
+    if (!user) return;
+    fetch(process.env.NEXT_PUBLIC_BLOB_STORAGE_URL + '/profile/' + user.username + '.png')
+      .then(response => response.blob())
+      .then(blob => setProfilePicture(URL.createObjectURL(blob)));
+  }, [ user ]);
 
   return (
     <div className={ `${ userStyle.ProfileCard } ${ userStyle.ProfileInfo }` }>
         <div className={ userStyle.ProfilePhoto }>
-          <p
-            style={ { backgroundColor: color, color: r_color } }
-          >{ user.username[0] }</p>
+        {
+          profilePicture
+          ? <Image alt={ user.username } src={ profilePicture } width={ 64 } height={ 64 } />
+          : <div style={ { backgroundColor: color, color: r_color } }>{ user.username[0] }</div>
+        }
           <div style={ { '--percentage': percentage + '%' } as React.CSSProperties } />
           <p>{ Math.floor(user.xp / 100) }</p>
         </div>

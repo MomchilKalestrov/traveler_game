@@ -9,13 +9,12 @@ export const middleware = (request: NextRequest) => {
     
     const username = request.cookies.get('username')?.value;
     const password = request.cookies.get('password')?.value;
-    const userlocale = request.cookies.get('locale')?.value;
+    const userlocale = request.cookies.get('locale')?.value || 'en';
 
     const [ _, slug, page ] = url.split('/');
     
     if (
-        userlocale !== slug &&
-        userlocale && page &&
+        userlocale !== slug && page &&
         languages.includes(slug) &&
         languages.includes(userlocale)
     )

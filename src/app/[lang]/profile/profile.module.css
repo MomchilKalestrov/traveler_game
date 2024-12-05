@@ -95,7 +95,8 @@
     grid-area: photo;
 }
 
-.ProfilePhoto p:first-of-type {
+.ProfilePhoto img,
+.ProfilePhoto div:first-of-type {
     position: absolute;
     width: 4rem;
     height: 4rem;
@@ -109,7 +110,17 @@
     z-index: 1;
 }
 
-.ProfilePhoto div {
+.ProfilePhoto input[type='file'] {
+    position: absolute;
+    width: 4rem;
+    height: 4rem;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+    border-radius: 50%;
+}
+
+.ProfilePhoto div:last-of-type {
     position: absolute;
     top: -0.25rem;
     left: -0.25rem;

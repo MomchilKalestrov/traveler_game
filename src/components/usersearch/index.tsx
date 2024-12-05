@@ -32,7 +32,8 @@ const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
 
     const language: Language | undefined = React.useContext(LanguageCTX);
 
-    const [ locationMap, setLocationMap ] = React.useState<Map<string, string>>(new Map());
+    const [ locationMap,    setLocationMap    ] = React.useState<Map<string, string>>(new Map());
+    const [ profilePicture, setProfilePicture ] = React.useState<any | undefined>(undefined);
 
     React.useEffect(() => {
         if (!all) return;
@@ -41,6 +42,13 @@ const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
         all.forEach((data: Location) => map.set(data.dbname, data.name));
         setLocationMap(map);
     }, [ state, all ]);
+
+    React.useEffect(() => {
+        if (!user) return;
+        fetch(process.env.NEXT_PUBLIC_BLOB_STORAGE_URL + '/profile/' + user.username + '.png')
+            .then(response => response.blob())
+            .then(blob => setProfilePicture(URL.createObjectURL(blob)));
+    }, [ user ]);
 
     let type: string = !currentUser?.following.includes(user.username) ? 'Follow' : 'Unfollow';
     let action = () => {
@@ -89,9 +97,11 @@ const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
                     <div className={ userStyle.ProfileContainer }>
                         <div className={ `${ userStyle.ProfileCard } ${ userStyle.ProfileInfo }` }>
                             <div className={ userStyle.ProfilePhoto }>
-                                <p
-                                    style={ { backgroundColor: color, color: r_color } }
-                                >{ user.username[0] }</p>
+                            {
+                                profilePicture
+                                ? <Image src={ profilePicture } alt={ user.username } width={ 64 } height={ 64 } />
+                                : <div style={ { backgroundColor: color, color: r_color } }>{ user.username[0] }</div>
+                            }
                                 <div style={ { '--percentage': percentage + '%' } as React.CSSProperties } />
                                 <p>{ Math.floor(user.xp / 100) }</p>
                             </div>
