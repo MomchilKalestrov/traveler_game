@@ -15,7 +15,9 @@
     "followers": "последователя",
     "following": "следващи",
     "badges": "Значки",
-    "activity": "Постижения"
+    "activity": "Постижения",
+    "follow": "Последвай",
+    "unfollow": "Спри последването"
   },
   "leaderboard": {
     "top": "Топ {COUNT}"

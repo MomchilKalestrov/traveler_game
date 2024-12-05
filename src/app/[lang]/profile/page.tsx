@@ -14,6 +14,14 @@ import { preloadFromSessionStorage } from '@logic/redux/sessionStorage';
 
 import style from './profile.module.css';
 
+const getAlignment = (count: number): React.CSSProperties => ({
+  justifyContent: count > 3
+    ? 'space-between'
+    : count === 2
+      ? 'space-around'
+      : 'center'
+});
+
 const Page: NextPage = () => {
   const language: Language | undefined = React.useContext(LanguageCTX);
 
@@ -88,7 +96,7 @@ const Page: NextPage = () => {
           <div className={ style.ProfileCard }>
             <h2>{ language.profile.badges }</h2>
             <div className={ style.ProfileDivider } />
-            <div className={ style.ProfileBadges }>
+            <div className={ style.ProfileBadges } style={ getAlignment(user.finished.length) }>
               {
                 user.finished.map((data: { location: string, time: number }, key: number) =>
                   <Image

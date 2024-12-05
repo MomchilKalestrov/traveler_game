@@ -43,10 +43,13 @@ interface Language {
     };
 
     profile: {
+        [key: string]: any;
         following: string;
         followers: string;
         badges:    string;
         activity:  string;
+        follow:    string;
+        unfollow:  string;
     };
 
     leaderboard: {

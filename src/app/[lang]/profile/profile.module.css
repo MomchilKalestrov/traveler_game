@@ -66,8 +66,7 @@
 }
 
 .ProfileBadges {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(4.5rem, auto));
+    display: flex;
     gap: var(--padding);
 }
 

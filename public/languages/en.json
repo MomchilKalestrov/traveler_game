@@ -15,7 +15,9 @@
     "followers": "followers",
     "following": "following",
     "badges": "Badges",
-    "activity": "Activity"
+    "activity": "Activity",
+    "follow": "Follow",
+    "unfollow": "Unfollow"
   },
   "leaderboard": {
     "top": "Top {COUNT}"

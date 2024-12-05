@@ -25,6 +25,14 @@ type UserSearchProps = {
     user: User
 };
 
+const getAlignment = (count: number): React.CSSProperties => ({
+    justifyContent: count > 3
+        ? 'space-between'
+        : count === 2
+            ? 'space-around'
+            : 'center'
+});
+
 const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
     const currentUser = useSelector((state: RootState) => state.user.value);
     const all         = useSelector((state: RootState) => state.all.value);
@@ -50,18 +58,21 @@ const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
             .then(blob => setProfilePicture(URL.createObjectURL(blob)));
     }, [ user ]);
 
-    let type: string = !currentUser?.following.includes(user.username) ? 'Follow' : 'Unfollow';
+    let type: string = !currentUser?.following.includes(user.username)
+        ? 'follow'
+        : 'unfollow';
+        
     let action = () => {
         loading();
-        fetch(`/api/auth/${ type.toLowerCase() }?username=${ user.username }`, { method: 'POST' })
+        fetch(`/api/auth/${ type }?username=${ user.username }`, { method: 'POST' })
             .then(response => {
                 if (!response.ok) {
-                    alert(`An error occurred while trying to ${ type.toLowerCase() } the user.`);
+                    alert(`An error occurred while trying to ${ type } the user.`);
                     stopLoading();
                     return;
                 }
                 dispatch({
-                    type: `user/${ type.toLowerCase() }`,
+                    type: `user/${ type }`,
                     payload: user.username
                 });
                 stopLoading();
@@ -106,10 +117,10 @@ const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
                                 <p>{ Math.floor(user.xp / 100) }</p>
                             </div>
                             <h2>{ user.username }</h2>
-                            <button onClick={ action }>{ type }</button>
+                            <button onClick={ action }>{ language.profile[type] }</button>
                             <div>
                                 <p><b>{ user.followers.length }</b> { language.profile.followers }</p>
-                                <p><b>{ user.following.length }</b> { language.profile.followers }</p>
+                                <p><b>{ user.following.length }</b> { language.profile.following }</p>
                             </div>
                         </div>
                         {
@@ -118,7 +129,7 @@ const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
                                 <div className={ userStyle.ProfileCard }>
                                     <h2>{ language.profile.badges }</h2>
                                     <div className={ userStyle.ProfileDivider } />
-                                    <div className={ userStyle.ProfileBadges }>
+                                    <div className={ userStyle.ProfileBadges } style={ getAlignment(user.finished.length) }>
                                     {
                                         user.finished.map((data: { location: string, time: number }, key: number) =>
                                             <Image
