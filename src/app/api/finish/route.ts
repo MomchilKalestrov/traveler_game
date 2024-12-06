@@ -39,7 +39,7 @@ const POST = async (request: NextRequest) => {
         if (!started.includes(name))
             return NextResponse.json({ error: 'User isn\'t tracking this location.' }, { status: 412 });
         // Get the location
-        const location = await locations.findOne({ name: name });
+        const location = await locations.findOne({ dbname: name });
         if(!location)
             return NextResponse.json({ error: 'Location not found.' }, { status: 404 });
         // Calculate the distance
