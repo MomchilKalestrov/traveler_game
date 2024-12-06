@@ -57,3 +57,4 @@ certificates
 .million
 # enviormnent
 *.env
+.env
