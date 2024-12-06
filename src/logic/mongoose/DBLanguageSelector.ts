@@ -25,7 +25,8 @@ const localeSelector = (locale: string): PipelineStage[] => [
         xp: 1,
         minlevel: 1,
         dbname: 1
-    } }
+    } },
+    { $project: { _id: 0 } }
 ];
 
 export default localeSelector;

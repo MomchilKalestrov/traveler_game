@@ -17,7 +17,6 @@ const locationSchema: mongoose.Schema = new mongoose.Schema({
         lng: mongoose.Types.Decimal128
     }, required: true },
     xp: Number,
-    minlevel: Number
 }, { _id: false, versionKey: false });
 
 interface LocationDocument extends Location, mongoose.Document { };

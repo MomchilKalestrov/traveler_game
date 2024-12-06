@@ -26,9 +26,10 @@ const GET = async (request: NextRequest) => {
         await connect();
         // Get the location
         const location = (await locations.aggregate([
-            { $match: { name: name } },
+            { $match: { dbname: name } },
             ...localeSelector(locale)
         ]))[0];
+        
         if (!location)
             return NextResponse.json({ error: 'Location not found.' }, { status: 404 });
         // Close the connection
