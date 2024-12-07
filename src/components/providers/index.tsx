@@ -2,8 +2,9 @@
 import React from 'react';
 import { Provider }  from 'react-redux';
 import { useParams } from 'next/navigation';
+
 import store from '@logic/redux/store';
-import LanguageCTX from '@logic/contexts/languageCTX';
+import LanguageCTX  from '@logic/contexts/languageCTX';
 import { Language } from '@logic/types';
 
 type ProvidersProps = {
