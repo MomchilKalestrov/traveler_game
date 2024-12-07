@@ -1,6 +1,4 @@
-'use server';
 import { NextResponse, NextRequest } from 'next/server';
-import { use } from 'react';
 
 const languages = ['en', 'bg'];
  
