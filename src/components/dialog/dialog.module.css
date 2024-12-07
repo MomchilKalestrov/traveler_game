@@ -1,51 +1,53 @@
-.Infocard {
+.Dialog {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
     z-index: calc(var(--z) + 4);
-    animation: blurIn ease-in-out 0.5s forwards;
-    backdrop-filter: blur(5px) brightness(80%);
-    margin: 0px;
-    padding: 0px;
+
+    width: 100vw;
+    height: 100vh;
+    
     display: flex;
     justify-content: center;
     align-items: center;
+    
+    animation: blurIn ease-in-out 0.5s forwards;
 }
 
-.Infocard > div {
+.Dialog > div {
     --margin: 0.5rem;
-    --padding: 1rem;
-    --width:  min(calc(100vw - var(--margin) * 2), 20rem);
+    --width:  min(calc(100vw - var(--margin) * 2), 25rem);
+
+    border-radius: 1.75rem;
     
     width: var(--width);
-    background-color: var(--color-secondary);
-    animation: slideIn ease-in-out 0.5s forwards;
-    border-radius: 0.75rem;
-    overflow: hidden;
-    padding: var(--padding);
     box-sizing: border-box;
+
+    padding: 1.5rem;
+    background-color: var(--color-secondary);
+    
+    animation: slideIn ease-in-out 0.5s forwards;
+}
+
+.Dialog h2 { margin: 0px 0px 1rem 0px; }
+
+.Dialog p { margin: 0px; }
+
+.DialogOptions {
     display: flex;
-    gap: calc(var(--padding) / 2);
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-content: space-between;
+    justify-content: flex-end;
+    gap: 1rem;
+
+    padding: 1.5rem 0px 0px 1.5rem;
 }
 
-.Infocard * {
-    margin: 0px;
-}
-
-.Infocard p {
-    width: 100%;
-}
-
-.Infocard button {
-    height: 2.5rem;
-    padding: 0.5rem 1rem;
-    border-radius: 1.25rem;
+.DialogOptions button {
     border: white 1px solid;
+    border-radius: 1.25rem;
+    
+    height: 2.5rem;
+    
+    padding: 0.5rem 1rem;
     color: var(--color-primary);
     background-color: transparent;
 }

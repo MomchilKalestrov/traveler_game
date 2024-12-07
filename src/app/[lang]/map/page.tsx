@@ -7,10 +7,10 @@ import { useSelector } from 'react-redux';
 import { preloadFromSessionStorage } from '@logic/redux/sessionStorage';
 import { RootState } from '@logic/redux/store';
 import { Language }  from '@logic/types';
-import LanguageCTX   from '@logic/contexts/languageCTX';
+import LanguageCTX from '@logic/contexts/languageCTX';
 
 import LoadingPlaceholder from '@components/loading';
-import LocationRequest    from '@components/locationRequest';
+import Dialog from '@components/dialog';
 
 const Page: NextPage = () => {
   const language: Language | undefined = React.useContext(LanguageCTX);
@@ -39,15 +39,40 @@ const Page: NextPage = () => {
   }, []);
 
   const setRequestPermission = (hasGPSAccess: boolean): void => {
-    setRequest(false);
     setPermission(hasGPSAccess);
-  }
+    console.log(hasGPSAccess);
+  };
+
+  if (!language) return (<LoadingPlaceholder />);
 
   return (
     <main style={ { padding: '0px', height: 'calc(100vh - 5rem)' } }>
-      { request && <LocationRequest setPermission={ setRequestPermission } /> }
+      {
+        request &&
+        <Dialog
+          title={ language.misc.GPSaccess.title }
+          description={ language.misc.GPSaccess.description }
+          options={ [
+            {
+              name: language.misc.GPSaccess.decline,
+              event: () => setRequestPermission(false)
+            },
+            {
+              name: language.misc.GPSaccess.accept,
+              event: () => {
+                navigator.geolocation.getCurrentPosition(
+                  () => setRequestPermission(true),
+                  () => setRequestPermission(false)
+                );
+              },
+              primary: true
+            }
+          ] }
+          close={ setRequest }
+        />
+      }
       <Map locations={ started } hasGPSAccess={ allowGPS } />
-      </main>
+    </main>
   );
 };
 
