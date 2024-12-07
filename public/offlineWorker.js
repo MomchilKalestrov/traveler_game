@@ -1,4 +1,5 @@
-const cacheName = 'offlineCacheV7';
+const BLOB_STORAGE = "https://gsplsf3le8pssi3n.public.blob.vercel-storage.com";
+const cacheName = 'offlineCacheV8';
 
 const offlinePages = [
     '/offline/offline.html',
@@ -67,15 +68,22 @@ self.addEventListener('activate', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
+    const url = new URL(e.request.url);
     e.respondWith(
         caches.match(e.request).then((response) => {
             if (response)
                 return response;
-            return fetch(e.request).catch(() => {
-                // If the request is for an HTML page, return the offline page
-                if (e.request.headers.get('accept').includes('text/html'))
-                    return caches.match('/offline/offline.html');
-            });
+            fetch(e.request)
+                .then((res) => {
+                    if (url.hostname === BLOB_STORAGE && !url.hostname.includes('profile'))
+                        caches.open(cacheName)
+                            .then((cache) => cache.put(e.request, res.clone()));
+                    return res;
+                })
+                .catch(() => {
+                    if (e.request.headers.get('accept').includes('text/html'))
+                        return caches.match('/offline/offline.html');
+                });
         })
     );
 });
