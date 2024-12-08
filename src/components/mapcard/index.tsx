@@ -6,6 +6,7 @@ import { Location, Language } from '@logic/types';
 import LanguageCTX from '@logic/contexts/languageCTX';
 
 import InfoCard, { cardType } from '@components/infocard';
+import Button from '@components/button';
 
 import style from './mapcard.module.css';
 
@@ -42,11 +43,11 @@ const Mapcard: React.FC<MapcardProps> = ({ location }) => {
                 </div>
                 <div className={ style.MapcardMore }>
                     <h3 style={ { margin: 0 } }>{ location.name }</h3>
-                    <button
+                    <Button
                         aria-label={ `View new ${ location.name }` }
                         className={ style.Button }
                         onClick={ () => setViewing(true) }
-                    >{ language.misc.infocards.view }</button>
+                    >{ language.misc.infocards.view }</Button>
                 </div>
             </div>
         {

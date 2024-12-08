@@ -64,17 +64,6 @@
     margin: 0;
 }
 
-.Option button {
-    --padding: 0.5rem;
-
-    height: calc(3.5rem - var(--padding) * 2);
-    padding: var(--padding) 1rem;
-    border-radius: calc(1.75rem - var(--padding));
-    border: 1px solid var(--color-primary);
-    color: var(--color-primary);
-    background-color: transparent;
-}
-
 @keyframes SlideIn {
     from { transform: translateX(100%); }
     to   { transform: translateX(0%);   }

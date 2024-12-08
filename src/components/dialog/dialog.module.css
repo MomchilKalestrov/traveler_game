@@ -41,17 +41,6 @@
     padding: 1.5rem 0px 0px 1.5rem;
 }
 
-.DialogOptions button {
-    border: white 1px solid;
-    border-radius: 1.25rem;
-    
-    height: 2.5rem;
-    
-    padding: 0.5rem 1rem;
-    color: var(--color-primary);
-    background-color: transparent;
-}
-
 @keyframes slideIn {
     from { transform: translateY(100vh); }
     to   { transform: translateY(0vh); }

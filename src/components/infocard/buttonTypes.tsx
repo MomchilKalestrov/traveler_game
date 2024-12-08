@@ -1,20 +1,13 @@
-import { CSSProperties } from 'react';
+import Button from '@components/button';
+
 import { Language, Location } from '@logic/types';
+
 import { track, untrack, finish } from './logic';
 
 export enum buttonType {
     Untrack,
     Track,
     Finish
-};
-
-const buttonStyle: CSSProperties = {
-    height: '2.5rem',
-    padding: '0.5rem 1rem',
-    borderRadius: '1.25rem',
-    border: '1px solid var(--color-primary)',
-    color: 'var(--color-primary)',
-    backgroundColor: 'transparent'
 };
 
 type ButtonProps = {
@@ -26,24 +19,24 @@ type ButtonProps = {
 const buttons = {
     [ buttonType.Track ]:
         ({ location, close, language }: ButtonProps) => (
-            <button
-                aria-label='Start tracking' style={ buttonStyle }
+            <Button
+                aria-label='Start tracking'
                 onClick={ () => track({ location, close }) }
-            >{ language.misc.infocards.start }</button>
+            >{ language.misc.infocards.start }</Button>
         ),
     [ buttonType.Untrack ]:
         ({ location, close,language }: ButtonProps) => (
-            <button
-                aria-label='Stop tracking' style={ buttonStyle }
+            <Button
+                aria-label='Stop tracking' 
                 onClick={ () => untrack({ location, close }) }
-            >{ language.misc.infocards.stop }</button>
+            >{ language.misc.infocards.stop }</Button>
         ),
     [ buttonType.Finish ]: 
         ({ location, close, language }: ButtonProps) => (
-            <button
-                aria-label='Finish' style={ buttonStyle }
-                onClick={ () => finish({ location, close }  ) }
-            >{ language.misc.infocards.finish }</button>
+            <Button
+                aria-label='Finish'
+                onClick={ () => finish({ location, close }) }
+            >{ language.misc.infocards.finish }</Button>
         )
 };
 

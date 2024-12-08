@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { loading, stopLoading } from '@components/loading';
 import AccomplishmentTag        from '@components/accomplishment';
+import Button from '@components/button';
 
 import getColors     from '@logic/profileColor';
 import LanguageCTX   from '@logic/contexts/languageCTX';
@@ -117,7 +118,7 @@ const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
                                 <p>{ Math.floor(user.xp / 100) }</p>
                             </div>
                             <h2>{ user.username }</h2>
-                            <button onClick={ action }>{ language.profile[type] }</button>
+                            <Button onClick={ action } border={ true }>{ language.profile[type] }</Button>
                             <div>
                                 <p><b>{ user.followers.length }</b> { language.profile.followers }</p>
                                 <p><b>{ user.following.length }</b> { language.profile.following }</p>

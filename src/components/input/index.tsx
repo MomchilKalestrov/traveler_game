@@ -1,7 +1,7 @@
-import React, { InputHTMLAttributes } from 'react';
+import React from 'react';
 import style from './input.module.css';
 
-type MaterialInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'style' | 'type' | 'placeholder' | 'className'> & {
+type MaterialInputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'style' | 'type' | 'placeholder' | 'className'> & {
     type: 'text' | 'password' | 'email' | 'number' | 'url';
 }; 
 

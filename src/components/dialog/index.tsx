@@ -1,6 +1,8 @@
 'use client';
 import React from 'react';
 
+import Button from '@components/button';
+
 import style from './dialog.module.css';
 
 type DialogOption = {
@@ -23,15 +25,15 @@ const unwrap = (
     Array.isArray(options)
     ?   <div className={ style.DialogOptions }>
             { options.map((option, index) => (
-                <button
+                <Button
                     key={ index }
-                    style={ !option.primary ? { border: 'none' } : undefined }
+                    border={ option.primary }
                     onClick={ () => {
                         if (option.event)
                             option.event();
                         close();
                     } }
-                >{ option.name }</button>
+                >{ option.name }</Button>
             )) }
         </div>
     :   <div className={ style.DialogOptions }>

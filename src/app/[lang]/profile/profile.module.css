@@ -53,12 +53,6 @@
 .ProfileInfo button {
     grid-area: follow;
     align-self: center;
-    height: 2.5rem;
-    padding: 0.5rem 1rem;
-    border-radius: 1.25rem;
-    border: 1px solid var(--color-primary);
-    color: var(--color-primary);
-    background-color: transparent;
 }
 
 .ProfileCard * {

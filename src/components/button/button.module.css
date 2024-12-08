@@ -1,0 +1,14 @@
+.Button {
+    border-radius: 1.25rem;
+    border: none;
+    
+    height: 2.5rem;
+    
+    padding: 0.5rem 1rem;
+    color: var(--color-primary);
+    background-color: transparent;
+}
+
+.ButtonBorder {
+    border: 1px solid var(--color-primary);
+}

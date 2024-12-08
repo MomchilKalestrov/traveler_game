@@ -8,6 +8,7 @@ import { Language } from '@logic/types';
 import LanguageCTX  from '@logic/contexts/languageCTX';
 
 import Dropdown from '@components/dropdown';
+import Button   from '@components/button';
 
 import style    from './settings.module.css';
 
@@ -64,7 +65,8 @@ const Settings = ({ close }: SettingsProps) => {
                     <h3>{ language.misc.settings.logout.title }</h3>
                     <p>{ language.misc.settings.logout.description }</p>
                 </div>
-                <button
+                <Button
+                    aria-label='Logout'
                     onClick={ () => {
                             sessionStorage.removeItem("initialSave");
                             deleteCookie('username');
@@ -72,7 +74,7 @@ const Settings = ({ close }: SettingsProps) => {
                             router.replace('/login');
                         }
                     }
-                >{ language.misc.settings.logout.title }</button>
+                >{ language.misc.settings.logout.title }</Button>
             </div>
         </div>
     );
