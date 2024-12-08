@@ -5,6 +5,10 @@
     background-color: var(--color-secondary);
 }
 
+.Dropdown * {
+    margin: 0px;
+}
+
 .DropdownHead {
     position: relative;
     display: flex;
