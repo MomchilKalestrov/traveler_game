@@ -15,52 +15,52 @@ import { preloadFromSessionStorage } from '@logic/redux/sessionStorage';
 import style from './profile.module.css';
 
 const getAlignment = (count: number): React.CSSProperties => ({
-  justifyContent: count > 3
-    ? 'space-between'
-    : count === 2
-      ? 'space-around'
-      : 'center'
+    justifyContent: count > 3
+        ?   'space-between'
+        :   count === 2
+            ?   'space-around'
+            :   'center'
 });
 
 const Page: NextPage = () => {
-  const language: Language | undefined = React.useContext(LanguageCTX);
+    const language: Language | undefined = React.useContext(LanguageCTX);
 
-  const user: User | undefined = useSelector((state: RootState) => state.user.value);
-  const [ profilePicture, setProfilePicture ] = React.useState<any | undefined>(undefined);
+    const user: User | undefined = useSelector((state: RootState) => state.user.value);
+    const [ profilePicture, setProfilePicture ] = React.useState<any | undefined>(undefined);
 
-  React.useEffect(() => { preloadFromSessionStorage(); }, []);
+    React.useEffect(() => { preloadFromSessionStorage(); }, []);
 
-  React.useEffect(() => {
-    if (!user) return;
-    fetch(process.env.NEXT_PUBLIC_BLOB_STORAGE_URL + '/profile/' + user.username + '.png')
-      .then(response => response.blob())
-      .then(blob => setProfilePicture(URL.createObjectURL(blob)));
-  }, [ user ]);
+    React.useEffect(() => {
+        if (!user) return;
+        fetch(process.env.NEXT_PUBLIC_BLOB_STORAGE_URL + '/profile/' + user.username + '.png')
+            .then(response => response.blob())
+            .then(blob => setProfilePicture(URL.createObjectURL(blob)));
+    }, [ user ]);
 
-  const loadProfilePicture = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (!files) return;
-    const file = files[0];
-    if (!file) return;
+    const loadProfilePicture = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
+        if (!files) return;
+        const file = files[0];
+        if (!file) return;
 
-    const reader = new FileReader();
+        const reader = new FileReader();
 
-    reader.onloadend = () => {
-      if(!reader.result) return;
-      
-      const blob = new Blob([ reader.result ], { type: file.type });
-      
-      fetch('/api/auth/changepfp', {
-        method: 'POST',
-        body: blob,
-        headers: {
-          'Content-Type': file.type,
-          'Content-Disposition': `attachment; filename="${ file.name }"`
-        }
-      }).then(res => {
-        if(!res.ok) return console.error('Couldn\'t upload the image.');
-        setProfilePicture(URL.createObjectURL(blob));
-      })
+        reader.onloadend = () => {
+        if(!reader.result) return;
+        
+        const blob = new Blob([ reader.result ], { type: file.type });
+        
+        fetch('/api/auth/changepfp', {
+            method: 'POST',
+            body: blob,
+            headers: {
+            'Content-Type': file.type,
+            'Content-Disposition': `attachment; filename="${ file.name }"`
+            }
+        }).then(res => {
+            if(!res.ok) return console.error('Couldn\'t upload the image.');
+            setProfilePicture(URL.createObjectURL(blob));
+        })
     };
 
     reader.readAsArrayBuffer(file);

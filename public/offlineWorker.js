@@ -22,10 +22,10 @@ const offlinePages = [
     '/icons/crowns/crown1.svg',
     '/icons/crowns/crown2.svg',
 
-    '/icons/navigation/Home.svg',
-    '/icons/navigation/Map.svg',
-    '/icons/navigation/Profile.svg',
-    '/icons/navigation/Leaderboard.svg',
+    '/icons/navigation/home.svg',
+    '/icons/navigation/map.svg',
+    '/icons/navigation/profile.svg',
+    '/icons/navigation/leaderboard.svg',
 
     '/icons/back.svg',
     '/icons/close.svg',

@@ -11,33 +11,33 @@ import { Roboto } from 'next/font/google';
 import './design.css';
 
 const roboto = Roboto({
-  weight: [ '400', '500', '700', '900' ],
-  subsets: [ 'latin'],
-  display: 'swap',
+    weight: [ '400', '500', '700', '900' ],
+    subsets: [ 'latin'],
+    display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: 'Venturo',
-  description: 'A game where you earn rewards by visiting the sights of Bulgaria.',
-  icons: [ '/favicon.ico', '/favicon.png' ],
+    title: 'Venturo',
+    description: 'A game where you earn rewards by visiting the sights of Bulgaria.',
+    icons: [ '/favicon.ico', '/favicon.png' ],
 };
 
 const RootLayout = ({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) => (
-  <html lang="en">
-    <body className={ roboto.className }>
-      <Analytics />
-      <OfflineHandler />
-      <Providers>
-        <Header />
-        { children }
-        <Navbar pages={ [ "Home", "Map", "Profile", "Leaderboard" ] } />
-      </Providers>
-    </body>
-  </html>
+    <html lang="en">
+        <body className={ roboto.className }>
+            <Analytics />
+            <OfflineHandler />
+            <Providers>
+                <Header />
+                { children }
+                <Navbar pages={ [ "home", "map", "profile", "leaderboard" ] } />
+            </Providers>
+        </body>
+    </html>
 );
 
 export default RootLayout;
