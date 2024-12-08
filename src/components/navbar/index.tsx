@@ -20,6 +20,15 @@ type NavbarProps = {
     pages: string[];
 };
 
+const isHidden = (url: string): boolean => {
+    const hidden: string[] = [ 'login', 'about' ];
+    let hide = false;
+
+    hidden.forEach((page) => hide = hide || url.includes(page));
+    
+    return hide;
+};
+
 const NavbarEntry = ({ page, name, active, language }: NavbarEntryProps) => (
     <Link
         href={ `/${ language }/${ page.toLowerCase() }` }
@@ -35,7 +44,7 @@ const Navbar: React.FC<NavbarProps> = ({ pages }) => {
     const pathname = usePathname();
     const language: Language | undefined = React.useContext(LanguageCTX);
 
-    if (pathname.includes('login') || !language) return (<></>);
+    if (!language || isHidden(pathname)) return (<></>);
 
     return (
         <nav className={ styles.Navbar }>

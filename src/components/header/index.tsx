@@ -22,6 +22,15 @@ const emptyUser: User = {
     xp: 0
 };
 
+const isHidden = (url: string): boolean => {
+    const hidden: string[] = [ 'login', 'about' ];
+    let hide = false;
+
+    hidden.forEach((page) => hide = hide || url.includes(page));
+    
+    return hide;
+};
+
 const Header = () => {
     const language: Language | undefined = React.useContext(LanguageCTX);
 
@@ -158,7 +167,7 @@ const Header = () => {
         setId(setTimeout(startSearch, 250));
     };
 
-    if (!language || pathname.includes('login')) return (<></>);
+    if (!language || isHidden(pathname)) return (<></>);
 
     return (
         <>
