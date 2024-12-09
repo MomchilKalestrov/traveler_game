@@ -43,25 +43,31 @@
     filter: var(--icon-filter-primary);
 }
 
-.Option {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
+.Options {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: 1fr min-content;
     gap: 1rem;
 }
 
-.Option div:first-child {
-    flex: 1;
+.Options > div:nth-child(2n - 1) {
+    display: flex;
+    justify-content: flex-start;
+    align-content: center;
+    flex-wrap: wrap;
+    row-gap: 0.25rem;
 }
 
-.Option h3 {
-    margin: 0 0 0.25rem 0;
+.Options > div:nth-child(2n - 1) * {
+    width: 100%;
+    margin: 0px;
 }
 
-.Option p {
-    margin: 0;
+.Options > div:nth-child(2n) {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 @keyframes SlideIn {

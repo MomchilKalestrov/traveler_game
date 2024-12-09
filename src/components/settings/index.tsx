@@ -3,7 +3,7 @@ import React         from 'react';
 import { useRouter } from 'next/navigation';
 import Image         from 'next/image';
 
-import { deleteCookie, getCookie, setCookie } from '@logic/cookies';
+import { deleteCookie, setCookie } from '@logic/cookies';
 import { Language } from '@logic/types';
 import LanguageCTX  from '@logic/contexts/languageCTX';
 
@@ -44,37 +44,42 @@ const Settings = ({ close }: SettingsProps) => {
                 <h2>{ language.misc.settings.title }</h2>
                 <div style={ { width: '2.5rem', height: '2.5rem' } } />
             </div>
-            <div className={ style.Option }>
+            <div className={ style.Options }>
+                { /* Language select */ }
                 <div>
                     <h3>{ language.misc.settings.language.title }</h3>
                     <p>{ language.misc.settings.language.description }</p>
                 </div>
-                <Dropdown
-                    name={ language.misc.settings.language.title }
-                    width='8.5rem' selected={ language.locale }
-                    entries={ { 'English': 'en', 'Български': 'bg' } }
-                    onClick={ (_, value) => {
-                        setCookie('locale', value);
-                        sessionStorage.removeItem('initialSave');
-                        alert(language.misc.settings.language.alert);
-                    } }
-                />
-            </div>
-            <div className={ style.Option }>
+                <div>
+                    <Dropdown
+                        name={ language.misc.settings.language.title }
+                        width='8.5rem' selected={ language.locale }
+                        entries={ { 'English': 'en', 'Български': 'bg' } }
+                        onClick={ (_, value) => {
+                            setCookie('locale', value);
+                            sessionStorage.removeItem('initialSave');
+                            alert(language.misc.settings.language.alert);
+                        } }
+                    />
+                </div>
+                { /* Sign out */ }
                 <div>
                     <h3>{ language.misc.settings.logout.title }</h3>
                     <p>{ language.misc.settings.logout.description }</p>
                 </div>
-                <Button
-                    aria-label='Logout'
-                    onClick={ () => {
-                            sessionStorage.removeItem("initialSave");
-                            deleteCookie('username');
-                            deleteCookie('password');
-                            router.replace('/login');
+                <div>
+                    <Button
+                        aria-label='Logout'
+                        border={ true }
+                        onClick={ () => {
+                                sessionStorage.removeItem("initialSave");
+                                deleteCookie('username');
+                                deleteCookie('password');
+                                router.replace('/login');
+                            }
                         }
-                    }
-                >{ language.misc.settings.logout.title }</Button>
+                    >{ language.misc.settings.logout.title }</Button>
+                </div>
             </div>
         </div>
     );
