@@ -1,8 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
 
-import arrow from './arrow.svg';
-
 import style from './dropdown.module.css';
 
 type DropdownProps = {
@@ -18,7 +16,7 @@ const Dropdown: React.FC<DropdownProps> = ({ entries, name, selected, width, onC
         <div className={ style.DropdownHead }>
             <p>{ name }</p>
             <input type='checkbox' />
-            <Image src={ arrow } alt='arrow' width={ 24 } height={ 24 } />
+            <Image src='/icons/arrow.svg' alt='►' width={ 24 } height={ 24 } />
         </div>
         <div
             className={ style.DropdownBody }

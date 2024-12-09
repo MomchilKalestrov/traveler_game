@@ -37,6 +37,7 @@ const offlinePages = [
     '/icons/poipin.svg',
     '/icons/settings.svg',
     '/icons/userpin.svg',
+    '/icon/arrow.svg',
 
     '/favicon.ico',
     '/favicon.png',
