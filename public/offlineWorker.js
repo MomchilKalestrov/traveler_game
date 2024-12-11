@@ -1,4 +1,4 @@
-const BLOB_STORAGE = "https://gsplsf3le8pssi3n.public.blob.vercel-storage.com";
+const BLOB_STORAGE_DOMAIN = "blob.vercel-storage.com";
 const cacheName = 'offlineCacheV8';
 
 const offlinePages = [
@@ -38,12 +38,16 @@ const offlinePages = [
     '/icons/settings.svg',
     '/icons/userpin.svg',
     '/icon/arrow.svg',
+    '/icon/menu.svg',
+
+    '/media/chiseled.svg',
+    '/media/person.svg',
 
     '/favicon.ico',
     '/favicon.png',
 
     '/languages/en.json',
-    '/languages/bg.json',
+    '/languages/bg.json'
 ];
 
 self.addEventListener('install', (e) => {
@@ -70,13 +74,14 @@ self.addEventListener('activate', (e) => {
 
 self.addEventListener('fetch', (e) => {
     const url = new URL(e.request.url);
+    console.log(url);
     e.respondWith(
         caches.match(e.request).then((response) => {
             if (response)
                 return response;
             fetch(e.request)
                 .then((res) => {
-                    if (url.hostname === BLOB_STORAGE && !url.hostname.includes('profile'))
+                    if (url.href.includes(BLOB_STORAGE_DOMAIN) && !url.hostname.includes('profile'))
                         caches.open(cacheName)
                             .then((cache) => cache.put(e.request, res.clone()));
                     return res;

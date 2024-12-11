@@ -1,5 +1,6 @@
 {
   "locale": "en",
+  "gamename": "Venturo",
   "home": {
     "titles": {
       "started": "Sights you want to visit:",
@@ -35,6 +36,21 @@
       "username": "Username",
       "password": "Password",
       "verify": "Verify password"
+    }
+  },
+  "about": {
+    "pages": {
+        "about": "About",
+        "download": "Download",
+        "login": "Log in"
+    },
+    "tagline": "Explore, earn badges, level up!",
+    "download": "Download",
+    "info": {
+        "about": {
+            "title": "About",
+            "content": "Venturo is a location-based game that allows you to explore the world around you and earn badges for visiting landmarks. The more landmarks you visit, the more badges you earn and the higher your level becomes. You can also follow other players and see their activity in the game."
+        }
     }
   },
   "misc": {

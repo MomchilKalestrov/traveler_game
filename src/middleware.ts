@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from 'next/server';
 
-const languages = ['en', 'bg'];
+const languages: string[] = ['en', 'bg'];
  
 export const middleware = (request: NextRequest) => {
     const url = request.nextUrl.pathname!
@@ -9,7 +9,7 @@ export const middleware = (request: NextRequest) => {
     const password = request.cookies.get('password')?.value;
     const userlocale = request.cookies.get('locale')?.value || 'en';
 
-    const [ _, slug, page ] = url.split('/');
+    const [ slug, page ] = url.split('/').splice(1);
     
     if (
         userlocale !== slug && page &&
@@ -21,14 +21,16 @@ export const middleware = (request: NextRequest) => {
     if (
 	    (username && password) ||
 	    !languages.includes(slug) ||
-        url.includes('login')
+        url.includes('login') ||
+        url.includes('about')
     )
         return NextResponse.next();
     
     return NextResponse.redirect(new URL(`/${ slug }/login`, request.url));
 }
 
-export const config = { matcher: [
-    '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
-    '/:lang*'
-] };
+export const config = {
+    matcher: [
+        '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|[^/]+/login|[^/]+/about).*)'
+    ]
+};

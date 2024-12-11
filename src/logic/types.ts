@@ -29,14 +29,19 @@ interface Accomplishment {
 };
 
 interface Language {
+    [key: string]: any;
     locale: string;
+    gamename: string;
     home: {
+        [key: string]: any;
         titles: {
+            [key: string]: any;
             started:  string;
             new:      string;
             activity: string;
         };
         alts: {
+            [key: string]: any;
             started: string;
             new:     string;
         };
@@ -53,66 +58,99 @@ interface Language {
     };
 
     leaderboard: {
+        [key: string]: any;
         top: string;
     };
 
     auth: {
+        [key: string]: any;
         login: {
+            [key: string]: any;
             title:  string;
             button: string;
         },
         signup: {
+            [key: string]: any;
             title:  string;
             button: string;
         }
         inputs: {
+            [key: string]: any;
             username: string;
             password: string;
             verify:   string;
-        }
-    }
+        };
+    };
+
+    about: {
+        [key: string]: any;
+        pages: {
+            [key: string]: any;
+            home:     string;
+            download: string;
+            login:    string;
+        };
+        tagline:  string;
+        download: string;
+        info: {
+            [key: string]: any;
+            about: {
+                [key: string]: any;
+                title:   string;
+                content: string;
+            };
+        };
+    };
 
     misc: {
+        [key: string]: any;
         lookup: {
+            [key: string]: any;
             title:   string;
             nouser:  string;
             error:   string;
         };
         settings: {
+            [key: string]: any;
             title: string;
             logout: {
+                [key: string]: any;
                 title: string;
                 description: string;
             };
             language: {
+                [key: string]: any;
                 title: string;
                 description: string;
                 alert: string;
             };
         };
         accomplishment: {
+            [key: string]: any;
             title: string;
         };
         infocards: {
+            [key: string]: any;
             start:  string;
             stop:   string;
             finish: string;
             view:   string;
         };
         navbar: {
+            [key: string]: any;
             home:        string;
             map:         string;
             profile:     string;
             leaderboard: string;
         };
         GPSaccess: {
+            [key: string]: any;
             title: string;
             description: string;
             accept: string;
             decline: string;
         }
     };
-    [key: string]: any;
 };
 
 const toLocation = (data: any): Location => ({

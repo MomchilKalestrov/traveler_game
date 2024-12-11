@@ -40,7 +40,7 @@ const NavbarEntry = ({ page, name, active, language }: NavbarEntryProps) => (
 );
 
 const Navbar: React.FC<NavbarProps> = ({ pages }) => {
-    const params   = useParams();
+    const params   = useParams<{ lang: string }>();
     const pathname = usePathname();
     const language: Language | undefined = React.useContext(LanguageCTX);
 
@@ -55,7 +55,7 @@ const Navbar: React.FC<NavbarProps> = ({ pages }) => {
                     key={ key }
                     name={ (language.misc.navbar as any)[name.toLowerCase()] }
                     page={ name }
-                    language={ params.lang as string }
+                    language={ params.lang }
                     active={ pathname.includes(name.toLowerCase()) }
                 />
             ))

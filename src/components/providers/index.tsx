@@ -12,7 +12,7 @@ type ProvidersProps = {
 };
 
 const Providers: React.FC<ProvidersProps> = ({ children }) => {
-    const params = useParams();
+    const params = useParams<{ lang: string }>();
     const [ language, setLanguage ] = React.useState<Language | undefined>(undefined);
 
     React.useEffect(() => {
