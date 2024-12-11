@@ -22,6 +22,7 @@ const buttons = {
             <Button
                 aria-label='Start tracking'
                 onClick={ () => track({ location, close }) }
+                border={ true }
             >{ language.misc.infocards.start }</Button>
         ),
     [ buttonType.Untrack ]:
@@ -29,6 +30,7 @@ const buttons = {
             <Button
                 aria-label='Stop tracking' 
                 onClick={ () => untrack({ location, close }) }
+                border={ true }
             >{ language.misc.infocards.stop }</Button>
         ),
     [ buttonType.Finish ]: 
@@ -36,6 +38,7 @@ const buttons = {
             <Button
                 aria-label='Finish'
                 onClick={ () => finish({ location, close }) }
+                border={ true }
             >{ language.misc.infocards.finish }</Button>
         )
 };

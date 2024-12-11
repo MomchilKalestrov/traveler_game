@@ -1,29 +1,32 @@
 .Mapcard {
-    width: 100%;
     border-radius: 0.75rem;
     overflow: hidden;
+
+    width: 100%;
     color: var(--color-primary);
     background-color: var(--color-secondary);
 }
 
 .MapcardLocation {
-    --padding: 1rem;
+    box-sizing: border-box;
 
-    width: calc(100% - var(--padding) * 2);
-    height: calc(10rem - var(--padding) * 2);
     border-radius: 0.75rem;
-    padding: var(--padding);
-    background: url('/default_assets/background.png');
+    width: 100%;
+    height: 10rem;
+    padding: 1rem;
+    
     background-position: center;
     background-size: cover;
 }
 
 .MapcardLocation > div {
-    width: 2.5rem;
-    height: 2.5rem;
     border-radius: 0.75rem;
     border: none;
+
+    width: 2.5rem;
+    height: 2.5rem;
     padding: 0.5rem;
+
     background-color: var(--color-secondary);
 }
 
@@ -33,21 +36,28 @@
 }
 
 .MapcardMore {
-    --padding: 1rem;
+    box-sizing: border-box;
 
+    width: 100%;
+    padding: 1rem;
+    
     background-color: var(--color-secondary);
-    width: calc(100% - var(--padding) * 2);
-    padding: var(--padding);
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
+.MapcardMore h3 {
+    margin: 0px;
+}
+
 .Button {
-    height: 2.5rem;
-    padding: 0.5rem 1rem;
     border-radius: 1.25rem;
     border: 1px solid var(--color-primary);
+    
+    height: 2.5rem;
+    
+    padding: 0.5rem 1rem;
     color: var(--color-primary);
     background-color: transparent;
 }

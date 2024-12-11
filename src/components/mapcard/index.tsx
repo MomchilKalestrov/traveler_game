@@ -42,11 +42,12 @@ const Mapcard: React.FC<MapcardProps> = ({ location }) => {
                     </div>
                 </div>
                 <div className={ style.MapcardMore }>
-                    <h3 style={ { margin: 0 } }>{ location.name }</h3>
+                    <h3>{ location.name }</h3>
                     <Button
                         aria-label={ `View new ${ location.name }` }
                         className={ style.Button }
                         onClick={ () => setViewing(true) }
+                        border={ true }
                     >{ language.misc.infocards.view }</Button>
                 </div>
             </div>

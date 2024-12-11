@@ -12,7 +12,7 @@ type MinicardProps = {
 };
 
 const Minicard: React.FC<MinicardProps> = ({ location }) => {
-    const [viewing, setViewing] = React.useState<boolean>(false);
+    const [ viewing, setViewing ] = React.useState<boolean>(false);
 
     return (
         <>
