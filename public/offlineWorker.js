@@ -1,5 +1,5 @@
 const BLOB_STORAGE_DOMAIN = "blob.vercel-storage.com";
-const cacheName = 'offlineCacheV8';
+const cacheName = 'offlineCacheV9';
 
 const offlinePages = [
     '/offline/offline.html',
@@ -37,8 +37,8 @@ const offlinePages = [
     '/icons/poipin.svg',
     '/icons/settings.svg',
     '/icons/userpin.svg',
-    '/icon/arrow.svg',
-    '/icon/menu.svg',
+    '/icons/arrow.svg',
+    '/icons/menu.svg',
 
     '/media/chiseled.svg',
     '/media/person.svg',
