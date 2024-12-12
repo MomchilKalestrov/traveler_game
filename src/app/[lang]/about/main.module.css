@@ -32,7 +32,11 @@
     line-height: 1.75rem;
 }
 
-.Splash h1 { margin: 0px; }
+.Splash h1 {
+    --font-size: clamp(2rem, 23vw, 4rem);
+
+    margin: 0px;
+}
 
 .Splash div {
     display: flex;
@@ -41,8 +45,10 @@
     gap: 1rem;
 }
 
-.Splash div h1 {
-    --font-size: clamp(2rem, 23vw, 4rem);
+.Splash img {
+    padding: 0px clamp(0px, 5vw, 5rem);
+    box-sizing: border-box;
+    height: min-content;
 }
 
 .DarkenedBackground {
