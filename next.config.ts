@@ -1,5 +1,11 @@
 import type { NextConfig } from 'next';
 
+const pages:   string[] = [ 'login', 'about', 'home', 'map', 'profile', 'leaderboard' ];
+const locales: string[] = [ 'bg', 'en' ];
+
+const defaultPage:   string = 'home';
+const defaultLocale: string = 'en';
+
 const nextConfig: NextConfig = {
     reactStrictMode: false,
     images: {
@@ -10,44 +16,19 @@ const nextConfig: NextConfig = {
     },
     async redirects() {
         return [
-            {
-                source: '/bg',
-                destination: '/bg/home',
+            ...locales.map(locale => ({
+                source: `/${ locale }`,
+                destination: `/${ locale }/${ defaultPage }`,
                 permanent: true
-            },
-            {
-                source: '/en',
-                destination: '/en/home',
+            })),
+            ...pages.map(page => ({
+                source: `/${ page }`,
+                destination: `/${ defaultLocale }/${ page }`,
                 permanent: true
-            },
-            {
-                source: '/login',
-                destination: '/en/login',
-                permanent: true
-            },
-            {
-                source: '/home',
-                destination: '/en/home',
-                permanent: true
-            },
-            {
-                source: '/map',
-                destination: '/en/map',
-                permanent: true
-            },
-            {
-                source: '/profile',
-                destination: '/en/profile',
-                permanent: true
-            },
-            {
-                source: '/leaderboard',
-                destination: '/en/leaderboard',
-                permanent: true
-            },
+            })),
             {
                 source: '/',
-                destination: '/bg/home',
+                destination: `/${ defaultLocale }/home`,
                 permanent: true
             }
         ];
