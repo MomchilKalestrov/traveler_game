@@ -58,3 +58,5 @@ certificates
 # enviormnent
 *.env
 .env
+# TWA assets
+.well-known/*
