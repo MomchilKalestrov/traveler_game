@@ -114,7 +114,11 @@ const Page: NextPage = () => {
                     <div>
                         <h1>{ language.gamename }</h1>
                         <p>{ language.about.tagline }</p>
-                        <Button border={ true }>{ language.about.download }</Button>
+                        <Button border={ true }>
+                            <Link href={ `/${ language.locale }/download` }>
+                                { language.about.download }
+                            </Link>
+                        </Button>
                     </div>
                     <Image src='/media/person.svg' alt='person' width={ 480 } height={ 565 } />
                 </section>

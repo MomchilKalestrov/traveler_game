@@ -9,6 +9,8 @@
     background-color: transparent;
 }
 
+.Button * { text-decoration: none; }
+
 .ButtonBorder {
     border: 1px solid var(--color-primary);
 }
