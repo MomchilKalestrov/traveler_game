@@ -9,6 +9,7 @@ import Providers      from '@components/providers';
 
 import { Roboto } from 'next/font/google';
 import './design.css';
+import SessionStorageHandler from '@src/components/sessionStorageHandler';
 
 const roboto = Roboto({
     weight: [ '400', '500', '700', '900' ],
@@ -29,12 +30,15 @@ const RootLayout = ({
 }>) => (
     <html lang="en">
         <body className={ roboto.className }>
-            <Analytics />
             <OfflineHandler />
+            <SessionStorageHandler />
+            
+            <Analytics />
+
             <Providers>
                 <Header />
                 { children }
-                <Navbar pages={ [ "home", "map", "profile", "leaderboard" ] } />
+                <Navbar pages={ [ 'home', 'map', 'profile', 'leaderboard' ] } />
             </Providers>
         </body>
     </html>

@@ -18,11 +18,20 @@ type PlayerProps = {
     position: number;
 };
 
+const getPercentage = (xp: number): React.CSSProperties => ({
+    '--percentage': `${ xp - 100 * Math.floor(xp / 100) }%`
+} as React.CSSProperties);
+
+const getPhotoColors = (username: string): React.CSSProperties => {
+    const [ foreground, background ] = getColors(username.slice(0, 3));
+    return {
+        backgroundColor: background,
+        color: foreground
+    };
+};
+
 const Player: React.FC<PlayerProps> = ({ user, position }) => {
     const [ profilePicture, setProfilePicture ] = React.useState<any | undefined>(undefined);
-
-    const [ color, r_color ] = getColors(user.username.slice(0, 3));
-    const percentage = user.xp - 100 * Math.floor (user.xp / 100);
 
     React.useEffect(() => {
         if (!user) return;
@@ -38,9 +47,9 @@ const Player: React.FC<PlayerProps> = ({ user, position }) => {
             {
                 profilePicture
                 ?   <Image alt={ user.username } src={ profilePicture } width={ 64 } height={ 64 } />
-                :   <div style={ { backgroundColor: color, color: r_color } }>{ user.username[0] }</div>
+                :   <div style={ getPhotoColors(user.username) }>{ user.username[0] }</div>
             }
-                <div style={ { '--percentage': percentage + '%' } as React.CSSProperties } />
+                <div style={ getPercentage(user.xp) } />
                 <p>{ Math.floor(user.xp / 100) }</p>
             </div>
             <h2>{ user.username }</h2>
@@ -61,12 +70,7 @@ const Page: NextPage = () => {
     const language: Language | undefined = React.useContext(LanguageCTX);
 
     const [ players, setPlayers ] = React.useState<User[] | undefined>(undefined);
-
-    React.useEffect(() => {
-        preloadFromSessionStorage();
-    }, []);
-
-    // top players are used only here, so it's not necessary to store them in the redux store
+    
     React.useEffect(() => {
         if (sessionStorage.getItem('top'))
             return setPlayers(JSON.parse(sessionStorage.getItem('top') as string));

@@ -44,8 +44,6 @@ const Page: NextPage = () => {
 
     const [ profilePicture, setProfilePicture ] = React.useState<any | undefined>(undefined);
 
-    React.useEffect(() => { preloadFromSessionStorage(); }, []);
-
     React.useEffect(() => {
         if (!user) return;
         fetch(process.env.NEXT_PUBLIC_BLOB_STORAGE_URL + '/profile/' + user.username + '.png')

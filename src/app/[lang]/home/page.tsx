@@ -18,7 +18,6 @@ import {
 } from '@logic/types';
 
 import { RootState } from '@logic/redux/store';
-import { preloadFromSessionStorage } from '@logic/redux/sessionStorage';
 
 import style from './home.module.css';
 
@@ -31,10 +30,6 @@ const Page: NextPage = () => {
     const startedSlice = useSelector((state: RootState) => state.started.value);
     
     const [ followerActivity, setFollowerActivity ] = React.useState<Accomplishment[]>([]);
-
-    React.useEffect(() => {
-        preloadFromSessionStorage();
-    }, []);
 
     React.useEffect(() => {
         if (!userSlice) return;

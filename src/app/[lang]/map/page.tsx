@@ -25,11 +25,7 @@ const Page: NextPage = () => {
             loading: () => (<LoadingPlaceholder />),
             ssr: false
         }
-    ), [])
-
-    React.useEffect(() => {
-        preloadFromSessionStorage();
-    }, []);
+    ), []);
 
     React.useEffect(() => {
         navigator.permissions.query({ name: 'geolocation' })

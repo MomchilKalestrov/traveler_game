@@ -46,6 +46,9 @@ const getPhotoColors = (username: string): React.CSSProperties => {
     };
 };
 
+const getBadgeSVG = (name: string): string =>
+    `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ name }.svg`;
+
 const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
     const currentUser = useSelector((state: RootState) => state.user.value);
     const all         = useSelector((state: RootState) => state.all.value);
@@ -149,7 +152,7 @@ const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
                                     {
                                         user.finished.map((data: { location: string, time: number }, key: number) =>
                                             <Image
-                                                src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ data.location }.svg` }
+                                                src={ getBadgeSVG(data.location) }
                                                 alt={ data.location } key={ key } width={ 48 } height={ 48 }
                                             />
                                         )
