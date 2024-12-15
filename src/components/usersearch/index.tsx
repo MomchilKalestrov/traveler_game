@@ -28,11 +28,23 @@ type UserSearchProps = {
 
 const getAlignment = (count: number): React.CSSProperties => ({
     justifyContent: count > 3
-        ? 'space-between'
-        : count === 2
-            ? 'space-around'
-            : 'center'
+        ?   'space-between'
+        :   count === 2
+            ?   'space-around'
+            :   'center'
 });
+
+const getPercentage = (xp: number): React.CSSProperties => ({
+    '--percentage': `${ xp - 100 * Math.floor(xp / 100) }%`
+} as React.CSSProperties);
+
+const getPhotoColors = (username: string): React.CSSProperties => {
+    const [ foreground, background ] = getColors(username.slice(0, 3));
+    return {
+        backgroundColor: background,
+        color: foreground
+    };
+};
 
 const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
     const currentUser = useSelector((state: RootState) => state.user.value);
@@ -59,21 +71,21 @@ const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
             .then(blob => setProfilePicture(URL.createObjectURL(blob)));
     }, [ user ]);
 
-    let type: string = !currentUser?.following.includes(user.username)
+    let actionType: string = !currentUser?.following.includes(user.username)
         ? 'follow'
         : 'unfollow';
         
     let action = () => {
         loading();
-        fetch(`/api/auth/${ type }?username=${ user.username }`, { method: 'POST' })
+        fetch(`/api/auth/${ actionType }?username=${ user.username }`, { method: 'POST' })
             .then(response => {
                 if (!response.ok) {
-                    alert(`An error occurred while trying to ${ type } the user.`);
+                    alert(`An error occurred while trying to ${ actionType } the user.`);
                     stopLoading();
                     return;
                 }
                 dispatch({
-                    type: `user/${ type }`,
+                    type: `user/${ actionType }`,
                     payload: user.username
                 });
                 stopLoading();
@@ -100,10 +112,7 @@ const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
                 <p>{ language.misc.lookup.error }</p>
             </div>
         );
-        case status.founduser:
-            const [ color, r_color ] = getColors(user.username.slice(0, 3));
-            const percentage = user.xp - 100 * Math.floor(user.xp / 100);
-            
+        case status.founduser:            
             return (
                 <div className={ style.UserSearch }>
                     <div className={ userStyle.ProfileContainer }>
@@ -111,14 +120,20 @@ const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
                             <div className={ userStyle.ProfilePhoto }>
                             {
                                 profilePicture
-                                ? <Image src={ profilePicture } alt={ user.username } width={ 64 } height={ 64 } />
-                                : <div style={ { backgroundColor: color, color: r_color } }>{ user.username[0] }</div>
+                                ?   <Image
+                                        alt={ user.username }
+                                        src={ profilePicture }
+                                        width={ 64 } height={ 64 }
+                                    />
+                                :   <div style={ getPhotoColors(user.username) }>
+                                        { user.username[0] }
+                                    </div>
                             }
-                                <div style={ { '--percentage': percentage + '%' } as React.CSSProperties } />
+                                <div style={ getPercentage(user.xp) } />
                                 <p>{ Math.floor(user.xp / 100) }</p>
                             </div>
                             <h2>{ user.username }</h2>
-                            <Button onClick={ action } border={ true }>{ language.profile[type] }</Button>
+                            <Button onClick={ action } border={ true }>{ language.profile[ actionType ] }</Button>
                             <div>
                                 <p><b>{ user.followers.length }</b> { language.profile.followers }</p>
                                 <p><b>{ user.following.length }</b> { language.profile.following }</p>

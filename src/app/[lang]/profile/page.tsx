@@ -22,10 +22,26 @@ const getAlignment = (count: number): React.CSSProperties => ({
             :   'center'
 });
 
+const getPercentage = (xp: number): React.CSSProperties => ({
+    '--percentage': `${ xp - 100 * Math.floor(xp / 100) }%`
+} as React.CSSProperties);
+
+const getPhotoColors = (username: string): React.CSSProperties => {
+    const [ foreground, background ] = getColors(username.slice(0, 3));
+    return {
+        backgroundColor: background,
+        color: foreground
+    };
+};
+
+const getBadgeSVG = (name: string): string =>
+    `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ name }.svg`;
+
 const Page: NextPage = () => {
     const language: Language | undefined = React.useContext(LanguageCTX);
 
     const user: User | undefined = useSelector((state: RootState) => state.user.value);
+
     const [ profilePicture, setProfilePicture ] = React.useState<any | undefined>(undefined);
 
     React.useEffect(() => { preloadFromSessionStorage(); }, []);
@@ -46,69 +62,75 @@ const Page: NextPage = () => {
         const reader = new FileReader();
 
         reader.onloadend = () => {
-        if(!reader.result) return;
-        
-        const blob = new Blob([ reader.result ], { type: file.type });
-        
-        fetch('/api/auth/changepfp', {
-            method: 'POST',
-            body: blob,
-            headers: {
-            'Content-Type': file.type,
-            'Content-Disposition': `attachment; filename="${ file.name }"`
-            }
-        }).then(res => {
-            if(!res.ok) return console.error('Couldn\'t upload the image.');
-            setProfilePicture(URL.createObjectURL(blob));
-        })
-    };
+            if(!reader.result) return;
+            
+            const blob = new Blob([ reader.result ], { type: file.type });
+            
+            fetch('/api/auth/changepfp', {
+                method: 'POST',
+                body: blob,
+                headers: {
+                    'Content-Type': file.type,
+                    'Content-Disposition': `attachment; filename="${ file.name }"`
+                }
+            }).then(res => {
+                if(!res.ok) return console.error('Couldn\'t upload the image.');
+                setProfilePicture(URL.createObjectURL(blob));
+            })
+        };
 
-    reader.readAsArrayBuffer(file);
-  };
+        reader.readAsArrayBuffer(file);
+    };
 
   if (!user || !language) return (<LoadingPlaceholder />);
 
-  const [ color, r_color ] = getColors(user.username.slice(0, 3));
-  const percentage = user.xp - 100 * Math.floor(user.xp / 100);
-
   return (
     <main>
-      <div className={ style.ProfileContainer }>
-        <div className={ `${ style.ProfileCard } ${ style.ProfileInfo }` }>
-            <div className={ style.ProfilePhoto }>
-              <input type='file' onChange={ loadProfilePicture } accept='.png' />
+        <div className={ style.ProfileContainer }>
+            <div className={ `${ style.ProfileCard } ${ style.ProfileInfo }` }>
+                <div className={ style.ProfilePhoto }>
+                    <input type='file' onChange={ loadProfilePicture } accept='.png' />
+                {
+                    profilePicture
+                    ?   <Image
+                            alt={ user.username }
+                            src={ profilePicture }
+                            width={ 64 } height={ 64 }
+                        />
+                    :   <div style={ getPhotoColors(user.username) }>
+                            { user.username[0] }
+                        </div>
+                }
+                    <div style={ getPercentage(user.xp) } />
+                    <p>{ Math.floor(user.xp / 100) }</p>
+                </div>
+                <h2>{ user.username }</h2>
+                <div>
+                    <p><b>{ user.followers.length }</b> { language.profile.followers }</p>
+                    <p><b>{ user.following.length }</b> { language.profile.following }</p>
+                </div>
+            </div>
             {
-              profilePicture
-              ? <Image alt={ user.username } src={ profilePicture } width={ 64 } height={ 64 } />
-              : <div style={ { backgroundColor: color, color: r_color } }>{ user.username[0] }</div>
+                user.finished.length > 0 &&
+                <div className={ style.ProfileCard }>
+                    <h2>{ language.profile.badges }</h2>
+                    <div className={ style.ProfileDivider } />
+                    <div
+                        className={ style.ProfileBadges }
+                        style={ getAlignment(user.finished.length) }
+                    >
+                    {
+                        user.finished.map((data: { location: string, time: number }, key: number) =>
+                            <Image
+                                src={ getBadgeSVG(data.location) }
+                                alt={ data.location } key={ key } width={ 48 } height={ 48 }
+                            />
+                        )
+                    }
+                    </div>
+                </div>
             }
-              <div style={ { '--percentage': percentage + '%' } as React.CSSProperties } />
-              <p>{ Math.floor(user.xp / 100) }</p>
-            </div>
-            <h2>{ user.username }</h2>
-            <div>
-              <p><b>{ user.followers.length }</b> { language.profile.followers }</p>
-              <p><b>{ user.following.length }</b> { language.profile.following }</p>
-            </div>
         </div>
-        {
-          user.finished.length > 0 &&
-          <div className={ style.ProfileCard }>
-            <h2>{ language.profile.badges }</h2>
-            <div className={ style.ProfileDivider } />
-            <div className={ style.ProfileBadges } style={ getAlignment(user.finished.length) }>
-              {
-                user.finished.map((data: { location: string, time: number }, key: number) =>
-                  <Image
-                    src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ data.location }.svg` }
-                    alt={ data.location } key={ key } width={ 48 } height={ 48 }
-                  />
-                )
-              }
-            </div>
-          </div>
-        }
-      </div>
     </main>
   );
 };
