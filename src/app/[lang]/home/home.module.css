@@ -7,8 +7,8 @@
 }
 
 .Home > button {
-    width: 7.5rem;
-    margin: 0px auto;
+    width: 8rem;
+    margin: 0px calc(50% - 4rem);
 }
 
 .HorizontalCarousel {
