@@ -6,6 +6,11 @@
     margin: var(--padding) 0px;
 }
 
+.Home > button {
+    width: 7.5rem;
+    margin: 0px auto;
+}
+
 .HorizontalCarousel {
     margin-left: calc(var(--padding) * -1);
     margin-right: calc(var(--padding) * -1);

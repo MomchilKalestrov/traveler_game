@@ -45,6 +45,7 @@ interface Language {
             started: string;
             new:     string;
         };
+        loadMore: string;
     };
 
     profile: {

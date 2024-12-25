@@ -10,7 +10,8 @@
     "alts": {
       "started": "No adventures started. Select ones to begin from the section bellow.",
       "new": "No new adventures to start. Check again later."
-    }
+    },
+    "loadMore": "Load more"
   },
   "profile": {
     "followers": "followers",

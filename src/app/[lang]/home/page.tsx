@@ -3,8 +3,9 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { NextPage }    from 'next';
 
-import Mapcard            from '@components/mapcard';
-import Minicard           from '@components/minicard';
+import Button   from '@components/button';
+import Mapcard  from '@components/mapcard';
+import Minicard from '@components/minicard';
 import AccomplishmentTag  from '@components/accomplishment';
 import LoadingPlaceholder from '@components/loading';
 
@@ -29,7 +30,14 @@ const Page: NextPage = () => {
     const userSlice    = useSelector((state: RootState) => state.user.value);
     const startedSlice = useSelector((state: RootState) => state.started.value);
     
-    const [ followerActivity, setFollowerActivity ] = React.useState<Accomplishment[]>([]);
+    const [
+        followerActivity,
+        setFollowerActivity
+    ] = React.useState<Accomplishment[]>([]);
+    const [
+        maxNewLocations,
+        setMaxNewLocations
+    ] = React.useState<number>(Number(process.env.NEXT_PUBLIC_MAX_LOCATIONS || '6'));
 
     React.useEffect(() => {
         if (!userSlice) return;
@@ -37,6 +45,8 @@ const Page: NextPage = () => {
     }, [userSlice]);
 
     if (!userSlice || !newSlice || !startedSlice || !language) return (<LoadingPlaceholder />);
+
+    console.log(newSlice)
 
     return (
         <main className={ style.Home }>
@@ -53,17 +63,27 @@ const Page: NextPage = () => {
             </div></div>
         }
             <h2>{ language.home.titles.new }</h2>
-        { 
-            newSlice.length === 0
-            ?   <p>{ language.home.alts.new }</p>
-            // synthetically cap the maximum so that the home page doesn't look too cluttered
-            // this is temporary until I implement different sections like
-            // "mountains", "beaches", "cities" and so on
-            :   (newSlice.slice(0, 6 - startedSlice.length)).map((
-                    location: Location,
-                    index: number
-                ) => <Mapcard key={ index } location={ location } />)
-        }
+        { [
+            (
+                newSlice.length === 0
+                ?   <p>{ language.home.alts.new }</p>
+                // synthetically cap the maximum so that the home page doesn't look too cluttered
+                // this is temporary until I implement different sections like
+                // "mountains", "beaches", "cities" and so on
+                :   (newSlice.slice(0, maxNewLocations)).map((
+                        location: Location,
+                        index: number
+                    ) => <Mapcard key={ index } location={ location } />)
+            ),
+            (
+                newSlice.length > maxNewLocations
+                ?   <Button
+                        border={ true }
+                        onClick={ () => setMaxNewLocations(maxNewLocations + 6) }
+                    >{ language.home.loadMore }</Button>
+                :   null
+            )
+        ] }
         {
             followerActivity.length > 0 && [
                 <h2>{ language.home.titles.activity }</h2>,
