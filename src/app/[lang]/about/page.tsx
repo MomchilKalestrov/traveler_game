@@ -129,9 +129,7 @@ const Page: NextPage = () => {
                     <div className={ main.CardCarousel }>
                         <div>
                         { locations[ language.locale ].map((location, i) => (
-                            <Card
-                                { ...location } key={ i }
-                            />
+                            <Card { ...location } key={ i } />
                         )) }
                             <Card { ...locations[ language.locale][0] } />
                         </div>
@@ -143,9 +141,7 @@ const Page: NextPage = () => {
                 </section>
             </main>
 
-            <footer className={ footer.Footer }>
-            
-            </footer>
+            <footer className={ footer.Footer }></footer>
         </>
     );
 };
