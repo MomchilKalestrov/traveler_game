@@ -51,6 +51,17 @@
     background: linear-gradient(90deg, var(--color-bg), transparent);
 }
 
+.LoadingSegment {
+    border-radius: 0.75rem;
+    
+    box-sizing: border-box;
+    height: 6rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 @keyframes progress {
     0%   { background-position-x:   0vw; }
     100% { background-position-x: calc(100vw - 1rem); }
