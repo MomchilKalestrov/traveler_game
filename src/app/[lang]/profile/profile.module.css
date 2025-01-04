@@ -64,7 +64,7 @@
     gap: var(--padding);
 }
 
-.ProfileBadges img {
+.ProfileBadges > img {
     aspect-ratio: 1;
     height: 3rem;
     padding: 0.75rem;

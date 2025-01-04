@@ -9,7 +9,7 @@ import buttons, { buttonType } from './buttonTypes';
 
 import style from './infocard.module.css';
 
-export { buttonType as cardType };
+export type { buttonType as cardType };
 
 export type InfoCardProps = {
     setter: React.Dispatch<React.SetStateAction<boolean>>;
@@ -21,7 +21,7 @@ const InfoCard: React.FC<InfoCardProps> = ({ setter, type, location }) => {
     const reference = React.useRef<HTMLDivElement>(null);
     const language: Language | undefined = React.useContext(LanguageCTX);
     
-    const Button = buttons[type];
+    const Button = buttons[ type ];
 
     const close = () => {
         if(!reference.current) return;

@@ -9,17 +9,17 @@ import LoadingPlaceholder from '@components/loading';
 import getColors     from '@logic/profileColor';
 import LanguageCTX   from '@logic/contexts/languageCTX';
 import { RootState } from '@logic/redux/store';
-import { Language, User } from '@logic/types';
-import { preloadFromSessionStorage } from '@logic/redux/sessionStorage';
+import { Language, User, Location } from '@logic/types';
 
 import style from './profile.module.css';
+import InfoCard from '@src/components/infocard';
 
 const getAlignment = (count: number): React.CSSProperties => ({
     justifyContent: count > 3
-        ?   'space-between'
-        :   count === 2
-            ?   'space-around'
-            :   'center'
+    ?   'space-between'
+    :   count === 2
+        ?   'space-around'
+        :   'center'
 });
 
 const getPercentage = (xp: number): React.CSSProperties => ({
@@ -37,10 +37,32 @@ const getPhotoColors = (username: string): React.CSSProperties => {
 const getBadgeSVG = (name: string): string =>
     `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ name }.svg`;
 
+const Badge: React.FC<{ location: Location | undefined }> = ({ location }) => {
+    const [ visible, setVisibility ] = React.useState<boolean>(false);
+
+    if (!location) return (<></>);
+
+    return [
+        visible
+        ?   <InfoCard
+                type='share'
+                location={ location }
+                setter={ setVisibility }
+            />
+        :   <></>,
+        <Image
+            src={ getBadgeSVG(location.dbname) }
+            alt={ location.name } width={ 48 } height={ 48 }
+            onClick={ () => setVisibility(true) }
+        />
+    ];
+};
+
 const Page: NextPage = () => {
     const language: Language | undefined = React.useContext(LanguageCTX);
 
     const user: User | undefined = useSelector((state: RootState) => state.user.value);
+    const finished: Location[] = useSelector((state: RootState) => state.finished.value) || [];
 
     const [ profilePicture, setProfilePicture ] = React.useState<any | undefined>(undefined);
 
@@ -127,14 +149,9 @@ const Page: NextPage = () => {
                         className={ style.ProfileBadges }
                         style={ getAlignment(user.finished.length) }
                     >
-                    {
-                        user.finished.map((data: { location: string, time: number }, key: number) =>
-                            <Image
-                                src={ getBadgeSVG(data.location) }
-                                alt={ data.location } key={ key } width={ 48 } height={ 48 }
-                            />
-                        )
-                    }
+                    { user.finished.map(({ location }, key: number) =>
+                        <Badge key={ key } location={ finished.find((l) => l.dbname === location) } />
+                    ) }
                     </div>
                 </div>
             }

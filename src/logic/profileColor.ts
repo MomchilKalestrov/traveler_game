@@ -26,18 +26,11 @@ const getColors = (value: string): [ string, string ] => {
     // no need to check for the length of the value,
     // because names are always at least 3 characters long
     const bytes = getValues(value);
-    console.log(bytes)
     
-    const red   = toHex(bytes[0]);
-    const green = toHex(bytes[1]);
-    const blue  = toHex(bytes[2]);
+    const color = bytes.map(byte => toHex(byte)).join('');
+    const r_color = bytes.map(byte => toHex(byte, true)).join('');
 
-    const r_red   = toHex(bytes[0], true);
-    const r_green = toHex(bytes[1], true);
-    const r_blue  = toHex(bytes[2], true);
-
-    console.log([ `#${red}${green}${blue}`, `#${r_red}${r_green}${r_blue}` ])
-    return [ `#${red}${green}${blue}`, `#${r_red}${r_green}${r_blue}` ];
+    return [ `#${ color }`, `#${ r_color }` ];
 };
 
 export default getColors;

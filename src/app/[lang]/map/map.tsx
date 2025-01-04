@@ -77,7 +77,7 @@ const Map: React.FC<MapProps> = ({ locations = [], hasGPSAccess }) => {
             <InfoCard
                 setter={ setVisible }
                 location={ location }
-                type={ cardType.Finish }
+                type='finish'
             />
         }
             <MapContainer

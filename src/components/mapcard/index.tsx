@@ -54,7 +54,7 @@ const Mapcard: React.FC<MapcardProps> = ({ location }) => {
         {
             viewing &&
             <InfoCard
-                type={ cardType.Track }
+                type='track'
                 setter={ setViewing }
                 location={ location }
             />

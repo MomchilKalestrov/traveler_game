@@ -19,7 +19,7 @@ const Minicard: React.FC<MinicardProps> = ({ location }) => {
         {
             viewing &&
             <InfoCard
-                type={ cardType.Untrack }
+                type='untrack'
                 setter={ setViewing }
                 location={ location }
             />

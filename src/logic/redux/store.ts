@@ -1,17 +1,19 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { saveToSessionStorage } from './sessionStorage';
+import finishedReducer from './finishedSlice';
 import startedReducer from './startedSlice';
-import userReducer    from './userSlice';
-import newReducter    from './newSlice';
-import allReducer     from  './allSlice';
+import userReducer from './userSlice';
+import newReducter from './newSlice';
+import allReducer from './allSlice';
 
 const store = configureStore({
-  reducer: {
-    user:    userReducer,
-    started: startedReducer,
-    new:     newReducter,
-    all:     allReducer,
-  }
+    reducer: {
+        finished: finishedReducer,
+        started: startedReducer,
+        user: userReducer,
+        new: newReducter,
+        all: allReducer
+    }
 });
 
 store.subscribe(() => saveToSessionStorage(store.getState()));

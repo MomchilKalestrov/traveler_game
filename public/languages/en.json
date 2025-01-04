@@ -79,6 +79,7 @@
       "start": "Mark for visitation",
       "stop": "Remove from visitation",
       "finish": "Mark as visited",
+      "share": "Share",
       "view": "View"
     },
     "navbar": {

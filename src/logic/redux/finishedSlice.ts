@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Location } from '@logic/types';
 
-export const newSlice = createSlice({
-	name: 'new',
+export const finishedSlice = createSlice({
+	name: 'finished',
 	initialState: { value: undefined as Location[] | undefined },
 	reducers: {
 		add: (state, action: PayloadAction<Location>) => {
@@ -25,5 +25,5 @@ export const newSlice = createSlice({
 	}
 });
 
-export const { add, remove, clear, update } = newSlice.actions;
-export default newSlice.reducer;
+export const { add, remove, clear, update } = finishedSlice.actions;
+export default finishedSlice.reducer;

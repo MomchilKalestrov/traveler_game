@@ -8,7 +8,6 @@ import LoadingPlaceholder from '@components/loading';
 import getColors   from '@logic/profileColor';
 import LanguageCTX from '@logic/contexts/languageCTX';
 import { Language, User }            from '@logic/types';
-import { preloadFromSessionStorage } from '@logic/redux/sessionStorage';
 
 import userStyle from '@app/profile/profile.module.css';
 import style     from './leaderboard.module.css';
