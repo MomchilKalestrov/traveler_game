@@ -72,21 +72,23 @@ self.addEventListener('activate', (e) => {
 
 self.addEventListener('fetch', (e) => {
     const url = new URL(e.request.url);
-    console.log(url);
     e.respondWith(
         caches.match(e.request).then((response) => {
             if (response)
                 return response;
-            fetch(e.request)
+
+            return fetch(e.request)
                 .then((res) => {
-                    if (url.href.includes(BLOB_STORAGE_DOMAIN) && !url.hostname.includes('profile'))
-                        caches.open(cacheName)
-                            .then((cache) => cache.put(e.request, res.clone()));
+                    if (url.hostname.includes(BLOB_STORAGE_DOMAIN))
+                        caches.open(cacheName).then((cache) =>
+                            cache.put(e.request, res.clone())
+                        );
                     return res;
                 })
                 .catch(() => {
-                    if (e.request.headers.get('accept').includes('text/html'))
-                        return caches.match('/offline/offline.html');
+                    e.request.headers.get('accept').includes('text/html')
+                    ?   caches.match('/offline/offline.html')
+                    :   new Response(null, { status: 404 });
                 });
         })
     );

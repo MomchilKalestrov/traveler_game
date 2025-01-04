@@ -73,7 +73,17 @@ const Page: NextPage = () => {
                 }
             }).then(res => {
                 if(!res.ok) return console.error('Couldn\'t upload the image.');
+
                 setProfilePicture(URL.createObjectURL(blob));
+                caches.open('offlineCacheV10').then(cache => {
+                    cache.delete(`/profile/${ user?.username }.png`)
+                    cache.keys().then(keys => {
+                        keys.forEach(request => {
+                            if(request.url.includes(`/profile/${ user?.username }.png`))
+                                cache.delete(request);
+                        });
+                    });
+                });
             })
         };
 
