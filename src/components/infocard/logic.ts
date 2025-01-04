@@ -110,14 +110,14 @@ const finish = async ({ location, close }: ButtonProps) => {
     close();
 };
 
-const share = async ({ location, close }: ButtonProps) => {
+const share = async ({ location }: ButtonProps) => {
     if (!navigator.share)
         return alert('Your browser does not support sharing.');
 
     navigator.share({
         title: location.name,
         text: `I've just visited ${ location.name } in Venturo!`,
-        url: 'venturo-game.vercel.app'
+        url: '/home'
     });
 };
 
