@@ -11,8 +11,9 @@ import LanguageCTX   from '@logic/contexts/languageCTX';
 import { RootState } from '@logic/redux/store';
 import { Language, User, Location } from '@logic/types';
 
-import style from './profile.module.css';
 import InfoCard from '@src/components/infocard';
+
+import style from './profile.module.css';
 
 const getAlignment = (count: number): React.CSSProperties => ({
     justifyContent: count > 3
@@ -43,7 +44,7 @@ const Badge: React.FC<{ location: Location | undefined }> = ({ location }) => {
     if (!location) return (<></>);
 
     return [
-        visible
+        visible && 'share' in navigator
         ?   <InfoCard
                 type='share'
                 location={ location }

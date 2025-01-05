@@ -1,6 +1,7 @@
 import { loading, stopLoading } from '@components/loading';
 import { Location } from '@logic/types';
-import store        from '@logic/redux/store';
+import getShareCard from './share';
+import store from '@logic/redux/store';
 
 type ButtonProps = {
     location: Location;
@@ -110,15 +111,39 @@ const finish = async ({ location, close }: ButtonProps) => {
     close();
 };
 
+const toIntentURI = (image: string) => 
+    'intent://add-to-story' +
+    '#Intent;' +
+    'action=com.instagram.share.ADD_TO_STORY;' +
+    'type=image/png;' +
+    `S.interactive_asset_uri=${ encodeURIComponent(image) };` +
+    'S.top_background_color=%239aa396;' +
+    'S.bottom_background_color=%23838f7e;' +
+    'package=com.instagram.android;' +
+    'scheme=https;' +
+    `S.browser_fallback_url=${ encodeURIComponent('https://play.google.com/store/apps/details?id=com.instagram.android') };` +
+    'end;';
+
 const share = async ({ location }: ButtonProps) => {
-    if (!navigator.share)
-        return alert('Your browser does not support sharing.');
+    if (!('share' in navigator)) return;
 
     navigator.share({
-        title: location.name,
-        text: `I've just visited ${ location.name } in Venturo!`,
-        url: '/home'
+        title: 'I visited ' + location.name,
+        text: 'I visited ' + location.name + ' on ' + new Date().toLocaleDateString() + '.',
+        url: 'https://venturo-game.vercel.app',
     });
+
+    // uncomment this when you finally get an App ID from Facebook
+    /*const image = await getShareCard(
+        location,
+        store.getState()
+            .user
+            .value
+            ?.finished
+                .find((l) => l.location === location.name)?.time || 0,
+    );
+
+    window.location.href = 'https://www.instagram.com/create/share?text=test';*/
 };
 
 export { untrack, track, finish, share };
