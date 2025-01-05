@@ -1,15 +1,15 @@
-import React         from 'react';
+import React from 'react';
+import { Roboto }    from 'next/font/google';
 import { Metadata }  from 'next';
 import { Analytics } from '@vercel/analytics/react';
 
-import Navbar         from '@components/navbar';
-import Header         from '@components/header';
-import OfflineHandler from '@components/offlineHandler';
+import Navbar from '@components/navbar';
+import Header from '@components/header';
 import Providers      from '@components/providers';
+import OfflineHandler from '@components/offlineHandler';
+import SessionStorageHandler from '@components/sessionStorageHandler';
 
-import { Roboto } from 'next/font/google';
 import './design.css';
-import SessionStorageHandler from '@src/components/sessionStorageHandler';
 
 const roboto = Roboto({
     weight: [ '400', '500', '700', '900' ],
@@ -17,10 +17,10 @@ const roboto = Roboto({
     display: 'swap',
 });
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
     title: 'Venturo',
     description: 'A game where you earn rewards by visiting the sights of Bulgaria.',
-    icons: [ '/favicon.ico', '/favicon.png' ],
+    icons: [ '/favicon.ico', '/favicon.png' ]
 };
 
 const RootLayout = ({
@@ -45,3 +45,4 @@ const RootLayout = ({
 );
 
 export default RootLayout;
+export { metadata };

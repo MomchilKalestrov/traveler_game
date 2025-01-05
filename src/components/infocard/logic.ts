@@ -130,7 +130,7 @@ const share = async ({ location }: ButtonProps) => {
     navigator.share({
         title: 'I visited ' + location.name,
         text: 'I visited ' + location.name + ' on ' + new Date().toLocaleDateString() + '.',
-        url: 'https://venturo-game.vercel.app',
+        url: 'https://venturo-game.vercel.app/share?location=' + location.dbname,
     });
 
     // uncomment this when you finally get an App ID from Facebook
