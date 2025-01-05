@@ -1,6 +1,5 @@
 import { NextPage, Metadata } from 'next';
-
-import Redirect from './redirect';
+import { redirect } from 'next/navigation';
 
 type MetadataProps = {
     searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -8,6 +7,8 @@ type MetadataProps = {
 
 const generateMetadata = async ({ searchParams }: MetadataProps): Promise<Metadata> => {
     const location = (await searchParams)?.location ?? null;
+
+    console.log('Rendering OG image for: ', location);
 
     return {
         title: 'Venturo',
@@ -21,7 +22,8 @@ const generateMetadata = async ({ searchParams }: MetadataProps): Promise<Metada
     };
 };
 
-const Page: NextPage = () => (<Redirect />);
+const Page: NextPage = () =>
+    redirect('/');
 
 export { generateMetadata };
 export default Page;
