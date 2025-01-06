@@ -1,29 +1,25 @@
-import { NextPage, Metadata } from 'next';
+import { NextPage, Metadata, ResolvingMetadata } from 'next';
 import { redirect } from 'next/navigation';
 
 type MetadataProps = {
+    params: Promise<{ id: string }>;
     searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-const generateMetadata = async ({ searchParams }: MetadataProps): Promise<Metadata> => {
-    const location = (await searchParams)?.location ?? null;
-
-    console.log('Rendering OG image for: ', location);
+const generateMetadata = async (
+    { params, searchParams }: MetadataProps,
+    parent: ResolvingMetadata
+): Promise<Metadata> => {
+    const location = (await searchParams)?.location || undefined;
 
     return {
-        title: 'Venturo',
-        description: 'A game where you earn rewards by visiting the sights of Bulgaria.',
-        icons: [ '/favicon.ico', '/favicon.png' ],
         openGraph: {
-            images: [
-                location ? `/api/open-graph?location=${ location }` : '/api/open-graph'
-            ]
+            images: `/api/open-graph` + (location ? `?location=${location}` : ''),
         }
     };
 };
 
-const Page: NextPage = () =>
-    redirect('/');
+const Page: NextPage = () => redirect('/');
 
 export { generateMetadata };
 export default Page;

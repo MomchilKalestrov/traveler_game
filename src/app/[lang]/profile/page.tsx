@@ -6,37 +6,15 @@ import { useSelector } from 'react-redux';
 
 import LoadingPlaceholder from '@components/loading';
 
-import getColors     from '@logic/profileColor';
 import LanguageCTX   from '@logic/contexts/languageCTX';
+import getCSSColors  from '@logic/profileColor';
 import { RootState } from '@logic/redux/store';
 import { Language, User, Location } from '@logic/types';
+import { getBadgeSVG, getAlignment, getPercentage } from '@logic/utils';
 
 import InfoCard from '@src/components/infocard';
 
 import style from './profile.module.css';
-
-const getAlignment = (count: number): React.CSSProperties => ({
-    justifyContent: count > 3
-    ?   'space-between'
-    :   count === 2
-        ?   'space-around'
-        :   'center'
-});
-
-const getPercentage = (xp: number): React.CSSProperties => ({
-    '--percentage': `${ xp - 100 * Math.floor(xp / 100) }%`
-} as React.CSSProperties);
-
-const getPhotoColors = (username: string): React.CSSProperties => {
-    const [ foreground, background ] = getColors(username.slice(0, 3));
-    return {
-        backgroundColor: background,
-        color: foreground
-    };
-};
-
-const getBadgeSVG = (name: string): string =>
-    `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ name }.svg`;
 
 const Badge: React.FC<{ location: Location | undefined }> = ({ location }) => {
     const [ visible, setVisibility ] = React.useState<boolean>(false);
@@ -128,7 +106,7 @@ const Page: NextPage = () => {
                             src={ profilePicture }
                             width={ 64 } height={ 64 }
                         />
-                    :   <div style={ getPhotoColors(user.username) }>
+                    :   <div style={ getCSSColors(user.username) }>
                             { user.username[0] }
                         </div>
                 }

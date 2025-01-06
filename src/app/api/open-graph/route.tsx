@@ -1,6 +1,8 @@
 import { NextRequest } from 'next/server';
 import { ImageResponse } from 'next/og';
 
+import { getBadgeSVG } from '@logic/utils';
+
 const size = {
     width: 1200,
     height: 630
@@ -9,9 +11,6 @@ const size = {
 const badgeSize = 22;
 const paddingThickness = 3;
 const borderRadius = paddingThickness;
-
-const getBadgeSVG = (name: string): string =>
-    `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ name }.svg`;
 
 const GET = async (request: NextRequest) => {
     const params = new URL(request.url).searchParams;
@@ -51,10 +50,7 @@ const GET = async (request: NextRequest) => {
                 </div>
             </>
         ) : (
-            <div style={ { display: 'flex' } }>
-                <h1>Venturo</h1>
-                <p>A game where you earn rewards by visiting the sights of Bulgaria.</p>
-            </div>
+            <div style={ { display: 'flex' } }></div>
         ),
         { ...size }
     );

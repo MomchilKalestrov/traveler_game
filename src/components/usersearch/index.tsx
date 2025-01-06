@@ -3,13 +3,14 @@ import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { loading, stopLoading } from '@components/loading';
-import AccomplishmentTag        from '@components/accomplishment';
+import AccomplishmentTag from '@components/accomplishment';
 import Button from '@components/button';
 
-import getColors     from '@logic/profileColor';
 import LanguageCTX   from '@logic/contexts/languageCTX';
+import getCSSColors  from '@logic/profileColor';
 import { RootState } from '@logic/redux/store';
 import { Language, Location, User } from '@logic/types';
+import { getBadgeSVG, getAlignment, getPercentage } from '@logic/utils';
 
 import userStyle from '@app/profile/profile.module.css';
 import style     from './usersearch.module.css';
@@ -25,29 +26,6 @@ type UserSearchProps = {
     state: status,
     user: User
 };
-
-const getAlignment = (count: number): React.CSSProperties => ({
-    justifyContent: count > 3
-        ?   'space-between'
-        :   count === 2
-            ?   'space-around'
-            :   'center'
-});
-
-const getPercentage = (xp: number): React.CSSProperties => ({
-    '--percentage': `${ xp - 100 * Math.floor(xp / 100) }%`
-} as React.CSSProperties);
-
-const getPhotoColors = (username: string): React.CSSProperties => {
-    const [ foreground, background ] = getColors(username.slice(0, 3));
-    return {
-        backgroundColor: background,
-        color: foreground
-    };
-};
-
-const getBadgeSVG = (name: string): string =>
-    `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ name }.svg`;
 
 const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
     const currentUser = useSelector((state: RootState) => state.user.value);
@@ -128,7 +106,7 @@ const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
                                         src={ profilePicture }
                                         width={ 64 } height={ 64 }
                                     />
-                                :   <div style={ getPhotoColors(user.username) }>
+                                :   <div style={ getCSSColors(user.username) }>
                                         { user.username[0] }
                                     </div>
                             }

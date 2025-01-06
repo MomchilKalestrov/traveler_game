@@ -5,9 +5,10 @@ import { NextPage }  from 'next';
 
 import LoadingPlaceholder from '@components/loading';
 
-import getColors   from '@logic/profileColor';
-import LanguageCTX from '@logic/contexts/languageCTX';
-import { Language, User }            from '@logic/types';
+import LanguageCTX  from '@logic/contexts/languageCTX';
+import getCSSColors from '@logic/profileColor';
+import { getPercentage }  from '@logic/utils';
+import { Language, User } from '@logic/types';
 
 import userStyle from '@app/profile/profile.module.css';
 import style     from './leaderboard.module.css';
@@ -15,18 +16,6 @@ import style     from './leaderboard.module.css';
 type PlayerProps = {
     user: User;
     position: number;
-};
-
-const getPercentage = (xp: number): React.CSSProperties => ({
-    '--percentage': `${ xp - 100 * Math.floor(xp / 100) }%`
-} as React.CSSProperties);
-
-const getPhotoColors = (username: string): React.CSSProperties => {
-    const [ foreground, background ] = getColors(username.slice(0, 3));
-    return {
-        backgroundColor: background,
-        color: foreground
-    };
 };
 
 const Player: React.FC<PlayerProps> = ({ user, position }) => {
@@ -46,7 +35,7 @@ const Player: React.FC<PlayerProps> = ({ user, position }) => {
             {
                 profilePicture
                 ?   <Image alt={ user.username } src={ profilePicture } width={ 64 } height={ 64 } />
-                :   <div style={ getPhotoColors(user.username) }>{ user.username[0] }</div>
+                :   <div style={ getCSSColors(user.username) }>{ user.username[0] }</div>
             }
                 <div style={ getPercentage(user.xp) } />
                 <p>{ Math.floor(user.xp / 100) }</p>

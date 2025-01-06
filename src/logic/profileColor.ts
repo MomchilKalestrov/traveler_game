@@ -22,7 +22,7 @@ const toHex = (value: number, isReversed?: boolean): string =>
         .toString(16)
         .padStart(2, '0');
 
-const getColors = (value: string): [ string, string ] => {
+const getHexColors = (value: string): [ string, string ] => {
     // no need to check for the length of the value,
     // because names are always at least 3 characters long
     const bytes = getValues(value);
@@ -33,4 +33,12 @@ const getColors = (value: string): [ string, string ] => {
     return [ `#${ color }`, `#${ r_color }` ];
 };
 
-export default getColors;
+const getCSSColors = (username: string): React.CSSProperties => {
+    const [ foreground, background ] = getHexColors(username.slice(0, 3));
+    return {
+        backgroundColor: background,
+        color: foreground
+    };
+};
+
+export default getCSSColors;

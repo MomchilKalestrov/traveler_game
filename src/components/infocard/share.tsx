@@ -2,6 +2,7 @@ import React from 'react';
 import satori from 'satori';
 
 import { Location } from '@logic/types';
+import { getBadgeSVG } from '@logic/utils';
 
 const getNumberWithSuffix = (number: number): string => {
     switch(number % 10) {
@@ -36,9 +37,6 @@ const unixToDate = (unix: number) => {
     const date = new Date(unix);
     return `${ getNumberWithSuffix(date.getDate()) } ${ months[ date.getMonth() ] } ${ date.getFullYear() }`;
 };
-
-const getBadgeSVG = (name: string): string =>
-    `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ name }.svg`;
 
 const svgToPng = async (svg: string): Promise<string> => {
     const canvas = document.createElement('canvas');
