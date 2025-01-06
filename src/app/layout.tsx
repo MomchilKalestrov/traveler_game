@@ -20,7 +20,9 @@ const roboto = Roboto({
 const metadata: Metadata = {
     title: 'Venturo',
     description: 'A game where you earn rewards by visiting the sights of Bulgaria.',
-    icons: [ '/favicon.ico', '/favicon.png' ]
+    icons: [ '/favicon.ico', '/favicon.png' ],
+    openGraph: { images: '/api/open-graph' },
+    metadataBase: new URL(process.env.APPLICATION_URL as string),
 };
 
 const RootLayout = ({
