@@ -1,5 +1,6 @@
+'use server';
 import { NextPage, Metadata, ResolvingMetadata } from 'next';
-import { redirect } from 'next/navigation';
+import Redirect from './redirect';
 
 type MetadataProps = {
     params: Promise<{ id: string }>;
@@ -19,7 +20,7 @@ const generateMetadata = async (
     };
 };
 
-const Page: NextPage = () => redirect('/');
+const Page: NextPage = () => <Redirect />;
 
 export { generateMetadata };
 export default Page;
