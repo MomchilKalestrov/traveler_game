@@ -1,7 +1,8 @@
 import { loading, stopLoading } from '@components/loading';
 import { Location } from '@logic/types';
-import getShareCard from './share';
+/* import getShareCard from './share'; */
 import store from '@logic/redux/store';
+import { unixToDate } from '@logic/utils';
 
 type ButtonProps = {
     location: Location;
@@ -111,7 +112,7 @@ const finish = async ({ location, close }: ButtonProps) => {
     close();
 };
 
-const toIntentURI = (image: string) => 
+/* const toIntentURI = (image: string) => 
     'intent://add-to-story' +
     '#Intent;' +
     'action=com.instagram.share.ADD_TO_STORY;' +
@@ -122,16 +123,28 @@ const toIntentURI = (image: string) =>
     'package=com.instagram.android;' +
     'scheme=https;' +
     `S.browser_fallback_url=${ encodeURIComponent('https://play.google.com/store/apps/details?id=com.instagram.android') };` +
-    'end;';
+    'end;'; */
+    
+const filterEntries = (entries: any): any =>
+    Object.entries(entries)
+        .filter(([ key, value ]) => navigator.canShare({ [ key ]: value }))
+        .reduce((acc, [ key, value ]) => ({ ...acc, [ key ]: value }), {});
 
 const share = async ({ location }: ButtonProps) => {
     if (!('share' in navigator)) return;
 
-    navigator.share({
+    const timeOfVisit =
+        store.getState()
+            .user.value?.finished
+            ?.find((l) => l.location === location.dbname)?.time || 0;
+
+    const entries = filterEntries({
         title: 'I visited ' + location.name,
-        text: 'I visited ' + location.name + ' on ' + new Date().toLocaleDateString() + '.',
-        url: 'https://venturo-game.vercel.app/share?location=' + location.dbname,
+        text: `I visited ${ location.name } on ${ unixToDate(timeOfVisit) }.`,
+        url: `${ process.env.APPLICATION_URL }/share?location=${ location.dbname }`
     });
+    
+    navigator.share(entries);
 
     // uncomment this when you finally get an App ID from Facebook
     /*const image = await getShareCard(
