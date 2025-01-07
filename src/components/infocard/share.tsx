@@ -2,41 +2,12 @@ import React from 'react';
 import satori from 'satori';
 
 import { Location } from '@logic/types';
-import { getBadgeSVG } from '@logic/utils';
-
-const getNumberWithSuffix = (number: number): string => {
-    switch(number % 10) {
-        case 1:  return `${ number }st`;
-        case 2:  return `${ number }nd`;
-        case 3:  return `${ number }rd`;
-        default: return `${ number }th`;
-    };
-};
-
-const months: { [ key: number ]: string } = {
-    0:  'Jan',
-    1:  'Feb',
-    2:  'Mar',
-    3:  'Apr',
-    4:  'May',
-    5:  'Jun',
-    6:  'Jul',
-    7:  'Aug',
-    8:  'Sep',
-    9:  'Oct',
-    10: 'Nov',
-    11: 'Dec'
-};
+import { getBadgeSVG, unixToDate } from '@logic/utils';
 
 const shortenString = (text: string): string => {
     if (text.length <= 15) return text;
     return `${ text.slice(0, 15) }...`;
 }
-
-const unixToDate = (unix: number) => {
-    const date = new Date(unix);
-    return `${ getNumberWithSuffix(date.getDate()) } ${ months[ date.getMonth() ] } ${ date.getFullYear() }`;
-};
 
 const svgToPng = async (svg: string): Promise<string> => {
     const canvas = document.createElement('canvas');
