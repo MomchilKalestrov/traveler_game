@@ -1,6 +1,5 @@
 import { loading, stopLoading } from '@components/loading';
 import { Location } from '@logic/types';
-/* import getShareCard from './share'; */
 import store from '@logic/redux/store';
 import { unixToDate } from '@logic/utils';
 
@@ -47,9 +46,9 @@ const untrack = async ({ location, close }: ButtonProps) => {
         return stopLoading();
     };
     
-    store.dispatch({ type: 'started/remove', payload: location.name });
+    store.dispatch({ type: 'started/remove', payload: location.dbname });
     store.dispatch({ type: 'new/add',        payload: location });
-    store.dispatch({ type: 'user/untrack',   payload: location.name });
+    store.dispatch({ type: 'user/untrack',   payload: location.dbname });
     stopLoading();
     close();
 };
@@ -70,8 +69,8 @@ const track = async ({ location, close }: ButtonProps) => {
     };
     
     store.dispatch({ type: 'started/add', payload: location });
-    store.dispatch({ type: 'new/remove',  payload: location.name });
-    store.dispatch({ type: 'user/track',  payload: location.name });
+    store.dispatch({ type: 'new/remove',  payload: location.dbname });
+    store.dispatch({ type: 'user/track',  payload: location.dbname });
     stopLoading();
     close();
 };
@@ -104,26 +103,13 @@ const finish = async ({ location, close }: ButtonProps) => {
     }
 
 
-    store.dispatch({ type: 'new/remove',     payload: location.name });
-    store.dispatch({ type: 'finished/add',   payload: location.name });
-    store.dispatch({ type: 'started/remove', payload: location.name });
+    store.dispatch({ type: 'new/remove',     payload: location.dbname });
+    store.dispatch({ type: 'finished/add',   payload: location });
+    store.dispatch({ type: 'started/remove', payload: location.dbname });
     store.dispatch({ type: 'user/finish',    payload: location });
     stopLoading();
     close();
 };
-
-/* const toIntentURI = (image: string) => 
-    'intent://add-to-story' +
-    '#Intent;' +
-    'action=com.instagram.share.ADD_TO_STORY;' +
-    'type=image/png;' +
-    `S.interactive_asset_uri=${ encodeURIComponent(image) };` +
-    'S.top_background_color=%239aa396;' +
-    'S.bottom_background_color=%23838f7e;' +
-    'package=com.instagram.android;' +
-    'scheme=https;' +
-    `S.browser_fallback_url=${ encodeURIComponent('https://play.google.com/store/apps/details?id=com.instagram.android') };` +
-    'end;'; */
     
 const filterEntries = (entries: any): any =>
     Object.entries(entries)
@@ -145,18 +131,6 @@ const share = async ({ location }: ButtonProps) => {
     });
     
     navigator.share(entries);
-
-    // uncomment this when you finally get an App ID from Facebook
-    /*const image = await getShareCard(
-        location,
-        store.getState()
-            .user
-            .value
-            ?.finished
-                .find((l) => l.location === location.name)?.time || 0,
-    );
-
-    window.location.href = 'https://www.instagram.com/create/share?text=test';*/
 };
 
 export { untrack, track, finish, share };

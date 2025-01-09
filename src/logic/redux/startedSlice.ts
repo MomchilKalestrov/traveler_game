@@ -14,7 +14,7 @@ export const startedSlice = createSlice({
         state.value = [];
         return;
       }
-      state.value = state.value.filter((location) => location.name !== action.payload);
+      state.value = state.value.filter((location) => location.dbname !== action.payload);
     },
     clear: (state) => {
       state.value = [];

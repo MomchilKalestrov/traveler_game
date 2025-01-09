@@ -28,8 +28,8 @@ export const userSlice = createSlice({
         },
         finish: (state, action: PayloadAction<Location>) => {
             if (!state.value) return;
-            state.value.started = state.value.started.filter(name => name !== action.payload.name);
-            state.value.finished.push({ location: action.payload.name, time: Date.now() });
+            state.value.started = state.value.started.filter(name => name !== action.payload.dbname);
+            state.value.finished.push({ location: action.payload.dbname, time: Date.now() });
             state.value.xp += action.payload.xp;
         }
     }
