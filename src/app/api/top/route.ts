@@ -9,7 +9,8 @@ const GET = async () => {
         await connect();
         // Get the top 100 users by XP
         const top100 = await users.aggregate([
-            { $project: { _id: 0, password: 0, __v: 0 } },
+            { $match: { verified: true } },
+            { $project: { password: 0, _id: 0, __v: 0, email: 0, verified: 0 } },
             { $sort: { xp: -1 } },
             { $limit: 20 }
         ]);

@@ -1,15 +1,17 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
 
-import users        from '@logic/mongoose/user';
-import validateName from '@logic/validateName';
-import connect      from '@logic/mongoose/mongoose';
+import {
+    validateName,
+    validateEmail
+} from '@logic/validate';
+import sendVerificationEmail from './verify';
+import connect from '@logic/mongoose/mongoose';
+import users   from '@logic/mongoose/user';
 
 const POST = async (request: NextRequest) => {
-    const args: URLSearchParams = new URL(request.url).searchParams;
-    const username = args.get('username');
-    const password = args.get('password');
-    const cookie = await cookies();
+    const { username, password, email } = await request.json();
+    const cookie = cookies();
 
     if (!username || !password)
         return NextResponse.json({ error: 'Missing parameters.' }, { status: 412 });
@@ -17,21 +19,27 @@ const POST = async (request: NextRequest) => {
         return NextResponse.json({ error: 'Password must be atleast 8 symbols long.' }, { status: 412 });
     if (!validateName(username))
         return NextResponse.json({ error: 'Invalid username.' }, { status: 412 });
+    if (!validateEmail(email))
+        return NextResponse.json({ error: 'Invalid email.' }, { status: 412 });
 
     try {
         // Connect to the DB
         await connect();
-        // Check if a user with the same username already exists
-        const userExists = await users.findOne({ username: username });
+        // Check if a user with the same username/email already exists
+        const userExists  = await users.findOne({ username });
+        const emailExists = await users.findOne({ email });
         if(userExists) 
-            return NextResponse.json({ error: 'User with the same username already exists.' }, { status: 400 });
+            return NextResponse.json({ error: 'Username already taken.' }, { status: 400 });
+        if(emailExists) 
+            return NextResponse.json({ error: 'Email already taken.' }, { status: 400 });
         // Create a new user
-        await users.create({
-            username: username,
-            password: password,
+        const result = users.create({
+            username,
+            password,
+            email
         });
-        cookie.set('username', username, { maxAge: 60 * 60 * 24 * 365 * 10 });
-        cookie.set('password', password, { maxAge: 60 * 60 * 24 * 365 * 10 });
+        // Send verification email
+        sendVerificationEmail((await result)._id, email);
         // Close the connection
         return new NextResponse(null, { status: 201 });
     } catch(error) {

@@ -1,35 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
-import users   from '@logic/mongoose/user';
-import connect from '@src/logic/mongoose/mongoose';
+import userCheck from '@logic/usercheck';
 
 const POST = async (request: NextRequest) => {
     const args: URLSearchParams = new URL(request.url).searchParams;
-    const username = args.get('username');
-    const password = args.get('password');
+    const username = args.get('username') as string;
+    const password = args.get('password') as string;
 
-    console.log('Username:', username);
-    console.log('Password:', password);
+    const cookie = cookies();
 
-    const cookie = await cookies();
-    
-    if(!username || !password)
-        return NextResponse.json({ error: 'Missing parameters.' }, { status: 412 });
-    
     try {
-        // Connect to the DB
-        await connect();
-        // Check if the data already exists
-        const dataExists = await users.findOne({
-            username: username,
-            password: password
-        });
-        if(!dataExists) 
+        // Check if the user exists and their credentials are correct.  
+        if (!(await userCheck(username, password)))
             return NextResponse.json({ error: 'Incorrect credentials.' }, { status: 403 });
         // Set the user's credentials
-        cookie.set('username', username, { maxAge: 60 * 60 * 24 * 365 * 10 });
-        cookie.set('password', password, { maxAge: 60 * 60 * 24 * 365 * 10 });
+        (await cookie).set('username', username, { maxAge: 60 * 60 * 24 * 365 * 10 });
+        (await cookie).set('password', password, { maxAge: 60 * 60 * 24 * 365 * 10 });
         // Close the connection
         return new NextResponse(null, { status: 201 });
     } catch(error) {

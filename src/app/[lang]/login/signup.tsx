@@ -2,7 +2,6 @@
 import React   from 'react';
 import Image   from 'next/image';
 import { md5 } from 'js-md5';
-import { useRouter, useParams } from 'next/navigation';
 
 import MaterialInput from '@components/input';
 import
@@ -10,9 +9,12 @@ import
     { loading, stopLoading }
 from '@components/loading';
 
-import { Language } from '@logic/types';
-import validateName from '@logic/validateName';
 import LanguageCTX  from '@logic/contexts/languageCTX';
+import { Language } from '@logic/types';
+import {
+    validateName,
+    validateEmail
+} from '@logic/validate';
 
 import style from './login.module.css';
 
@@ -23,9 +25,10 @@ type SignUpProps = {
 const validateForm = (
     username?: string | undefined,
     password?: string | undefined,
-    verify?:   string | undefined
+    verify?:   string | undefined,
+    email?:    string | undefined
 ): boolean => {
-    if (!username || !password) {
+    if (!username || !password || !email) {
         alert('Please fill in all fields.');
         return false;
     }
@@ -41,13 +44,14 @@ const validateForm = (
         alert('Invalid username.');
         return false;
     }
+    if (!validateEmail(email)) {
+        alert('Invalid e-mail.');
+        return false;
+    }
     return true;
 };
 
 const SignUp: React.FC<SignUpProps> = ({ setter }) => {
-    const router = useRouter();
-    const params = useParams();
-
     const language: Language | undefined = React.useContext(LanguageCTX);
 
     const createProfile = (event: React.FormEvent<HTMLFormElement>) => {
@@ -56,18 +60,23 @@ const SignUp: React.FC<SignUpProps> = ({ setter }) => {
         const data: FormData = new FormData(event.currentTarget);
 
         const username = data.get(language.auth.inputs.username) as string;
+        const email    = data.get('E-mail') as string;
         const password = data.get(language.auth.inputs.password) as string;
         const verify   = data.get(language.auth.inputs.verify)   as string;
         
-        if (!validateForm(username, password, verify)) return;
+        if (!validateForm(username, password, verify, email)) return;
         
         loading();
-        fetch(`/api/auth/create?username=${ username }&password=${ md5(password as string) }`, {
-            method: 'POST'
+        fetch(`/api/auth/create`, {
+            method: 'POST',
+            body: JSON.stringify({
+                username,
+                password: md5(password),
+                email
+            })
         }).then((res) => {
             stopLoading();
-            if (!res.ok) return alert('Failed to sign up.');
-            router.replace(`/${ params.lang }/home`);
+            alert(!res.ok ? 'Failed to sign up.' : 'Successfully created profile. Please verify your e-mail before continuing.');
         });
     };
 
@@ -79,6 +88,7 @@ const SignUp: React.FC<SignUpProps> = ({ setter }) => {
             <h1>{ language.auth.signup.title }</h1>
             
             <MaterialInput name={ language.auth.inputs.username } type='text'     required={ true } />
+            <MaterialInput name='E-mail' type='text' required={ true } />
             <MaterialInput name={ language.auth.inputs.password } type='password' required={ true } />
             <MaterialInput name={ language.auth.inputs.verify   } type='password' required={ true } />
             

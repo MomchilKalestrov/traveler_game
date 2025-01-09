@@ -23,7 +23,10 @@ const GET = async (request: NextRequest) => {
         // Connect to the DB
         await connect();
         // Check if the user exists
-        const userInfo = await users.findOne({ username: username }, { password: 0, _id: 0, __v: 0 });
+        const userInfo = await users.findOne({
+            username: username,
+            verified: true
+        }, { password: 0, _id: 0, __v: 0, email: 0, verified: 0 });
         if (!userInfo)
             return NextResponse.json({ error: 'User not found.' }, { status: 404 });
         // Close the connection

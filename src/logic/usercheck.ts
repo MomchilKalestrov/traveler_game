@@ -8,8 +8,8 @@ const userCheck = async (username?: string | undefined, password?: string | unde
 
     try {
         await connect();
-        const user = await users.findOne({ username: username, password: password })
-        return user ? true : false;
+        const user = await users.findOne({ username: username, password: password, verified: true });
+        return !!user;
     } catch (error) {
         console.log(error);
         return false;

@@ -25,7 +25,10 @@ const POST = async (request: NextRequest) => {
         await connect();
         // Check if the user exists
         const currentUser   = await users.findOne({ username: currentUsername   });
-        const requestedUser = await users.findOne({ username: requestedUsername });
+        const requestedUser = await users.findOne({
+            username: requestedUsername,
+            verified: true
+        });
         if (!requestedUser)
             return NextResponse.json({ error: 'User not found.' }, { status: 404 });
         // Check if the user is already following the requested user

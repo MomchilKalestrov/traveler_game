@@ -7,14 +7,19 @@ const finishedLocationSchema: mongoose.Schema = new mongoose.Schema({
 }, { _id: false, versionKey: false });
 
 const userSchema: mongoose.Schema = new mongoose.Schema({
-    username: { type: String, unique: true, required: true },
-    password: { type: String, required: false },
-    finished: { type: [ finishedLocationSchema ], default: [] },
-    started: { type: [ String ], default: [] },
+    email:     { type: String,  unique:   true, required: true },
+    verified:  { type: Boolean, default:  false },
+    username:  { type: String,  unique:   true, required: true },
+    password:  { type: String,  required: false },
+
+    finished:  { type: [ finishedLocationSchema ], default: [] },
+    started:   { type: [ String ], default: [] },
+
     followers: { type: [ String ], default: [] },
     following: { type: [ String ], default: [] },
+
     xp: { type: Number, default: 0 },
-}, { versionKey: false, _id: false });
+}, { versionKey: false });
 
 interface UserDocument extends User, mongoose.Document { };
 

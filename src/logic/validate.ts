@@ -14,6 +14,9 @@ const validateName = (name: string): boolean => {
       return false;
 
   return true;
-}
+};
 
-export default validateName;
+const validateEmail = (email: string): boolean =>
+    (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g).test(email);
+
+export { validateName, validateEmail };
