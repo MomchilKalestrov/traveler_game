@@ -100,8 +100,8 @@ main {
     --padding: 1rem;
     --horizontal: max(calc(50vw - 15rem), var(--padding));
 
-    height: calc(100% - 9rem - var(--padding));
-    padding: 5rem var(--horizontal) 0rem var(--horizontal);
+    height: calc(100% - 9rem - var(--padding) * 2);
+    padding: 5rem var(--horizontal) var(--padding) var(--horizontal);
     overflow-x: hidden;
     overflow-y: scroll;
 }

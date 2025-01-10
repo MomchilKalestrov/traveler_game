@@ -6,6 +6,10 @@
     margin: var(--padding) 0px;
 }
 
+.Home > *:last-child {
+    margin-bottom: 0px;
+}
+
 .Home > button {
     width: 8rem;
     margin: 0px calc(50% - 4rem);

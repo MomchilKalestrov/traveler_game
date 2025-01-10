@@ -9,6 +9,7 @@
     align-items: stretch;
     position: fixed;
     z-index: calc(var(--z) + 4);
+    background: linear-gradient(var(--color-bg), #fff0);
 }
 
 .Header div {

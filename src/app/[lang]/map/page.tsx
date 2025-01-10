@@ -4,7 +4,6 @@ import dynamic from 'next/dynamic';
 import { NextPage }    from 'next';
 import { useSelector } from 'react-redux';
 
-import { preloadFromSessionStorage } from '@logic/redux/sessionStorage';
 import { RootState } from '@logic/redux/store';
 import { Language }  from '@logic/types';
 import LanguageCTX from '@logic/contexts/languageCTX';

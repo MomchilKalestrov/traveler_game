@@ -3,8 +3,8 @@ import React from 'react';
 import L     from 'leaflet';
 import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
 
-import InfoCard, { cardType } from '@components/infocard';
-import { Location }           from '@logic/types';
+import InfoCard     from '@components/infocard';
+import { Location } from '@logic/types';
 
 import 'leaflet/dist/leaflet.css';
 
