@@ -9,24 +9,27 @@ export const middleware = (request: NextRequest) => {
     const password = request.cookies.get('password')?.value;
     const userlocale = request.cookies.get('locale')?.value || 'en';
 
-    const [ slug, page ] = url.split('/').splice(1);
+    const [ lang, page ] = url.split('/').splice(1);
     
+    // automatically swap to user's prefered locale
     if (
-        userlocale !== slug && page &&
-        languages.includes(slug) &&
+        userlocale !== lang && page &&
+        languages.includes(lang) &&
         languages.includes(userlocale)
     )
         return NextResponse.redirect(new URL(`/${ userlocale }/${ page }`, request.url));
     
+    // do not redirect to the login if the page is the login or aboutus
     if (
 	    (username && password) ||
-	    !languages.includes(slug) ||
+	    !languages.includes(lang) ||
         url.includes('login') ||
         url.includes('about')
     )
         return NextResponse.next();
     
-    return NextResponse.redirect(new URL(`/${ slug }/login`, request.url));
+    // if the user wasn't logged in, redirect him automatically
+    return NextResponse.redirect(new URL(`/${ lang }/login`, request.url));
 }
 
 export const config = {

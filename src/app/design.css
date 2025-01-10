@@ -100,8 +100,19 @@ main {
     --padding: 1rem;
     --horizontal: max(calc(50vw - 15rem), var(--padding));
 
+    position: relative;
     height: calc(100% - 9rem - var(--padding) * 2);
     padding: 5rem var(--horizontal) var(--padding) var(--horizontal);
     overflow-x: hidden;
     overflow-y: scroll;
+}
+
+main:before {
+    content: '';
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    height: 5rem;
+    width: 100vw;
+    background: linear-gradient(var(--color-bg), #0000);
 }

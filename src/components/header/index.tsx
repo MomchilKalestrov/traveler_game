@@ -53,15 +53,6 @@ const Header = () => {
         return () => abortControllerRef.current?.abort();
     }, []);
 
-    React.useEffect(() => {
-        if (!headerReference.current) return;
-        
-        headerReference.current.style.background = 
-            pathname.split('/')[2] != 'map'
-            ?   'linear-gradient(var(--color-bg), #fff0)'
-            :   'none';
-    }, [ headerReference, pathname ]);
-
     if (pathname === '/login')
         return (<></>);
 
