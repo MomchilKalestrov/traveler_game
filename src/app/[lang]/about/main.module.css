@@ -4,6 +4,8 @@
     text-align: center;
 }
 
+.Main:before { height: 0px; }
+
 .Main section {
     --width: min(100%, 30rem);
 
