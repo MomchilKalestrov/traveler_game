@@ -39,7 +39,7 @@ const POST = async (request: NextRequest) => {
             email
         });
         // Send verification email
-        sendVerificationEmail((await result)._id, email);
+        await sendVerificationEmail((await result)._id, email);
         // Close the connection
         return new NextResponse(null, { status: 201 });
     } catch(error) {
