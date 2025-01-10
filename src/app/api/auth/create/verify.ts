@@ -71,7 +71,11 @@ const transporter = nodemailer.createTransport({
 });
 
 const sendVerificationEmail = async (id: string, email: string) => {
-    await transporter.sendMail({
+    console.log('Sending verification email to:', email);
+    console.log('Using host: ', process.env.EMAIL_HOST);
+    console.log('Through user: ', process.env.EMAIL_USER);
+    console.log('With password: ', process.env.EMAIL_PASSWORD);
+    const mailId = await transporter.sendMail({
         from: `<${ process.env.EMAIL_USER }>`,
         to: email,
         subject: 'Please Verify Your Email',
@@ -84,6 +88,8 @@ Please verify it by visiting the link below:
 https://venturo-game.vercel.app/api/auth/verify?id=${ id }
 `
     });
+
+    console.log('Email sent: ', mailId);
 };
 
 export default sendVerificationEmail;
