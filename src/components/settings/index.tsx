@@ -27,10 +27,6 @@ const Settings = ({ close }: SettingsProps) => {
         setTimeout(close, 500);
     };
 
-    React.useEffect(() => {
-        if (!reference.current) return;
-    }, []);
-
     if (!language) return (<></>);
 
     return (

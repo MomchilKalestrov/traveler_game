@@ -19,6 +19,7 @@ interface Location {
   };
   xp: number;
   dbname: string;
+  type: 'water' | 'nature' | 'structure' | 'misc';
 };
 
 interface Accomplishment {
@@ -39,6 +40,13 @@ interface Language {
             started:  string;
             new:      string;
             activity: string;
+            types: {
+                [key: string]: any;
+                water:     string;
+                nature:    string;
+                structure: string;
+                misc:      string;
+            }
         };
         alts: {
             [key: string]: any;

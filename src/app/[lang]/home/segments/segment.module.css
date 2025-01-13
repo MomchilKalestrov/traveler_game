@@ -1,0 +1,105 @@
+.SegmentHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.SegmentHeader * {
+    margin: 0;
+}
+
+.SegmentHeader img {
+    filter: var(--icon-filter-primary);
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.SegmentHeader button {
+    padding: 0.5rem;
+    height: 2.5rem;
+    width: 2.5rem;
+    border: none;
+    background-color: transparent;
+    border-radius: 50%;
+    background-color: var(--color-secondary);
+}
+
+.FullPage {
+    --padding: 1rem;
+    --horizontal: max(calc(50vw - 15rem), var(--padding));
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: 0px;
+    width: calc(100vw - var(--horizontal) * 2);
+    height: calc(100vh - var(--padding) * 2);
+    z-index: calc(var(--z) + 5);
+    background-color: var(--color-bg);
+    padding: var(--padding) var(--horizontal);
+    animation: SlideIn 0.5s forwards;
+}
+
+.FullPageHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--padding);
+}
+
+.FullPageHeader * {
+    margin: 0;
+}
+
+.FullPageHeader h2 {
+    justify-self: center;
+}
+
+.FullPageBack {
+    padding: 0.5rem;
+    border: none;
+    border-radius: 50%;
+    background-color: var(--color-secondary);
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.FullPageBack img {
+    width: 100%;
+    height: 100%;
+    filter: var(--icon-filter-primary);
+}
+
+.FullPageContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--padding);
+    overflow-y: scroll;
+    height: calc(100% - 2.5rem);
+}
+
+.FullPageContent::after {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    content: "";
+    flex-shrink: 0;
+    width: 100%;
+    height: calc(var(--padding) * 2);
+    background: linear-gradient(0deg, var(--color-bg) 0%, transparent 100%);
+}
+
+.FullPageContent > div {
+    flex-shrink: 0;
+}
+
+@keyframes SlideIn {
+    from { transform: translateX(100%); }
+    to   { transform: translateX(0%);   }
+}
+
+@keyframes SlideOut {
+    from { transform: translateX(0%);   }
+    to   { transform: translateX(100%); }
+}

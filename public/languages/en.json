@@ -3,9 +3,15 @@
   "gamename": "Venturo",
   "home": {
     "titles": {
-      "started": "Sights you want to visit:",
-      "new": "New landmarks:",
-      "activity": "Followers' activity:"
+      "started": "Sights you want to visit",
+      "new": "New landmarks",
+      "activity": "Followers' activity",
+      "types": {
+        "water": "Waterside",
+        "nature": "Nature",
+        "structure": "Monuments",
+        "misc": "Others"
+      }
     },
     "alts": {
       "started": "No adventures started. Select ones to begin from the section bellow.",

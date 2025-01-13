@@ -54,7 +54,10 @@ const InfoCard: React.FC<InfoCardProps> = ({ setter, type, location }) => {
                             width={ 32 } height={ 32 }
                         />
                     </button>
-                    <p>{ location.xp }</p>
+                    <div>
+                        <Image src={ `/icons/location_types/${ location.type }.svg` } alt={ location.type } width={ 32 } height={ 32 } />   
+                        <p>{ location.xp }</p>
+                    </div>
                 </div>
                 <div className={ style.InfocardData }>
                     <h3>{ location.name }</h3>

@@ -80,6 +80,11 @@
     filter: var(--icon-filter-primary);
 }
 
+.InfocardHeader div {
+    display: flex;
+    gap: 0.5rem;
+}
+
 .InfocardHeader p {
     font-size: 1rem;
     line-height: 1rem;
