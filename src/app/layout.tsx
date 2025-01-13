@@ -38,6 +38,16 @@ const RootLayout = ({
             <Analytics />
 
             <Providers>
+                <div style={ {
+                    zIndex: 9999999,
+                    background: 'red',
+                    color: 'white',
+                    position: 'fixed',
+                    bottom: 0,
+                    right: 0
+                    } }>
+                    EARLY ALPHA.<br></br>NOT FOR PUBLIC RELEASE
+                </div>
                 <Header />
                 { children }
                 <Navbar pages={ [ 'home', 'map', 'profile', 'leaderboard' ] } />
