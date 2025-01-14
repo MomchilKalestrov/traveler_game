@@ -28,7 +28,6 @@
     width: calc(100% - 2.5rem);
     background-color: var(--color-secondary);
     outline: none;
-    --font-family: 'Product Sans';
 }
 
 .Header button {

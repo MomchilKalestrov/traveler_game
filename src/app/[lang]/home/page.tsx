@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { NextPage }    from 'next';
 import { useSelector } from 'react-redux';
 
-import Mapcard  from '@components/mapcard';
 import Minicard from '@components/minicard';
 import AccomplishmentTag  from '@components/accomplishment';
 import LoadingPlaceholder from '@components/loading';
@@ -19,13 +18,8 @@ import {
 import { RootState } from '@logic/redux/store';
 
 import style from './home.module.css';
-import Segment from './segments';
 
-type NewLocationsProps = {
-    newLocations: Location[] | undefined;
-    language: Language;
-    maxNewLocations: number;
-};
+import Segment from './segments';
 
 type StartedLocationsProps = {
     startedLocations: Location[] | undefined;
@@ -74,7 +68,7 @@ const Page: NextPage = () => {
         getActivities(userSlice, allSlice).then(setFollowerActivity);
     }, [ userSlice ]);
 
-    if (!language) return (<LoadingPlaceholder />);
+    if (!allSlice || !language) return (<LoadingPlaceholder />);
 
     return (
         <main className={ style.Home }>
