@@ -1,7 +1,8 @@
 'use client';
 import React from 'react';
-import L     from 'leaflet';
+import L, { latLng } from 'leaflet';
 import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
+import 'leaflet-routing-machine';
 
 import InfoCard     from '@components/infocard';
 import { Location } from '@logic/types';
@@ -30,24 +31,54 @@ const poiPin = new L.Icon({
 type MapProps = {
     locations?: Location[] | undefined,
     hasGPSAccess: boolean
-}
+};
 
-const Hook: React.FC = () => {
+type HookProps = {
+    locations: Location[],
+    userLocation?: GeolocationCoordinates | undefined
+};
+
+const Hook: React.FC<HookProps> = ({ locations, userLocation }) => {
     const map = useMap();
 
-    const setCenter = (position: GeolocationPosition) =>
-        map.setView([
-            position.coords.latitude,
-            position.coords.longitude
-        ], 15);
+    const [ routesGenerated, setRoutesGenerated ] = React.useState<boolean>(false);
+    const [ centerSet,       setCenterSet       ] = React.useState<boolean>(false);
+
+    const generateRoute = async (
+        location: Location,
+        userLocation: GeolocationCoordinates,
+        router: any
+    ) =>
+        router.route([
+            { latLng: latLng(userLocation.latitude, userLocation.longitude) },
+            { latLng: latLng(location.location.lat, location.location.lng) }
+        ], (err: any, routes: any) => {
+            if (!map || err) return;
+
+            const route = routes[0];
+            console.log(route);
+            if (!route) return;
+
+            new L.Polyline(route.coordinates, { color: '#224d5c' }).addTo(map);
+        });
+
+    const generateRoutes = (locations: Location[], userLocation: GeolocationCoordinates) => {
+        if (!map) return;
+        const router = new (L as any).Routing.OSRMv1();
+        locations.forEach((location) => generateRoute(location, userLocation, router));
+    };
 
     React.useEffect(() => {
-        navigator.geolocation.getCurrentPosition(
-            setCenter,
-            (error) => console.log('Error getting user location: \n', error),
-            { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
-        );
-    }, []);
+        if (!map || !locations || !userLocation || routesGenerated) return;
+        generateRoutes(locations, userLocation);
+        setRoutesGenerated(true);
+    }, [ map, locations, userLocation ]);
+
+    React.useEffect(() => {
+        if (!map || !userLocation || centerSet) return;
+        map.setView([ userLocation.latitude, userLocation.longitude ], 10);
+        setCenterSet(true);
+    }, [ map, userLocation ]);
 
     return null;
 }
@@ -95,11 +126,11 @@ const Map: React.FC<MapProps> = ({ locations = [], hasGPSAccess }) => {
             {
                 (userLocation && userLocation.coords) &&
                 <Marker
+                    icon={ playerPin }
                     position={ [
                         userLocation.coords.latitude,
                         userLocation.coords.longitude
                     ] }
-                    icon={ playerPin }
                 />
             }
             {
@@ -117,20 +148,22 @@ const Map: React.FC<MapProps> = ({ locations = [], hasGPSAccess }) => {
                     />
                 ))
             }
-            <Hook />
+                <Hook locations={ locations } userLocation={ userLocation?.coords } />
             </MapContainer>
             <style>
-            { /*
-            there will be absolutely no support for either side of any war in this app.
-            I checked, and the ukranian flag is not required by the license.
-            */ }
-            { `
-                .leaflet-attribution-flag {
+            {
+                /* there will be absolutely no support for either side of any war in this app.
+                I checked, and the ukranian flag is not required by the license. */
+                `.leaflet-attribution-flag {
                     opacity: 0;
                     width: 0;
                     height: 0;  
                 }
-            ` }
+
+                .leaflet-routing-container {
+                    display: none;
+                }`
+            }
             </style>
         </>
     );
