@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import L, { latLng } from 'leaflet';
+import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
 import 'leaflet-routing-machine';
 
@@ -20,12 +20,14 @@ const emptyLocation: Location = {
 
 const playerPin = new L.Icon({
     iconUrl: '/icons/userpin.svg',
-    iconSize: [ 26, 37 ],
+    iconSize: [ 16, 16 ],
+    iconAnchor: [ 8, 8 ]
 });
 
 const poiPin = new L.Icon({
     iconUrl: '/icons/poipin.svg',
-    iconSize: [ 26, 37 ],
+    iconSize: [ 24, 24 ],
+    iconAnchor: [ 12, 12 ]
 });
 
 type MapProps = {
@@ -50,8 +52,8 @@ const Hook: React.FC<HookProps> = ({ locations, userLocation }) => {
         router: any
     ) =>
         router.route([
-            { latLng: latLng(userLocation.latitude, userLocation.longitude) },
-            { latLng: latLng(location.location.lat, location.location.lng) }
+            { latLng: L.latLng(userLocation.latitude, userLocation.longitude) },
+            { latLng: L.latLng(location.location.lat, location.location.lng) }
         ], (err: any, routes: any) => {
             if (!map || err) return;
 
