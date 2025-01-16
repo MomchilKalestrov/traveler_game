@@ -45,7 +45,6 @@ const Mapcard: React.FC<MapcardProps> = ({ location }) => {
                     <h3>{ location.name }</h3>
                     <Button
                         aria-label={ `View new ${ location.name }` }
-                        className={ style.Button }
                         onClick={ () => setViewing(true) }
                         border={ true }
                     >{ language.misc.infocards.view }</Button>

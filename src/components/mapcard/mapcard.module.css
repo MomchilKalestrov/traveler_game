@@ -50,14 +50,3 @@
 .MapcardMore h3 {
     margin: 0px;
 }
-
-.Button {
-    border-radius: 1.25rem;
-    border: 1px solid var(--color-primary);
-    
-    height: 2.5rem;
-    
-    padding: 0.5rem 1rem;
-    color: var(--color-primary);
-    background-color: transparent;
-}
