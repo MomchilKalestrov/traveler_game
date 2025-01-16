@@ -17,13 +17,13 @@ const locationSchema: mongoose.Schema = new mongoose.Schema({
         lng: mongoose.Types.Decimal128
     }, required: true },
     xp: Number,
-    type: { type: String, default: 'misc' },
-}, { _id: false, versionKey: false });
+    type: { type: String, default: 'misc' }
+}, { versionKey: false });
 
 interface LocationDocument extends Location, mongoose.Document { };
 
 const db = mongoose.connection.useDb('TestDB');
-const locations =  db.models.User || db.model<LocationDocument>('User', locationSchema, 'LocationCollection');
+const locations =  db.models.Location || db.model<LocationDocument>('Location', locationSchema, 'LocationCollection');
 
 export { availableLocales };
 export default locations;
