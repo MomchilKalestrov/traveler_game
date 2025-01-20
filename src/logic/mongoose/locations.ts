@@ -23,7 +23,7 @@ const locationSchema: mongoose.Schema = new mongoose.Schema({
 interface LocationDocument extends Location, mongoose.Document { };
 
 const db = mongoose.connection.useDb('TestDB');
-const locations =  db.models.Location || db.model<LocationDocument>('Location', locationSchema, 'LocationCollection');
+const locations =  db.models.Location || db.model<LocationDocument>('Location', locationSchema);
 
 export { availableLocales };
 export default locations;

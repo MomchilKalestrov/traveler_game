@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import { useSelector } from 'react-redux';
+import JSConfetti from 'js-confetti';
 
 import store, { RootState } from '@logic/redux/store';
 import { haversineDistance } from '@logic/utils';
@@ -34,6 +35,13 @@ const claim = (coords: GeolocationCoordinates, location: Location | CommunityLoc
         store.dispatch({ type: 'started/remove', payload: name });
         store.dispatch({ type: 'user/finish', payload: universalLocation });
         store.dispatch({ type: isCommunity ? 'community/finish' : 'finished/add', payload: location });
+
+        const confetti = new JSConfetti();
+        confetti.addConfetti({
+            confettiColors: [ '#ff0000', '#00ff00', '#0000ff' ],
+            confettiRadius: 5,
+            confettiNumber: 100
+        }).then(() => confetti.destroyCanvas());
     });
 };
 

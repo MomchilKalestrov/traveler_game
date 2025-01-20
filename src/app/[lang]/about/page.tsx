@@ -89,7 +89,7 @@ const Page: NextPage = () => {
 
     return (
         <>
-            <header className={ header.Header }>
+            <header className={ header.Header } key='header'>
                 <div className={ header.Logo }>
                     <Image src='/favicon.png' alt='logo' width='100' height='100' />
                     <h2>{ language.gamename }</h2>
@@ -109,7 +109,7 @@ const Page: NextPage = () => {
                 </div>
             </header>
 
-            <main className={ main.Main }>
+            <main className={ main.Main } key='main'>
                 <section className={ main.Splash }>
                     <div>
                         <h1>{ language.gamename }</h1>
@@ -141,7 +141,7 @@ const Page: NextPage = () => {
                 </section>
             </main>
 
-            <footer className={ footer.Footer }></footer>
+            <footer className={ footer.Footer } key='footer'></footer>
         </>
     );
 };
