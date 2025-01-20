@@ -38,21 +38,21 @@ const sort: {
         poi2.likes.length - poi1.likes.length
 }
 
-const loadMore = (skip: number, setter: React.Dispatch<React.SetStateAction<boolean>>) => {
+const loadMore = async (skip: number, setter: React.Dispatch<React.SetStateAction<boolean>>) => {
     const close = () => setter(false);
 
-    fetch('/api/community-locations?skip=' + skip)
-        .then(res => res.ok ? res.json() : undefined)
-        .then(data => {
-            if (!data || data.error) return;
-            if (data.length === 0) {
-                close();
-                return;
-            };
+    const res = await fetch('/api/community-locations?skip=' + skip);
+    if (!res.ok) return;
 
-            const user = store.getState().user.value;
-            store.dispatch({ type: 'community/add', payload: { locations: data, user } });
-        });
+    const data = await res.json();
+
+    if (data.length === 0) {
+        close();
+        return;
+    }
+
+    const user = store.getState().user.value;
+    store.dispatch({ type: 'community/add', payload: { locations: data, user } });
 };
 
 const Page: NextPage = () => {
@@ -76,8 +76,8 @@ const Page: NextPage = () => {
 
     return (
         <>
-            { addDialogVisible && <CreateCard setter={ setAddDialogVisible } /> }
-            <main className={ style.Page }>
+            { addDialogVisible && <CreateCard key='card' setter={ setAddDialogVisible } /> }
+            <main className={ style.Page } key='main'>
                 <div className={ style.Header }>
                     <h2>Your landmarks</h2>
                     <button style={ { padding: '0.5rem' } } onClick={ () => setAddDialogVisible(true) }>
@@ -140,7 +140,16 @@ const Page: NextPage = () => {
             }
             {
                 isButtonVisible &&
-                <Button onClick={ () => loadMore((communitySlice.all || []).length, hideButton) } border={ true }>
+                <Button
+                    border={ true }
+                    onClick={ (e: React.MouseEvent<HTMLButtonElement>) => {
+                        const element = e.currentTarget;
+                        if (element) element.disabled = true;
+                        
+                        loadMore((communitySlice.all || []).length, hideButton)
+                            .then(() => { if (element) element.disabled = false; });
+                    } }
+                >
                     { language.community.loadMore }
                 </Button>
             }
