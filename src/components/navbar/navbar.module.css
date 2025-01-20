@@ -4,7 +4,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
     background-color: var(--color-secondary);
     position: fixed;
     bottom: 0px;

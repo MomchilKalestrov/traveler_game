@@ -4,13 +4,13 @@ import style from './button.module.css';
 
 type ButtonProps = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'style'> & {
     border?: boolean | undefined;
-}
+};
 
-const Button: React.FC<ButtonProps> = ({ border, children, ...rest }: ButtonProps) => (
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({ border, children, ...rest }, ref) => (
     <button
-        className={ `${ style.Button } ${ border && style.ButtonBorder }` } 
-        { ...rest }
-    >{ children }</button>
-);
+        ref={ ref } { ...rest }
+        className={ `${ style.Button } ${ border ? style.ButtonBorder : '' }` }
+    >{children}</button>
+));
 
 export default Button;

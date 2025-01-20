@@ -53,9 +53,6 @@ const Header = () => {
         return () => abortControllerRef.current?.abort();
     }, []);
 
-    if (pathname === '/login')
-        return (<></>);
-
     const clearSearch = () => {
         const input = inputReference.current;
         const img = imgReference.current;

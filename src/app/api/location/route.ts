@@ -15,11 +15,10 @@ const GET = async (request: NextRequest) => {
     if(!(await userCheck(username, password)))
         return NextResponse.json({ error: 'Invalid credentials.' }, { status: 401 });
     
-    const args: URLSearchParams = new URL(request.url).searchParams;
-    const name = args.get('name');
+    const params: URLSearchParams = new URL(request.url).searchParams;
+    const name = params.get('name');
 
-    if (!name)
-        return NextResponse.json({ error: 'Missing parameters.' }, { status: 412 });
+    if (!name) return NextResponse.json({ error: 'Missing parameters.' }, { status: 412 });
 
     try {
         // Connect to the database

@@ -3,21 +3,10 @@ import { cookies } from 'next/headers';
 
 import users     from '@logic/mongoose/user';
 import locations from '@logic/mongoose/locations';
+import communityMadeLocations from '@logic/mongoose/communityMadeLocations';
 import userCheck from '@logic/usercheck';
 import connect   from '@logic/mongoose/mongoose';
-
-function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
-    const toRadians = (degree: number) => degree * (Math.PI / 180);
-    const R = 6371;
-    const dLat = toRadians(lat2 - lat1);
-    const dLon = toRadians(lon2 - lon1);
-    const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
-        Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c * 1000;
-}
+import { haversineDistance } from '@logic/utils';
 
 const POST = async (request: NextRequest) => {
     const { name, lat, lng } = await request.json();
@@ -28,8 +17,11 @@ const POST = async (request: NextRequest) => {
     const username = cookie.get('username')?.value;
     const password = cookie.get('password')?.value;
 
-    if(!(await userCheck(username, password)))
+    const isCommunity = name.split('#')[0] === 'community';
+    
+    if (!(await userCheck(username, password, isCommunity ? { xp: { $gte: 500 } } : undefined)))
         return NextResponse.json({ error: 'Invalid credentials.' }, { status: 401 });
+
 
     try {
         // Connect to the database
@@ -39,7 +31,12 @@ const POST = async (request: NextRequest) => {
         if (!started.includes(name))
             return NextResponse.json({ error: 'User isn\'t tracking this location.' }, { status: 412 });
         // Get the location
-        const location = await locations.findOne({ dbname: name });
+        let location: any;
+        if (isCommunity)
+            location = await communityMadeLocations.findOne({ name: name.split('#')[1], author: { $ne: username } });
+        else
+            location = await locations.findOne({ dbname: name });
+        // Check if it exists
         if(!location)
             return NextResponse.json({ error: 'Location not found.' }, { status: 404 });
         // Calculate the distance
@@ -49,11 +46,9 @@ const POST = async (request: NextRequest) => {
             parseFloat(location.location.lat.toString()),
             parseFloat(location.location.lng.toString())
         );
-        
         if(distance > 100)
             return NextResponse.json({ error: 'User is not within 100 meters of the location.' }, { status: 400 });
-
-        // Claim the badge
+        // Claim the rewards
         await users.updateOne(
             { username: cookie.get('username')?.value },
             {
@@ -64,9 +59,15 @@ const POST = async (request: NextRequest) => {
                         time: Date.now(),
                     } as any
                 },
-                $inc: { xp: location.xp }
+                $inc: { xp: isCommunity ? 10 : location.xp }
             }
         );
+        // Add to the visited count
+        if (isCommunity)
+            await communityMadeLocations.updateOne(
+                { name: name.split('#')[1] },
+                { $inc: { visited: 1 } }
+            );
         return NextResponse.json(null, { status: 200 });
     } catch(error) {
         console.log('An exception has occured:\n', error);

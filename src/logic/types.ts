@@ -11,15 +11,27 @@ interface User {
 };
 
 interface Location {
-  name: string;
-  description: string;
-  location: {
-    lat: number;
-    lng: number;
-  };
-  xp: number;
-  dbname: string;
-  type: 'water' | 'nature' | 'structure' | 'misc';
+    name: string;
+    description: string;
+    location: {
+        lat: number;
+        lng: number;
+    };
+    xp: number;
+    dbname: string;
+    type: 'water' | 'nature' | 'structure' | 'misc';
+};
+
+interface CommunityLocation {
+    _id: string;
+    name: string;
+    author: string;
+    location: {
+        lat: number;
+        lng: number;
+    };
+    likes: string[];
+    visits: number;
 };
 
 interface Accomplishment {
@@ -37,33 +49,30 @@ interface Language {
         [key: string]: any;
         titles: {
             [key: string]: any;
-            started:  string;
-            new:      string;
+            started: string;
             activity: string;
             types: {
                 [key: string]: any;
-                water:     string;
-                nature:    string;
+                water: string;
+                nature: string;
                 structure: string;
-                misc:      string;
+                misc: string;
             }
         };
         alts: {
             [key: string]: any;
             started: string;
-            new:     string;
         };
-        loadMore: string;
     };
 
     profile: {
         [key: string]: any;
         following: string;
         followers: string;
-        badges:    string;
-        activity:  string;
-        follow:    string;
-        unfollow:  string;
+        badges: string;
+        activity: string;
+        follow: string;
+        unfollow: string;
     };
 
     leaderboard: {
@@ -75,37 +84,76 @@ interface Language {
         [key: string]: any;
         login: {
             [key: string]: any;
-            title:  string;
+            title: string;
             button: string;
         },
         signup: {
             [key: string]: any;
-            title:  string;
+            title: string;
             button: string;
         }
         inputs: {
             [key: string]: any;
             username: string;
             password: string;
-            verify:   string;
+            verify: string;
         };
+    };
+
+    community: {
+        [key: string]: any;
+        titles: {
+            [key: string]: any;
+            create:  string;
+            started: string;
+            new:     string;
+        };
+        alts: {
+            [key: string]: any;
+            created: string;
+            started: string;
+        };
+        filters: {
+            [key: string]: any;
+            recentlyAdded: string;
+            mostVisited:   string;
+            mostLiked:     string;
+        };
+        buttons: {
+            [key: string]: any;
+            start:  string;
+            stop:   string;
+            delete: string;
+        };
+        create: {
+            [key: string]: any;
+            input:  string;
+            warn:   string
+            submit: string;
+            error:  {
+                [key: string]: any;
+                invalid: string;
+                server:  string;
+            };
+        }
+        loadMore: string;
     };
 
     about: {
         [key: string]: any;
         pages: {
             [key: string]: any;
-            home:     string;
+            home: string;
             download: string;
-            login:    string;
+            login: string;
         };
-        tagline:  string;
+        tagline: string;
         download: string;
         info: {
             [key: string]: any;
             about: {
                 [key: string]: any;
-                title:   string;
+                title: string;
                 content: string;
             };
         };
@@ -115,9 +163,9 @@ interface Language {
         [key: string]: any;
         lookup: {
             [key: string]: any;
-            title:   string;
-            nouser:  string;
-            error:   string;
+            title: string;
+            nouser: string;
+            error: string;
         };
         settings: {
             [key: string]: any;
@@ -140,16 +188,15 @@ interface Language {
         };
         infocards: {
             [key: string]: any;
-            start:  string;
-            stop:   string;
-            finish: string;
-            view:   string;
+            start: string;
+            stop: string;
+            view: string;
         };
         navbar: {
             [key: string]: any;
-            home:        string;
-            map:         string;
-            profile:     string;
+            home: string;
+            map: string;
+            profile: string;
             leaderboard: string;
         };
         GPSaccess: {
@@ -170,5 +217,13 @@ const toLocation = (data: any): Location => ({
     }
 });
 
-export type { User, Location, Accomplishment, Language };
-export { toLocation };
+const toCommunityLocation = (data: any): CommunityLocation => ({
+    ...data,
+    location: {
+        lat: parseFloat(data.location.lat['$numberDecimal']),
+        lng: parseFloat(data.location.lng['$numberDecimal'])
+    }
+});
+
+export type { User, CommunityLocation, Location, Accomplishment, Language };
+export { toLocation, toCommunityLocation };

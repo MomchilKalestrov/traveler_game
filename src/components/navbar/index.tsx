@@ -8,6 +8,8 @@ import { Language } from '@logic/types';
 import LanguageCTX  from '@logic/contexts/languageCTX';
 
 import styles from './navbar.module.css';
+import { useSelector } from '@node_modules/react-redux/dist/react-redux';
+import { RootState } from '@src/logic/redux/store';
 
 type NavbarEntryProps = {
     page: string;
@@ -43,13 +45,15 @@ const Navbar: React.FC<NavbarProps> = ({ pages }) => {
     const params   = useParams<{ lang: string }>();
     const pathname = usePathname();
     const language: Language | undefined = React.useContext(LanguageCTX);
+    const user = useSelector((state: RootState) => state.user.value);
+    const extraPages = React.useMemo(() => [ ...pages, 'community' ], [ user?.xp ]);
 
     if (!language || isHidden(pathname)) return (<></>);
 
     return (
         <nav className={ styles.Navbar }>
         {
-            pages.map((name: string, key: number) => (
+            extraPages.map((name: string, key: number) => (
                 <NavbarEntry
                     aria-label={ `Navigate to ${ name }` }
                     key={ key }

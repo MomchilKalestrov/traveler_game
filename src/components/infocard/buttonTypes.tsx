@@ -2,9 +2,9 @@ import Button from '@components/button';
 
 import { Language, Location } from '@logic/types';
 
-import { track, untrack, finish, share } from './logic';
+import { track, untrack, share } from './logic';
 
-type buttonType = 'track' | 'untrack' | 'finish' | 'share';
+type buttonType = 'track' | 'untrack' | 'share';
 
 type ButtonProps = {
     location: Location,
@@ -30,14 +30,6 @@ const buttons: {
                 onClick={ () => untrack({ location, close }) }
                 border={ true }
             >{ language.misc.infocards.stop }</Button>
-        ),
-    'finish': 
-        ({ location, close, language }: ButtonProps) => (
-            <Button
-                aria-label='Finish'
-                onClick={ () => finish({ location, close }) }
-                border={ true }
-            >{ language.misc.infocards.finish }</Button>
         ),
     'share':
         ({ location, close, language }: ButtonProps) => (

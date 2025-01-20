@@ -1,0 +1,90 @@
+.CreateCard {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: calc(var(--z) + 4);
+    margin: 0px !important;
+
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    backdrop-filter: blur(5px) brightness(80%);
+    animation: blurIn ease-in-out 0.5s;
+}
+
+.CreateCard > div {
+    --margin: 0.5rem;
+    
+    position: relative;
+    border-radius: 0.75rem;
+    z-index: calc(var(--z) + 3);
+    overflow: hidden;
+    
+    width: min(calc(100vw - var(--margin) * 2), 30rem);
+    box-sizing: border-box;
+    background-color: var(--color-bg);
+
+    animation: slideIn ease-in-out 0.5s;
+}
+
+.BackButton {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: calc(var(--z) + 5);
+    border: none;
+    border-radius: 50%;
+
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0.5rem;
+    background-color: var(--color-secondary);
+}
+
+.BackButton img {
+    width: 100%;
+    height: 100%;
+    filter: var(--icon-filter-primary);
+}
+
+.MapContainer {
+    border-radius: 0.75rem;
+    overflow: hidden;
+
+    width: 100%;
+    height: 15rem;
+}
+
+.FormContainer {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+@keyframes slideIn {
+    from { transform: translateY(calc(50vh + 50%)); }
+    to   { transform: translateY(0vh); }
+}
+
+@keyframes slideOut {
+    from { transform: translateY(0vh); }
+    to   { transform: translateY(calc(50vh + 50%)); }
+}
+
+@keyframes blurIn {
+    from { backdrop-filter: none; }
+    to   { backdrop-filter: blur(5px) brightness(80%); }
+}
+
+@keyframes blurOut {
+    from { backdrop-filter: blur(5px) brightness(80%); }
+    to   { backdrop-filter: none; }
+}

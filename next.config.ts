@@ -13,7 +13,10 @@ const nextConfig: NextConfig = {
     images: {
         remotePatterns: [ {
             protocol: 'https',
-            hostname: process.env.NEXT_PUBLIC_BLOB_STORAGE_URL as string,
+            hostname: process.env.NEXT_PUBLIC_BLOB_STORAGE_URL as string
+        }, {
+            protocol: 'https',
+            hostname: 'tile.openstreetmap.org'
         } ]
     },
     async redirects() {

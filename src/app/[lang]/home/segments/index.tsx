@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 
 import { RootState } from '@logic/redux/store';
 import LanguageCTX   from '@logic/contexts/languageCTX';
-import { Location }  from '@logic/types';
 
 import Mapcard from '@components/mapcard';
 

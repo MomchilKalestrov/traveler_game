@@ -5,16 +5,19 @@ import { NextPage }    from 'next';
 import { useSelector } from 'react-redux';
 
 import { RootState } from '@logic/redux/store';
-import { Language }  from '@logic/types';
+import { Language, Location, CommunityLocation }  from '@logic/types';
 import LanguageCTX from '@logic/contexts/languageCTX';
 
 import LoadingPlaceholder from '@components/loading';
 import Dialog from '@components/dialog';
 
+type AllLocation = Location | CommunityLocation;
+
 const Page: NextPage = () => {
     const language: Language | undefined = React.useContext(LanguageCTX);
 
-    const started  = useSelector((state: RootState) => state.started.value);
+    const started:   AllLocation[] | undefined = useSelector((state: RootState) => state.started.value);
+    const community: AllLocation[] | undefined = useSelector((state: RootState) => state.community.value).started;
 
     const [ allowGPS, setPermission ] = React.useState<boolean>(true);
     const [ request,  setRequest    ] = React.useState<boolean>(false);
@@ -61,7 +64,7 @@ const Page: NextPage = () => {
                 close={ setRequest }
             />
         }
-            <Map locations={ started } hasGPSAccess={ allowGPS } />
+            <Map locations={ started?.concat(community || []) } hasGPSAccess={ allowGPS } />
         </main>
     );
 };

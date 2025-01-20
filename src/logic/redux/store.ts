@@ -5,6 +5,8 @@ import startedReducer from './startedSlice';
 import userReducer from './userSlice';
 import newReducter from './newSlice';
 import allReducer from './allSlice';
+import communityReducer from './communitySlice';
+import customLocationsReducer from './customLocationsSlice';
 
 const store = configureStore({
     reducer: {
@@ -12,7 +14,9 @@ const store = configureStore({
         started: startedReducer,
         user: userReducer,
         new: newReducter,
-        all: allReducer
+        all: allReducer,
+        community: communityReducer,
+        custom: customLocationsReducer
     }
 });
 

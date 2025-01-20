@@ -1,0 +1,96 @@
+.Card {
+    position: relative;
+
+    overflow: hidden;
+    border-radius: 0.75rem;
+    
+    width: 30rem;
+    max-width: 100%;
+    min-height: 14.5rem;
+    background-color: var(--color-secondary);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.MapContainer {
+    top: 0px;
+    position: absolute;
+
+    border-radius: 0.75rem;
+    overflow: hidden;
+    
+    height: 10rem;
+    width: min(100%, 30rem);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    transition: height 0.5s;
+}
+
+.Map {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+
+    width: 100%;
+    aspect-ratio: 1 / 1;
+}
+
+.Map img {
+    width: calc(100% / 3);
+    height: calc(100% / 3);
+}
+
+.Content {
+    box-sizing: border-box;
+
+    width: 100%;
+    background-color: var(--color-secondary);
+    padding: 1rem;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Content h3 {
+    margin: 0px;
+}
+
+.MapButton {
+    border: none;
+    border-radius: 50%;
+    margin: 10px;
+
+    width: 2.5rem;
+    height: 2.5rem;
+    box-sizing: border-box;
+    padding: 0.5rem;
+    background-color: #0008;
+    color: white;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.MapButton img {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.Likes {
+    border-radius: 50%;
+    border: none;
+
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0px;
+    background-color: #a039324f;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

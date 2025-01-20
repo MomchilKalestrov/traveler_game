@@ -4,10 +4,12 @@ import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
 import 'leaflet-routing-machine';
 
-import InfoCard     from '@components/infocard';
-import { Location } from '@logic/types';
+import InfoCard from '@components/infocard';
+import { Location, CommunityLocation } from '@logic/types';
 
 import 'leaflet/dist/leaflet.css';
+
+type AllLocation = Location | CommunityLocation;
 
 const emptyLocation: Location = {
     name: '',
@@ -26,17 +28,23 @@ const playerPin = new L.Icon({
 
 const poiPin = new L.Icon({
     iconUrl: '/icons/poipin.svg',
-    iconSize: [ 24, 24 ],
-    iconAnchor: [ 12, 12 ]
+    iconSize: [ 32, 32 ],
+    iconAnchor: [ 16, 16 ]
+});
+
+const communityPin = new L.Icon({
+    iconUrl: '/icons/communitypin.svg',
+    iconSize: [ 32, 32 ],
+    iconAnchor: [ 16, 16 ]
 });
 
 type MapProps = {
-    locations?: Location[] | undefined,
+    locations?: AllLocation[] | undefined,
     hasGPSAccess: boolean
 };
 
 type HookProps = {
-    locations: Location[],
+    locations: AllLocation[],
     userLocation?: GeolocationCoordinates | undefined
 };
 
@@ -47,7 +55,7 @@ const Hook: React.FC<HookProps> = ({ locations, userLocation }) => {
     const [ centerSet,       setCenterSet       ] = React.useState<boolean>(false);
 
     const generateRoute = async (
-        location: Location,
+        location: AllLocation,
         userLocation: GeolocationCoordinates,
         router: any
     ) =>
@@ -64,7 +72,7 @@ const Hook: React.FC<HookProps> = ({ locations, userLocation }) => {
             new L.Polyline(route.coordinates, { color: '#224d5c' }).addTo(map);
         });
 
-    const generateRoutes = (locations: Location[], userLocation: GeolocationCoordinates) => {
+    const generateRoutes = (locations: AllLocation[], userLocation: GeolocationCoordinates) => {
         if (!map) return;
         const router = new (L as any).Routing.OSRMv1();
         locations.forEach((location) => generateRoute(location, userLocation, router));
@@ -86,8 +94,6 @@ const Hook: React.FC<HookProps> = ({ locations, userLocation }) => {
 }
 
 const Map: React.FC<MapProps> = ({ locations = [], hasGPSAccess }) => {
-    const [ visible,  setVisible  ] = React.useState<boolean>(false);
-    const [ location, setLocation ] = React.useState<Location>(emptyLocation);
     
     const [ userLocation, setUserLocation ] = React.useState<GeolocationPosition | undefined>(undefined);
 
@@ -106,14 +112,6 @@ const Map: React.FC<MapProps> = ({ locations = [], hasGPSAccess }) => {
     
     return (
         <>
-        {
-            visible &&
-            <InfoCard
-                setter={ setVisible }
-                location={ location }
-                type='finish'
-            />
-        }
             <MapContainer
                 zoomControl={ false }
                 center={ [ 42.143013705260884, 24.749279022216797 ] }
@@ -138,15 +136,8 @@ const Map: React.FC<MapProps> = ({ locations = [], hasGPSAccess }) => {
             {
                 locations.map((poi, index) => (
                     <Marker
-                        key={ index }
+                        key={ index } icon={ 'dbname' in poi ? poiPin : communityPin }
                         position={ [ poi.location.lat, poi.location.lng ] }
-                        icon={ poiPin }
-                        eventHandlers={ {
-                            click: () => {
-                                setLocation(poi);
-                                setVisible(true);
-                            }
-                        } }
                     />
                 ))
             }
