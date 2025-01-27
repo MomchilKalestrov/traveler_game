@@ -10,6 +10,8 @@ interface User {
     xp: number;
 };
 
+type LocationType = 'water' | 'nature' | 'structure' | 'misc';
+
 interface Location {
     name: string;
     description: string;
@@ -19,7 +21,7 @@ interface Location {
     };
     xp: number;
     dbname: string;
-    type: 'water' | 'nature' | 'structure' | 'misc';
+    type: LocationType;
 };
 
 interface CommunityLocation {
@@ -225,5 +227,5 @@ const toCommunityLocation = (data: any): CommunityLocation => ({
     }
 });
 
-export type { User, CommunityLocation, Location, Accomplishment, Language };
+export type { User, CommunityLocation, Location, Accomplishment, Language, LocationType };
 export { toLocation, toCommunityLocation };

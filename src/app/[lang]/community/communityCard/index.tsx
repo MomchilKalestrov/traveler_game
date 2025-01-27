@@ -152,7 +152,10 @@ const CommunityCard: React.FC<CommunityCardProps> = ({ location, type }) => {
         <div className={ style.Card }>
             <Map lat={ location.location.lat } lng={ location.location.lng } />
             <div className={ style.Content }>
-                <h3>{ location.name }</h3>
+                <div>
+                    <h3>{ location.name }</h3>
+                    <p>{ location.author }</p>
+                </div>
                 <div style={ { display: 'flex', gap: '0.5rem' } }>
                     <Button border={ true } onClick={ e => logic[ type ](e, location) }>
                         { language.community.buttons[ type ] }

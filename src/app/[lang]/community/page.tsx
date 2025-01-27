@@ -9,6 +9,7 @@ import LanguageCTX from '@logic/contexts/languageCTX';
 import { RootState } from '@logic/redux/store';
 import store from '@logic/redux/store';
 import { CommunityLocation } from '@logic/types';
+import { haversineDistance } from '@logic/utils';
 
 import LoadingPlaceholder from '@components/loading';
 import Button from '@src/components/button';
@@ -36,7 +37,7 @@ const sort: {
         poi2.visits - poi1.visits,
     mostLiked: (poi1: CommunityLocation, poi2: CommunityLocation) =>
         poi2.likes.length - poi1.likes.length
-}
+};
 
 const loadMore = async (skip: number, setter: React.Dispatch<React.SetStateAction<boolean>>) => {
     const close = () => setter(false);
@@ -46,10 +47,8 @@ const loadMore = async (skip: number, setter: React.Dispatch<React.SetStateActio
 
     const data = await res.json();
 
-    if (data.length === 0) {
-        close();
-        return;
-    }
+    if (data.length === 0)
+        return close();
 
     const user = store.getState().user.value;
     store.dispatch({ type: 'community/add', payload: { locations: data, user } });
@@ -93,11 +92,11 @@ const Page: NextPage = () => {
                 ?   customSlice.length > 0
                     ?   <div className={ style.HorizontalCarousel }>
                             <div>
-                        {
-                            customSlice.map((location, index) => (
-                                <CommunityCard key={ index } location={ location } type='delete' />
-                            ))
-                        }
+                            {
+                                customSlice.map((location) => (
+                                    <CommunityCard key={ location._id } location={ location } type='delete' />
+                                ))
+                            }
                             </div>
                         </div>
                     :   <p style={ { margin: '0px' } }>{ language.community.alts.created }</p>
@@ -112,11 +111,11 @@ const Page: NextPage = () => {
                 ?   communitySlice.started.length > 0
                     ?   <div className={ style.HorizontalCarousel }>
                             <div>
-                        {
-                            communitySlice.started.map((location, index) => (
-                                <CommunityCard key={ index } location={ location } type='untrack' />
-                            ))
-                        }
+                            {
+                                communitySlice.started.map((location) => (
+                                    <CommunityCard key={ location._id } location={ location } type='untrack' />
+                                ))
+                            }
                             </div>
                         </div>
                     :   <p style={ { margin: '0px' } }>{ language.community.alts.started }</p>
@@ -133,8 +132,8 @@ const Page: NextPage = () => {
                 communitySlice.new
                 ?   [ ...communitySlice.new ] // avoid mutation by cloning the array
                         .sort(sort[ sortBy ])
-                        .map((location, index) =>
-                            <CommunityCard key={ index } location={ location } type='track' />
+                        .map((location) =>
+                            <CommunityCard key={ location._id } location={ location } type='track' />
                         )
                 :   <LoadingPlaceholder small={ true } />
             }
@@ -145,13 +144,11 @@ const Page: NextPage = () => {
                     onClick={ (e: React.MouseEvent<HTMLButtonElement>) => {
                         const element = e.currentTarget;
                         if (element) element.disabled = true;
-                        
+
                         loadMore((communitySlice.all || []).length, hideButton)
                             .then(() => { if (element) element.disabled = false; });
                     } }
-                >
-                    { language.community.loadMore }
-                </Button>
+                >{ language.community.loadMore }</Button>
             }
             </main>
         </>

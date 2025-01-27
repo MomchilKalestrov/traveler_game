@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
-import { NextPage }    from 'next';
+import { NextPage } from 'next';
 import { useSelector } from 'react-redux';
 
 import Minicard from '@components/minicard';
@@ -13,7 +13,8 @@ import LanguageCTX   from '@logic/contexts/languageCTX';
 import {
     Location,
     Accomplishment,
-    Language
+    Language,
+    LocationType
 } from '@logic/types';
 import { RootState } from '@logic/redux/store';
 
@@ -26,7 +27,7 @@ type StartedLocationsProps = {
     language: Language;
 };
 
-const availableLocationTypes: ('water' | 'nature' | 'structure' | 'misc')[] = [ 'water', 'nature', 'structure', 'misc' ];
+const availableLocationTypes: LocationType[] = [ 'water', 'nature', 'structure', 'misc' ];
 
 const StartedLocations: React.FC<StartedLocationsProps> = ({
     startedLocations,
@@ -75,7 +76,7 @@ const Page: NextPage = () => {
             <h2>{ language.home.titles.started }</h2>
             <StartedLocations startedLocations={ startedSlice } language={ language } />
         {
-            availableLocationTypes.map((type: 'water' | 'nature' | 'structure' | 'misc') =>
+            availableLocationTypes.map((type: LocationType) =>
                 <Segment key={ type } type={ type } />
             )
         }
@@ -83,9 +84,9 @@ const Page: NextPage = () => {
             followerActivity.length > 0 && (
                 <>
                     <h2>{ language.home.titles.activity }</h2>
-                    { followerActivity.map((
-                        accomplishment: Accomplishment, key: number
-                    ) => <AccomplishmentTag key={ key } accomplishment={ accomplishment } />) }
+                    { followerActivity.map((accomplishment: Accomplishment) =>
+                        <AccomplishmentTag key={ accomplishment.dbname } accomplishment={ accomplishment } />
+                    ) }
                 </>
             )
         }

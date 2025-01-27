@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 
 import { RootState } from '@logic/redux/store';
 import LanguageCTX   from '@logic/contexts/languageCTX';
+import { LocationType } from '@logic/types';
 
 import Mapcard from '@components/mapcard';
 
@@ -12,13 +13,13 @@ import style from './segment.module.css';
 const CARD_MAX_COUNT = 2;
 
 type FullPageProps = {
-    type: 'water' | 'nature' | 'structure' | 'misc';
+    type: LocationType;
     locations: (JSX.Element & { location: string })[];
     setter: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type SegmentProps = {
-    type: 'water' | 'nature' | 'structure' | 'misc';
+    type: LocationType;
 };
 
 const FullPage: React.FC<FullPageProps> = ({ type, locations, setter }) => {
@@ -103,7 +104,7 @@ const Segment: React.FC<SegmentProps> = ({ type }) => {
         !newSlice ? []
         : newSlice.reduce((acc, curr) => {
             if (curr.type === type)
-                acc.push({ ...(<Mapcard location={ curr } />), location: curr.name });
+                acc.push({ ...(<Mapcard key={ curr.dbname } location={ curr } />), location: curr.name });
             return acc;
         }, [] as (JSX.Element & { location: string })[])
     , [ newSlice ]);

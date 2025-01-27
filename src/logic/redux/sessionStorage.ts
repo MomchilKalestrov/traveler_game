@@ -87,18 +87,18 @@ const castCommunity = (object: any): CommunityLocation[] =>
 
 const initialSave = async (): Promise<fetchType> => {
     const user = await fetchProfile();
-    
     if (!user) throw new Error('Error fetching user data.');
-    
-    const all      = cast(await fetchAll());
-    const started  = getStarted(all, user);
+
+    const all = cast(await fetchAll());
+    const started = getStarted(all, user);
     const finished = getFinished(all, user);
 
-    const communityAll      = castCommunity(await fetchAllCommunity());
-    const communityStarted  = getCommunityStarted(communityAll, user);
+    const communityAll = castCommunity(await fetchAllCommunity());
+    const communityStarted = getCommunityStarted(communityAll, user);
     const communityFinished = getCommunityFinished(communityAll, user);
 
     const custom = castCommunity(await fetchCustom());
+    
     save('initialSave', true);
 
     return [
@@ -111,27 +111,29 @@ const initialSave = async (): Promise<fetchType> => {
         },
         custom
     ];
-}
+};
 
 const saveToSessionStorage = (state: any) => {
     for (const key in state)
         save(key, state[key].value);
 };
 
-const getFromSessionStorage = async (): Promise<fetchType> => {
+const getFromSessionStorage = (): Promise<fetchType> => {
     if (!get('initialSave'))
-        return await initialSave();
-    else return [
-        get('started'),
-        get('all'),
-        get('finished'),
-
-        get('user'),
-
-        get('community'),
-        
-        get('custom')
-    ];
+        return initialSave();
+    else return new Promise((resolve) => {
+        resolve([
+            get('started'),
+            get('all'),
+            get('finished'),
+    
+            get('user'),
+    
+            get('community'),
+            
+            get('custom')
+        ]);
+    });
 };
 
 const preloadFromSessionStorage = async (): Promise<void> => {

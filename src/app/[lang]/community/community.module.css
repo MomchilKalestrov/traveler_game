@@ -10,18 +10,15 @@
     align-items: center;
 }
 
-.Header:first-child {
-    margin-top: 0;
-}
+.Header:first-child { margin-top: 0; }
 
-.Header * {
-    margin: 0;
-}
+.Header * { margin: 0; }
 
 .Header img {
-    filter: var(--icon-filter-primary);
     width: 1.5rem;
     height: 1.5rem;
+
+    filter: var(--icon-filter-primary);
 }
 
 .Header button {
@@ -38,46 +35,56 @@
     gap: 0.5rem;
 }
 
-.Page > button:last-child {
-    margin: 0 auto;
-}
+.Page > button:last-child { margin: 0 auto; }
 
 .HorizontalCarousel {
-    margin-left: calc(var(--padding) * -1);
-    margin-right: calc(var(--padding) * -1);
     position: relative;
+    margin: 0 calc(var(--padding) * -1);
+
     overflow: visible;
 }
 
 .HorizontalCarousel > div {
-    padding: 8px var(--padding);
     margin: -8px 0px;
-    overflow: scroll;
+    
+    padding: 8px var(--padding);
+    
     display: flex;
     justify-content: left;
     align-items: center;
     gap: 0.5rem;
+    
+    overflow: scroll;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scroll-padding: 8px var(--padding);
 }
 
 .HorizontalCarousel > div > * {
     flex-shrink: 0;
+    
+    scroll-snap-align: start;
 }
 
 .HorizontalCarousel::after,
 .HorizontalCarousel::before {
-    content: "";
     position: absolute;
     top: 0;
-    width: var(--padding);
     z-index: calc(var(--z) + 1);
+
+    width: var(--padding);
     height: 100%;
+    
+    content: "";
 }
 
 .HorizontalCarousel::after {
     right: 0;
+
     background: linear-gradient(90deg, transparent, var(--color-bg));  
 }
 .HorizontalCarousel::before {
     left: 0;
+
     background: linear-gradient(90deg, var(--color-bg), transparent);
 }

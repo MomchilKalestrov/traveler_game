@@ -24,12 +24,14 @@ const Badge: React.FC<{ location: Location | undefined }> = ({ location }) => {
     return [
         visible && 'share' in navigator
         ?   <InfoCard
+                key='shareCard'
                 type='share'
                 location={ location }
                 setter={ setVisibility }
             />
         :   <></>,
         <Image
+            key='badgeImage'
             src={ getBadgeSVG(location.dbname) }
             alt={ location.name } width={ 48 } height={ 48 }
             onClick={ () => setVisibility(true) }
@@ -102,11 +104,12 @@ const Page: NextPage = () => {
                 {
                     profilePicture
                     ?   <Image
+                            key='properImage'
                             alt={ user.username }
                             src={ profilePicture }
                             width={ 64 } height={ 64 }
                         />
-                    :   <div style={ getCSSColors(user.username) }>
+                    :   <div style={ getCSSColors(user.username) } key='placeholderImage'>
                             { user.username[0] }
                         </div>
                 }
@@ -128,8 +131,8 @@ const Page: NextPage = () => {
                         className={ style.ProfileBadges }
                         style={ getAlignment(user.finished.length) }
                     >
-                    { user.finished.map(({ location }, key: number) =>
-                        <Badge key={ key } location={ finished.find((l) => l.dbname === location) } />
+                    { user.finished.map(({ location }) =>
+                        <Badge key={ location } location={ finished.find((l) => l.dbname === location) } />
                     ) }
                     </div>
                 </div>

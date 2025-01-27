@@ -81,7 +81,7 @@ const Page: NextPage = () => {
                 <h1>{ language.leaderboard.top.replace('{COUNT}', players.length.toString()) }</h1>
             {
                 players.map((player, index) =>
-                    <Player user={ player } key={ index } position={ index } />
+                    <Player key={ player.username } user={ player } position={ index } />
                 )
             }
             </div>

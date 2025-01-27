@@ -55,8 +55,20 @@
     align-items: center;
 }
 
-.Content h3 {
+.Content div {
+    display: flex;
+    flex-flow: column;
+}
+
+.Content div h3,
+.Content div p {
     margin: 0px;
+}
+
+@media (max-width: 20rem) {
+    .Content div p {
+        display: none;
+    }
 }
 
 .MapButton {
