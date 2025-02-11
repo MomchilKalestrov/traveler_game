@@ -2,6 +2,7 @@
     {
         "relation": [ "delegate_permission/common.handle_all_urls" ],
         "target": {
+            "namespace": "android_app",
             "package_name": "app.venturo.twa",
             "sha256_cert_fingerprints": [
                 "86:59:FF:49:62:37:97:5A:8E:14:C6:AC:0C:5A:63:F7:04:43:80:C4:27:F6:BF:34:84:A0:56:A6:B7:83:B4:F3"
