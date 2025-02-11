@@ -6,7 +6,9 @@ import { useRouter } from 'next/navigation';
 const Redirect: React.FC = () => {
     const router = useRouter();
 
-    React.useEffect(() => { router.push('/'); }, [ router ]);
+    React.useEffect(() => {
+        router.push('/');
+    }, [ router ]);
 
     return (
         <div style={ {

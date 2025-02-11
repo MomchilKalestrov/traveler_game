@@ -1,0 +1,12 @@
+[
+    {
+        "relation": [ "delegate_permission/common.handle_all_urls" ],
+        "target": {
+            "package_name": "com.android.venturo",
+            "sha256_cert_fingerprints": [
+                "EE:60:20:45:1C:41:34:71:35:52:3B:64:44:4C:81:DC:7E:14:6C:14:AD:08:C5:72:F3:20:24:94:74:EB:B6:CC"
+            ]
+        }
+    }
+]
+

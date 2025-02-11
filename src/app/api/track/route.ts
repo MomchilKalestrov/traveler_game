@@ -8,6 +8,7 @@ import userCheck from '@logic/usercheck';
 import connect   from '@logic/mongoose/mongoose';
 
 const POST = async (request: NextRequest) => {
+    // Get the name of the location
     const { name } = await request.json();
     if (!name)
         return NextResponse.json({ error: 'Missing parameters.' });
@@ -19,7 +20,6 @@ const POST = async (request: NextRequest) => {
 
     if(!(await userCheck(username, password, isCommunity ? { xp: { $gte: 500 } } : undefined)))
         return NextResponse.json({ error: 'Invalid credentials.' }, { status: 401 });
-
 
     try {
         // Connect to the database

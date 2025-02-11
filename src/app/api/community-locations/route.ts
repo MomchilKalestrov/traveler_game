@@ -38,11 +38,8 @@ const GET = async (request: NextRequest) => {
 
     try {
         await connect();
-
-        const started = filterCommunityLocations(await user.findOne({ username }) as User);
         
         let all: any[] = [];
-
         all = await communityMadeLocations
             .find({ author: { $ne: username } }, { __v: 0 })
             .sort({ _id: -1 })
@@ -50,8 +47,9 @@ const GET = async (request: NextRequest) => {
             .limit(includeStarted ? 10 : 5) as any[];
             
         if (!includeStarted) return NextResponse.json(all, { status: 200 });
-
-        all = all.concat(await communityMadeLocations.find({ name: { $in: started } }, { __v: 0 }));
+        const startedNames = filterCommunityLocations(await user.findOne({ username }) as User);
+        const started = await communityMadeLocations.find({ name: { $in: startedNames } }, { __v: 0 })
+        all = all.concat(started);
         
         return NextResponse.json(filterDuplicates(all), { status: 200 });
     } catch (error) {

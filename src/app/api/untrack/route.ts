@@ -6,6 +6,7 @@ import userCheck from '@logic/usercheck';
 import connect   from '@logic/mongoose/mongoose';
 
 const POST = async (request: NextRequest) => {
+    // Get the needed parameters
     const { name } = await request.json();
     if (!name) return NextResponse.json({ error: 'Missing parameters.' });
     

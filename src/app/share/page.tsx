@@ -15,7 +15,7 @@ const generateMetadata = async (
 
     return {
         openGraph: {
-            images: `/api/open-graph` + (location ? `?location=${location}` : ''),
+            images: `/api/open-graph` + (location ? `?location=${ location }` : ''),
         }
     };
 };

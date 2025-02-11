@@ -4,7 +4,6 @@ import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
 import 'leaflet-routing-machine';
 
-import InfoCard from '@components/infocard';
 import { Location, CommunityLocation } from '@logic/types';
 
 import 'leaflet/dist/leaflet.css';
