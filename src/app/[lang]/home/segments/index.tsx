@@ -7,6 +7,7 @@ import LanguageCTX   from '@logic/contexts/languageCTX';
 import { LocationType } from '@logic/types';
 
 import Mapcard from '@components/mapcard';
+import Advertisement from '@components/ad';
 
 import style from './segment.module.css';
 
@@ -60,7 +61,7 @@ const FullPage: React.FC<FullPageProps> = ({ type, locations, setter }) => {
         const query = e.target.value.toLowerCase();
 
         setFilteredLocations(locations.filter(({ location }) =>
-            location.toLowerCase().includes(query)
+            location.toLowerCase().includes(query) && location !== 'advertisement'
         ));
     };
 
@@ -99,17 +100,29 @@ const Segment: React.FC<SegmentProps> = ({ type }) => {
     const newSlice = useSelector((state: RootState) => state.new.value);
 
     const [ fullPage, setFullPage ] = React.useState(false);
-
-    const filteredLocations = React.useMemo(() => 
-        !newSlice ? []
-        : newSlice.reduce((acc, curr) => {
+    
+    const filteredLocations = React.useMemo(() =>
+        newSlice?.reduce((acc, curr) => {
             if (curr.type === type)
-                acc.push({ ...(<Mapcard key={ curr.dbname } location={ curr } />), location: curr.name });
+                acc.push({ ...(
+                    <>
+                        <Mapcard key={ curr.dbname } location={ curr } />
+                    {
+                        acc.length % 5 === 0
+                        ?   <Advertisement
+                                key={ "ad-" + (acc.length + 1) / 5 }
+                                client={ process.env.NEXT_PUBLIC_ADSENSE_CLIENT! }
+                                size="medium"
+                            />
+                        : <></>
+                    }
+                    </>
+                ), location: curr.name });
             return acc;
         }, [] as (JSX.Element & { location: string })[])
     , [ newSlice ]);
 
-    if (!language || filteredLocations.length === 0) return (<></>)
+    if (!language || !filteredLocations || filteredLocations.length === 0) return (<></>)
 
     return (
         <>

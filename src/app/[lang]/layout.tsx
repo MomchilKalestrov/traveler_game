@@ -13,16 +13,17 @@ const Layout = ({
     children: React.ReactNode;
 }>) => (
     <>
+        <Script
+            src={ `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ process.env.NEXT_PUBLIC_ADSENSE_CLIENT }` }
+            async={ true } crossOrigin='anonymous'
+        />
         <OfflineHandler />
         <SessionStorageHandler />
         <AutoClaimHook />
         <Header />
             { children }
         <Navbar pages={ [ 'home', 'map', 'profile', 'leaderboard' ] } />
-        <Script
-            src={ `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ process.env.NEXT_PUBLIC_ADSENSE_CLIENT }` }
-            async={ true } crossOrigin='anonymous'
-        />
+        <Script>{ `(adsbygoogle = window.adsbygoogle || []).push({});` }</Script>
     </>
 );
 
