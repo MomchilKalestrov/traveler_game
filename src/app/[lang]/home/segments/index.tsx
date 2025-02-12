@@ -105,18 +105,17 @@ const Segment: React.FC<SegmentProps> = ({ type }) => {
         newSlice?.reduce((acc, curr) => {
             if (curr.type === type)
                 acc.push({ ...(
-                    <>
-                        <Mapcard key={ curr.dbname } location={ curr } />
+                    <React.Fragment key={ curr.dbname }>
+                        <Mapcard location={ curr } />
                     {
                         acc.length % 5 === 0
                         ?   <Advertisement
-                                key={ "ad-" + (acc.length + 1) / 5 }
                                 client={ process.env.NEXT_PUBLIC_ADSENSE_CLIENT! }
                                 size="medium"
                             />
                         : <></>
                     }
-                    </>
+                    </React.Fragment>
                 ), location: curr.name });
             return acc;
         }, [] as (JSX.Element & { location: string })[])
