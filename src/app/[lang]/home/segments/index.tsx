@@ -104,7 +104,7 @@ const Segment: React.FC<SegmentProps> = ({ type }) => {
     const filteredLocations = React.useMemo(() =>
         newSlice?.reduce((acc, curr) => {
             if (curr.type === type)
-                acc.push({ ...(<Mapcard location={ curr } />), location: curr.name });
+                acc.push({ ...(<Mapcard key={ curr.dbname } location={ curr } />), location: curr.name });
             return acc;
         }, [] as (JSX.Element & { location: string })[])
     , [ newSlice ]);
