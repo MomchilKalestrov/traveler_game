@@ -108,7 +108,7 @@ const Segment: React.FC<SegmentProps> = ({ type }) => {
                     <React.Fragment key={ curr.dbname }>
                         <Mapcard location={ curr } />
                     {
-                        acc.length % 5 === 0
+                        (acc.length + 1) % 5 === 0
                         ?   <Advertisement
                                 client={ process.env.NEXT_PUBLIC_ADSENSE_CLIENT! }
                                 size="medium"
