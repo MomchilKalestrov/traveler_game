@@ -6,7 +6,7 @@ const locales: string[] = [ 'bg', 'en' ];
 const defaultPage:   string = 'home';
 const defaultLocale: string = 'en';
 
-const downloadURL: string = 'https://www.google.com';
+const downloadURL: string = (process.env.NEXT_PUBLIC_BLOB_STORAGE_URL as string) + '/' + (process.env.APK_DOWNLOAD_NAME);
 
 const nextConfig: NextConfig = {
     reactStrictMode: false,
