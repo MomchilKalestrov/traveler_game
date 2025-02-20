@@ -11,7 +11,6 @@ import users   from '@logic/mongoose/user';
 
 const POST = async (request: NextRequest) => {
     const { username, password, email } = await request.json();
-    const cookie = cookies();
 
     if (!username || !password)
         return NextResponse.json({ error: 'Missing parameters.' }, { status: 412 });
