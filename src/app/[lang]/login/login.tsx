@@ -1,7 +1,6 @@
 'use client';
 import React   from 'react';
 import Image   from 'next/image';
-import { md5 } from 'js-md5';
 import { useRouter, useParams } from 'next/navigation';
 
 import MaterialInput from '@components/input';
@@ -34,8 +33,9 @@ const LogIn: React.FC<LogInProps> = ({ setter }) => {
         const password = data.get(language.auth.inputs.password) as string;
 
         loading();
-        fetch(`/api/auth/login?username=${ username }&password=${ md5(password) }`, {
-            method: 'POST'
+        fetch('/api/auth/login', {
+            method: 'POST',
+            body: JSON.stringify({ username, password })
         }).then((res) => {
             stopLoading();
             if (!res.ok)

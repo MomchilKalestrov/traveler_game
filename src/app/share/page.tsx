@@ -7,11 +7,8 @@ type MetadataProps = {
     searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-const generateMetadata = async (
-    { params, searchParams }: MetadataProps,
-    parent: ResolvingMetadata
-): Promise<Metadata> => {
-    const location = (await searchParams)?.location || undefined;
+const generateMetadata = async ({ searchParams }: MetadataProps): Promise<Metadata> => {
+    const location = (await searchParams)?.location;
 
     return {
         openGraph: {

@@ -69,8 +69,7 @@ const Settings = ({ close }: SettingsProps) => {
                         border={ true }
                         onClick={ () => {
                                 sessionStorage.removeItem("initialSave");
-                                deleteCookie('username');
-                                deleteCookie('password');
+                                deleteCookie('sessionId');
                                 router.replace('/login');
                             }
                         }

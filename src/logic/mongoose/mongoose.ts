@@ -1,15 +1,19 @@
 'use server';
 import mongoose from 'mongoose';
 
-let connection: mongoose.Mongoose | null = null;
+let connection: Promise<mongoose.Mongoose> | null = null;
 
-const connect = async () => {
+const connect = async (): Promise<mongoose.Mongoose> => {
     if (!connection) {
         console.log('Creating a new connection to the DB server.');
-        connection = await mongoose.connect(process.env.MONGODB_URI as string);
+        connection = mongoose.connect(process.env.MONGODB_URI as string);
+        connection.catch((error) => {
+            console.log('An error has occured while connecting to the DB:\n', error);
+            connection = null;
+        });
     };
     
-    return connection;
+    return await connection;
 };
 
 export default connect;

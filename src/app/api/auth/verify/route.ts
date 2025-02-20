@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 
 import users   from '@logic/mongoose/user';
 import connect from '@logic/mongoose/mongoose';
+import session from '@src/logic/mongoose/session';
 
 const GET = async (request: NextRequest) => {
     const params = new URL(request.url).searchParams;
@@ -19,9 +20,10 @@ const GET = async (request: NextRequest) => {
         if (!user)
             return NextResponse.json({ error: 'User not found.' }, { status: 404 });
         await users.updateOne({ _id: id }, { verified: true });
+        const sessionId = (await session.create(user.username))._id.toString();
 
         (await cookie).set('username', user.username);
-        (await cookie).set('password', user.password);
+        (await cookie).set('sessionId', user.sessionId);
 
         return NextResponse.redirect(new URL('/home', 'https://venturo-game.vercel.app'));
     } catch (error) {

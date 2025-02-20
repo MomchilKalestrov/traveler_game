@@ -1,7 +1,6 @@
 'use client';
 import React   from 'react';
 import Image   from 'next/image';
-import { md5 } from 'js-md5';
 
 import MaterialInput from '@components/input';
 import
@@ -71,7 +70,7 @@ const SignUp: React.FC<SignUpProps> = ({ setter }) => {
             method: 'POST',
             body: JSON.stringify({
                 username,
-                password: md5(password),
+                password,
                 email
             })
         }).then((res) => {

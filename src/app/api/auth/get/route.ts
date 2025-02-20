@@ -6,16 +6,13 @@ import connect from '@logic/mongoose/mongoose';
 
 const GET = async (request: NextRequest) => {
     const args = new URL(request.url).searchParams;
-    const requestedUsername = args.get('username');
+    const requestedUsername = args.get('username') || 'CURRENT_USER';
 
     const cookie = await cookies();
     const currentUsername = cookie.get('username')?.value;
 
-    if(!requestedUsername)
-        return NextResponse.json({ error: 'Missing parameters.' }, { status: 412 });
-
     const username = requestedUsername === 'CURRENT_USER' ? currentUsername : requestedUsername;
-    // This is when the body value was `CURRENT_USER` but the cookie was undefined
+    // This is when the value was `CURRENT_USER` but the cookie was undefined
     if(!username)
         return NextResponse.json({ error: 'Missing parameters.' }, { status: 412 });
 

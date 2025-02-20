@@ -12,11 +12,11 @@ const POST = async (request: NextRequest) => {
     
     const cookie = await cookies();
     const username = cookie.get('username')?.value;
-    const password = cookie.get('password')?.value;
+    const sessionId = cookie.get('sessionId')?.value;
     
     const isCommunity = name.split('#')[0] === 'community';
 
-    if(!(await userCheck(username, password, isCommunity ? { xp: { $gte: 500 } } : undefined)))
+    if(!(await userCheck(username, sessionId, isCommunity ? { xp: { $gte: 500 } } : undefined)))
         return NextResponse.json({ error: 'Invalid credentials.' }, { status: 401 });
 
     try {

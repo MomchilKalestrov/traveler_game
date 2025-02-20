@@ -1,5 +1,4 @@
 import { NextResponse, NextRequest } from 'next/server';
-import { cookies } from 'next/headers';
 
 import {
     validateName,
@@ -8,6 +7,7 @@ import {
 import sendVerificationEmail from './verify';
 import connect from '@logic/mongoose/mongoose';
 import users   from '@logic/mongoose/user';
+import { createHash } from 'crypto';
 
 const POST = async (request: NextRequest) => {
     const { username, password, email } = await request.json();
@@ -32,9 +32,10 @@ const POST = async (request: NextRequest) => {
         if(emailExists) 
             return NextResponse.json({ error: 'Email already taken.' }, { status: 400 });
         // Create a new user
+        const hashedPassword = createHash('sha256').update(password).digest('hex');
         const result = users.create({
             username,
-            password,
+            password: hashedPassword,
             email
         });
         // Send verification email

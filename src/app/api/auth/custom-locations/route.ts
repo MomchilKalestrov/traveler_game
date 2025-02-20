@@ -8,9 +8,9 @@ import userCheck from '@logic/usercheck';
 const GET = async () => {
     const cookie = await cookies();
     const username = cookie.get('username')?.value;
-    const password = cookie.get('password')?.value;
+    const sessionId = cookie.get('sessionId')?.value;
 
-    if(!(await userCheck(username, password)))
+    if(!(await userCheck(username, sessionId)))
         return NextResponse.json({ error: 'Invalid credentials.' }, { status: 401 });
 
     try {
@@ -81,9 +81,9 @@ const POST = async (request: NextRequest) => {
 
     const cookie = await cookies();
     const username = cookie.get('username')?.value;
-    const password = cookie.get('password')?.value;
+    const sessionId = cookie.get('sessionId')?.value;
 
-    if (!(await userCheck(username, password, { xp: { $gte: 500 } })))
+    if (!(await userCheck(username, sessionId, { xp: { $gte: 500 } })))
         return NextResponse.json({ error: 'Invalid credentials.' }, { status: 401 });
 
     if (mode === 'create')

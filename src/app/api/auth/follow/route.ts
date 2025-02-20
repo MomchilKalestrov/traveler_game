@@ -11,13 +11,13 @@ const POST = async (request: NextRequest) => {
     
     const cookie = await cookies();
     const currentUsername = cookie.get('username')?.value;
-    const currentPassword = cookie.get('password')?.value;
+    const currentSessionId = cookie.get('sessionId')?.value;
 
     if (!requestedUsername)
         return NextResponse.json({ error: 'Missing parameters.' }, { status: 412 });
     if (requestedUsername === currentUsername)
         return NextResponse.json({ error: 'You cannot follow yourself.' }, { status: 400 });
-    if (!(await userCheck(currentUsername, currentPassword)))
+    if (!(await userCheck(currentUsername, currentSessionId)))
         return NextResponse.json({ error: 'Invalid credentials.' }, { status: 401 });
 
     try {

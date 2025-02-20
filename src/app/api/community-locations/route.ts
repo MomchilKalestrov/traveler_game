@@ -31,9 +31,9 @@ const GET = async (request: NextRequest) => {
 
     const cookie = await cookies();
     const username = cookie.get('username')?.value;
-    const password = cookie.get('password')?.value;
+    const sessionId = cookie.get('sessionId')?.value;
 
-    if (!(await userCheck(username, password)))
+    if (!(await userCheck(username, sessionId)))
         return NextResponse.json({ error: 'Invalid credentials.' }, { status: 401 });
 
     try {

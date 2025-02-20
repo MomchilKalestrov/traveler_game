@@ -1,20 +1,23 @@
 'use server';
-import connect from '@logic/mongoose/mongoose';
-import users   from '@logic/mongoose/user';
 import { RootFilterQuery } from 'mongoose';
+
+import connect from '@logic/mongoose/mongoose';
+import user from '@logic/mongoose/user';
+import session from '@logic/mongoose/session';
 
 const userCheck = async (
     username?: string | undefined,
-    password?: string | undefined,
+    sessionId?: string | undefined,
     query?: RootFilterQuery<any> | undefined
 ): Promise<boolean> => {
-    if(!username || !password)
+    if(!username || !sessionId)
         return false;
 
     try {
         await connect();
-        const user = await users.findOne({ username: username, password: password, verified: true, ...query });
-        return !!user;
+        const sessionExists = await session.findOne({ username, _id: sessionId });
+        const userExists = await user.findOne({ ...query, username, verified: true });
+        return sessionExists && userExists;
     } catch (error) {
         console.log(error);
         return false;
