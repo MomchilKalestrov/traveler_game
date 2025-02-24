@@ -1,6 +1,6 @@
 import type { NextConfig } from 'next';
 
-const pages:   string[] = [ 'login', 'about', 'home', 'map', 'profile', 'leaderboard' ];
+const pages:   string[] = [ 'login', 'about', 'home', 'map', 'profile', 'leaderboard', 'download' ];
 const locales: string[] = [ 'bg', 'en' ];
 
 const defaultPage:   string = 'home';
