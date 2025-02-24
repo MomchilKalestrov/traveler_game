@@ -13,11 +13,12 @@ const POST = async (request: NextRequest) => {
     const cookie = cookies();
 
     try {
-        console.log(username, password);
         // Check if the user exists and their credentials are correct.
         const hashedPassword = createHash('sha256').update(password).digest('hex');
-        if (!(await user.exists({ username, password: hashedPassword })))
+        const userExists = await user.findOne({ username, password: hashedPassword });
+        if (!userExists)
             return NextResponse.json({ error: 'Invalid credentials.' }, { status: 401 });
+        console.log("User exists");
         // Create a new session
         const sessionId = (await session.create({ username }))._id.toString();
         // Set the user's credentials
