@@ -6,7 +6,7 @@
     top: 0;
     left: 0;
     width: calc(100vw - var(--horizontal) * 2);
-    height: calc(100vh - var(--padding) * 2 - 5rem);
+    height: calc(100dvh - var(--padding) * 2 - 5rem);
     z-index: calc(var(--z) + 3);
     background-color: var(--color-bg);
     animation: slideIn ease-in-out 0.5s;

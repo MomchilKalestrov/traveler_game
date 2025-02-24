@@ -16,7 +16,7 @@ const Redirect: React.FC = () => {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            height: '100vh',
+            height: '100dvh',
             gap: '1rem'
         } }>
             <Image src='/favicon.png' alt='Venturo' width={ 64 } height={ 64 } />

@@ -42,7 +42,7 @@ const Page: NextPage = () => {
     if (!language) return (<LoadingPlaceholder />);
 
     return (
-        <main style={ { padding: '0px', height: 'calc(100vh - 5rem)' } }>
+        <main style={ { padding: '0px', height: 'calc(100dvh - 5rem)' } }>
         {
             request &&
             <Dialog

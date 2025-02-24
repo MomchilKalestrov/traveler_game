@@ -33,7 +33,7 @@
     left: 0;
     margin: 0px;
     width: calc(100vw - var(--horizontal) * 2);
-    height: calc(100vh - var(--padding) * 2);
+    height: calc(100dvh - var(--padding) * 2);
     z-index: calc(var(--z) + 5);
     background-color: var(--color-bg);
     padding: var(--padding) var(--horizontal);

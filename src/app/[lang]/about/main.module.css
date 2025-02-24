@@ -1,6 +1,6 @@
 .Main {
     padding: 0px;
-    height: calc(100vh - 4rem);
+    height: calc(100dvh - 4rem);
     text-align: center;
 }
 

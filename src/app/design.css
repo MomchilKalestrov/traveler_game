@@ -90,7 +90,7 @@ body {
     margin: 0px;
     padding: 0px;
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     background: var(--color-bg);
     background-size: 12.5rem;
     display: inline-block; /* Fix for collapsing margins */

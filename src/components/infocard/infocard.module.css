@@ -105,13 +105,13 @@
 }
 
 @keyframes slideIn {
-    from { transform: translateY(calc(50vh + 50%)); }
-    to   { transform: translateY(0vh); }
+    from { transform: translateY(calc(50dvh + 50%)); }
+    to   { transform: translateY(0dvh); }
 }
 
 @keyframes slideOut {
-    from { transform: translateY(0vh); }
-    to   { transform: translateY(calc(50vh + 50%)); }
+    from { transform: translateY(0dvh); }
+    to   { transform: translateY(calc(50dvh + 50%)); }
 }
 
 @keyframes blurIn {
