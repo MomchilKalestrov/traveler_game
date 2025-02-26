@@ -16,7 +16,7 @@ const Providers: React.FC<ProvidersProps> = ({ children }) => {
     const [ language, setLanguage ] = React.useState<Language | undefined>(undefined);
 
     React.useEffect(() => {
-        const language = localStorage.getItem('lang') || params.lang || 'en';
+        const language = localStorage.getItem('locale') || params.lang || 'en';
         fetch(`/languages/${ language }.json`)
             .then(res => res.json())
             .then(setLanguage);

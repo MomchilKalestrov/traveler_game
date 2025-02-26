@@ -1,7 +1,14 @@
+// PLEASE NOTE:
+// This code was intended to be
+// used to generate images for
+// IG and FB stories.
+// But currently it is not utilized
+// anywhere in the rest of the
+// codebase.
 import React from 'react';
 import satori from 'satori';
 
-import { Location } from '@logic/types';
+import { Landmark } from '@logic/types';
 import { getBadgeSVG, unixToDate } from '@logic/utils';
 
 const shortenString = (text: string): string => {
@@ -30,7 +37,7 @@ const svgToPng = async (svg: string): Promise<string> => {
     );
 }
 
-const getShareCard = async (location: Location, time: number): Promise<string> =>
+const getShareCard = async (landmark: Landmark, time: number): Promise<string> =>
     satori(
         <div style={ {
             display: 'flex',
@@ -47,12 +54,12 @@ const getShareCard = async (location: Location, time: number): Promise<string> =
         } }>
             <div style={ { display: 'flex', gap: '0.5rem', width: '100%', flexDirection: 'column' } }>
                 <p  style={ { margin: '0px' } }>I visited:</p>
-                <h2 style={ { margin: '0px' } }>{ shortenString(location.name) }</h2>
+                <h2 style={ { margin: '0px' } }>{ shortenString(landmark.name) }</h2>
                 <p  style={ { margin: '0px' } }>on { unixToDate(time) }.</p>
             </div>
             <h3 style={ { position: 'absolute', left: '1rem', bottom: '0px' } }>Venturo</h3>
             <img
-                src={ getBadgeSVG(location.dbname) } alt='Venturo'
+                src={ getBadgeSVG(landmark.dbname) } alt='Venturo'
                 style={ {
                     position: 'absolute',
                     right: '1rem', bottom: '1rem',

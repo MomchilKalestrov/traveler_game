@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
 import connect from '@logic/mongoose/mongoose';
-import communityMadeLocations from '@logic/mongoose/communityMadeLocations';
+import communityMadeLandmark from '@src/logic/mongoose/communityMadeLandmark';
 import userCheck from '@logic/usercheck';
 
 const GET = async () => {
@@ -16,9 +16,9 @@ const GET = async () => {
     try {
         connect();
 
-        const locations = await communityMadeLocations.find({ author: username }, { __v: 0 });
+        const currentLandmark = await communityMadeLandmark.find({ author: username }, { __v: 0 });
 
-        return NextResponse.json(locations, { status: 200 });
+        return NextResponse.json(currentLandmark, { status: 200 });
     } catch (error) {
         console.log('An exception has occured:\n', error);
         return NextResponse.json({ error: 'An error has occured.' }, { status: 500 });
@@ -39,10 +39,10 @@ const create = async (
     try {
         connect();
 
-        const locationExists = await communityMadeLocations.findOne({ name });
-        if (locationExists) return NextResponse.json({ error: 'Location already exists.' }, { status: 400 });
+        const landmarkExists = await communityMadeLandmark.findOne({ name });
+        if (landmarkExists) return NextResponse.json({ error: 'Landmark already exists.' }, { status: 400 });
 
-        await communityMadeLocations.create({
+        await communityMadeLandmark.create({
             name,
             location,
             author: username
@@ -61,10 +61,10 @@ const dеlete = async (name: string | null, username: string) => {
     try {
         connect();
 
-        const locationExists = await communityMadeLocations.findOne({ name, author: username });
-        if (!locationExists) return NextResponse.json({ error: 'Location not found.' }, { status: 404 });
+        const landmarkExists = await communityMadeLandmark.findOne({ name, author: username });
+        if (!landmarkExists) return NextResponse.json({ error: 'Landmark not found.' }, { status: 404 });
 
-        await communityMadeLocations.deleteOne({ name });
+        await communityMadeLandmark.deleteOne({ name });
 
         return new NextResponse(null, { status: 204 });
     } catch (error) {
@@ -86,8 +86,14 @@ const POST = async (request: NextRequest) => {
     if (!(await userCheck(username, sessionId, { xp: { $gte: 500 } })))
         return NextResponse.json({ error: 'Invalid credentials.' }, { status: 401 });
 
+    // A malicious actor could theoretically send
+    // a location object with extra fields, which
+    // at first glance wouldn't be a problem, but
+    // could potentially be  used as some sort of
+    // exploit.
+    const { name, location } = await request.json();
     if (mode === 'create')
-        return create(await request.json(), username as string);
+        return create({ name, location: { lat: location.lat, lng: location.lng } }, username as string);
     else if (mode === 'delete')
         return dеlete(params.get('name'), username as string);
 

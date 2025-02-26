@@ -11,10 +11,10 @@ import LoadingPlaceholder from '@components/loading';
 import getActivities from '@logic/followerActivity';
 import LanguageCTX   from '@logic/contexts/languageCTX';
 import {
-    Location,
+    Landmark,
     Accomplishment,
     Language,
-    LocationType
+    LandmarkType
 } from '@logic/types';
 import { RootState } from '@logic/redux/store';
 
@@ -22,30 +22,30 @@ import style from './home.module.css';
 
 import Segment from './segments';
 
-type StartedLocationsProps = {
-    startedLocations: Location[] | undefined;
+type LandmarksMarkedForVisitProps = {
+    landmarks: Landmark[] | undefined;
     language: Language;
 };
 
-const availableLocationTypes: LocationType[] = [ 'water', 'nature', 'structure', 'misc' ];
+const availableLandmarkTypes: LandmarkType[] = [ 'water', 'nature', 'structure', 'misc' ];
 
-const StartedLocations: React.FC<StartedLocationsProps> = ({
-    startedLocations,
+const LandmarksMarkedForVisit: React.FC<LandmarksMarkedForVisitProps> = ({
+    landmarks,
     language
 }) => {
-    if (!startedLocations) return (
+    if (!landmarks) return (
         <div className={ style.LoadingSegment }>
             <Image src='/icons/loading.svg' width={ 44 } height={ 44 } alt='loading' />
         </div>
     );
 
-    if (startedLocations.length === 0) return (<p>{ language.home.alts.started }</p>);
+    if (landmarks.length === 0) return (<p>{ language.home.alts.started }</p>);
 
     return (
         <div className={ style.HorizontalCarousel }>
             <div>
-                { startedLocations.map((location: Location, key: number) =>
-                    <Minicard key={ key } location={ location } />
+                { landmarks.map((landmark: Landmark) =>
+                    <Minicard key={ landmark.dbname } landmark={ landmark } />
                 ) }
             </div>
         </div>
@@ -55,9 +55,9 @@ const StartedLocations: React.FC<StartedLocationsProps> = ({
 const Page: NextPage = () => {
     const language: Language | undefined = React.useContext(LanguageCTX);
  
-    const allSlice     = useSelector((state: RootState) => state.all.value);
-    const userSlice    = useSelector((state: RootState) => state.user.value);
-    const startedSlice = useSelector((state: RootState) => state.started.value);
+    const allLandmarks = useSelector((state: RootState) => state.allLandmarks.value);
+    const user = useSelector((state: RootState) => state.user.value);
+    const landmarksMarkedForVisit = useSelector((state: RootState) => state.landmarksMarkedForVisit.value);
     
     const [
         followerActivity,
@@ -65,21 +65,17 @@ const Page: NextPage = () => {
     ] = React.useState<Accomplishment[]>([]);
 
     React.useEffect(() => {
-        if (!userSlice || !allSlice) return;
-        getActivities(userSlice, allSlice).then(setFollowerActivity);
-    }, [ userSlice ]);
+        if (!user || !allLandmarks) return;
+        getActivities(user, allLandmarks).then(setFollowerActivity);
+    }, [ user?.following.length ]);
 
-    if (!allSlice || !language) return (<LoadingPlaceholder />);
+    if (!allLandmarks || !language) return (<LoadingPlaceholder />);
 
     return (
         <main className={ style.Home }>
             <h2>{ language.home.titles.started }</h2>
-            <StartedLocations startedLocations={ startedSlice } language={ language } />
-        {
-            availableLocationTypes.map((type: LocationType) =>
-                <Segment key={ type } type={ type } />
-            )
-        }
+            <LandmarksMarkedForVisit landmarks={ landmarksMarkedForVisit } language={ language } />
+            { availableLandmarkTypes.map((type: LandmarkType) => <Segment key={ type } type={ type } />) }
         {
             followerActivity.length > 0 && (
                 <>

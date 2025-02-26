@@ -1,5 +1,5 @@
 'use server';
-import { NextPage, Metadata, ResolvingMetadata } from 'next';
+import { NextPage, Metadata } from 'next';
 import Redirect from './redirect';
 
 type MetadataProps = {
@@ -8,11 +8,11 @@ type MetadataProps = {
 };
 
 const generateMetadata = async ({ searchParams }: MetadataProps): Promise<Metadata> => {
-    const location = (await searchParams)?.location;
+    const landmark = (await searchParams)?.landmark;
 
     return {
         openGraph: {
-            images: `/api/open-graph` + (location ? `?location=${ location }` : ''),
+            images: `/api/open-graph` + (landmark ? `?landmark=${ landmark }` : ''),
         }
     };
 };

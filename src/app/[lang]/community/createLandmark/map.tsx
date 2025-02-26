@@ -17,7 +17,6 @@ const Map: React.FC<MapProps> = ({ locationSetter }) => {
 
     React.useEffect(() => {
         if(!mapContainerRef.current) return;
-        
 
         const map =
             L.map(mapContainerRef.current, { zoomControl: false })
@@ -28,14 +27,7 @@ const Map: React.FC<MapProps> = ({ locationSetter }) => {
                 marker.setLatLng(e.latlng);
             });
 
-        const marker =
-            L.marker([ 42.7339, 25.4858 ], {
-                icon: L.icon({
-                    iconUrl: '/icons/communitypin.svg',
-                    iconSize: [ 32, 32 ],
-                    iconAnchor: [ 16, 16 ]
-                })
-            }).addTo(map);
+        const marker = L.marker([ 42.7339, 25.4858 ], { icon: communityPin }).addTo(map);
         
         map
             .attributionControl

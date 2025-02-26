@@ -2,19 +2,19 @@
 import React from 'react';
 import Image from 'next/image';
 
-import { Location, Language } from '@logic/types';
+import { Landmark, Language } from '@logic/types';
 import LanguageCTX from '@logic/contexts/languageCTX';
 
-import InfoCard, { cardType } from '@components/infocard';
+import InfoCard from '@components/infocard';
 import Button from '@components/button';
 
 import style from './mapcard.module.css';
 
 type MapcardProps = {
-    location: Location;
+    landmark: Landmark;
 };
 
-const Mapcard: React.FC<MapcardProps> = ({ location }) => {
+const Mapcard: React.FC<MapcardProps> = ({ landmark }) => {
     const language: Language | undefined = React.useContext(LanguageCTX);
     const [ viewing, setViewing ] = React.useState<boolean>(false);
 
@@ -24,27 +24,27 @@ const Mapcard: React.FC<MapcardProps> = ({ location }) => {
         <>
             <div className={ style.Mapcard }>
                 <div
-                    className={ style.MapcardLocation }
+                    className={ style.MapcardLandmark }
                     style={ {
                         backgroundImage: `
-                            url('${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/bg/${ location.dbname }.png'),
+                            url('${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/bg/${ landmark.dbname }.png'),
                             url('/default_assets/background.png')
                         `
                     } }
                 >
                     <div>
                         <Image
-                            alt={ location.name }
-                            src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ location.dbname }.svg` }
+                            alt={ landmark.name }
+                            src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ landmark.dbname }.svg` }
                             width={ 40 }
                             height={ 40 }
                         />
                     </div>
                 </div>
                 <div className={ style.MapcardMore }>
-                    <h3>{ location.name }</h3>
+                    <h3>{ landmark.name }</h3>
                     <Button
-                        aria-label={ `View new ${ location.name }` }
+                        aria-label={ `View new ${ landmark.name }` }
                         onClick={ () => setViewing(true) }
                         border={ true }
                     >{ language.misc.infocards.view }</Button>
@@ -53,9 +53,9 @@ const Mapcard: React.FC<MapcardProps> = ({ location }) => {
         {
             viewing &&
             <InfoCard
-                type='track'
+                type='markForVisit'
                 setter={ setViewing }
-                location={ location }
+                landmark={ landmark }
             />
         }
         </>

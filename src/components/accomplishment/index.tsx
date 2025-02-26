@@ -13,14 +13,14 @@ const AccomplishmentTag: React.FC<AccomplishmentTagProps> = ({ accomplishment })
     return (
         <div className={ style.Accomplishment }>
             <Image
-                alt={ accomplishment.location } width={ 40 } height={ 40 }
+                alt={ accomplishment.landmarkname } width={ 40 } height={ 40 }
                 src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ accomplishment.dbname  }.svg` }
             />
             <h3>
             {
                 language?.misc.accomplishment.title
-                    .replace('{NAME}', accomplishment.user)
-                    .replace('{LOCATION}', accomplishment.location)
+                    .replace('{USERNAME}', accomplishment.username)
+                    .replace('{LANDMARK}', accomplishment.landmarkname)
             }
             </h3>
             <p>

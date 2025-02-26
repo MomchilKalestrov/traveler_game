@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
-import locations from '@logic/mongoose/locations';
+import landmark from '@src/logic/mongoose/landmark';
 import connect   from '@logic/mongoose/mongoose';
 import userCheck from '@logic/usercheck';
 import localeSelector from '@logic/mongoose/DBLanguageSelector';
@@ -24,15 +24,15 @@ const GET = async (request: NextRequest) => {
         // Connect to the database
         await connect();
         // Get the location
-        const location = (await locations.aggregate([
+        const currentLandmark = (await landmark.aggregate([
             { $match: { dbname: name } },
             ...localeSelector(locale)
         ]))[0];
         
-        if (!location)
-            return NextResponse.json({ error: 'Location not found.' }, { status: 404 });
+        if (!currentLandmark)
+            return NextResponse.json({ error: 'Landmark not found.' }, { status: 404 });
         // Close the connection
-        return NextResponse.json(location, { status: 200 });
+        return NextResponse.json(currentLandmark, { status: 200 });
     } catch(error) {
         console.log('An exception has occured:\n', error);
         return NextResponse.json({ error: 'An error has occured.' }, { status: 500 });

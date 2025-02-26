@@ -8,13 +8,12 @@ import { useSelector } from 'react-redux';
 import LanguageCTX from '@logic/contexts/languageCTX';
 import { RootState } from '@logic/redux/store';
 import store from '@logic/redux/store';
-import { CommunityLocation } from '@logic/types';
-import { haversineDistance } from '@logic/utils';
+import { CommunityLandmark } from '@logic/types';
 
 import LoadingPlaceholder from '@components/loading';
 import Button from '@src/components/button';
 
-import CreateCard from './createLocation';
+import CreateCard from './createLandmark';
 import style from './community.module.css';
 
 
@@ -29,20 +28,20 @@ const nextSort = (): string => [
 ][(counter = (counter + 1) % 3)];
 
 const sort: {
-    [key: string]: (poi1: CommunityLocation, poi2: CommunityLocation) => number
+    [key: string]: (landmark1: CommunityLandmark, landmark2: CommunityLandmark) => number
 } = {
-    recentlyAdded: (poi1: CommunityLocation, poi2: CommunityLocation) =>
-        objectIdToTimestamp(poi2._id) - objectIdToTimestamp(poi1._id),
-    mostVisited: (poi1: CommunityLocation, poi2: CommunityLocation) =>
-        poi2.visits - poi1.visits,
-    mostLiked: (poi1: CommunityLocation, poi2: CommunityLocation) =>
-        poi2.likes.length - poi1.likes.length
+    recentlyAdded: (landmark1: CommunityLandmark, landmark2: CommunityLandmark) =>
+        objectIdToTimestamp(landmark2._id) - objectIdToTimestamp(landmark1._id),
+    mostVisited: (landmark1: CommunityLandmark, landmark2: CommunityLandmark) =>
+        landmark2.visits - landmark1.visits,
+    mostLiked: (landmark1: CommunityLandmark, landmark2: CommunityLandmark) =>
+        landmark2.likes.length - landmark1.likes.length
 };
 
 const loadMore = async (skip: number, setter: React.Dispatch<React.SetStateAction<boolean>>) => {
     const close = () => setter(false);
 
-    const res = await fetch('/api/community-locations?skip=' + skip);
+    const res = await fetch('/api/community-landmarks?skip=' + skip);
     if (!res.ok) return;
 
     const data = await res.json();
@@ -51,14 +50,14 @@ const loadMore = async (skip: number, setter: React.Dispatch<React.SetStateActio
         return close();
 
     const user = store.getState().user.value;
-    store.dispatch({ type: 'community/add', payload: { locations: data, user } });
+    store.dispatch({ type: 'communityMadeLandmarks/add', payload: { landmarks: data, user } });
 };
 
 const Page: NextPage = () => {
     const language = React.useContext(LanguageCTX);
 
-    const communitySlice = useSelector((state: RootState) => state.community.value);
-    const customSlice    = useSelector((state: RootState) => state.custom.value);
+    const communityLandmarks = useSelector((state: RootState) => state.communityMadeLandmarks.value);
+    const userMadeLandmarks = useSelector((state: RootState) => state.userMadeLandmarks.value);
 
     const [ sortBy, setSort ] = React.useState('recentlyAdded');
     const [ isButtonVisible, hideButton ] = React.useState(true);
@@ -88,13 +87,13 @@ const Page: NextPage = () => {
                     </button>
                 </div>
             {
-                customSlice
-                ?   customSlice.length > 0
+                userMadeLandmarks
+                ?   userMadeLandmarks.length > 0
                     ?   <div className={ style.HorizontalCarousel }>
                             <div>
                             {
-                                customSlice.map((location) => (
-                                    <CommunityCard key={ location._id } location={ location } type='delete' />
+                                userMadeLandmarks.map((landmark) => (
+                                    <CommunityCard key={ landmark.name } landmark={ landmark } type='deleteLandmark' />
                                 ))
                             }
                             </div>
@@ -107,13 +106,13 @@ const Page: NextPage = () => {
                     <div style={ { height: '2.5rem' } } />
                 </div>
             {
-                communitySlice.started
-                ?   communitySlice.started.length > 0
+                communityLandmarks.markedForVisit
+                ?   communityLandmarks.markedForVisit.length > 0
                     ?   <div className={ style.HorizontalCarousel }>
                             <div>
                             {
-                                communitySlice.started.map((location) => (
-                                    <CommunityCard key={ location._id } location={ location } type='untrack' />
+                                communityLandmarks.markedForVisit.map((landmark) => (
+                                    <CommunityCard key={ landmark.name } landmark={ landmark } type='unmarkForVisit' />
                                 ))
                             }
                             </div>
@@ -129,11 +128,11 @@ const Page: NextPage = () => {
                     </button>
                 </div>
             {
-                communitySlice.new
-                ?   [ ...communitySlice.new ] // avoid mutation by cloning the array
+                communityLandmarks.new
+                ?   [ ...communityLandmarks.new ] // avoid mutation by cloning the array
                         .sort(sort[ sortBy ])
-                        .map((location) =>
-                            <CommunityCard key={ location._id } location={ location } type='track' />
+                        .map((landmark) =>
+                            <CommunityCard key={ landmark.name } landmark={ landmark } type='markForVisit' />
                         )
                 :   <LoadingPlaceholder small={ true } />
             }
@@ -145,7 +144,7 @@ const Page: NextPage = () => {
                         const element = e.currentTarget;
                         if (element) element.disabled = true;
 
-                        loadMore((communitySlice.all || []).length, hideButton)
+                        loadMore((communityLandmarks.all || []).length, hideButton)
                             .then(() => { if (element) element.disabled = false; });
                     } }
                 >{ language.community.loadMore }</Button>

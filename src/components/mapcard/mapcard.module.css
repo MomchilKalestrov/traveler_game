@@ -7,7 +7,7 @@
     background-color: var(--color-secondary);
 }
 
-.MapcardLocation {
+.MapcardLandmark {
     box-sizing: border-box;
 
     border-radius: 0.75rem;
@@ -19,7 +19,7 @@
     background-size: cover;
 }
 
-.MapcardLocation > div {
+.MapcardLandmark > div {
     border-radius: 0.75rem;
     border: none;
 
@@ -30,7 +30,7 @@
     background-color: var(--color-secondary);
 }
 
-.MapcardLocation > div > img {
+.MapcardLandmark > div > img {
     aspect-ratio: 1;
     width: 100%;
 }

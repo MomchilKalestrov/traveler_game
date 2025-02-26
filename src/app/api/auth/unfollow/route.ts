@@ -24,7 +24,7 @@ const POST = async (request: NextRequest) => {
         // Connect to the DB
         await connect();
         // Check if the user exists
-        const currentUser   = await users.findOne({ username: currentUsername   });
+        const currentUser   = await users.findOne({ username: currentUsername });
         const requestedUser = await users.findOne({
             username: requestedUsername,
             verified: true
@@ -36,11 +36,11 @@ const POST = async (request: NextRequest) => {
             return NextResponse.json({ error: 'User is not following this user.' }, { status: 400 });
         // Unfollow the user
         await users.updateOne(
-            { username: cookie.get('username')?.value },
+            { username: currentUsername },
             { $pull: { following: requestedUsername } }
         );
         await users.updateOne(
-            { username: args.get('username') },
+            { username: requestedUsername },
             { $pull: { followers: currentUsername } }
         );
         // Close the connection

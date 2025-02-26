@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { User, Location } from '@logic/types';
+import { User, Landmark } from '@logic/types';
 
 export const userSlice = createSlice({
     name: 'user',
@@ -18,21 +18,22 @@ export const userSlice = createSlice({
             if (!state.value) return;
             state.value.following = state.value.following.filter(username => username !== action.payload);
         },
-        track: (state, action: PayloadAction<string>) => {
+        markForVisit: (state, action: PayloadAction<string>) => {
             if (!state.value) return;
-            state.value.started.push(action.payload);
+            state.value.markedForVisit.push(action.payload);
         },
-        untrack: (state, action: PayloadAction<string>) => {
+        unmarkForVisit: (state, action: PayloadAction<string>) => {
             if (!state.value) return;
-            state.value.started = state.value.started.filter(name => name !== action.payload);
+            state.value.markedForVisit = state.value.markedForVisit.filter(dbname => dbname !== action.payload);
         },
-        finish: (state, action: PayloadAction<Location>) => {
+        visit: (state, action: PayloadAction<Landmark>) => {
             if (!state.value) return;
-            state.value.started = state.value.started.filter(name => name !== action.payload.dbname);
-            state.value.finished.push({ location: action.payload.dbname, time: Date.now() });
+            state.value.markedForVisit = state.value.markedForVisit.filter(dbname => dbname !== action.payload.dbname);
+            state.value.visited.push({ dbname: action.payload.dbname, time: Date.now() });
             state.value.xp += action.payload.xp;
         }
     }
 });
 
+export const { update, follow, unfollow, markForVisit, unmarkForVisit, visit } = userSlice.actions;
 export default userSlice.reducer;

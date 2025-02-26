@@ -1,49 +1,42 @@
 import { Accomplishment, User } from '@logic/types';
-import { Location } from '@logic/types';
+import { Landmark } from '@logic/types';
 
-type follower = {
-    username: string;
-    finished: Accomplishment[];
-};
-
-const initialGet = async (user: User, all: Location[]): Promise<Accomplishment[]> => {
+const initialGet = async (user: User, allLandmarks: Landmark[]): Promise<Accomplishment[]> => {
     let activities: Accomplishment[] = [];
 
-    const locationMap: { [key: string]: string } = {};
-    all.forEach((loc) => locationMap[loc.dbname] = loc.name);
+    const landmarkMap: { [ key: string  ]: string } = {};
+    allLandmarks.forEach((landmark: Landmark) => landmarkMap[ landmark.dbname ] = landmark.name);
     
-    for (const follower of user.following) {
-        const data: follower = await fetchFollower(follower);
+    for (let index: number = 0; index < user.following.length; index++) {
+        const follower: User = await fetchFollower(user.following[ index ]);
         
-        if (data.finished.length > 0){
+        if (follower.visited.length > 0)
             activities = activities.concat(
-                data.finished.map((info: { location: string, time: number }) => ({
-                    dbname: info.location,
-                    location: locationMap[info.location] || info.location,
-                    time: info.time,
-                    user: data.username
+                follower.visited.map(({ dbname, time }) => ({
+                    dbname,
+                    time,
+                    landmarkname: landmarkMap[ dbname ],
+                    username: follower.username
                 }))
-            );}
+            );
         if (activities.length > 6) break;
     }
     
-    const final = activities
-        .sort((a, b) => b.time - a.time)
-        .slice(0, Math.min(activities.length, 6));
+    const final = activities.sort((a, b) => b.time - a.time).slice(0, 6);
     
     sessionStorage.setItem('activities', JSON.stringify(final));
     return final;
 }
 
-const fetchFollower = async (username: string): Promise<follower> => (
+const fetchFollower = async (username: string): Promise<User> => (
     await (
         await fetch(`/api/auth/get?username=${ encodeURIComponent(username) }`)
     ).json()
-) as follower;
+) as User;
 
-const getActivities = async (user: User, all: Location[]): Promise<Accomplishment[]> => {
+const getActivities = async (user: User, allLandmarks: Landmark[]): Promise<Accomplishment[]> => {
     const activities = sessionStorage.getItem('activities');
-    return activities ? JSON.parse(activities) : await initialGet(user, all);
+    return activities ? JSON.parse(activities) : await initialGet(user, allLandmarks);
 };
 
 export default getActivities;

@@ -1,22 +1,22 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { saveToSessionStorage } from './sessionStorage';
-import finishedReducer from './finishedSlice';
-import startedReducer from './startedSlice';
-import userReducer from './userSlice';
-import newReducter from './newSlice';
-import allReducer from './allSlice';
-import communityReducer from './communitySlice';
-import customLocationsReducer from './customLocationsSlice';
+import visitedLandmarks from './visitedLandmarksSlice';
+import landmarksMarkedForVisit from './landmarksMarkedForVisitSlice';
+import user from './userSlice';
+import newLandmarks from './newLandmarksSlice';
+import allLandmarks from './allLandmarksSlice';
+import communityMadeLandmarks from './communityMadeLandmarksSlice';
+import userMadeLandmarks from './userMadeLandmarksSlice';
 
 const store = configureStore({
     reducer: {
-        finished: finishedReducer,
-        started: startedReducer,
-        user: userReducer,
-        new: newReducter,
-        all: allReducer,
-        community: communityReducer,
-        custom: customLocationsReducer
+        visitedLandmarks,
+        landmarksMarkedForVisit,
+        user,
+        newLandmarks,
+        allLandmarks,
+        communityMadeLandmarks,
+        userMadeLandmarks
     }
 });
 

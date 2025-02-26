@@ -5,15 +5,14 @@ import JSConfetti from 'js-confetti';
 
 import store, { RootState } from '@logic/redux/store';
 import { haversineDistance } from '@logic/utils';
-import { CommunityLocation, Location } from '@src/logic/types';
+import { CommunityLandmark, Landmark } from '@src/logic/types';
 
-const claim = (coords: GeolocationCoordinates, location: Location | CommunityLocation) => {
-    console.log('Claiming: ', location);
-    const isCommunity = !('dbname' in location);
+const claim = (coords: GeolocationCoordinates, landmark: Landmark | CommunityLandmark) => {
+    const isCommunity = !('dbname' in landmark);
 
-    const name = isCommunity ? `community#${ location.name }` : location.dbname;
+    const name = isCommunity ? `community#${ landmark.name }` : landmark.dbname;
 
-    fetch('/api/finish', {
+    fetch('/api/visit', {
         method: 'POST',
         body: JSON.stringify({
             name,
@@ -23,56 +22,58 @@ const claim = (coords: GeolocationCoordinates, location: Location | CommunityLoc
     }).then((res) => {
         if (!res.ok) return;
 
-        // some properties are missing in community locations
+        // some properties are missing in community landmarks
         // that is why we need to fill them in
-        // if they DO exist, they will be overwritten by `...location`
-        const universalLocation = {
+        // if they DO exist, they will be overwritten by `...landmark`
+        const universalLandmark = {
             xp: 10,
-            dbname: `community#${ location.name }`,
-            ...location
+            dbname: `community#${ landmark.name }`,
+            ...landmark
         };
 
-        store.dispatch({ type: 'started/remove', payload: name });
-        store.dispatch({ type: 'user/finish', payload: universalLocation });
-        store.dispatch({ type: isCommunity ? 'community/finish' : 'finished/add', payload: location });
+        store.dispatch({ type: 'landmarksMarkedForVisit/remove', payload: name });
+        store.dispatch({ type: 'user/visit', payload: universalLandmark });
+        store.dispatch({ type: isCommunity ? 'communityMadeLandmarks/visit' : 'visitedLandmarks/add', payload: landmark });
 
         const confetti = new JSConfetti();
         confetti.addConfetti({
             confettiColors: [ '#ff0000', '#00ff00', '#0000ff' ],
             confettiRadius: 5,
             confettiNumber: 100
-        }).then(() => confetti.destroyCanvas());
+        }).then(() => {
+            confetti.destroyCanvas();
+            alert('Congrats on visiting the landmark!');
+        });
     });
 };
 
-const isNear = (coords: GeolocationCoordinates, location: Location | CommunityLocation) =>
-    haversineDistance(
-        coords.latitude, coords.longitude, 
-        location.location.lat, location.location.lng
-    ) < maxDistance;
-
 const maxDistance = 50;
 
+const isNear = (coords: GeolocationCoordinates, landmark: Landmark | CommunityLandmark) =>
+    haversineDistance(
+        coords.latitude, coords.longitude, 
+        landmark.location.lat, landmark.location.lng
+    ) < maxDistance;
+
 const AutoClaimHook: React.FC = () => {
-    const community = useSelector((state: RootState) => state.community.value).started;
-    const started   = useSelector((state: RootState) => state.started.value);
+    const communityMarkedForVisit = useSelector((state: RootState) => state.communityMadeLandmarks.value).markedForVisit;
+    const markedForVisit = useSelector((state: RootState) => state.landmarksMarkedForVisit.value);
     
     const autoClaim = ({ coords }: GeolocationPosition) => {
-        if (started)
-            started.forEach((location) => {
-                if (isNear(coords, location))
-                    claim(coords, location);
+        if (markedForVisit)
+            markedForVisit.forEach((landmark) => {
+                if (isNear(coords, landmark))
+                    claim(coords, landmark);
             });
-        if (community)
-            community.forEach((location) => {
-                if (isNear(coords, location))
-                    claim(coords, location);
+        if (communityMarkedForVisit)
+            communityMarkedForVisit.forEach((landmark) => {
+                if (isNear(coords, landmark))
+                    claim(coords, landmark);
             });
     };
 
     React.useEffect(() => {
         if (!navigator.geolocation) return;
-
         const id = navigator.geolocation.watchPosition(
             autoClaim,
             console.error,
@@ -83,7 +84,7 @@ const AutoClaimHook: React.FC = () => {
         );
 
         return () => navigator.geolocation.clearWatch(id);
-    }, [ started, community ]);
+    }, [ markedForVisit?.length, communityMarkedForVisit?.length ]);
 
     return (<></>);
 };

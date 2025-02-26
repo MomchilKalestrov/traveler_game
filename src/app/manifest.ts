@@ -3,7 +3,7 @@ import type { MetadataRoute } from 'next';
 const manifest = (): MetadataRoute.Manifest => ({
     name: 'Venturo',
     short_name: 'Venturo',
-    description: 'A game to help you discover locations.',
+    description: 'A game to help you discover Bulgaria\'s cultural and natural heritage.',
     start_url: '/en/home',
     display: 'standalone',
     orientation: 'portrait',

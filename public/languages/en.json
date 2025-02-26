@@ -58,9 +58,9 @@
             "mostLiked": "Most liked"
         },
         "buttons": {
-            "track": "Track",
-            "untrack": "Remove",
-            "delete": "Delete"
+            "markForVisit": "Track",
+            "unmarkForVisit": "Remove",
+            "deleteLandmark": "Delete"
         },
         "create": {
             "input": "Location name",
@@ -107,7 +107,7 @@
             }
         },
         "accomplishment": {
-            "title": "{NAME} has earned the badge for {LOCATION}!"
+            "title": "{USERNAME} has earned the badge for {LANDMARK}!"
         },
         "infocards": {
             "start": "Mark for visit",

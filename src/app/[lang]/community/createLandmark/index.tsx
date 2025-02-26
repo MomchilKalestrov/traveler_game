@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 import LanguageCTX from '@logic/contexts/languageCTX';
 import { validateLandmark } from '@logic/validate';
-import { CommunityLocation } from '@logic/types';
+import { CommunityLandmark } from '@logic/types';
 import store, { RootState } from '@logic/redux/store';
 
 import MaterialInput from '@components/input';
@@ -56,8 +56,8 @@ const CreateCard: React.FC<CreateCardProps> = ({ setter }) => {
             return alert(language.community.create.error.invalid);
         };
 
-        const location: CommunityLocation = {
-            _id: 'fuckIfIKnow',
+        const landmark: CommunityLandmark = {
+            _id: '',
             name: name as string,
             location: position,
             author: userSlice.username,
@@ -65,9 +65,9 @@ const CreateCard: React.FC<CreateCardProps> = ({ setter }) => {
             visits: 0,
         };
 
-        fetch('/api/auth/custom-locations?mode=create', {
+        fetch('/api/auth/user-created-landmarks?mode=create', {
             method: 'POST',
-            body: JSON.stringify(location)
+            body: JSON.stringify(landmark)
         }).then(async response => {
             button.disabled = false;
 
@@ -77,7 +77,7 @@ const CreateCard: React.FC<CreateCardProps> = ({ setter }) => {
                 return;
             };
             
-            store.dispatch({ type: 'custom/add', payload: location });
+            store.dispatch({ type: 'userMadeLandmarks/add', payload: landmark });
             close();
         });
     };

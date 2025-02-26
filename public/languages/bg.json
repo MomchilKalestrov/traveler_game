@@ -59,9 +59,9 @@
             "mostLiked": "Харесвани"
         },
         "buttons": {
-            "track": "Следи",
-            "untrack": "Премахни",
-            "delete": "Изтрий"
+            "markForVisit": "Следи",
+            "unmarkForVisit": "Премахни",
+            "deleteLandmark": "Изтрий"
         },
         "create": {
             "input": "Име",
@@ -108,7 +108,7 @@
             }
         },
         "accomplishment": {
-            "title": "{NAME} отключи значката на {LOCATION}!"
+            "title": "{USERNAME} отключи значката на {LANDMARK}!"
         },
         "infocards": {
             "start": "Маркирай за посещаване",

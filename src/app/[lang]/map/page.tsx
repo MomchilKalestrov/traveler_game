@@ -5,19 +5,19 @@ import { NextPage }    from 'next';
 import { useSelector } from 'react-redux';
 
 import { RootState } from '@logic/redux/store';
-import { Language, Location, CommunityLocation }  from '@logic/types';
+import { Language, Landmark, CommunityLandmark }  from '@logic/types';
 import LanguageCTX from '@logic/contexts/languageCTX';
 
 import LoadingPlaceholder from '@components/loading';
 import Dialog from '@components/dialog';
 
-type AllLocation = Location | CommunityLocation;
+type UnifiedLandmark = Landmark | CommunityLandmark;
 
 const Page: NextPage = () => {
     const language: Language | undefined = React.useContext(LanguageCTX);
 
-    const started:   AllLocation[] | undefined = useSelector((state: RootState) => state.started.value);
-    const community: AllLocation[] | undefined = useSelector((state: RootState) => state.community.value).started;
+    const landmarksMarkedForVisit: Landmark[] | undefined = useSelector((state: RootState) => state.landmarksMarkedForVisit.value);
+    const communityLandmarksMarkedForVisit: CommunityLandmark[] | undefined = useSelector((state: RootState) => state.communityMadeLandmarks.value).markedForVisit;
 
     const [ allowGPS, setPermission ] = React.useState<boolean>(true);
     const [ request,  setRequest    ] = React.useState<boolean>(false);
@@ -40,6 +40,8 @@ const Page: NextPage = () => {
         setPermission(hasGPSAccess);
 
     if (!language) return (<LoadingPlaceholder />);
+
+    const allLandmarksMarkedForVisit: UnifiedLandmark[] = (landmarksMarkedForVisit as UnifiedLandmark[])?.concat(communityLandmarksMarkedForVisit || []) || [];
 
     return (
         <main style={ { padding: '0px', height: 'calc(100dvh - 5rem)' } }>
@@ -64,7 +66,7 @@ const Page: NextPage = () => {
                 close={ setRequest }
             />
         }
-            <Map locations={ started?.concat(community || []) } hasGPSAccess={ allowGPS } />
+            <Map landmarks={ allLandmarksMarkedForVisit } hasGPSAccess={ allowGPS } />
         </main>
     );
 };

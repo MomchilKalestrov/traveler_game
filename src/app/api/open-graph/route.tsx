@@ -14,17 +14,17 @@ const borderRadius = paddingThickness;
 
 const GET = async (request: NextRequest) => {
     const params = new URL(request.url).searchParams;
-    const location = params.get('location');
+    const landmark = params.get('landmark');
 
     return new ImageResponse(
-        location ? (
+        landmark ? (
             <>
                 <div style={ {
                     width: `${ size.width }px`,
                     height: `${ size.height }px`,
                     display: 'flex',
                     position: 'absolute',
-                    backgroundImage: `url(${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/bg/${ location }.png)`,
+                    backgroundImage: `url(${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/bg/${ landmark }.png)`,
                     backgroundSize: `${ size.width }px ${ size.width }px`,
                     backgroundPosition: `0 -${ (size.width - size.height) / 2 }px`,
                     filter: 'blur(16px)',
@@ -41,7 +41,7 @@ const GET = async (request: NextRequest) => {
                     backgroundColor: '#3d4133dd',
                 } }>
                     <img
-                        src={ getBadgeSVG(location) } alt='Venturo'
+                        src={ getBadgeSVG(landmark) } alt='Venturo'
                         style={ {
                             width: `${ badgeSize - paddingThickness * 2 }rem`,
                             height: `${ badgeSize - paddingThickness * 2 }rem`

@@ -1,61 +1,61 @@
 import store from '@logic/redux/store';
-import { CommunityLocation } from '@logic/types';
+import { CommunityLandmark } from '@logic/types';
 
-const track = async (e: React.MouseEvent<HTMLButtonElement>, location: CommunityLocation) => {
+const markForVisit = async (e: React.MouseEvent<HTMLButtonElement>, landmark: CommunityLandmark) => {
     e.preventDefault();
     e.stopPropagation();
 
     const target = e.currentTarget;
     target.disabled = true;
 
-    fetch('/api/track', {
+    fetch('/api/mark-for-visit', {
         method: 'POST',
-        body: JSON.stringify({ name: `community#${ location.name }` })
+        body: JSON.stringify({ name: `community#${ landmark.name }` })
     }).then((response) => {
         target.disabled = false;
         if (!response.ok) return alert(`Error: ${ response.status } ${ response.statusText }`);
-        store.dispatch({ type: 'community/track', payload: location });
+        store.dispatch({ type: 'communityMadeLandmarks/markForVisit', payload: landmark });
     });
 };
 
-const untrack = (e: React.MouseEvent<HTMLButtonElement>, location: CommunityLocation) => {
+const unmarkForVisit = (e: React.MouseEvent<HTMLButtonElement>, landmark: CommunityLandmark) => {
     e.preventDefault();
     e.stopPropagation();
 
     const target = e.currentTarget;
     target.disabled = true;
 
-    fetch('/api/untrack', {
+    fetch('/api/unmark-for-visit', {
         method: 'POST',
-        body: JSON.stringify({ name: `community#${ location.name }` })
+        body: JSON.stringify({ name: `community#${ landmark.name }` })
     }).then((response) => {
         target.disabled = false;
         if (!response.ok) return alert(`Error: ${ response.status } ${ response.statusText }`);
-        store.dispatch({ type: 'community/untrack', payload: location });
+        store.dispatch({ type: 'communityMadeLandmarks/unmarkForVisit', payload: landmark });
     });
 };
 
-const deleteLocation = (e: React.MouseEvent<HTMLButtonElement>, location: CommunityLocation) => {
+const deleteLandmark = (e: React.MouseEvent<HTMLButtonElement>, landmark: CommunityLandmark) => {
     e.preventDefault();
     e.stopPropagation();
 
     const target = e.currentTarget;
     target.disabled = true;
 
-    fetch(`/api/auth/custom-locations?mode=delete&name=${ encodeURIComponent(location.name) }`, {
+    fetch(`/api/auth/user-made-landmarks?mode=delete&name=${ encodeURIComponent(landmark.name) }`, {
         method: 'POST'
     }).then((response) => {
         target.disabled = false;
         if (!response.ok) return alert(`Error: ${ response.status } ${ response.statusText }`);
-        store.dispatch({ type: 'custom/remove', payload: location.name });
+        store.dispatch({ type: 'userMadeLandmarks/remove', payload: landmark.name });
     });
 };
 
-const logic: { [ key: string ]: (e: React.MouseEvent<HTMLButtonElement>,location: CommunityLocation) => void } = {
-    'track':   track,
-    'untrack': untrack,
-    'delete':  deleteLocation
+const logic: { [ key: string ]: (e: React.MouseEvent<HTMLButtonElement>, landmark: CommunityLandmark) => void } = {
+    'markForVisit': markForVisit,
+    'unmarkForVisit': unmarkForVisit,
+    'deleteLandmark': deleteLandmark
 };
 
-export { track, untrack, deleteLocation };
+export { markForVisit, unmarkForVisit, deleteLandmark };
 export default logic;

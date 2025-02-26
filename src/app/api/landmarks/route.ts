@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 
 import connect   from '@logic/mongoose/mongoose';
 import userCheck from '@logic/usercheck';
-import locations from '@logic/mongoose/locations';
+import landmark from '@src/logic/mongoose/landmark';
 import localeSelector from '@logic/mongoose/DBLanguageSelector';
 
 const GET = async () => {
@@ -18,8 +18,8 @@ const GET = async () => {
     try {
         // Connect to the database
         await connect();
-        // Get all locations
-        const all = await locations.aggregate([ ...localeSelector(locale) ]);
+        // Get all landmarks
+        const all = await landmark.aggregate([ ...localeSelector(locale) ]);
         // Close the connection
         return NextResponse.json(all, { status: 200 });
     } catch(error) {

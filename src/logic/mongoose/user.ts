@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 import { User } from '@logic/types';
 
-const finishedLocationSchema: mongoose.Schema = new mongoose.Schema({
-    location: String,
+const visitedLandmarkSchema: mongoose.Schema = new mongoose.Schema({
+    dbname: String,
     time: Number
 }, { _id: false, versionKey: false });
 
@@ -12,8 +12,8 @@ const userSchema: mongoose.Schema = new mongoose.Schema({
     username:  { type: String,  unique:   true, required: true },
     password:  { type: String,  required: false },
 
-    finished:  { type: [ finishedLocationSchema ], default: [] },
-    started:   { type: [ String ], default: [] },
+    visited:   { type: [ visitedLandmarkSchema ], default: [] },
+    markedForVisit: { type: [ String ], default: [] },
 
     followers: { type: [ String ], default: [] },
     following: { type: [ String ], default: [] },
@@ -23,7 +23,7 @@ const userSchema: mongoose.Schema = new mongoose.Schema({
 
 interface UserDocument extends User, mongoose.Document { };
 
-const db = mongoose.connection.useDb('TestDB');
-const users = db.models.User || db.model<UserDocument>('User', userSchema, 'UserCollection');
+const db = mongoose.connection;
+const user = db.models.User || db.model<UserDocument>('User', userSchema);
 
-export default users;
+export default user;

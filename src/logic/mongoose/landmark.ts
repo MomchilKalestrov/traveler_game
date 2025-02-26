@@ -1,16 +1,16 @@
 import mongoose from 'mongoose';
-import { Location } from '@logic/types';
+import { Landmark } from '@logic/types';
 
 const availableLocales = [ 'en', 'bg' ];
 
 const localeSchema: mongoose.Schema = new mongoose.Schema({
     language: { type: String, required: true },
-    name:   { type: String, required: true },
+    name: { type: String, required: true },
     description: { type: String }
 }, { _id: false, versionKey: false });
 
 
-const locationSchema: mongoose.Schema = new mongoose.Schema({
+const landmarkSchema: mongoose.Schema = new mongoose.Schema({
     locales: [ localeSchema ],
     location: { type: {
         lat: mongoose.Types.Decimal128,
@@ -20,10 +20,10 @@ const locationSchema: mongoose.Schema = new mongoose.Schema({
     type: { type: String, default: 'misc' }
 }, { versionKey: false });
 
-interface LocationDocument extends Location, mongoose.Document { };
+interface LandmarkDocument extends Landmark, mongoose.Document { };
 
-const db = mongoose.connection.useDb('TestDB');
-const locations =  db.models.Location || db.model<LocationDocument>('Location', locationSchema);
+const db = mongoose.connection;
+const landmark =  db.models.Landmark || db.model<LandmarkDocument>('Landmark', landmarkSchema);
 
 export { availableLocales };
-export default locations;
+export default landmark;

@@ -1,18 +1,18 @@
 interface User {
     username: string;
-    finished: Array<{
-        location: string;
+    visited: ({
+        dbname: string;
         time: number;
-    }>;
-    started: string[];
+    })[];
+    markedForVisit: string[];
     followers: string[];
     following: string[];
     xp: number;
 };
 
-type LocationType = 'water' | 'nature' | 'structure' | 'misc';
+type LandmarkType = 'water' | 'nature' | 'structure' | 'misc';
 
-interface Location {
+interface Landmark {
     name: string;
     description: string;
     location: {
@@ -21,10 +21,10 @@ interface Location {
     };
     xp: number;
     dbname: string;
-    type: LocationType;
+    type: LandmarkType;
 };
 
-interface CommunityLocation {
+interface CommunityLandmark {
     _id: string;
     name: string;
     author: string;
@@ -38,8 +38,8 @@ interface CommunityLocation {
 
 interface Accomplishment {
     dbname: string;
-    location: string;
-    user: string;
+    landmarkname: string;
+    username: string;
     time: number;
 };
 
@@ -211,7 +211,7 @@ interface Language {
     };
 };
 
-const toLocation = (data: any): Location => ({
+const toLandmark= (data: any): Landmark => ({
     ...data,
     location: {
         lat: parseFloat(data.location.lat['$numberDecimal']),
@@ -219,7 +219,7 @@ const toLocation = (data: any): Location => ({
     }
 });
 
-const toCommunityLocation = (data: any): CommunityLocation => ({
+const toCommunityLandmark = (data: any): CommunityLandmark => ({
     ...data,
     location: {
         lat: parseFloat(data.location.lat['$numberDecimal']),
@@ -227,5 +227,5 @@ const toCommunityLocation = (data: any): CommunityLocation => ({
     }
 });
 
-export type { User, CommunityLocation, Location, Accomplishment, Language, LocationType };
-export { toLocation, toCommunityLocation };
+export type { User, CommunityLandmark, Landmark, Accomplishment, Language, LandmarkType };
+export { toLandmark, toCommunityLandmark };

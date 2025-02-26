@@ -8,12 +8,12 @@ const sessionSchema: mongoose.Schema = new mongoose.Schema({
 }, { versionKey: false });
 
 interface SessionDocument extends mongoose.Document {
-    name: string;
+    name:      string;
     sessionId: string;
-    expireAt: Date;
+    expireAt:  Date;
 };
 
-const db = mongoose.connection.useDb('TestDB');
-const users = db.models.Session || db.model<SessionDocument>('Session', sessionSchema);
+const db = mongoose.connection;
+const session = db.models.Session || db.model<SessionDocument>('Session', sessionSchema);
 
-export default users;
+export default session;

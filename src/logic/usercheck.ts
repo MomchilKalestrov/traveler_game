@@ -2,7 +2,7 @@
 import { RootFilterQuery } from 'mongoose';
 
 import connect from '@logic/mongoose/mongoose';
-import user from '@logic/mongoose/user';
+import user    from '@logic/mongoose/user';
 import session from '@logic/mongoose/session';
 
 const userCheck = async (

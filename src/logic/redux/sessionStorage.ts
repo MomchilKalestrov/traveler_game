@@ -1,76 +1,76 @@
 'use client';
 import {
-    Location,
+    Landmark,
     User,
-    CommunityLocation,
-    toLocation,
-    toCommunityLocation
+    CommunityLandmark,
+    toLandmark,
+    toCommunityLandmark
 } from '@logic/types';
 import store from './store';
 
 type fetchType = [
-    Location[], Location[], Location[],
+    Landmark[], Landmark[], Landmark[],
     User,
     {
-        all: CommunityLocation[],
-        started: CommunityLocation[],
-        finished: CommunityLocation[]
+        all: CommunityLandmark[],
+        markedForVisit: CommunityLandmark[],
+        visited: CommunityLandmark[]
     },
-    CommunityLocation[]
+    CommunityLandmark[]
 ];
 
-const fetchAll = async (): Promise<any> =>
-    await (await fetch(`/api/locations`)).json();
+const fetchAllLandmarks = async (): Promise<any> =>
+    await (await fetch(`/api/landmarks`)).json();
 
-const fetchAllCommunity = async (): Promise<any> =>
-    await (await fetch(`/api/community-locations?includeStarted=true`)).json();
+const fetchAllCommunityLandmarks = async (): Promise<any> =>
+    await (await fetch(`/api/community-landmarks?includeStarted=true`)).json();
 
 const fetchProfile = async (): Promise<User | undefined> =>
     (await fetch(`/api/auth/get?username=CURRENT_USER`))
         .json()
         .then(data => data.error ? undefined : data);
 
-const fetchCustom = async (): Promise<any> =>
-    await (await fetch(`/api/auth/custom-locations`)).json();
+const fetchUserMadeLandmarks = async (): Promise<any> =>
+    await (await fetch(`/api/auth/user-made-landmarks`)).json();
 
-const getStarted = (all: Location[], user: User): Location[] =>
-    all.filter((l: Location) => user.started.includes(l.dbname));
+const getLandmarksMarkedToVisit = (allLandmarks: Landmark[], user: User): Landmark[] =>
+    allLandmarks.filter((landmark: Landmark) => user.markedForVisit.includes(landmark.dbname));
 
-const getFinished = (all: Location[], user: User): Location[] =>
-    all.filter((l: Location) => user.finished.find(f => f.location === l.dbname));
+const getVisitedLandmarks = (allLandmarks: Landmark[], user: User): Landmark[] =>
+    allLandmarks.filter((landmark: Landmark) => user.visited.find(({ dbname }) => landmark.dbname === dbname));
 
-const getNew = (all: Location[], user: User): Location[] =>
-    all.filter((l: Location) =>
-        !user.started.includes(l.dbname) &&
-        !user.finished.find(f => f.location === l.dbname)
+const getNewLandmarks = (allLandmarks: Landmark[], user: User): Landmark[] =>
+    allLandmarks.filter((landmark: Landmark) =>
+        !user.markedForVisit.includes(landmark.dbname) &&
+        !user.visited.find(({ dbname }) => landmark.dbname === dbname)
     );
 
-const getCommunityStarted = (all: CommunityLocation[], user: User): CommunityLocation[] => {
-    const started = user.started.reduce<string[]>((acc: string[], curr: string) => {
+const getCommunityLandmarksMarkedForVisit = (allCommunityLandmarks: CommunityLandmark[], user: User): CommunityLandmark[] => {
+    const names = user.markedForVisit.reduce<string[]>((acc: string[], curr: string) => {
         if (curr.split('#')[0] === 'community')
             acc.push(curr.split('#')[1]);
         return acc;
     }, []);
-    return all.filter((location: CommunityLocation) => started.includes(location.name));
+    return allCommunityLandmarks.filter((landmark: CommunityLandmark) => names.includes(landmark.name));
 };
 
-const getCommunityFinished = (all: CommunityLocation[], user: User): CommunityLocation[] => {
-    const finished = user.finished.reduce<string[]>((acc: string[], curr: any) => {
-        if (curr.location.split('#')[0] === 'community')
-            acc.push(curr.location.split('#')[1]);
+const getVisitedCommunityLandmarks = (allCommunityLandmarks: CommunityLandmark[], user: User): CommunityLandmark[] => {
+    const names = user.visited.reduce<string[]>((acc: string[], { dbname }) => {
+        if (dbname.split('#')[0] === 'community')
+            acc.push(dbname.split('#')[1]);
         return acc;
     }, []);
-    return all.filter((location: CommunityLocation) => finished.includes(location.name));
+    return allCommunityLandmarks.filter((landmark: CommunityLandmark) => names.includes(landmark.name));
 };
 
-const getCommunityNew = (
-    all: CommunityLocation[],
-    started: CommunityLocation[],
-    finished: CommunityLocation[]
-): CommunityLocation[] =>
-    all.filter((location: CommunityLocation) =>
-        !started.find(l => l.name === location.name) &&
-        !finished.find(l => l.name === location.name)
+const getNewCommunityLandmarks = (
+    allCommunityLandmarks: CommunityLandmark[],
+    communityLandmarksMarkedForVisit: CommunityLandmark[],
+    visitedCommunityLandmarks: CommunityLandmark[]
+): CommunityLandmark[] =>
+    allCommunityLandmarks.filter((landmark: CommunityLandmark) =>
+        !communityLandmarksMarkedForVisit.find(l => l.name === landmark.name) &&
+        !visitedCommunityLandmarks.find(l => l.name === landmark.name)
     );
 
 const save = (key: string, value: any) =>
@@ -79,37 +79,39 @@ const save = (key: string, value: any) =>
 const get = (key: string): any => 
     JSON.parse(sessionStorage.getItem(key) || 'null');
 
-const cast = (object: any): Location[] => 
-    Array.isArray(object) ? object.map(toLocation) : [];
+const cast = (object: any): Landmark[] => 
+    Array.isArray(object) ? object.map(toLandmark) : [];
 
-const castCommunity = (object: any): CommunityLocation[] =>
-    Array.isArray(object) ? object.map(toCommunityLocation) : [];
+const castCommunity = (object: any): CommunityLandmark[] =>
+    Array.isArray(object) ? object.map(toCommunityLandmark) : [];
 
 const initialSave = async (): Promise<fetchType> => {
     const user = await fetchProfile();
     if (!user) throw new Error('Error fetching user data.');
 
-    const all = cast(await fetchAll());
-    const started = getStarted(all, user);
-    const finished = getFinished(all, user);
+    console.log('User:', user);
+    console.log(await fetchAllLandmarks());
+    const all = cast(await fetchAllLandmarks());
+    const markedForVisit = getLandmarksMarkedToVisit(all, user);
+    const visited = getVisitedLandmarks(all, user);
 
-    const communityAll = castCommunity(await fetchAllCommunity());
-    const communityStarted = getCommunityStarted(communityAll, user);
-    const communityFinished = getCommunityFinished(communityAll, user);
+    const communityAll = castCommunity(await fetchAllCommunityLandmarks());
+    const communityMarkedForVisit = getCommunityLandmarksMarkedForVisit(communityAll, user);
+    const communityVisited = getVisitedCommunityLandmarks(communityAll, user);
 
-    const custom = castCommunity(await fetchCustom());
+    const userMade = castCommunity(await fetchUserMadeLandmarks());
     
     save('initialSave', true);
-
+    
     return [
-        started, all, finished, 
+        markedForVisit, all, visited, 
         user, 
         {
             all: communityAll,
-            started: communityStarted,
-            finished: communityFinished
+            markedForVisit: communityMarkedForVisit,
+            visited: communityVisited
         },
-        custom
+        userMade
     ];
 };
 
@@ -121,19 +123,19 @@ const saveToSessionStorage = (state: any) => {
 const getFromSessionStorage = (): Promise<fetchType> => {
     if (!get('initialSave'))
         return initialSave();
-    else return new Promise((resolve) => {
+    else return new Promise((resolve) =>
         resolve([
-            get('started'),
-            get('all'),
-            get('finished'),
+            get('landmarksMarkedForVisit'),
+            get('allLandmarks'),
+            get('visitedLandmarks'),
     
             get('user'),
     
-            get('community'),
+            get('communityMadeLandmarks'),
             
-            get('custom')
-        ]);
-    });
+            get('userMadeLandmarks')
+        ])
+    );
 };
 
 const preloadFromSessionStorage = async (): Promise<void> => {
@@ -144,19 +146,22 @@ const preloadFromSessionStorage = async (): Promise<void> => {
         custom
     ] = await getFromSessionStorage();
 
-    store.dispatch({ type: 'started/update', payload: started });
-    store.dispatch({ type: 'new/update', payload: getNew(all, user) });
-    store.dispatch({ type: 'all/update', payload: all });
-    store.dispatch({ type: 'finished/update', payload: finished });
+    console.log(community);
+
+    store.dispatch({ type: 'landmarksMarkedForVisit/update', payload: started });
+    store.dispatch({ type: 'newLandmarks/update', payload: getNewLandmarks(all, user) });
+    store.dispatch({ type: 'allLandmarks/update', payload: all });
+    store.dispatch({ type: 'visitedLandmarks/update', payload: finished });
 
     store.dispatch({ type: 'user/update', payload: user });
 
-    store.dispatch({ type: 'community/updateStarted', payload: community.started });
-    store.dispatch({ type: 'community/updateNew', payload: getCommunityNew(community.all, community.started, community.finished) });
-    store.dispatch({ type: 'community/updateAll', payload: community.all });
-    store.dispatch({ type: 'community/updateFinished', payload: community.finished });
+    console.log(community)
+    store.dispatch({ type: 'communityMadeLandmarks/updateMarkedForVisit', payload: community.markedForVisit });
+    store.dispatch({ type: 'communityMadeLandmarks/updateNew', payload: getNewCommunityLandmarks(community.all, community.markedForVisit, community.visited) });
+    store.dispatch({ type: 'communityMadeLandmarks/updateAll', payload: community.all });
+    store.dispatch({ type: 'communityMadeLandmarks/updateVisited', payload: community.visited });
 
-    store.dispatch({ type: 'custom/update', payload: custom });
+    store.dispatch({ type: 'userMadeLandmarks/update', payload: custom });
 }
 
 export { saveToSessionStorage, preloadFromSessionStorage };

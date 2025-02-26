@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
+import { createHash } from 'crypto';
 
 import session from '@logic/mongoose/session';
 import user from '@logic/mongoose/user';
-import { createHash } from 'crypto';
+import connect from '@logic/mongoose/mongoose';
 
 const oneMonth: number = 60 * 60 * 24 * 30;
 
@@ -11,6 +12,8 @@ const POST = async (request: NextRequest) => {
     const { username, password } = await request.json();
 
     const cookie = cookies();
+
+    await connect();
 
     try {
         // Check if the user exists and their credentials are correct.

@@ -3,7 +3,7 @@ import Image from 'next/image';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-import { CommunityLocation } from '@logic/types';
+import { CommunityLandmark } from '@logic/types';
 import logic from './logic';
 
 import Button from '@components/button';
@@ -13,8 +13,8 @@ import LoadingPlaceholder from '@src/components/loading';
 import LanguageCTX from '@src/logic/contexts/languageCTX';
 
 type CommunityCardProps = {
-    location: CommunityLocation;
-    type: 'track' | 'untrack' | 'delete';
+    landmark: CommunityLandmark;
+    type: 'markForVisit' | 'unmarkForVisit' | 'deleteLandmark';
 };
 
 type MapProps = {
@@ -143,21 +143,21 @@ const Map: React.FC<MapProps> = ({ lat, lng }) => {
     );
 };
 
-const CommunityCard: React.FC<CommunityCardProps> = ({ location, type }) => {
+const CommunityCard: React.FC<CommunityCardProps> = ({ landmark, type }) => {
     const language = React.useContext(LanguageCTX);
 
     if (!language) return (<LoadingPlaceholder />);
 
     return (
         <div className={ style.Card }>
-            <Map lat={ location.location.lat } lng={ location.location.lng } />
+            <Map lat={ landmark.location.lat } lng={ landmark.location.lng } />
             <div className={ style.Content }>
                 <div>
-                    <h3>{ location.name }</h3>
-                    <p>{ location.author }</p>
+                    <h3>{ landmark.name }</h3>
+                    <p>{ landmark.author }</p>
                 </div>
                 <div style={ { display: 'flex', gap: '0.5rem' } }>
-                    <Button border={ true } onClick={ e => logic[ type ](e, location) }>
+                    <Button border={ true } onClick={ e => logic[ type ](e, landmark) }>
                         { language.community.buttons[ type ] }
                     </Button>
                 </div>

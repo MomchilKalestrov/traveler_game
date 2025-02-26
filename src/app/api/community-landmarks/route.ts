@@ -1,25 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
+import userCheck from '@logic/usercheck';
+import { User } from '@logic/types';
+
 import connect from '@logic/mongoose/mongoose';
 import user from '@logic/mongoose/user';
-import communityMadeLocations from '@logic/mongoose/communityMadeLocations';
-import userCheck from '@logic/usercheck';
-import { User } from '@src/logic/types';
+import communityMadeLandmark from '@logic/mongoose/communityMadeLandmark';
 
 
-const filterCommunityLocations = (user: User): string[] =>
-    user.started.reduce<string[]>((acc: string[], curr: string) => {
+const filterCommunityLandmarks = (user: User): string[] =>
+    user.markedForVisit.reduce<string[]>((acc: string[], curr: string) => {
         if (curr.split('#')[0] === 'community')
             acc.push(curr.split('#')[1]);
         return acc;
     }, []);
 
-const filterDuplicates = (all: any[]): any[] => {
+const filterDuplicates = (allLandmarks: any[]): any[] => {
     const seen = new Set<string>();
-    return all.filter(location => {
-        const duplicate = seen.has(location.name);
-        seen.add(location.name);
+    return allLandmarks.filter(landmark => {
+        const duplicate = seen.has(landmark.name);
+        seen.add(landmark.name);
         return !duplicate;
     });
 };
@@ -27,7 +28,7 @@ const filterDuplicates = (all: any[]): any[] => {
 const GET = async (request: NextRequest) => {
     const params = new URL(request.url).searchParams;
     const skip = parseInt(params.get('skip') || '0');
-    const includeStarted = params.get('includeStarted') === 'true';
+    const includeMarkedForVisit = params.get('includeMarkedForVisit') === 'true';
 
     const cookie = await cookies();
     const username = cookie.get('username')?.value;
@@ -40,16 +41,17 @@ const GET = async (request: NextRequest) => {
         await connect();
         
         let all: any[] = [];
-        all = await communityMadeLocations
+        all = await communityMadeLandmark
             .find({ author: { $ne: username } }, { __v: 0 })
             .sort({ _id: -1 })
             .skip(skip)
-            .limit(includeStarted ? 10 : 5) as any[];
+            .limit(includeMarkedForVisit ? 10 : 5) as any[];
             
-        if (!includeStarted) return NextResponse.json(all, { status: 200 });
-        const startedNames = filterCommunityLocations(await user.findOne({ username }) as User);
-        const started = await communityMadeLocations.find({ name: { $in: startedNames } }, { __v: 0 })
-        all = all.concat(started);
+        if (!includeMarkedForVisit) return NextResponse.json(all, { status: 200 });
+        
+        const markedForVisitNames = filterCommunityLandmarks(await user.findOne({ username }) as User);
+        const markedForVisitData = await communityMadeLandmark.find({ name: { $in: markedForVisitNames } }, { __v: 0 })
+        all = all.concat(markedForVisitData);
         
         return NextResponse.json(filterDuplicates(all), { status: 200 });
     } catch (error) {

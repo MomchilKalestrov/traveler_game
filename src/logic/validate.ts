@@ -6,28 +6,29 @@ const bannedWords: string[] = [
 ];
 
 const validateName = (name: string): boolean => {
-  if (!(/^\w{4,}$/i).test(name))
-    return false;
+    if (!(/^\w{4,}$/i).test(name))
+        return false;
 
-  for (const word of bannedWords)
-    if (name.toLowerCase().includes(word))
-      return false;
+    for (const word of bannedWords)
+        if (name.toLowerCase().includes(word))
+            return false;
 
-  return true;
+    return true;
 };
 
 const validateLandmark = (name: string): boolean => {
     if (!(/^[\w\s-]{4,}$/i).test(name))
-      return false;
+        return false;
 
     for (const word of bannedWords)
         if (name.toLowerCase().includes(word))
-          return false;
-    
+            return false;
+
     return true;
 };
 
 const validateEmail = (email: string): boolean =>
     (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g).test(email);
+
 
 export { validateName, validateEmail, validateLandmark };

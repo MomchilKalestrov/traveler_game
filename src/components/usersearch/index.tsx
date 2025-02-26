@@ -9,48 +9,43 @@ import Button from '@components/button';
 import LanguageCTX   from '@logic/contexts/languageCTX';
 import getCSSColors  from '@logic/profileColor';
 import { RootState } from '@logic/redux/store';
-import { Language, Location, User } from '@logic/types';
+import { Language, Landmark, User } from '@logic/types';
 import { getBadgeSVG, getAlignment, getPercentage } from '@logic/utils';
 
 import userStyle from '@app/profile/profile.module.css';
 import style     from './usersearch.module.css';
 
-enum status {
-    loading,
-    nouser,
-    founduser,
-    error
-};
+type status = 'loading' | 'nouser' | 'founduser' | 'error';
 
 type UserSearchProps = {
-    state: status,
+    currentStatus: status,
     user: User
 };
 
-const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
+const UserSearch: React.FC<UserSearchProps> = ({ currentStatus, user }) => {
     const currentUser = useSelector((state: RootState) => state.user.value);
-    const all         = useSelector((state: RootState) => state.all.value);
-    const dispatch    = useDispatch();
+    const allLandmarks = useSelector((state: RootState) => state.allLandmarks.value);
+    const dispatch = useDispatch();
 
     const language: Language | undefined = React.useContext(LanguageCTX);
 
-    const [ locationMap,    setLocationMap    ] = React.useState<Map<string, string>>(new Map());
+    const [ landmarkMap,    setLandmarkMap    ] = React.useState<Map<string, string>>(new Map());
     const [ profilePicture, setProfilePicture ] = React.useState<any | undefined>(undefined);
 
     React.useEffect(() => {
-        if (!all) return;
+        if (!allLandmarks) return;
 
         const map = new Map<string, string>();
-        all.forEach((data: Location) => map.set(data.dbname, data.name));
-        setLocationMap(map);
-    }, [ state, all ]);
+        allLandmarks.forEach((landmark: Landmark) => map.set(landmark.dbname, landmark.name));
+        setLandmarkMap(map);
+    }, [ currentStatus, allLandmarks?.length ]);
 
     React.useEffect(() => {
         if (!user) return;
         fetch(process.env.NEXT_PUBLIC_BLOB_STORAGE_URL + '/profile/' + user.username + '.png')
             .then(response => response.blob())
             .then(blob => setProfilePicture(URL.createObjectURL(blob)));
-    }, [ user ]);
+    }, [ user.username ]);
 
     let actionType: string = !currentUser?.following.includes(user.username)
         ? 'follow'
@@ -75,25 +70,25 @@ const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
     
     if (!language) return (<></>);
 
-    switch (state) {
-        case status.loading: return (
+    switch (currentStatus) {
+        case 'loading': return (
             <div className={ `${ style.UserSearch } ${ style.UserSearchCentered }` }>
                 <Image style={ { filter: 'none' } } src='/icons/loading.svg' alt='Loading' width={ 64 } height={ 64 } />
             </div>
         );
-        case status.nouser: return (
+        case 'nouser': return (
             <div className={ `${ style.UserSearch } ${ style.UserSearchCentered }` }>
                 <Image src='/icons/nouser.svg' alt='no user' width={ 48 } height={ 48 } />
                 <p>{ language.misc.lookup.nouser }</p>
             </div>
         );
-        case status.error: return (
+        case 'error': return (
             <div className={ `${ style.UserSearch } ${ style.UserSearchCentered }` }>
                 <Image src='/icons/error.svg' alt='error' width={ 48 } height={ 48 } />
                 <p>{ language.misc.lookup.error }</p>
             </div>
         );
-        case status.founduser:            
+        case 'founduser':            
             return (
                 <div className={ style.UserSearch }>
                     <div className={ userStyle.ProfileContainer }>
@@ -121,17 +116,17 @@ const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
                             </div>
                         </div>
                         {
-                            user.finished.length > 0 &&
+                            user.visited.length > 0 &&
                             <>
                                 <div className={ userStyle.ProfileCard }>
                                     <h2>{ language.profile.badges }</h2>
                                     <div className={ userStyle.ProfileDivider } />
-                                    <div className={ userStyle.ProfileBadges } style={ getAlignment(user.finished.length) }>
+                                    <div className={ userStyle.ProfileBadges } style={ getAlignment(user.visited.length) }>
                                     {
-                                        user.finished.map((data: { location: string, time: number }, key: number) =>
+                                        user.visited.map(({ dbname}) =>
                                             <Image
-                                                src={ getBadgeSVG(data.location) }
-                                                alt={ data.location } key={ key } width={ 48 } height={ 48 }
+                                                src={ getBadgeSVG(dbname) }
+                                                alt={ dbname } key={ dbname } width={ 48 } height={ 48 }
                                             />
                                         )
                                     }
@@ -142,17 +137,17 @@ const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
                                     <div className={ userStyle.ProfileDivider } />
                                     {
                                         user
-                                            .finished
+                                            .visited
                                             .slice(0, 6)
-                                            .map((data, key: number) =>
+                                            .map(({ dbname, time }) =>
                                                 <AccomplishmentTag
                                                     accomplishment={ {
-                                                        location: locationMap.get(data.location) || data.location,
-                                                        time: data.time,
-                                                        dbname: data.location,
-                                                        user: user.username
+                                                        landmarkname: landmarkMap.get(dbname) || dbname,
+                                                        time,
+                                                        dbname,
+                                                        username: user.username
                                                     } }
-                                                    key={ key }
+                                                    key={ dbname }
                                                 />
                                         )
                                     }
@@ -166,4 +161,4 @@ const UserSearch: React.FC<UserSearchProps> = ({ state, user }) => {
 };
 
 export default UserSearch;
-export { status };
+export type { status };

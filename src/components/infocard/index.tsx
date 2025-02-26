@@ -2,7 +2,7 @@
 import React from 'react';
 import Image from 'next/image';
 
-import { Language, Location  } from '@logic/types';
+import { Language, Landmark } from '@logic/types';
 import LanguageCTX from '@logic/contexts/languageCTX';
 
 import buttons, { buttonType } from './buttonTypes';
@@ -14,10 +14,10 @@ export type { buttonType as cardType };
 export type InfoCardProps = {
     setter: React.Dispatch<React.SetStateAction<boolean>>;
     type: buttonType;
-    location: Location;
+    landmark: Landmark;
 };
 
-const InfoCard: React.FC<InfoCardProps> = ({ setter, type, location }) => {
+const InfoCard: React.FC<InfoCardProps> = ({ setter, type, landmark }) => {
     const reference = React.useRef<HTMLDivElement>(null);
     const language: Language | undefined = React.useContext(LanguageCTX);
     
@@ -29,7 +29,7 @@ const InfoCard: React.FC<InfoCardProps> = ({ setter, type, location }) => {
         if(!parent) return;
 
         reference.current.style.animation = `${ style.slideOut } 0.5s ease-in-out forwards`;
-        parent.style.animation            = `${ style.blurOut  } 0.5s ease-in-out forwards`;
+        parent.style.animation = `${ style.blurOut  } 0.5s ease-in-out forwards`;
 
         setTimeout(() => setter(false), 500);
     }
@@ -43,7 +43,7 @@ const InfoCard: React.FC<InfoCardProps> = ({ setter, type, location }) => {
                     className={ style.InfocardHeader }
                     style={ {
                         backgroundImage: `
-                            url('${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/bg/${ location.dbname }.png'),
+                            url('${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/bg/${ landmark.dbname }.png'),
                             url('/default_assets/background.png')
                         `
                     } }
@@ -55,14 +55,14 @@ const InfoCard: React.FC<InfoCardProps> = ({ setter, type, location }) => {
                         />
                     </button>
                     <div>
-                        <Image src={ `/icons/location_types/${ location.type }.svg` } alt={ location.type } width={ 32 } height={ 32 } />   
-                        <p>{ location.xp }</p>
+                        <Image src={ `/icons/landmark_types/${ landmark.type }.svg` } alt={ landmark.type } width={ 32 } height={ 32 } />   
+                        <p>{ landmark.xp }</p>
                     </div>
                 </div>
                 <div className={ style.InfocardData }>
-                    <h3>{ location.name }</h3>
-                    <p>{ location.description }</p>
-                    <Button location={ location } close={ close } language={ language } />
+                    <h3>{ landmark.name }</h3>
+                    <p>{ landmark.description }</p>
+                    <Button landmark={ landmark } close={ close } language={ language } />
                 </div>
             </div>
         </div>

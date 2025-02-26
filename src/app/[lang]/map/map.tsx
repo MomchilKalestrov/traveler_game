@@ -4,20 +4,11 @@ import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
 import 'leaflet-routing-machine';
 
-import { Location, CommunityLocation } from '@logic/types';
+import { Landmark, CommunityLandmark } from '@logic/types';
 
 import 'leaflet/dist/leaflet.css';
 
-type AllLocation = Location | CommunityLocation;
-
-const emptyLocation: Location = {
-    name: '',
-    location: { lat: 0, lng: 0 },
-    description: '',
-    xp: 0,
-    dbname: '',
-    type: 'misc'
-};
+type UnifiedLandmark = Landmark | CommunityLandmark;
 
 const playerPin = new L.Icon({
     iconUrl: '/icons/userpin.svg',
@@ -38,29 +29,29 @@ const communityPin = new L.Icon({
 });
 
 type MapProps = {
-    locations?: AllLocation[] | undefined,
+    landmarks?: UnifiedLandmark[] | undefined,
     hasGPSAccess: boolean
 };
 
 type HookProps = {
-    locations: AllLocation[],
+    landmarks: UnifiedLandmark[],
     userLocation?: GeolocationCoordinates | undefined
 };
 
-const Hook: React.FC<HookProps> = ({ locations, userLocation }) => {
+const Hook: React.FC<HookProps> = ({ landmarks, userLocation }) => {
     const map = useMap();
 
     const [ routesGenerated, setRoutesGenerated ] = React.useState<boolean>(false);
     const [ centerSet,       setCenterSet       ] = React.useState<boolean>(false);
 
     const generateRoute = async (
-        location: AllLocation,
+        landmark: UnifiedLandmark,
         userLocation: GeolocationCoordinates,
         router: any
     ) =>
         router.route([
             { latLng: L.latLng(userLocation.latitude, userLocation.longitude) },
-            { latLng: L.latLng(location.location.lat, location.location.lng) }
+            { latLng: L.latLng(landmark.location.lat, landmark.location.lng) }
         ], (err: any, routes: any) => {
             if (!map || err) return;
 
@@ -71,17 +62,17 @@ const Hook: React.FC<HookProps> = ({ locations, userLocation }) => {
             new L.Polyline(route.coordinates, { color: '#224d5c' }).addTo(map);
         });
 
-    const generateRoutes = (locations: AllLocation[], userLocation: GeolocationCoordinates) => {
+    const generateRoutes = (landmars: UnifiedLandmark[], userLocation: GeolocationCoordinates) => {
         if (!map) return;
         const router = new (L as any).Routing.OSRMv1();
-        locations.forEach((location) => generateRoute(location, userLocation, router));
+        landmarks.forEach((landmark) => generateRoute(landmark, userLocation, router));
     };
 
     React.useEffect(() => {
-        if (!map || !locations || !userLocation || routesGenerated) return;
-        generateRoutes(locations, userLocation);
+        if (!map || !landmarks || !userLocation || routesGenerated) return;
+        generateRoutes(landmarks, userLocation);
         setRoutesGenerated(true);
-    }, [ map, locations, userLocation ]);
+    }, [ map, landmarks.length ]);
 
     React.useEffect(() => {
         if (!map || !userLocation || centerSet) return;
@@ -92,7 +83,7 @@ const Hook: React.FC<HookProps> = ({ locations, userLocation }) => {
     return null;
 }
 
-const Map: React.FC<MapProps> = ({ locations = [], hasGPSAccess }) => {
+const Map: React.FC<MapProps> = ({ landmarks = [], hasGPSAccess }) => {
     const [ userLocation, setUserLocation ] = React.useState<GeolocationPosition | undefined>(undefined);
 
     React.useEffect(() => {
@@ -132,14 +123,14 @@ const Map: React.FC<MapProps> = ({ locations = [], hasGPSAccess }) => {
                 />
             }
             {
-                locations.map((poi, index) => (
+                landmarks.map((landmark, index) => (
                     <Marker
-                        key={ index } icon={ 'dbname' in poi ? poiPin : communityPin }
-                        position={ [ poi.location.lat, poi.location.lng ] }
+                        key={ landmark.name } icon={ 'dbname' in landmark ? poiPin : communityPin }
+                        position={ [ landmark.location.lat, landmark.location.lng ] }
                     />
                 ))
             }
-                <Hook locations={ locations } userLocation={ userLocation?.coords } />
+                <Hook landmarks={ landmarks } userLocation={ userLocation?.coords } />
             </MapContainer>
             <style>
             {

@@ -2,16 +2,18 @@
 import React from 'react';
 import Image from 'next/image';
 
-import { Location }           from '@logic/types';
-import InfoCard, { cardType } from '@components/infocard';
+import { Landmark } from '@logic/types';
+import InfoCard     from '@components/infocard';
+
+import { getBadgeSVG } from '@logic/utils';
 
 import style from './minicard.module.css';
 
 type MinicardProps = {
-    location: Location;
+    landmark: Landmark;
 };
 
-const Minicard: React.FC<MinicardProps> = ({ location }) => {
+const Minicard: React.FC<MinicardProps> = ({ landmark }) => {
     const [ viewing, setViewing ] = React.useState<boolean>(false);
 
     return (
@@ -19,21 +21,21 @@ const Minicard: React.FC<MinicardProps> = ({ location }) => {
         {
             viewing &&
             <InfoCard
-                type='untrack'
+                type='unmarkForVisit'
                 setter={ setViewing }
-                location={ location }
+                landmark={ landmark }
             />
         }
             <button
-                aria-label={ `View started ${ location.name }` }
+                aria-label={ `View ${ landmark.name }` }
                 className={ style.Minicard }
                 onClick={ () => setViewing(true) }
             >
                 <Image
-                    alt={ `${ location.name } icon` } width={ 32 } height={ 32 }
-                    src={ `${ process.env.NEXT_PUBLIC_BLOB_STORAGE_URL }/ico/${ location.dbname }.svg` }
+                    alt={ `${ landmark.name } icon` } width={ 32 } height={ 32 }
+                    src={ getBadgeSVG(landmark.dbname) }
                 />
-                <h2>{ location.name }</h2>
+                <h2>{ landmark.name }</h2>
             </button>
         </>
     )

@@ -1,54 +1,50 @@
-import { Location } from '@logic/types';
+import { Landmark } from '@logic/types';
 import store from '@logic/redux/store';
 import { unixToDate } from '@logic/utils';
 
 import { loading, stopLoading } from '@components/loading';
 
 type ButtonProps = {
-    location: Location;
+    landmark: Landmark;
     close: () => void;
 };
 
-const untrack = async ({ location, close }: ButtonProps) => {
+const unmarkForVisit = async ({ landmark, close }: ButtonProps) => {
     loading();
 
-    const res = await fetch(`/api/untrack`, {
+    const res = await fetch(`/api/unmark-for-visit`, {
         method: 'POST',
-        headers: {
-            "content-type": "application/json"
-        },
-        body: JSON.stringify({ name: location.dbname })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: landmark.dbname })
     });
     if (!res.ok) {
         alert('An error has occured.');
         return stopLoading();
     };
     
-    store.dispatch({ type: 'started/remove', payload: location.dbname });
-    store.dispatch({ type: 'new/add',        payload: location });
-    store.dispatch({ type: 'user/untrack',   payload: location.dbname });
+    store.dispatch({ type: 'landmarksMarkedForVisit/remove', payload: landmark.dbname });
+    store.dispatch({ type: 'newLandmark/add', payload: landmark });
+    store.dispatch({ type: 'user/unmarkForVisit', payload: landmark.dbname });
     stopLoading();
     close();
 };
 
-const track = async ({ location, close }: ButtonProps) => {
+const markForVisit = async ({ landmark, close }: ButtonProps) => {
     loading();
 
-    const res = await fetch(`/api/track`, {
+    const res = await fetch(`/api/mark-for-visit`, {
         method: 'POST',
-        headers: {
-            "content-type": "application/json"
-        },
-        body: JSON.stringify({ name: location.dbname })
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ name: landmark.dbname })
     })
     if (!res.ok) {
         alert('An error has occured.');
         return stopLoading();
     };
     
-    store.dispatch({ type: 'started/add', payload: location });
-    store.dispatch({ type: 'new/remove',  payload: location.dbname });
-    store.dispatch({ type: 'user/track',  payload: location.dbname });
+    store.dispatch({ type: 'landmarksMarkedForVisit/add', payload: landmark });
+    store.dispatch({ type: 'newLandmark/remove', payload: landmark.dbname });
+    store.dispatch({ type: 'user/markForVisit', payload: landmark.dbname });
     stopLoading();
     close();
 };
@@ -58,21 +54,21 @@ const filterEntries = (entries: any): any =>
         .filter(([ key, value ]) => navigator.canShare({ [ key ]: value }))
         .reduce((acc, [ key, value ]) => ({ ...acc, [ key ]: value }), {});
 
-const share = async ({ location }: ButtonProps) => {
+const share = async ({ landmark }: ButtonProps) => {
     if (!('share' in navigator)) return;
 
     const timeOfVisit =
         store.getState()
-            .user.value?.finished
-            ?.find((l) => l.location === location.dbname)?.time || 0;
+            .user.value?.visited
+            ?.find((l) => l.dbname === landmark.dbname)?.time || 0;
 
     const entries = filterEntries({
-        title: 'I visited ' + location.name,
-        text: `I visited ${ location.name } on ${ unixToDate(timeOfVisit) }.`,
-        url: `${ process.env.APPLICATION_URL }/share?location=${ location.dbname }`
+        title: 'I visited ' + landmark.name,
+        text: `I visited ${ landmark.name } on ${ unixToDate(timeOfVisit) }.`,
+        url: `${ process.env.APPLICATION_URL }/share?landmark=${ landmark.dbname }`
     });
     
     navigator.share(entries);
 };
 
-export { untrack, track, share };
+export { unmarkForVisit, markForVisit, share };

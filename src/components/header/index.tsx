@@ -3,9 +3,10 @@ import React from 'react';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
-import Settings               from '@components/settings';
-import { stopLoading }        from '@components/loading';
-import UserSearch, { status } from '@components/usersearch';
+import Settings        from '@components/settings';
+import { stopLoading } from '@components/loading';
+import UserSearch      from '@components/usersearch';
+import type { status } from '@components/usersearch';
 
 import { Language, User } from '@logic/types';
 import { getCookie }      from '@logic/cookies';
@@ -15,8 +16,8 @@ import style from './header.module.css';
 
 const emptyUser: User = {
     username: '',
-    finished: [],
-    started: [],
+    visited: [],
+    markedForVisit: [],
     followers: [],
     following: [],
     xp: 0
@@ -39,7 +40,7 @@ const Header = () => {
     const [ userData,    setUserData ] = React.useState<User>(emptyUser);
     const [ userLookup,  setLookup   ] = React.useState<boolean>(false);
     const [ settings,    setSettings ] = React.useState<boolean>(false);
-    const [ userLoading, setLoading  ] = React.useState<status>(status.loading);
+    const [ userStatus,  setStatus   ] = React.useState<status>('loading');
     const [ timeoutId,   setId       ] = React.useState<NodeJS.Timeout | null>(null);
 
     const abortControllerRef = React.useRef<AbortController | null>(null);
@@ -62,7 +63,7 @@ const Header = () => {
         img.style.display = 'none';
         
         setLookup(true);
-        setLoading(status.loading);
+        setStatus('loading');
         
         if (abortControllerRef.current)
             abortControllerRef.current.abort();
@@ -81,7 +82,7 @@ const Header = () => {
         
         backButton.style.display = 'block';
         setLookup(true);
-        setLoading(status.loading);
+        setStatus('loading');
     };
 
     const closeLookup = () => {
@@ -96,7 +97,7 @@ const Header = () => {
         if (!backButton) return;
         
         backButton.style.display = 'none';
-        setLoading(status.loading);
+        setStatus('loading');
         clearSearch();
         setLookup(false);
         
@@ -119,13 +120,13 @@ const Header = () => {
             username === getCookie('username')?.value ||
             username.length < 3
         ) {
-            setLoading(status.loading);
+            setStatus('loading');
             setUserData(emptyUser);
             return;
         };
 
         setLookup(true);
-        setLoading(status.loading);
+        setStatus('loading');
 
         fetch(`/api/auth/get?username=${ username }`, {
             signal: abortControllerRef.current?.signal
@@ -134,15 +135,15 @@ const Header = () => {
             .then(data => {
                 if (data.error || data.error === 'User not found.') {
                     setUserData(emptyUser)
-                    return setLoading(status.nouser);
+                    return setStatus('nouser');
                 }
                 else if (data.error) {
                     console.log(data.error);
-                    return setLoading(status.error);
+                    return setStatus('error');
                 }
 
                 setUserData(data as User);
-                setLoading(status.founduser);
+                setStatus('founduser');
                 if (resetting)
                     stopLoading();
             })
@@ -169,7 +170,7 @@ const Header = () => {
     return (
         <>
             { settings && <Settings close={ () => setSettings(false) } /> }
-            { userLookup && <UserSearch state={ userLoading } user={ userData } /> }
+            { userLookup && <UserSearch currentStatus={ userStatus } user={ userData } /> }
             <div className={ style.HeaderSearchBG } ref={ headerBGReference } />
             <header className={ style.Header } ref={ headerReference }>
                 <div>

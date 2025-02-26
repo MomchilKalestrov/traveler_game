@@ -9,31 +9,31 @@ import LoadingPlaceholder from '@components/loading';
 import LanguageCTX   from '@logic/contexts/languageCTX';
 import getCSSColors  from '@logic/profileColor';
 import { RootState } from '@logic/redux/store';
-import { Language, User, Location } from '@logic/types';
+import { Language, User, Landmark } from '@logic/types';
 import { getBadgeSVG, getAlignment, getPercentage } from '@logic/utils';
 
 import InfoCard from '@src/components/infocard';
 
 import style from './profile.module.css';
 
-const Badge: React.FC<{ location: Location | undefined }> = ({ location }) => {
+const Badge: React.FC<{ landmark: Landmark | undefined }> = ({ landmark }) => {
     const [ visible, setVisibility ] = React.useState<boolean>(false);
 
-    if (!location) return (<></>);
+    if (!landmark) return (<></>);
 
     return [
         visible && 'share' in navigator
         ?   <InfoCard
                 key='shareCard'
                 type='share'
-                location={ location }
+                landmark={ landmark }
                 setter={ setVisibility }
             />
         :   <></>,
         <Image
             key='badgeImage'
-            src={ getBadgeSVG(location.dbname) }
-            alt={ location.name } width={ 48 } height={ 48 }
+            src={ getBadgeSVG(landmark.dbname) }
+            alt={ landmark.name } width={ 48 } height={ 48 }
             onClick={ () => setVisibility(true) }
         />
     ];
@@ -43,7 +43,7 @@ const Page: NextPage = () => {
     const language: Language | undefined = React.useContext(LanguageCTX);
 
     const user: User | undefined = useSelector((state: RootState) => state.user.value);
-    const finished: Location[] = useSelector((state: RootState) => state.finished.value) || [];
+    const visitedLandmarks: Landmark[] = useSelector((state: RootState) => state.visitedLandmarks.value) || [];
 
     const [ profilePicture, setProfilePicture ] = React.useState<any | undefined>(undefined);
 
@@ -123,16 +123,16 @@ const Page: NextPage = () => {
                 </div>
             </div>
             {
-                user.finished.length > 0 &&
+                user.visited.length > 0 &&
                 <div className={ style.ProfileCard }>
                     <h2>{ language.profile.badges }</h2>
                     <div className={ style.ProfileDivider } />
                     <div
                         className={ style.ProfileBadges }
-                        style={ getAlignment(user.finished.length) }
+                        style={ getAlignment(user.visited.length) }
                     >
-                    { user.finished.map(({ location }) =>
-                        <Badge key={ location } location={ finished.find((l) => l.dbname === location) } />
+                    { user.visited.map(({ dbname }) =>
+                        <Badge key={ dbname } landmark={ visitedLandmarks.find(l => l.dbname === dbname) } />
                     ) }
                     </div>
                 </div>
