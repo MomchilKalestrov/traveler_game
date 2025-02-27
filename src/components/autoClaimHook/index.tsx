@@ -4,8 +4,19 @@ import { useSelector } from 'react-redux';
 import JSConfetti from 'js-confetti';
 
 import store, { RootState } from '@logic/redux/store';
-import { haversineDistance } from '@logic/utils';
-import { CommunityLandmark, Landmark } from '@src/logic/types';
+import { haversineDistance, findAndReplace } from '@logic/utils';
+import { CommunityLandmark, Landmark, User } from '@logic/types';
+
+const patchTopPlayersCache = async (user: User) => {
+    let players = JSON.parse(sessionStorage.getItem('top') || '{ "null": true }');
+    if (players.null) {
+        const top = await fetch('/api/top');
+        players = await top.json();
+    };
+    findAndReplace(players, (p: User) => p.username === user.username, () => user);
+    players = players.sort((a: User, b: User) => b.xp - a.xp);
+    sessionStorage.setItem('top', JSON.stringify(players));
+};
 
 const claim = (coords: GeolocationCoordinates, landmark: Landmark | CommunityLandmark) => {
     const isCommunity = !('dbname' in landmark);
@@ -43,6 +54,8 @@ const claim = (coords: GeolocationCoordinates, landmark: Landmark | CommunityLan
         }).then(() => {
             confetti.destroyCanvas();
             alert(`Congrats on visiting "${ landmark.name }"!`);
+            console.log(store.getState().user.value);
+            patchTopPlayersCache(store.getState().user.value!);
         });
     });
 };

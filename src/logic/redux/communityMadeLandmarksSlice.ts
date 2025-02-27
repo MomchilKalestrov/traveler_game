@@ -1,11 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { CommunityLandmark, User } from '@logic/types';
-
-const findAndReplace = <T>(
-    arr: T[],
-    predicate: (item: T) => boolean,
-    replacer: (item: T) => T
-): T[] => arr.map<T>((item) => predicate(item) ? replacer(item) : item);
+import { findAndReplace } from '@logic/utils';
 
 export const communityMadeLandmarksSlice = createSlice({
     name: 'communityMadeLandmarks',

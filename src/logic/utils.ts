@@ -54,3 +54,9 @@ export const haversineDistance = (lat1: number, lon1: number, lat2: number, lon2
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c * 1000;
 }
+
+export const findAndReplace = <T>(
+    arr: T[],
+    predicate: (item: T) => boolean,
+    replacer: (item: T) => T
+): T[] => arr.map<T>((item) => predicate(item) ? replacer(item) : item);
