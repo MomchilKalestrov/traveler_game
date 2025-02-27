@@ -56,7 +56,6 @@ const Hook: React.FC<HookProps> = ({ landmarks, userLocation }) => {
             if (!map || err) return;
 
             const route = routes[0];
-            console.log(route);
             if (!route) return;
 
             new L.Polyline(route.coordinates, { color: '#224d5c' }).addTo(map);

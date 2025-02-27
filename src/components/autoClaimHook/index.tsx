@@ -54,7 +54,6 @@ const claim = (coords: GeolocationCoordinates, landmark: Landmark | CommunityLan
         }).then(() => {
             confetti.destroyCanvas();
             alert(`Congrats on visiting "${ landmark.name }"!`);
-            console.log(store.getState().user.value);
             patchTopPlayersCache(store.getState().user.value!);
         });
     });

@@ -146,8 +146,6 @@ const preloadFromSessionStorage = async (): Promise<void> => {
         custom
     ] = await getFromSessionStorage();
 
-    console.log(community);
-
     store.dispatch({ type: 'landmarksMarkedForVisit/update', payload: started });
     store.dispatch({ type: 'newLandmarks/update', payload: getNewLandmarks(all, user) });
     store.dispatch({ type: 'allLandmarks/update', payload: all });

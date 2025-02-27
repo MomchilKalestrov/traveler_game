@@ -154,7 +154,6 @@ const CommunityCard: React.FC<CommunityCardProps> = ({ landmark, type }) => {
     , [ landmark.name, landmark.likes.length, user?.username ]);
 
     if (!language) return (<LoadingPlaceholder />);
-    console.log(language.community.buttons, type, language.community.buttons[ type ]);
     return (
         <div className={ style.Card }>
             <Map lat={ landmark.location.lat } lng={ landmark.location.lng } />
