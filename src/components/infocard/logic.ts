@@ -23,7 +23,7 @@ const unmarkForVisit = async ({ landmark, close }: ButtonProps) => {
     };
     
     store.dispatch({ type: 'landmarksMarkedForVisit/remove', payload: landmark.dbname });
-    store.dispatch({ type: 'newLandmark/add', payload: landmark });
+    store.dispatch({ type: 'newLandmarks/add', payload: landmark });
     store.dispatch({ type: 'user/unmarkForVisit', payload: landmark.dbname });
     stopLoading();
     close();
@@ -43,7 +43,7 @@ const markForVisit = async ({ landmark, close }: ButtonProps) => {
     };
     
     store.dispatch({ type: 'landmarksMarkedForVisit/add', payload: landmark });
-    store.dispatch({ type: 'newLandmark/remove', payload: landmark.dbname });
+    store.dispatch({ type: 'newLandmarks/remove', payload: landmark.dbname });
     store.dispatch({ type: 'user/markForVisit', payload: landmark.dbname });
     stopLoading();
     close();
