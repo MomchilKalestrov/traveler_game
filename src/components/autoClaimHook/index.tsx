@@ -42,7 +42,7 @@ const claim = (coords: GeolocationCoordinates, landmark: Landmark | CommunityLan
             confettiNumber: 100
         }).then(() => {
             confetti.destroyCanvas();
-            alert('Congrats on visiting the landmark!');
+            alert(`Congrats on visiting "${ landmark.name }"!`);
         });
     });
 };
