@@ -77,7 +77,7 @@ const Page: NextPage = () => {
             { addDialogVisible && <CreateCard key='card' setter={ setAddDialogVisible } /> }
             <main className={ style.Page } key='main'>
                 <div className={ style.Header }>
-                    <h2>Your landmarks</h2>
+                    <h2>{ language.community.titles.created }</h2>
                     <button style={ { padding: '0.5rem' } } onClick={ () => setAddDialogVisible(true) }>
                         <Image
                             src='/icons/close.svg' alt='Add landmark'
