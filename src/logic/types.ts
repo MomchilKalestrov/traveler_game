@@ -106,7 +106,7 @@ interface Language {
         [key: string]: any;
         titles: {
             [key: string]: any;
-            create:  string;
+            created: string;
             started: string;
             new:     string;
         };
@@ -123,9 +123,9 @@ interface Language {
         };
         buttons: {
             [key: string]: any;
-            start:  string;
-            stop:   string;
-            delete: string;
+            markForVisit:   string;
+            unmarkForVisit: string;
+            deleteLandmark: string;
         };
         create: {
             [key: string]: any;

@@ -44,7 +44,7 @@
     },
     "community": {
         "titles": {
-            "create": "Custom locations",
+            "created": "Custom locations",
             "started": "Places for visit",
             "new": "New"
         },
