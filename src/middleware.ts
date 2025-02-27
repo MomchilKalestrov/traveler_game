@@ -4,7 +4,6 @@ const languages: string[] = ['en', 'bg'];
 const defaultLocale: string = 'en';
  
 export const middleware = (request: NextRequest) => {
-    console.log('middleware');
     const url = request.nextUrl.pathname!
     
     const username = request.cookies.get('username')?.value;
@@ -15,7 +14,6 @@ export const middleware = (request: NextRequest) => {
 
     // if the current locale isn't the user's prefered locale, replace it
     // if the locale is not supported, redirect to the default locale
-    console.log(lang, userLocale);
     if (lang != userLocale) lang = userLocale;
     if (!languages.includes(lang)) lang = defaultLocale;
 
