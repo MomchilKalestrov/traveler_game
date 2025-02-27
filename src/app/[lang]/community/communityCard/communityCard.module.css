@@ -43,7 +43,7 @@
     height: calc(100% / 3);
 }
 
-.Content {
+.CardContent {
     box-sizing: border-box;
 
     width: 100%;
@@ -55,20 +55,30 @@
     align-items: center;
 }
 
-.Content div {
-    display: flex;
-    flex-flow: column;
-}
-
-.Content div h3,
-.Content div p {
+.CardContent div h3,
+.CardContent div p {
     margin: 0px;
 }
 
 @media (max-width: 20rem) {
-    .Content div p {
+    .CardContent div p {
         display: none;
     }
+}
+
+.ButtonsContainer {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* 
+    the first button is a component,
+    not an html tag and due to how
+    it's styled we need to target it
+    specifically
+*/
+.ButtonsContainer button:first-child {
+    width: min-content !important;
 }
 
 .MapButton {

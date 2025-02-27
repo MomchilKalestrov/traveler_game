@@ -1,6 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { CommunityLandmark, User } from '@logic/types';
 
+const findAndReplace = <T>(
+    arr: T[],
+    predicate: (item: T) => boolean,
+    replacer: (item: T) => T
+): T[] => arr.map<T>((item) => predicate(item) ? replacer(item) : item);
+
 export const communityMadeLandmarksSlice = createSlice({
     name: 'communityMadeLandmarks',
     initialState: {
@@ -14,20 +20,20 @@ export const communityMadeLandmarksSlice = createSlice({
     reducers: {
         markForVisit: (state, action: PayloadAction<CommunityLandmark>) => {
             if (!state.value.markedForVisit) state.value.markedForVisit = [];
-            if (!state.value.new)     state.value.new = [];
+            if (!state.value.new) state.value.new = [];
             
             state.value.markedForVisit.push(action.payload);
             state.value.new = state.value.new.filter(loc => loc.name !== action.payload.name);
         },
         unmarkForVisit: (state, action: PayloadAction<CommunityLandmark>) => {
             if (!state.value.markedForVisit) state.value.markedForVisit = [];
-            if (!state.value.new)     state.value.new = [];
+            if (!state.value.new) state.value.new = [];
 
             state.value.markedForVisit = state.value.markedForVisit.filter(loc => loc.name !== action.payload.name);
             state.value.new.push(action.payload);
         },
         visit: (state, action: PayloadAction<CommunityLandmark>) => {
-            if (!state.value.markedForVisit)  state.value.markedForVisit = [];
+            if (!state.value.markedForVisit) state.value.markedForVisit = [];
             if (!state.value.visited) state.value.visited = [];
 
             state.value.markedForVisit = state.value.markedForVisit.filter(loc => loc.name !== action.payload.name);
@@ -66,6 +72,26 @@ export const communityMadeLandmarksSlice = createSlice({
         },
         updateNew: (state, action: PayloadAction<CommunityLandmark[]>) => {
             state.value.new = action.payload;
+        },
+        like: (state, action: PayloadAction<{ name: string, username: string }>) => {
+            if (!state.value.all) state.value.all = [];
+            if (!state.value.new) state.value.new = [];
+            if (!state.value.visited) state.value.visited = [];
+            if (!state.value.markedForVisit)  state.value.markedForVisit  = [];
+
+            const { name, username } = action.payload;
+
+            state.value = Object.fromEntries(
+                Object
+                    .entries(state.value)
+                    .map(([ key, landmarks ]: [ string, CommunityLandmark[] | undefined ]) => [
+                        key,
+                        findAndReplace(landmarks!, (lm) => lm.name === name, (lm) => ({
+                            ...lm,
+                            likes: [...lm.likes, username],
+                        })),
+                    ])
+            ) as typeof state.value;
         }
     }
 });

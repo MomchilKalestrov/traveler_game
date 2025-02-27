@@ -51,11 +51,31 @@ const deleteLandmark = (e: React.MouseEvent<HTMLButtonElement>, landmark: Commun
     });
 };
 
-const logic: { [ key: string ]: (e: React.MouseEvent<HTMLButtonElement>, landmark: CommunityLandmark) => void } = {
-    'markForVisit': markForVisit,
-    'unmarkForVisit': unmarkForVisit,
-    'deleteLandmark': deleteLandmark
+const likeLandmark = (e: React.MouseEvent<HTMLButtonElement>, landmark: CommunityLandmark) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const target = e.currentTarget;
+    target.disabled = true;
+
+    fetch(`/api/auth/like-landmark`, {
+        method: 'POST',
+        body: JSON.stringify({ name: landmark.name })
+    }).then((response) => {
+        target.disabled = false;
+        if (!response.ok) return alert(`Error: ${ response.status } ${ response.statusText }`);
+
+        const username = store.getState().user.value?.username;
+        store.dispatch({ type: 'communityMadeLandmarks/like', payload: { name: landmark.name, username } });
+    });
 };
 
-export { markForVisit, unmarkForVisit, deleteLandmark };
+const logic: { [ key: string ]: (e: React.MouseEvent<HTMLButtonElement>, landmark: CommunityLandmark) => void } = {
+    markForVisit,
+    unmarkForVisit,
+    deleteLandmark,
+    likeLandmark
+};
+
+export { markForVisit, unmarkForVisit, deleteLandmark, likeLandmark };
 export default logic;

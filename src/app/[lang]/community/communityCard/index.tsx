@@ -4,13 +4,15 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 import { CommunityLandmark } from '@logic/types';
-import logic from './logic';
+import logic, { likeLandmark } from './logic';
 
 import Button from '@components/button';
 
 import style from './communityCard.module.css';
 import LoadingPlaceholder from '@src/components/loading';
 import LanguageCTX from '@src/logic/contexts/languageCTX';
+import { useSelector } from '@node_modules/react-redux/dist/react-redux';
+import { RootState } from '@src/logic/redux/store';
 
 type CommunityCardProps = {
     landmark: CommunityLandmark;
@@ -145,21 +147,32 @@ const Map: React.FC<MapProps> = ({ lat, lng }) => {
 
 const CommunityCard: React.FC<CommunityCardProps> = ({ landmark, type }) => {
     const language = React.useContext(LanguageCTX);
+    const user = useSelector((root: RootState) => root.user.value);
+    
+    const userHasLiked = React.useMemo<boolean>(() =>
+        landmark.likes.includes(user?.username!)
+    , [ landmark.name, landmark.likes.length, user?.username ]);
 
     if (!language) return (<LoadingPlaceholder />);
-
+    console.log(language.community.buttons, type, language.community.buttons[ type ]);
     return (
         <div className={ style.Card }>
             <Map lat={ landmark.location.lat } lng={ landmark.location.lng } />
-            <div className={ style.Content }>
+            <div className={ style.CardContent }>
                 <div>
                     <h3>{ landmark.name }</h3>
                     <p>{ landmark.author }</p>
                 </div>
-                <div style={ { display: 'flex', gap: '0.5rem' } }>
+                <div className={ style.ButtonsContainer }>
                     <Button border={ true } onClick={ e => logic[ type ](e, landmark) }>
                         { language.community.buttons[ type ] }
                     </Button>
+                {
+                    type !== 'deleteLandmark' &&
+                    <button className={ style.Likes } onClick={ (e) => !userHasLiked && likeLandmark(e, landmark) }>
+                        <Image src={ `/icons/like${ userHasLiked ? 'filled' : '' }.svg` } alt='♥' width={ 24 } height={ 24 } />
+                    </button>
+                }
                 </div>
             </div>
         </div>
