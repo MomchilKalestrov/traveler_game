@@ -3,7 +3,7 @@ import { Roboto }    from 'next/font/google';
 import { Metadata }  from 'next';
 import { Analytics } from '@vercel/analytics/react';
 
-import Providers      from '@components/providers';
+import Providers from '@components/providers';
 
 import './design.css';
 

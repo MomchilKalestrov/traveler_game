@@ -6,7 +6,7 @@ import LogIn  from './login';
 import SignUp from './signup';
 
 const Page: NextPage = () => {
-    const [authType, setAuthType] = React.useState<boolean>(true);
+    const [ authType, setAuthType ] = React.useState<boolean>(true);
 
     return (
         authType

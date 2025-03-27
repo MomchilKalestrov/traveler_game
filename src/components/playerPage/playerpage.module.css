@@ -1,0 +1,40 @@
+.PlayerPage {
+    --padding: 1rem;
+    --horizontal: max(calc(50vw - 15rem), var(--padding));
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: calc(100vw - var(--horizontal) * 2);
+    height: calc(100dvh - var(--padding) * 2);
+    z-index: calc(var(--z) + 5);
+    background-color: var(--color-bg);
+    animation: SlideIn ease-in-out 0.5s;
+    padding: var(--padding) var(--horizontal);
+}
+
+.CloseButton {
+    border: none;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: var(--color-secondary);
+    padding: 0.5rem;
+}
+
+.CloseButton img {
+    width: 100%;
+    height: 100%;
+    filter: var(--icon-filter-primary);
+}
+
+@keyframes SlideIn {
+    from { transform: translateX(100%); }
+    to   { transform: translateX(0%);   }
+}
+
+@keyframes SlideOut {
+    from { transform: translateX(0%);   }
+    to   { transform: translateX(100%); }
+}

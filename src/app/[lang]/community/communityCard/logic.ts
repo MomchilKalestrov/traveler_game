@@ -43,7 +43,8 @@ const deleteLandmark = (e: React.MouseEvent<HTMLButtonElement>, landmark: Commun
     target.disabled = true;
 
     fetch(`/api/auth/user-made-landmarks?mode=delete&name=${ encodeURIComponent(landmark.name) }`, {
-        method: 'POST'
+        method: 'POST',
+        body: JSON.stringify({ name: landmark.name })
     }).then((response) => {
         target.disabled = false;
         if (!response.ok) return alert(`Error: ${ response.status } ${ response.statusText }`);

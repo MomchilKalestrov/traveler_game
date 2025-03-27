@@ -12,12 +12,12 @@ import style from './infocard.module.css';
 export type { buttonType as cardType };
 
 export type InfoCardProps = {
-    setter: React.Dispatch<React.SetStateAction<boolean>>;
+    close: () => void;
     type: buttonType;
     landmark: Landmark;
 };
 
-const InfoCard: React.FC<InfoCardProps> = ({ setter, type, landmark }) => {
+const InfoCard: React.FC<InfoCardProps> = ({ close: externalClose, type, landmark }) => {
     const reference = React.useRef<HTMLDivElement>(null);
     const language: Language | undefined = React.useContext(LanguageCTX);
     
@@ -31,9 +31,9 @@ const InfoCard: React.FC<InfoCardProps> = ({ setter, type, landmark }) => {
         reference.current.style.animation = `${ style.slideOut } 0.5s ease-in-out forwards`;
         parent.style.animation = `${ style.blurOut  } 0.5s ease-in-out forwards`;
 
-        setTimeout(() => setter(false), 500);
+        setTimeout(externalClose, 500);
     }
-
+    console.log(landmark, language);
     if (!language) return (<></>);
 
     return (

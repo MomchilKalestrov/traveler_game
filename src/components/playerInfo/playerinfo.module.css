@@ -141,3 +141,11 @@
     padding: 0.25rem;
     border-radius: 1rem;
 }
+
+.PlayerInfoHistory *:not(:first-of-type) {
+    background-color: var(--color-tertiary);
+}
+
+.PlayerInfoHistory *:not(:first-of-type):not(:last-of-type) {
+    margin-bottom: var(--padding);
+}

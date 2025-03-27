@@ -9,6 +9,7 @@ import LanguageCTX from '@logic/contexts/languageCTX';
 import { RootState } from '@logic/redux/store';
 import store from '@logic/redux/store';
 import { CommunityLandmark } from '@logic/types';
+import { usePageStack } from '@logic/pageStackProvider';
 
 import LoadingPlaceholder from '@components/loading';
 import Button from '@src/components/button';
@@ -63,6 +64,8 @@ const Page: NextPage = () => {
     const [ isButtonVisible, hideButton ] = React.useState(true);
     const [ addDialogVisible, setAddDialogVisible ] = React.useState(false);
 
+    const { addPage, removePage } = usePageStack();
+
     const CommunityCard = React.useMemo(() => dynamic(
         () => import('./communityCard'), {
             loading: () => (<></>),
@@ -70,15 +73,21 @@ const Page: NextPage = () => {
         }
     ), []);
 
+    const openCreateCard = React.useCallback(() =>
+        addPage({
+            name: 'add-landmark',
+            page: (<CreateCard close={ () => removePage('add-landmark') } />)
+        })
+    , []);
+
     if (!language) return (<LoadingPlaceholder />);
 
     return (
         <>
-            { addDialogVisible && <CreateCard key='card' setter={ setAddDialogVisible } /> }
             <main className={ style.Page } key='main'>
                 <div className={ style.Header }>
                     <h2>{ language.community.titles.created }</h2>
-                    <button style={ { padding: '0.5rem' } } onClick={ () => setAddDialogVisible(true) }>
+                    <button style={ { padding: '0.5rem' } } onClick={ openCreateCard }>
                         <Image
                             src='/icons/close.svg' alt='Add landmark'
                             width={ 24 } height={ 24 }

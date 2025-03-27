@@ -15,10 +15,10 @@ import style from './createCard.module.css';
 
 
 type CreateCardProps = {
-    setter: React.Dispatch<React.SetStateAction<boolean>>;
+    close: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const CreateCard: React.FC<CreateCardProps> = ({ setter }) => {
+const CreateCard: React.FC<CreateCardProps> = ({ close: externalClose }) => {
     const language = React.useContext(LanguageCTX);
 
     const userSlice = useSelector((state: RootState) => state.user.value);
@@ -28,9 +28,9 @@ const CreateCard: React.FC<CreateCardProps> = ({ setter }) => {
     const [ position, setPosition ] = React.useState<{ lat: number, lng: number }>({ lat: 42.7339, lng: 25.4858 });
     const [ name, setName ] = React.useState<string | undefined>();
 
-    if (!language || !userSlice) return (<></>);
-
     const Map = React.useMemo(() => dynamic(() => import('./map'), { ssr: false }), []);
+
+    if (!language || !userSlice) return (<></>);
 
     const close = () => {
         if(!containerReference.current) return;
@@ -40,7 +40,7 @@ const CreateCard: React.FC<CreateCardProps> = ({ setter }) => {
         containerReference.current.style.animation = `${ style.slideOut } 0.5s ease-in-out forwards`;
         parent.style.animation            = `${ style.blurOut  } 0.5s ease-in-out forwards`;
 
-        setTimeout(() => setter(false), 500);
+        setTimeout(externalClose, 500);
     };
 
     const submit = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -65,7 +65,7 @@ const CreateCard: React.FC<CreateCardProps> = ({ setter }) => {
             visits: 0,
         };
 
-        fetch('/api/auth/user-created-landmarks?mode=create', {
+        fetch('/api/auth/user-made-landmarks?mode=create', {
             method: 'POST',
             body: JSON.stringify(landmark)
         }).then(async response => {

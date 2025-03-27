@@ -4,14 +4,16 @@ import Image from 'next/image';
 import { NextPage }  from 'next';
 
 import LoadingPlaceholder from '@components/loading';
+import PlayerPage from '@src/components/playerPage';
 
 import LanguageCTX  from '@logic/contexts/languageCTX';
 import getCSSColors from '@logic/profileColor';
 import { getPercentage }  from '@logic/utils';
 import { Language, User } from '@logic/types';
+import { usePageStack } from '@logic/pageStackProvider';
 
-import userStyle from '@app/profile/profile.module.css';
-import style     from './leaderboard.module.css';
+import userStyle  from '@components/playerInfo/playerinfo.module.css';
+import style      from './leaderboard.module.css';
 
 type PlayerProps = {
     user: User;
@@ -20,17 +22,24 @@ type PlayerProps = {
 
 const Player: React.FC<PlayerProps> = ({ user, position }) => {
     const [ profilePicture, setProfilePicture ] = React.useState<any | undefined>(undefined);
+    const { addPage, removePage } = usePageStack();
 
     React.useEffect(() => {
         if (!user) return;
 
         fetch(process.env.NEXT_PUBLIC_BLOB_STORAGE_URL + '/profile/' + user.username + '.png')
-            .then(response => response.blob())
-            .then(blob => setProfilePicture(URL.createObjectURL(blob)));
+            .then(response => response.ok ? response.blob() : undefined)
+            .then(blob => blob ? setProfilePicture(URL.createObjectURL(blob)) : undefined);
     }, [ user ]);
 
+    const openProfile = React.useCallback(() => {
+        const name = `${ user.username }-${ Date.now() }`; 
+        const page = <PlayerPage user={ user } close={ () => removePage(name) } />;
+        addPage({ name, page });
+    }, [ user.username ]);
+
     return (
-        <div className={ `${ userStyle.ProfileCard } ${ userStyle.ProfileInfo }` }>
+        <div className={ `${ userStyle.ProfileCard } ${ userStyle.ProfileInfo }` } onClick={ openProfile }>
             <div className={ userStyle.ProfilePhoto }>
             {
                 profilePicture

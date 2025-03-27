@@ -54,10 +54,11 @@ const LandmarksMarkedForVisit: React.FC<LandmarksMarkedForVisitProps> = ({
 
 const Page: NextPage = () => {
     const language: Language | undefined = React.useContext(LanguageCTX);
- 
+    
     const allLandmarks = useSelector((state: RootState) => state.allLandmarks.value);
     const user = useSelector((state: RootState) => state.user.value);
     const landmarksMarkedForVisit = useSelector((state: RootState) => state.landmarksMarkedForVisit.value);
+    
     
     const [
         followerActivity,

@@ -93,9 +93,9 @@ const POST = async (request: NextRequest) => {
     // exploit.
     const { name, location } = await request.json();
     if (mode === 'create')
-        return create({ name, location: { lat: location.lat, lng: location.lng } }, username as string);
+        return create({ name, location: { lat: location.lat, lng: location.lng } }, username!);
     else if (mode === 'delete')
-        return dеlete(params.get('name'), username as string);
+        return dеlete(name, username!);
 
     return NextResponse.json({ error: 'Invalid mode.' }, { status: 412 });
 };

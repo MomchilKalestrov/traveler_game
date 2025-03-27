@@ -5,9 +5,9 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@logic/redux/store';
 import LanguageCTX   from '@logic/contexts/languageCTX';
 import { LandmarkType } from '@logic/types';
+import { usePageStack } from '@logic/pageStackProvider';
 
 import Mapcard from '@components/mapcard';
-import Advertisement from '@components/ad';
 
 import style from './segment.module.css';
 
@@ -16,14 +16,14 @@ const CARD_MAX_COUNT = 2;
 type FullPageProps = {
     type: LandmarkType;
     landmarks: (JSX.Element & { landmark: string })[];
-    setter: React.Dispatch<React.SetStateAction<boolean>>;
+    close: () => void;
 };
 
 type SegmentProps = {
     type: LandmarkType;
 };
 
-const FullPage: React.FC<FullPageProps> = ({ type, landmarks, setter }) => {
+const FullPage: React.FC<FullPageProps> = ({ type, landmarks, close: externalClose }) => {
     const language     = React.useContext(LanguageCTX);
 
     const containerRef = React.useRef<HTMLDivElement>(null);
@@ -37,7 +37,7 @@ const FullPage: React.FC<FullPageProps> = ({ type, landmarks, setter }) => {
     const close = () => {
         if (containerRef.current)
             containerRef.current.style.animation = `${ style.SlideOut } 0.5s forwards`;
-        setTimeout(() => setter(false), 500);
+        setTimeout(externalClose, 500);
     };
 
     const openSearch = () => {
@@ -99,8 +99,8 @@ const Segment: React.FC<SegmentProps> = ({ type }) => {
     const language = React.useContext(LanguageCTX);
     const newLandmarks = useSelector((state: RootState) => state.newLandmarks.value);
 
-    const [ fullPage, setFullPage ] = React.useState(false);
-    
+    const { addPage, removePage } = usePageStack();
+
     const filteredLandmarks = React.useMemo(() =>
         newLandmarks?.reduce((acc, curr) => {
             if (curr.type === type)
@@ -109,16 +109,22 @@ const Segment: React.FC<SegmentProps> = ({ type }) => {
         }, [] as (JSX.Element & { landmark: string })[])
     , [ newLandmarks?.length ]);
 
+    const openFullPage = React.useCallback(() => {
+        if (!filteredLandmarks) return;
+        const name = `fullPage-${ type }`;
+        const page = (<FullPage type={ type } landmarks={ filteredLandmarks } close={ () => removePage(name) } />);
+        addPage({ name, page });
+    }, [ type, !!filteredLandmarks ]);
+
     if (!language || !filteredLandmarks || filteredLandmarks.length === 0) return (<></>)
 
     return (
         <>
-            { fullPage && <FullPage landmarks={ filteredLandmarks } setter={ setFullPage } type={ type } /> }
             <div className={ style.SegmentHeader }>
                 <h2>{ language.home.titles.types[type] }</h2>
                 {
                     filteredLandmarks.length > CARD_MAX_COUNT &&
-                    <button onClick={ () => setFullPage(true) } aria-label={ `View all ${ type } landmarks.` }>
+                    <button onClick={ openFullPage } aria-label={ `View all ${ type } landmarks.` }>
                         <Image src='/icons/back.svg' alt='arrow' width={ 24 } height={ 24 } style={ { transform: 'rotate(180deg)' } } />
                     </button>
                 }

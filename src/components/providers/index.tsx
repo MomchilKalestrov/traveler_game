@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation';
 import store from '@logic/redux/store';
 import LanguageCTX  from '@logic/contexts/languageCTX';
 import { Language } from '@logic/types';
+import PageStackProvider from '@logic/pageStackProvider';
 
 type ProvidersProps = {
     children?: React.ReactNode;
@@ -25,9 +26,11 @@ const Providers: React.FC<ProvidersProps> = ({ children }) => {
     return (
         <LanguageCTX.Provider value={ language }>
             <Provider store={ store }>
-                { children }
-            </Provider>
-        </LanguageCTX.Provider>
+                <PageStackProvider>
+                    { children }
+                 </PageStackProvider>
+             </Provider>
+         </LanguageCTX.Provider>
     )
 };
 

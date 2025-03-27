@@ -2,10 +2,11 @@
 import React from 'react';
 import Image from 'next/image';
 
-import { Landmark } from '@logic/types';
 import InfoCard     from '@components/infocard';
 
 import { getBadgeSVG } from '@logic/utils';
+import { usePageStack } from '@logic/pageStackProvider';
+import { Landmark } from '@logic/types';
 
 import style from './minicard.module.css';
 
@@ -14,22 +15,20 @@ type MinicardProps = {
 };
 
 const Minicard: React.FC<MinicardProps> = ({ landmark }) => {
-    const [ viewing, setViewing ] = React.useState<boolean>(false);
+    const { addPage, removePage } = usePageStack();
+
+    const showInfoCard = () => {
+        const name = `info-${ landmark.dbname }`;
+        const page = <InfoCard landmark={ landmark } close={ () => removePage(name) } type="unmarkForVisit" />;
+        addPage({ name, page });
+    };
 
     return (
         <>
-        {
-            viewing &&
-            <InfoCard
-                type='unmarkForVisit'
-                setter={ setViewing }
-                landmark={ landmark }
-            />
-        }
             <button
                 aria-label={ `View ${ landmark.name }` }
                 className={ style.Minicard }
-                onClick={ () => setViewing(true) }
+                onClick={ showInfoCard }
             >
                 <Image
                     alt={ `${ landmark.name } icon` } width={ 32 } height={ 32 }

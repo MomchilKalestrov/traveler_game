@@ -16,16 +16,10 @@ type SettingsProps = {
     close: () => void;
 };
 
-const Settings = ({ close }: SettingsProps) => {
+const Settings: React.FC<SettingsProps> = ({ close }) => {
     const router = useRouter();
     const language: Language | undefined = React.useContext(LanguageCTX);
     const reference = React.useRef<HTMLDivElement>(null);
-
-    const handleClick = () => {
-        if (reference.current)
-            reference.current.style.animation = `${ style.SlideOut } 0.5s forwards`;
-        setTimeout(close, 500);
-    };
 
     if (!language) return (<></>);
 
@@ -34,7 +28,11 @@ const Settings = ({ close }: SettingsProps) => {
             <div className={ style.SettingsHeader }>
                 <button
                     aria-label='Close settings'
-                    onClick={ handleClick }
+                    onClick={ () => {
+                        if (reference.current)
+                            reference.current.style.animation = `${ style.SlideOut } 0.5s forwards`;
+                        setTimeout(close, 500);
+                    } }
                     className={ style.SettingsBack }
                 ><Image src='/icons/back.svg' alt='go back' width={ 24 } height={ 24 } /></button>
                 <h2>{ language.misc.settings.title }</h2>
@@ -68,11 +66,10 @@ const Settings = ({ close }: SettingsProps) => {
                         aria-label='Logout'
                         border={ true }
                         onClick={ () => {
-                                sessionStorage.removeItem("initialSave");
-                                deleteCookie('sessionId');
-                                router.replace('/login');
-                            }
-                        }
+                            sessionStorage.removeItem("initialSave");
+                            deleteCookie('sessionId');
+                            router.replace('/login');
+                        } }
                     >{ language.misc.settings.logout.title }</Button>
                 </div>
             </div>

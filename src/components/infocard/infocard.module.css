@@ -4,7 +4,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: calc(var(--z) + 4);
+    z-index: calc(var(--z) + 5);
     animation: blurIn ease-in-out 0.5s;
     backdrop-filter: blur(5px) brightness(80%);
     margin: 0px !important;
