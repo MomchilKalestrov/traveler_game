@@ -15,3 +15,7 @@ The project relies on the given enviornment variables:
 To start a production server use `npm run build` and `npm run start`.
 
 To start a development server use `npm run dev` or to enable HTTPS use `npm run ssl`.
+
+# GITHUB REPOSITORY
+
+https://github.com/MomchilKalestrov/traveler_game.git

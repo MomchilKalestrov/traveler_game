@@ -1,11 +1,12 @@
 'use client';
 import Link  from 'next/link';
 import Image from 'next/image';
-import { NextPage }    from 'next';
-import { usePathname } from 'next/navigation';
+import { NextPage } from 'next';
+import { usePathname, useRouter } from 'next/navigation';
 import React, { useContext } from 'react';
 
 import { Language } from '@logic/types';
+import { setCookie } from '@logic/cookies';
 import LanguageCTX from '@logic/contexts/languageCTX';
 
 import LoadingPlaceholder from '@components/loading';
@@ -84,6 +85,8 @@ const Card: React.FC<CardProps> = ({  dbname, name }) => (
 
 const Page: NextPage = () => {
     const language = useContext(LanguageCTX);
+    const router = useRouter();
+    const currentLocale = usePathname().split('/')[1];
 
     if (!language) return (<LoadingPlaceholder />);
 
@@ -103,10 +106,47 @@ const Page: NextPage = () => {
                 />
                 <input type='checkbox' />
                 <div className={ header.Nav }>
-                { pages.map((page, i) => (
-                    <NavEntry key={ i } title={ page } language={ language } />
-                )) }
+                    { pages.map((page) => (
+                        <NavEntry key={ page } title={ page } language={ language } />
+                    )) }
+                    <div className={ header.LanguageContainer }>
+                        <div>
+                            <Image
+                                src={ `/icons/locale/${ currentLocale }.png` }
+                                alt={ currentLocale }
+                                width='48'
+                                height='48'
+                                className={ header.LanguageIcon }
+                                onClick={ (event: React.MouseEvent<HTMLImageElement>) => {
+                                    event.stopPropagation();
+                                    const target = event.currentTarget;
+                                    if (!target) return;
+                                    const parent = target.parentElement;
+                                    if (!parent) return;
+                                    parent.classList.toggle(header.LanguageContainerActive);  
+                                } }
+                            />
+                            { [ "en", "bg" ]
+                                .filter((locale) => locale !== currentLocale)
+                                .map((lang) => (
+                                    <Image
+                                        key={ lang }
+                                        src={ `/icons/locale/${ lang }.png` }
+                                        alt={ lang }
+                                        width='48'
+                                        height='48'
+                                        className={ header.LanguageIcon }
+                                        onClick={ () => {
+                                            setCookie('locale', lang);
+                                            router.push(`/${ lang }/${ pages[0] }`);
+                                            window.location.reload();
+                                        } }
+                                    />
+                            )) }
+                        </div>
+                    </div>
                 </div>
+
             </header>
 
             <main className={ main.Main } key='main'>

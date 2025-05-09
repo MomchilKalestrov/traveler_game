@@ -47,6 +47,7 @@
     background-color: var(--color-bg);
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .NavEntry {
@@ -95,6 +96,49 @@
     filter: var(--icon-filter-primary);
 }
 
+.LanguageContainer {
+    height: var(--height);
+    aspect-ratio: 1 / 1;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.LanguageContainer div {
+    overflow: hidden;
+    position: absolute;
+    height: var(--height);
+    background-color: var(--color-bg);
+    border-radius: 16px;
+    z-index: 1000;
+}
+
+.LanguageIcon {
+    padding: 0.75rem;
+    box-sizing: border-box;
+    width: calc(var(--height));
+    height: calc(var(--height));
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.LanguageIcon:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+    transform: scale(1.05);
+}
+
+.LanguageIcon:active {
+    transform: scale(0.95);
+}
+
+.LanguageContainerActive {
+    height: auto !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
 @media (max-width: 35rem) {
     .Header:has(input:checked) {
         box-shadow: none;
@@ -102,6 +146,17 @@
 
     .Header input {
         display: unset;
+    }
+    
+    .LanguageContainer div {
+        right: 0;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+    
+    .LanguageContainerActive div {
+        width: 200px;
+        max-width: calc(100vw - 2 * var(--padding));
     }
 
     .Nav {
@@ -124,6 +179,7 @@
     .Header input:checked + .Nav {
         height: auto;
         box-shadow: 0px 15px 10px -15px #1118;
+        overflow: visible;
     }
 
     .MenuIcon {
