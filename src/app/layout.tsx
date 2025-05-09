@@ -18,7 +18,7 @@ const metadata: Metadata = {
     description: 'A game where you earn rewards by visiting the sights of Bulgaria.',
     icons: [ '/favicon.ico', '/favicon.png' ],
     openGraph: { images: '/api/open-graph' },
-    metadataBase: new URL(process.env.APPLICATION_URL as string),
+    metadataBase: new URL(process.env.APPLICATION_URL as string)
 };
 
 const RootLayout = ({
@@ -29,16 +29,7 @@ const RootLayout = ({
     <html lang="en">
         <body className={ roboto.className }>
             <Analytics />
-
             <Providers>
-                <div style={ {
-                    zIndex: 9999999,
-                    background: 'red',
-                    color: 'white',
-                    position: 'fixed',
-                    bottom: 0,
-                    right: 0
-                    } }>EARLY ALPHA.<br></br>NOT FOR PUBLIC RELEASE</div>
                 { children }
             </Providers>
         </body>
